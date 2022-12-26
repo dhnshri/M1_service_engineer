@@ -158,6 +158,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
     // return ListView.builder(
     return ListView.builder(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {

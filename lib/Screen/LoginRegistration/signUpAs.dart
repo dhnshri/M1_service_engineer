@@ -141,42 +141,41 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                                       color: Colors.white,
                                       borderRadius:
                                       BorderRadius.circular(8.0)),
-                                  child: Center(
-                                    child: DropdownButtonHideUnderline(
-                                        child: DropdownButton<String>(
-                                          value: dropdownValue,
-                                          icon: Padding(
-                                            padding: const EdgeInsets.only(left:55.0),
-                                            child: const Icon(Icons.arrow_drop_down_sharp),
-                                          ),
-                                          iconSize: 24,
-                                          elevation: 16,
-                                          iconEnabledColor: primaryAppColor,
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              dropdownValue = newValue!;
-                                            });
-                                          },
-                                          items: <String>[
-                                            'Machine Maintenance',
-                                            'Job Work Enquiry',
-                                            'Transportation',
+                                  child: DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: dropdownValue,
+                                        icon: Padding(
+                                          padding: const EdgeInsets.only(left:100.0),
+                                          child: const Icon(Icons.arrow_drop_down_sharp),
+                                        ),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        iconEnabledColor: primaryAppColor,
+                                        borderRadius:
+                                        BorderRadius.circular(8.0),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue!;
+                                          });
+                                        },
+                                        items: <String>[
+                                          'Machine Maintenance',
+                                          'Job Work Enquiry',
+                                          'Transportation',
 
-                                          ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Center(child: Text(value)),
-                                                );
-                                              }).toList(),
-                                        )),
-                                  ),
+                                        ].map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Center(child: Text(value)),
+                                              );
+                                            }).toList(),
+                                      )),
                                 ),
                               ),
                             ],
