@@ -15,6 +15,18 @@ var onlineOfflineStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w500,
 );
 
+var filterRadiobtnStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.normal,
+);
+
+var filterHeadingRadiobtnStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
+);
+
 var appBarheadingStyle = GoogleFonts.poppins(
   color: Colors.black,
   fontSize: 16,
