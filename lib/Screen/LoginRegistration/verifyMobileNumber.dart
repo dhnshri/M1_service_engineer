@@ -63,6 +63,7 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff062C56),
         body: Stack(
           children: [
             Image.asset(
@@ -114,15 +115,15 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                                       child: DropdownButtonHideUnderline(
                                           child: DropdownButton<String>(
                                         value: dropdownValue,
-                                        icon: const Icon(Icons.arrow_downward),
+                                        icon: const Icon(Icons.arrow_drop_down_sharp),
                                         iconSize: 24,
                                         elevation: 16,
                                         iconEnabledColor: primaryAppColor,
                                         borderRadius:
                                             BorderRadius.circular(8.0),
                                         style: TextStyle(
-                                            color: primaryAppColor,
-                                            fontSize: 18,
+                                            color: Colors.black,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w600),
                                         onChanged: (String? newValue) {
                                           setState(() {
@@ -215,80 +216,82 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                                 )
                               ],
                             ),
-                            SizedBox(
-                              width:
-                              MediaQuery.of(context).size.width * 0.12,
-                              height: 60,
-                              child: TextFormField(
-                                controller: _phoneNumberController,
-                                keyboardType: TextInputType.number,
-                                maxLength: 10,
-                                cursorColor: primaryAppColor,
-                                decoration: InputDecoration(
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(8.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.white,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(8.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.red,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(10.0),
-                                    borderSide: const BorderSide(
-                                        color: Colors.white, width: 1.0),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(8.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                        width: 1.0,
-                                      )),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(8.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.white,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  hintText: 'Mobile Number',
-                                  contentPadding: const EdgeInsets.fromLTRB(
-                                      20.0, 20.0, 0.0, 0.0),
-                                  hintStyle: GoogleFonts.poppins(
-                                      color: Colors.grey,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                onChanged: (val) {
-                                  setState(() {
-                                    phoneNum = val;
-                                    // _phoneNumberController.text = val;
-                                  });
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 7.0,
-                            ),
+                            // SizedBox(
+                            //   width:
+                            //   MediaQuery.of(context).size.width * 0.12,
+                            //   height: 60,
+                            //   child: TextFormField(
+                            //     controller: _phoneNumberController,
+                            //     keyboardType: TextInputType.number,
+                            //     maxLength: 10,
+                            //     cursorColor: primaryAppColor,
+                            //     decoration: InputDecoration(
+                            //       disabledBorder: OutlineInputBorder(
+                            //         borderRadius:
+                            //         BorderRadius.circular(8.0),
+                            //         borderSide: const BorderSide(
+                            //           color: Colors.white,
+                            //           width: 1.0,
+                            //         ),
+                            //       ),
+                            //       errorBorder: OutlineInputBorder(
+                            //         borderRadius:
+                            //         BorderRadius.circular(8.0),
+                            //         borderSide: const BorderSide(
+                            //           color: Colors.red,
+                            //           width: 1.0,
+                            //         ),
+                            //       ),
+                            //       fillColor: Colors.white,
+                            //       filled: true,
+                            //       focusedBorder: OutlineInputBorder(
+                            //         borderRadius:
+                            //         BorderRadius.circular(10.0),
+                            //         borderSide: const BorderSide(
+                            //             color: Colors.white, width: 1.0),
+                            //       ),
+                            //       focusedErrorBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //           BorderRadius.circular(8.0),
+                            //           borderSide: const BorderSide(
+                            //             color: Colors.white,
+                            //             width: 1.0,
+                            //           )),
+                            //       enabledBorder: OutlineInputBorder(
+                            //         borderRadius:
+                            //         BorderRadius.circular(8.0),
+                            //         borderSide: const BorderSide(
+                            //           color: Colors.white,
+                            //           width: 1.0,
+                            //         ),
+                            //       ),
+                            //       hintText: 'Mobile Number',
+                            //       contentPadding: const EdgeInsets.fromLTRB(
+                            //           20.0, 20.0, 0.0, 0.0),
+                            //       hintStyle: GoogleFonts.poppins(
+                            //           color: Colors.grey,
+                            //           fontSize: 12.0,
+                            //           fontWeight: FontWeight.w500),
+                            //     ),
+                            //     onChanged: (val) {
+                            //       setState(() {
+                            //         phoneNum = val;
+                            //         // _phoneNumberController.text = val;
+                            //       });
+                            //     },
+                            //   ),
+                            // ),
+                            // const SizedBox(
+                            //   height: 7.0,
+                            // ),
                             Padding(
                                 padding:
                                 const EdgeInsets.symmetric(horizontal: 40.0),
                                 child: AppButton(
                                   onPressed: () async {
 
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) => RegistrationScreen()));
                                     //   isconnectedToInternet = await ConnectivityCheck
                                     //       .checkInternetConnectivity();
                                     //   if (isconnectedToInternet == true) {
@@ -316,42 +319,6 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
-                        TextButton(
-                            child: const Text(
-                              'Forget Password?',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14),
-                            ),
-                            onPressed: () {
-                              // Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: (context) =>
-                              //             RegistrationScreen()
-                              //                 // WebViewContainer(
-                              //                 // "https://rccedu.org/register.php")
-                              //         ))
-                              //     .whenComplete(() => Navigator.pop(context));
-                              // print('Pressed');
-                            }),
-
-                        TextButton(
-                            child: const Text(
-                              'Do not have any account? Create Account',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) => RegistrationScreen()));
-                            })
                       ],
                     ),
                   ),

@@ -9,6 +9,27 @@ var welcomeStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w500,
 );
 
+var onlineOfflineStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);
+
+var appBarheadingStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);
+var serviceRequestHeadingStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.bold,
+);
+var serviceRequestSubHeadingStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 8,
+  fontWeight: FontWeight.bold,
+);
 
 
 // Live Lecture

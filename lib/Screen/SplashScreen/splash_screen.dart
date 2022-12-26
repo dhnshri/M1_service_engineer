@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
      // authBloc = BlocProvider.of<AuthBloc>(context);
     //  authBloc!.add(OnAuthCheck());
-      Navigator.pushReplacement(context,
+      Navigator.push(context,
           MaterialPageRoute(builder: (context) => SignUpAsScreen()));
     });
   }
@@ -39,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff062C56),
       body: Center(
         child: Container(
           decoration: BoxDecoration(

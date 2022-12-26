@@ -209,6 +209,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  flutter_custom_switch:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_switch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   flutter_html:
     dependency: "direct main"
     description:
@@ -545,7 +552,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.1"
   rxdart:
     dependency: transitive
     description:

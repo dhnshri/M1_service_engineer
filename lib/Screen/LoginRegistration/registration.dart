@@ -7,7 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
+import '../../Screen/bottom_navbar.dart';
+import '../Home/home.dart';
 import 'login_screen.dart';
+
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff062C56),
         body: Stack(
           children: [
             Image.asset(
@@ -74,7 +78,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         Column(
                           children: [
                             Text(
-                              'Register',
+                              'Create Password',
                               style: ksubjectHeadingStyle,
                             ),
                             SizedBox(
@@ -142,7 +146,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       width: 1.0,
                                     ),
                                   ),
-                                  hintText: 'Mobile Number',
+                                  hintText: '+91 9657563423',
                                   contentPadding: const EdgeInsets.fromLTRB(
                                       20.0, 20.0, 0.0, 0.0),
                                   hintStyle: GoogleFonts.poppins(
@@ -166,7 +170,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: TextFormField(
                                 controller: _phoneNumberController,
                                 keyboardType: TextInputType.number,
-                                maxLength: 10,
+                               // maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
                                   disabledBorder: OutlineInputBorder(
@@ -232,7 +236,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: TextFormField(
                                 controller: _phoneNumberController,
                                 keyboardType: TextInputType.number,
-                                maxLength: 10,
+                              //  maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
                                   disabledBorder: OutlineInputBorder(
@@ -296,6 +300,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 child: AppButton(
                                   onPressed: () async {
 
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) => BottomNavigation(index:0)));
                                     //   isconnectedToInternet = await ConnectivityCheck
                                     //       .checkInternetConnectivity();
                                     //   if (isconnectedToInternet == true) {
@@ -356,8 +362,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   fontSize: 14),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) => RegistrationScreen()));
+
                             })
                       ],
                     ),

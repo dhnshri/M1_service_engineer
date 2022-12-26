@@ -63,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff062C56),
         body: Stack(
           children: [
             Image.asset(
@@ -417,7 +418,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 14),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context) => RegistrationScreen()));
                             })
                       ],

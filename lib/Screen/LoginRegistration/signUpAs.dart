@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Screen/LoginRegistration/verifyMobileNumber.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Config/font.dart';
@@ -15,7 +16,7 @@ class SignUpAsScreen extends StatefulWidget {
 
 class _SignUpAsScreenState extends State<SignUpAsScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  String dropdownValue = '+ 91';
+  String dropdownValue = 'Machine Maintenance';
   String? phoneNum;
   String? role;
   bool loading = true;
@@ -61,34 +62,37 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar:AppButton(
-          onPressed: () async {
+        backgroundColor: Color(0xff062C56),
+        bottomNavigationBar:Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: AppButton(
+            onPressed: () async {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
+              //   isconnectedToInternet = await ConnectivityCheck
+              //       .checkInternetConnectivity();
+              //   if (isconnectedToInternet == true) {
+              //     if (_formKey.currentState!.validate()) {
+              //       // setState(() {
+              //       //   loading=true;
+              //       // });
+              //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
+              //     }
+              //   } else {
+              //     CustomDialogs.showDialogCustom(
+              //         "Internet",
+              //         "Please check your Internet Connection!",
+              //         context);
+              //   }
+            },
+            shape: const RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.all(Radius.circular(50))),
+            text: 'Next',
+            loading: loading,
 
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => SignUpAsScreen()));
-            //   isconnectedToInternet = await ConnectivityCheck
-            //       .checkInternetConnectivity();
-            //   if (isconnectedToInternet == true) {
-            //     if (_formKey.currentState!.validate()) {
-            //       // setState(() {
-            //       //   loading=true;
-            //       // });
-            //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-            //     }
-            //   } else {
-            //     CustomDialogs.showDialogCustom(
-            //         "Internet",
-            //         "Please check your Internet Connection!",
-            //         context);
-            //   }
-          },
-          shape: const RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.all(Radius.circular(50))),
-          text: 'Next',
-          loading: loading,
 
-
+          ),
         ),
         body: Stack(
           children: [
@@ -101,82 +105,102 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-
+                SizedBox(
+                  height: 90,
+                ),
                 Expanded(
                   flex: 1,
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Sign Up As',
-                          style: ksubjectHeadingStyle,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
-                        Text(
-                          'Please Select the role to sign up',
-                          softWrap: true,
-                          style: ksubjectSubheadingStyle,
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: Container(
-                                width:
-                                MediaQuery.of(context).size.width * 0.8,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                    BorderRadius.circular(8.0)),
-                                child: Center(
-                                  child: DropdownButtonHideUnderline(
-                                      child: DropdownButton<String>(
-                                        value: dropdownValue,
-                                        icon: const Icon(Icons.arrow_downward),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        iconEnabledColor: primaryAppColor,
-                                        borderRadius:
-                                        BorderRadius.circular(8.0),
-                                        style: TextStyle(
-                                            color: primaryAppColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            dropdownValue = newValue!;
-                                          });
-                                        },
-                                        items: <String>[
-                                          '+ 91',
-                                          '+ 1',
-                                          '+ 52',
-                                          '+ 00'
-                                        ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Center(child: Text(value)),
-                                              );
-                                            }).toList(),
-                                      )),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Sign Up As',
+                            style: ksubjectHeadingStyle,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ),
+                          Text(
+                            'Please Select the role to sign up',
+                            softWrap: true,
+                            style: ksubjectSubheadingStyle,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20.0),
+                                child: Container(
+                                  width:
+                                  MediaQuery.of(context).size.width * 0.9,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                      BorderRadius.circular(8.0)),
+                                  child: Center(
+                                    child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<String>(
+                                          value: dropdownValue,
+                                          icon: Padding(
+                                            padding: const EdgeInsets.only(left:55.0),
+                                            child: const Icon(Icons.arrow_drop_down_sharp),
+                                          ),
+                                          iconSize: 24,
+                                          elevation: 16,
+                                          iconEnabledColor: primaryAppColor,
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              dropdownValue = newValue!;
+                                            });
+                                          },
+                                          items: <String>[
+                                            'Machine Maintenance',
+                                            'Job Work Enquiry',
+                                            'Transportation',
+
+                                          ].map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Center(child: Text(value)),
+                                                );
+                                              }).toList(),
+                                        )),
+                                  ),
                                 ),
                               ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right:14.0,left: 14.0),
+                            child: Text(
+                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                              softWrap: true,
+                              style: ksubjectSubheadingStyle.copyWith(fontSize: 10),
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
+
               ],
             ),
+
           ],
         ),
       ),
