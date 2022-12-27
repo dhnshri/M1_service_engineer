@@ -21,6 +21,24 @@ var filterRadiobtnStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.normal,
 );
 
+var ExpanstionTileLeftDataStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.normal,
+);
+
+var ExpanstionTileOtherInfoStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.normal,
+);
+
+var ExpanstionTileRightDataStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.bold,
+);
+
 var filterHeadingRadiobtnStyle = GoogleFonts.poppins(
   color: Colors.black,
   fontSize: 14,

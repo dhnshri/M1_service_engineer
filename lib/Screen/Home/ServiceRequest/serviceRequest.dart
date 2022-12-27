@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Screen/Home/ServiceRequest/serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/Home/ServiceRequest/serviceRequestFilter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -286,7 +287,12 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
                   ],
                 ),
-                SingleChildScrollView(child: Container(child: buildCustomerEnquiriesList())),
+              InkWell(
+                onTap: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+                },
+                  child: buildCustomerEnquiriesList()),
               ],
             ),
           ),
