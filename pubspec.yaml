@@ -59,6 +59,7 @@ dependencies:
   paytm_allinonesdk: ^1.1.7
   flutter_custom_switch: ^0.0.3
   expansion_tile_card: ^2.0.0
+  flutter_custom_selector: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +102,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   #et: assets/fonts/Poppins-SemiBold.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

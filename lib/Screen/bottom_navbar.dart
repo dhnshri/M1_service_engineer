@@ -128,7 +128,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   fontSize: 10
             ),
             showUnselectedLabels: true,
-            unselectedItemColor: ThemeColors.scaffoldBgColor,
+            unselectedItemColor: ThemeColors.blackColor,
 
             // backgroundColor: Colors.red,
             onTap: _onItemTapped,
