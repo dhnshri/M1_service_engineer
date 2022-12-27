@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Screen/LoginRegistration/verifyMobileNumber.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
 
@@ -68,7 +69,7 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
           child: AppButton(
             onPressed: () async {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
+                  MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen(dropValue: dropdownValue,)));
               //   isconnectedToInternet = await ConnectivityCheck
               //       .checkInternetConnectivity();
               //   if (isconnectedToInternet == true) {
@@ -116,7 +117,8 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                         children: [
                           Text(
                             'Sign Up As',
-                            style: ksubjectHeadingStyle,
+                            style: TextStyle(fontFamily: 'Poppins-SemiBold',fontSize: 25,fontWeight: FontWeight.w600,
+                            color: ThemeColors.whiteTextColor),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.01,
@@ -124,10 +126,11 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                           Text(
                             'Please Select the role to sign up',
                             softWrap: true,
-                            style: ksubjectSubheadingStyle,
+                            style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16,fontWeight: FontWeight.w400,
+                                color: ThemeColors.whiteTextColor),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
+                            height: MediaQuery.of(context).size.height * 0.06,
                           ),
                           Column(
                             children: [
@@ -142,55 +145,93 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                                       borderRadius:
                                       BorderRadius.circular(8.0)),
                                   child: DropdownButtonHideUnderline(
-                                      child: DropdownButton<String>(
-                                        isExpanded: true,
+                                      child: DropdownButton2(
+                                        items: <String>[
+                                              'Machine Maintenance',
+                                              'Job Work Enquiry',
+                                              'Transportation',
+
+                                            ].map((item) =>
+                                            DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Poppins-Medium',
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500
+                                                ),
+                                              ),
+                                            ))
+                                            .toList(),
                                         value: dropdownValue,
-                                        icon: Padding(
-                                          padding: const EdgeInsets.only(left:100.0),
-                                          child: const Icon(Icons.arrow_drop_down_sharp),
-                                        ),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        iconEnabledColor: primaryAppColor,
-                                        borderRadius:
-                                        BorderRadius.circular(8.0),
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal),
-                                        onChanged: (String? newValue) {
+                                        onChanged: (value) {
                                           setState(() {
-                                            dropdownValue = newValue!;
+                                            dropdownValue = value as String;
                                           });
                                         },
-                                        items: <String>[
-                                          'Machine Maintenance',
-                                          'Job Work Enquiry',
-                                          'Transportation',
-
-                                        ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Center(child: Text(value)),
-                                              );
-                                            }).toList(),
-                                      )),
+                                        buttonHeight: 40,
+                                        buttonWidth: 140,
+                                        itemHeight: 40,
+                                        buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                                        dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
+                                        dropdownDecoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          // color: Colors.redAccent,
+                                        ),
+                                        // itemWidth: 140,
+                                      )
+                                      // DropdownButton<String>(
+                                      //   isExpanded: true,
+                                      //   value: dropdownValue,
+                                      //   icon: Padding(
+                                      //     padding: const EdgeInsets.only(left:100.0),
+                                      //     child: const Icon(Icons.arrow_drop_down_sharp),
+                                      //   ),
+                                      //   iconSize: 24,
+                                      //   elevation: 16,
+                                      //   iconEnabledColor: primaryAppColor,
+                                      //   borderRadius:
+                                      //   BorderRadius.circular(8.0),
+                                      //   style: TextStyle(
+                                      //       color: Colors.black,
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.normal),
+                                      //   onChanged: (String? newValue) {
+                                      //     setState(() {
+                                      //       dropdownValue = newValue!;
+                                      //     });
+                                      //   },
+                                      //   items: <String>[
+                                      //     'Machine Maintenance',
+                                      //     'Job Work Enquiry',
+                                      //     'Transportation',
+                                      //
+                                      //   ].map<DropdownMenuItem<String>>(
+                                      //           (String value) {
+                                      //         return DropdownMenuItem<String>(
+                                      //           value: value,
+                                      //           child: Center(child: Text(value)),
+                                      //         );
+                                      //       }).toList(),
+                                      // )),
                                 ),
                               ),
+                              )
                             ],
                           ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right:14.0,left: 14.0),
-                            child: Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                              softWrap: true,
-                              style: ksubjectSubheadingStyle.copyWith(fontSize: 10),
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: MediaQuery.of(context).size.height * 0.01,
+                          // ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(right:14.0,left: 14.0),
+                          //   child: Text(
+                          //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                          //     softWrap: true,
+                          //     style: ksubjectSubheadingStyle.copyWith(fontSize: 10),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

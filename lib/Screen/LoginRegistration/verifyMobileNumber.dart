@@ -8,7 +8,8 @@ import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
 
 class VerifyMobileNumberScreen extends StatefulWidget {
-  const VerifyMobileNumberScreen({Key? key}) : super(key: key);
+  final String? dropValue;
+  const VerifyMobileNumberScreen({Key? key,required this.dropValue}) : super(key: key);
 
   @override
   _VerifyMobileNumberScreenState createState() => _VerifyMobileNumberScreenState();
@@ -291,7 +292,7 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                                   onPressed: () async {
 
                                     Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => RegistrationScreen()));
+                                        MaterialPageRoute(builder: (context) => RegistrationScreen(dropValue: widget.dropValue,)));
                                     //   isconnectedToInternet = await ConnectivityCheck
                                     //       .checkInternetConnectivity();
                                     //   if (isconnectedToInternet == true) {

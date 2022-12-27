@@ -13,7 +13,8 @@ import 'login_screen.dart';
 
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({Key? key}) : super(key: key);
+  final String? dropValue;
+  const RegistrationScreen({Key? key,required this.dropValue}) : super(key: key);
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -301,7 +302,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   onPressed: () async {
 
                                     Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => BottomNavigation(index:0)));
+                                        MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
                                     //   isconnectedToInternet = await ConnectivityCheck
                                     //       .checkInternetConnectivity();
                                     //   if (isconnectedToInternet == true) {
