@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
 import '../../../Widget/app_small_button.dart';
+import '../../Quotations/make_quotatons.dart';
 import '../../bottom_navbar.dart';
 
 
@@ -99,8 +100,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             SizedBox(width:8),
             AppSmallButton(
               onPressed: () async {
-                // Navigator.of(context).push(
-                //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
                 //   isconnectedToInternet = await ConnectivityCheck
                 //       .checkInternetConnectivity();
                 //   if (isconnectedToInternet == true) {
