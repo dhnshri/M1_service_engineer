@@ -63,6 +63,35 @@ Widget notificationIcon(BuildContext context) {
 
 }
 
+Widget addIcon(){
+  return InkWell(
+    onTap: (){
+      //AddProduct(context);
+    },
+    child: Container(
+      width: 35,
+      height: 35,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xffEC2326),
+          //color: Colors.red,
+          border: Border.all(color: Colors.black, width: 1)),
+      child: Container(
+        width: 30,
+        height: 30,
+        alignment: Alignment.center,
+        child: Stack(
+          children: [
+            Center(
+                child:Icon(Icons.add,color: Colors.white,)
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 Widget notification(BuildContext context) {
   return InkWell(
     onTap: (){

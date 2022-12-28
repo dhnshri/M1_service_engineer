@@ -21,6 +21,12 @@ var filterRadiobtnStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.normal,
 );
 
+var StepperHeadingStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 10,
+  fontWeight: FontWeight.normal,
+);
+
 var ExpanstionTileLeftDataStyle = GoogleFonts.poppins(
   color: Colors.black,
   fontSize: 12,
@@ -63,9 +69,9 @@ var serviceRequestSubHeadingStyle = GoogleFonts.poppins(
 
 
 // Live Lecture
-var lectureHeading = GoogleFonts.poppins(
+var showBottomModelHeading = GoogleFonts.poppins(
   color: Colors.black,
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: FontWeight.w700,
 );
 // Chemistry
