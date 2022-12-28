@@ -67,14 +67,24 @@ var serviceRequestSubHeadingStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.bold,
 );
 
-
-// Live Lecture
 var showBottomModelHeading = GoogleFonts.poppins(
   color: Colors.black,
   fontSize: 16,
   fontWeight: FontWeight.w700,
 );
-// Chemistry
+
+var itemRequiredCardHeading = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 11,
+  fontWeight: FontWeight.bold,
+);
+
+var itemRequiredCardSubtitle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 10,
+  fontWeight: FontWeight.normal,
+);
+
 var ksubjectHeadingStyle = GoogleFonts.poppins(
   color: Colors.white,
   fontSize: 18,
