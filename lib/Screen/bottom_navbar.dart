@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Screen/Transportation/Profile/transportation_profile.dart';
 
 import '../Constant/theme_colors.dart';
 import 'Home/home.dart';
@@ -12,7 +13,8 @@ import 'Quotations/quotationslist.dart';
 
 class BottomNavigation extends StatefulWidget {
   int index;
-   BottomNavigation({Key? key, required this.index}) : super(key: key);
+  final String? dropValue;
+   BottomNavigation({Key? key, required this.index,this.dropValue}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
@@ -30,11 +32,46 @@ class _BottomNavigationState extends State<BottomNavigation> {
     HomeScreen(),
     OrderScreen(),
     QuotationsScreen(),
-    ProfileScreen(),
+    MachineProfileScreen(),
     // CartPage(backIcon: false),
     // MyOrders(),
     // MyProfile(),
   ];
+
+  static List<Widget> _jobWorkEnquiryOptions = <Widget>[
+    HomeScreen(),
+    QuotationsScreen(),
+    MachineProfileScreen(),
+  ];
+
+   bottomOptions(BuildContext context){
+    if(widget.dropValue == "Machine Maintenance"){
+      List<Widget> _widgetOptions = <Widget>[
+        HomeScreen(),
+        OrderScreen(),
+        QuotationsScreen(),
+        MachineProfileScreen(),
+        // CartPage(backIcon: false),
+        // MyOrders(),
+        // MyProfile(),
+      ];
+    }
+    else if(widget.dropValue=="Job Work Enquiry"){
+      List<Widget> _widgetOptions = <Widget>[
+        HomeScreen(),
+        QuotationsScreen(),
+        MachineProfileScreen(),
+      ];
+    }
+    else if(widget.dropValue=="Transportation"){
+      List<Widget> _widgetOptions = <Widget>[
+        HomeScreen(),
+        QuotationsScreen(),
+        MachineProfileScreen(),
+      ];
+    }
+
+  }
 
   void _onItemTapped(int index) {
 
@@ -62,9 +99,23 @@ class _BottomNavigationState extends State<BottomNavigation> {
       //   title: const Text('BottomNavigationBar Sample'),
       // ),
       // drawer: DrawerWidget(context),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children:
+        <Widget>[
+          // bottomOptions(context)
+          HomeScreen(),
+          OrderScreen(),
+          QuotationsScreen(),
+          // ProfileScreen(),
+          // TransportationProfileScreen(),
+          MachineProfileScreen(),
+        ],
       ),
+      // Center(
+      //   child:
+      //   _widgetOptions.elementAt(_selectedIndex),
+      // ),
       bottomNavigationBar:
           // MyBottomNavigation(_onItemTapped, _selectedIndex)
           SizedBox(

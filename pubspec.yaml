@@ -61,6 +61,7 @@ dependencies:
   expansion_tile_card: ^2.0.0
   flutter_custom_selector: ^0.0.3
   status_change: ^2.0.0
+  dropdown_button2: ^1.0.0
 
 dev_dependencies:
   flutter_test:
