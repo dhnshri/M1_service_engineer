@@ -1,4 +1,5 @@
 // @dart=2.9
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +12,7 @@ Future<void> main() async {
 
   // SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   Application.preferences = await SharedPreferences.getInstance();
 
   Bloc.observer = BlocObserver();
