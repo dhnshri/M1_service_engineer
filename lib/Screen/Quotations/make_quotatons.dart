@@ -20,6 +20,7 @@ import '../../Widget/stepper_button.dart';
 import '../Home/ServiceRequest/serviceRequestDetails.dart';
 import '../bottom_navbar.dart';
 import 'item_required.dart';
+import 'item_required_filter.dart';
 
 
 
@@ -37,6 +38,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   int _currentStep = 0;
   bool loading = true;
   final _formKey = GlobalKey<FormState>();
+  bool isCompleted = false;
 
  // int _activeCurrentStep = 0;
 
@@ -47,14 +49,34 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   TextEditingController pincode = TextEditingController();
 
   List<Step> stepList() => [
+    // Step(
+    //
+    //   state: _currentStep <= 0 ? StepState.editing : StepState.complete,
+    //  // state: _currentStep <= 0 ? Icon(Icons.circle): StepState.complete,
+    //   isActive: _currentStep >= 0,
+    //   title: Text('Service Charges',style:  StepperHeadingStyle,),
+    //   content: ServiceChargesScreen(),
+    // ),
+    // Step(
+    //   state: _currentStep <= 1 ? StepState.editing : StepState.complete,
+    //   isActive: _currentStep >= 1,
+    //   title: Text('Item Required',style:  StepperHeadingStyle,),
+    //   content: _ItemRequired(),
+    // ),
+    // Step(
+    //   state: StepState.complete,
+    //   isActive: _currentStep >= 2,
+    //   title: Text('Preview',style: StepperHeadingStyle,),
+    //   content: _Preview(),
+    // )
 
     Step(
 
       state: _currentStep <= 0 ? StepState.editing : StepState.complete,
-     // state: _currentStep <= 0 ? Icon(Icons.circle): StepState.complete,
+      // state: _currentStep <= 0 ? Icon(Icons.circle): StepState.complete,
       isActive: _currentStep >= 0,
       title: Text('Service Charges',style:  StepperHeadingStyle,),
-      content: _ServiceCharges(),
+      content: ServiceChargesScreen(),
     ),
     Step(
       state: _currentStep <= 1 ? StepState.editing : StepState.complete,
@@ -67,7 +89,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
       isActive: _currentStep >= 2,
       title: Text('Preview',style: StepperHeadingStyle,),
       content: _Preview(),
-    )
+    ),
   ];
 
 
@@ -101,7 +123,49 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),
         ),
-        body:Stepper(
+        body:isCompleted
+        ? AlertDialog(
+          title: new Text(""),
+          content: new Text("Are you sure, you want to send this quotation ?"),
+          actions: <Widget>[
+            Row(
+              children: [
+                TextButton(
+                  child: new Text("No"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                SizedBox(width: 7,),
+                TextButton(
+                  child: new Text("Yes"),
+                  onPressed: () {
+                    // AlertDialog(
+                    //   title: new Text(""),
+                    //   content: new Text("Quotation sent Successfully"),
+                    //   actions: <Widget>[
+                    //     Row(
+                    //       children: [
+                    //         TextButton(
+                    //           child: new Text("Done"),
+                    //           onPressed: () {
+                    //             Navigator.push(context,
+                    //                 MaterialPageRoute(builder: (context) => BottomNavigation(index: 0)));
+                    //           },
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // );
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BottomNavigation(index: 0)));
+                  },
+                ),
+              ],
+            ),
+          ],
+        )
+        :Stepper(
           type: StepperType.horizontal,
           currentStep: _currentStep,
           steps: stepList(),
@@ -111,13 +175,63 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  // StepperButton(
+                  //   onPressed: () async {
+                  //     if (_currentStep < (stepList().length - 1)) {
+                  //       setState(() {
+                  //         _currentStep += 1;
+                  //       });
+                  //     }
+                  //   },
+                  //   shape: const RoundedRectangleBorder(
+                  //       borderRadius:
+                  //       BorderRadius.all(Radius.circular(50))),
+                  //   text: 'Next',
+                  //   loading: loading,
+                  // ),
+                  // if (_currentStep != 0)
+                  //   StepperButton(
+                  //     onPressed: () async {
+                  //       if (_currentStep == 0) {
+                  //         return;
+                  //       }
+                  //
+                  //       setState(() {
+                  //         _currentStep -= 1;
+                  //       });
+                  //     },
+                  //     shape: const RoundedRectangleBorder(
+                  //         borderRadius:
+                  //         BorderRadius.all(Radius.circular(50))),
+                  //     text: 'Back',
+                  //     loading: loading,
+                  //   ),
                   StepperButton(
+
                     onPressed: () async {
-                      if (_currentStep < (stepList().length - 1)) {
+                      final isLastStep = _currentStep == stepList().length - 1;
+                      if(isLastStep)
+                        {
+                          setState(() {
+                            isCompleted = true;
+                          });
+                        }
+                      else
+                        {
                         setState(() {
-                          _currentStep += 1;
-                        });
-                      }
+                            _currentStep += 1;
+                          });
+                        }
+                      // if (_currentStep < (stepList().length - 1)) {
+                      //   setState(() {
+                      //     _currentStep += 1;
+                      //   });
+                      // };
+                      // if(_currentStep == 3)
+                      // {
+                      //   Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+                      // }
                     },
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -1039,8 +1153,8 @@ class _ItemRequiredState extends State<_ItemRequired> {
             InkWell(
               onTap: ()
               {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ItemRequiredFilterScreen()));
               },
               child: Row(
                 children: [
@@ -1248,10 +1362,6 @@ class _Preview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        Center(child: Text('Thank you for your order!')),
-      ],
-    );
+    return PreviewScreen();
   }
 }
