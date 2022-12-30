@@ -10,14 +10,14 @@ import 'MyTask/myTaskTab.dart';
 import 'ServiceRequest/serviceRequest.dart';
 
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MachineMaintenanceHomeScreen extends StatefulWidget {
+  const MachineMaintenanceHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MachineMaintenanceHomeScreenState createState() => _MachineMaintenanceHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScreen> {
   bool loading = true;
   bool isSwitched = false;
 

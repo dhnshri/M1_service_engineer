@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Config/font.dart';
-import '../../Widget/app_button.dart';
-import '../../Widget/common.dart';
-import '../../Widget/stepper_button.dart';
-import 'make_quotatons.dart';
+import '../../../../Config/font.dart';
+import '../../../../Widget/common.dart';
+import '../../../../Widget/stepper_button.dart';
+import '../../MakeQuotations/make_quotatons.dart';
 
-class ServiceChargesScreen extends StatefulWidget {
-  const ServiceChargesScreen({Key? key}) : super(key: key);
+
+class ReviceServiceChargesScreen extends StatefulWidget {
+  const ReviceServiceChargesScreen({Key? key}) : super(key: key);
 
   @override
-  _ServiceChargesScreenState createState() => _ServiceChargesScreenState();
+  _ReviceServiceChargesScreenState createState() => _ReviceServiceChargesScreenState();
 }
 
-class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
+class _ReviceServiceChargesScreenState extends State<ReviceServiceChargesScreen > {
   final TextEditingController _workingTimeController = TextEditingController();
   final TextEditingController _dateofJoiningController = TextEditingController();
   final TextEditingController _serviceCallChargesController = TextEditingController();
@@ -213,7 +213,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                   width: 1.0,
                 ),
               ),
-              hintText: 'Working Time',
+              hintText: '12PM - 4PM',
               contentPadding: const EdgeInsets.fromLTRB(
                   20.0, 20.0, 0.0, 0.0),
               hintStyle: GoogleFonts.poppins(
@@ -285,7 +285,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                   width: 1.0,
                 ),
               ),
-              hintText: 'Date of joining',
+              hintText: '30/12/2022',
               contentPadding: const EdgeInsets.fromLTRB(
                   20.0, 20.0, 0.0, 0.0),
               hintStyle: GoogleFonts.poppins(
@@ -350,7 +350,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                   width: 1.0,
                 ),
               ),
-              hintText: 'Service/Call Charges',
+              hintText: '₹ 20,000',
               contentPadding: const EdgeInsets.fromLTRB(
                   20.0, 20.0, 0.0, 0.0),
               hintStyle: GoogleFonts.poppins(
@@ -415,7 +415,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                   width: 1.0,
                 ),
               ),
-              hintText: 'Handling Charges',
+              hintText: '₹ 5,000',
               contentPadding: const EdgeInsets.fromLTRB(
                   20.0, 20.0, 0.0, 0.0),
               hintStyle: GoogleFonts.poppins(
@@ -480,7 +480,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                   width: 1.0,
                 ),
               ),
-              hintText: 'Other Charges',
+              hintText: '₹500',
               contentPadding: const EdgeInsets.fromLTRB(
                   20.0, 20.0, 0.0, 0.0),
               hintStyle: GoogleFonts.poppins(
@@ -545,7 +545,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                   width: 1.0,
                 ),
               ),
-              hintText: 'Transport Charges',
+              hintText: '₹10,000',
               contentPadding: const EdgeInsets.fromLTRB(
                   20.0, 20.0, 0.0, 0.0),
               hintStyle: GoogleFonts.poppins(

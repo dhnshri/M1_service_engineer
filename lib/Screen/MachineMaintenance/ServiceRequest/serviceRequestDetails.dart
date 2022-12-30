@@ -8,8 +8,8 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
 import '../../../Widget/app_small_button.dart';
-import '../../Quotations/make_quotatons.dart';
 import '../../bottom_navbar.dart';
+import '../MakeQuotations/make_quotatons.dart';
 
 
 
@@ -60,7 +60,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         leading: InkWell(
             onTap: (){
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),

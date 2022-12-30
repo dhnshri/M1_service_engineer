@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Config/font.dart';
-import '../../Widget/app_button.dart';
 
 class QuotationsScreen extends StatefulWidget {
   const QuotationsScreen({Key? key}) : super(key: key);

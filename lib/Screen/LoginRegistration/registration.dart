@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
 import '../../Screen/bottom_navbar.dart';
-import '../Home/home.dart';
 import 'login_screen.dart';
 
 

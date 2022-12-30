@@ -3,17 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Config/font.dart';
-import '../../Widget/app_button.dart';
-
-class ItemRequiredScreen extends StatefulWidget {
-  const ItemRequiredScreen({Key? key}) : super(key: key);
+class OrderScreen extends StatefulWidget {
+  const OrderScreen({Key? key}) : super(key: key);
 
   @override
-  _ItemRequiredScreenState createState() => _ItemRequiredScreenState();
+  _OrderScreenState createState() => _OrderScreenState();
 }
 
-class _ItemRequiredScreenState extends State<ItemRequiredScreen> {
+class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
   String dropdownValue = '+ 91';
   String? phoneNum;
@@ -41,6 +38,21 @@ class _ItemRequiredScreenState extends State<ItemRequiredScreen> {
     super.dispose();
     // getroleofstudent();
   }
+  // void saveDeviceTokenAndId() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   //for device Id
+  //   var deviceInfo = DeviceInfoPlugin();
+  //   if (Platform.isAndroid) {
+  //     // import 'dart:io'
+  //     var androidDeviceId = await deviceInfo.androidInfo;
+  //     // print("androiId" + androidDeviceId.androidId);
+  //     sharedPreferences.setString('deviceId', androidDeviceId.androidId);
+  //   } else {
+  //     var iosDeviceId = await deviceInfo.iosInfo;
+  //     sharedPreferences.setString('deviceId', iosDeviceId.identifierForVendor);
+  //     print("iosId" + iosDeviceId.identifierForVendor);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +60,7 @@ class _ItemRequiredScreenState extends State<ItemRequiredScreen> {
       child: Scaffold(
         body: Stack(
           children: [
-            Center(child: Text("Item Required")),
+            Center(child: Text("Order list")),
 
           ],
         ),

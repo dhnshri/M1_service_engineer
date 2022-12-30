@@ -2,43 +2,31 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:service_engineer/Screen/Home/ServiceRequest/serviceRequestDetails.dart';
-import 'package:service_engineer/Screen/Home/ServiceRequest/serviceRequestFilter.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply_details.dart';
+import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
+import '../../../Widget/app_button.dart';
+import '../../../Widget/function_button.dart';
+import '../../bottom_navbar.dart';
 
 
 
-class ServiceRequestScreen extends StatefulWidget {
-  const ServiceRequestScreen({Key? key}) : super(key: key);
+class QuotationsReplyScreen extends StatefulWidget {
+  const QuotationsReplyScreen({Key? key}) : super(key: key);
 
   @override
-  _ServiceRequestScreenState createState() => _ServiceRequestScreenState();
+  _QuotationsReplyScreenState createState() => _QuotationsReplyScreenState();
 }
 
-class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
+class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
   final _formKey = GlobalKey<FormState>();
+  bool loading = true;
 
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    //saveDeviceTokenAndId();
-    super.initState();
-
-  }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    // getroleofstudent();
-  }
-
-  Widget buildCustomerEnquiriesList() {
+  Widget buildQuotationsaReplyList() {
     // if (productList.length <= 0) {
     //   return ListView.builder(
     //     scrollDirection: Axis.vertical,
@@ -164,13 +152,13 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  serviceRequestCard();
+        return  quotationsaReplyCard();
       },
       itemCount: 20,
     );
   }
 
-  Widget serviceRequestCard()
+  Widget quotationsaReplyCard()
   {
     return Padding(
       padding: const EdgeInsets.only(bottom:8.0),
@@ -252,53 +240,55 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     );
   }
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    //saveDeviceTokenAndId();
+    super.initState();
+
+
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:Container(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: InkWell(
+              onTap: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
+              },
+              child: Icon(Icons.arrow_back_ios)),
+          title: Text('Quotation Reply',style:appBarheadingStyle ,),
+        ),
+
+        body:Container(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: ListView(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.search),
-                        SizedBox(width: 5,),
-                        Text("Search all Orders")
-                      ],
-                    ),
-
-                    InkWell(
-                      onTap: ()
-                      {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.filter_list),
-                          SizedBox(width: 5,),
-                          Text("Filter")
-                        ],
-                      ),
-                    )
-
-                  ],
-                ),
-              InkWell(
-                onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
-                },
-                  child: buildCustomerEnquiriesList()),
+                InkWell(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => QuotationsReplyDetailsScreen()));
+                    },
+                    child: buildQuotationsaReplyList()),
               ],
             ),
           ),
         ),
 
+      ),
     );
   }
 }

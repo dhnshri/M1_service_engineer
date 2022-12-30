@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:service_engineer/Screen/Profile/widget/expirence_company.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Model/experience_company_model.dart';
 import '../../../image_file.dart';
-import '../../Model/experience_company_model.dart';
+import '../../LoginRegistration/signUpAs.dart';
+
 
 // import '../../Config/font.dart';
 // import '../../Config/image.dart';
@@ -244,6 +246,23 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       child: Scaffold(
           appBar: AppBar(
             leading: Icon(Icons.arrow_back_ios),
+            actions: [
+              InkWell(
+                onTap: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text("Logout"),
+                        SizedBox(width: 5,),
+                        Icon(Icons.logout,color: Colors.red,),
+                      ],
+                    ),
+                  ))
+            ],
             title: Text("Profile",
               style: TextStyle(
                   fontFamily: 'Poppins-Medium'
