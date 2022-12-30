@@ -78,7 +78,7 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
             // authStatus = "OTP has been successfully sent";
             // // user.deviceToken = verId;
             verificationId = verId;
-            loading=false;
+            loading=true;
             // Navigator.push(context,MaterialPageRoute(builder: (context)=>
             //     OtpScreen(
             //       mobileNum:_mobilecontroller.text,
@@ -276,31 +276,31 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                     child: AppButton(
                       onPressed: () async {
 
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) =>
-                                // RegistrationScreen(dropValue: widget.dropValue,)
-                              VerificationScreen(dropValue: widget.dropValue,phoneNumber: '',verificationId: verificationId,)
-                            ));
-                        // if(_phoneNumberController.text.isEmpty){
-                        //   Fluttertoast.showToast(msg: 'Please enter mobile number');
-                        // }else if(_phoneNumberController.text.length!=10){
-                        //   Fluttertoast.showToast(msg: 'Please enter valid number');
-                        // }else{
-                        //   // otpVerify.phone=_mobilecontroller.text;
-                        //   // otpVerify.countrycode=countrycode.toString();
-                        //   // otpVerify.flagRoleType=widget.flagRoleType.toString();
-                        //   // // Navigator.pushNamed(context, Routes.otp);
-                        //   // Navigator.push(
-                        //   //   context,
-                        //   //   MaterialPageRoute(
-                        //   //     builder: (context) => OtpScreen(),
-                        //   //   ),
-                        //   // );
-                        //   setState(() {
-                        //     loading=true;
-                        //   });
-                        //   verifyPhoneNumber(context, _phoneNumberController.text);
-                        // }
+                        // Navigator.of(context).push(
+                        //     MaterialPageRoute(builder: (context) =>
+                        //         // RegistrationScreen(dropValue: widget.dropValue,)
+                        //       VerificationScreen(dropValue: widget.dropValue,phoneNumber: '',verificationId: verificationId,)
+                        //     ));
+                        if(_phoneNumberController.text.isEmpty){
+                          Fluttertoast.showToast(msg: 'Please enter mobile number');
+                        }else if(_phoneNumberController.text.length!=10){
+                          Fluttertoast.showToast(msg: 'Please enter valid number');
+                        }else{
+                          // otpVerify.phone=_mobilecontroller.text;
+                          // otpVerify.countrycode=countrycode.toString();
+                          // otpVerify.flagRoleType=widget.flagRoleType.toString();
+                          // // Navigator.pushNamed(context, Routes.otp);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => OtpScreen(),
+                          //   ),
+                          // );
+                          setState(() {
+                            loading=false;
+                          });
+                          verifyPhoneNumber(context, _phoneNumberController.text);
+                        }
 
                         // verifyPhoneNumber(context, _phoneNumberController.text);
 

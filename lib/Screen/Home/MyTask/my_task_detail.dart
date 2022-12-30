@@ -55,6 +55,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   }
 
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +78,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
           children: [
             FloatingActionButton(
               backgroundColor: ThemeColors.defaultbuttonColor,
+              heroTag: "btn1",
               child: Icon(
                   Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
               ),
@@ -86,7 +89,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
             SizedBox(width: 8,),
             FloatingActionButton(
               backgroundColor: ThemeColors.defaultbuttonColor,
-
+              heroTag: "btn2",
               child: Icon(
                   Icons.call,color: ThemeColors.whiteTextColor,size: 30,
               ),
@@ -562,7 +565,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
             // height: 2,
             thickness: 2.0,
           ),
-          
+
           ///Track PRocess
           Padding(
             padding: const EdgeInsets.all(15.0),
@@ -666,7 +669,30 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
           ///Mark as Completed Button
           InkWell(
             onTap: (){
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              AlertDialog(
+                title: new Text(""),
+                content: new Text("Are you sure, you want to mark service as completed?"),
+                actions: <Widget>[
+                  Row(
+                    children: [
+                      TextButton(
+                        child: new Text("No"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      SizedBox(width: 7,),
+                      TextButton(
+                        child: new Text("Yes"),
+                        onPressed: () {
+                         Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
