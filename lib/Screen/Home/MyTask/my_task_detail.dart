@@ -3,6 +3,8 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Screen/Home/MyTask/process_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -10,17 +12,18 @@ import '../../../Config/font.dart';
 import '../../../Widget/app_small_button.dart';
 import '../../Quotations/make_quotatons.dart';
 import '../../bottom_navbar.dart';
+import 'add_task.dart';
 
 
 
-class ServiceRequestDetailsScreen extends StatefulWidget {
-  const ServiceRequestDetailsScreen({Key? key}) : super(key: key);
+class MyTaskDetailsScreen extends StatefulWidget {
+  const MyTaskDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  _ServiceRequestDetailsScreenState createState() => _ServiceRequestDetailsScreenState();
+  _MyTaskDetailsScreenState createState() => _MyTaskDetailsScreenState();
 }
 
-class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScreen> {
+class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
   String dropdownValue = '+ 91';
   String? phoneNum;
@@ -66,66 +69,30 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
       ),
-      bottomNavigationBar:Padding(
-        padding: const EdgeInsets.all(10.0),
+      floatingActionButton:Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            AppSmallButton(
-              onPressed: () async {
-                // Navigator.of(context).push(
-                //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
+            FloatingActionButton(
+              backgroundColor: ThemeColors.defaultbuttonColor,
+              child: Icon(
+                  Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
+              ),
+              onPressed: () {
+                //...
               },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Ignore',
-              loading: loading,
-
-
             ),
-            SizedBox(width:8),
-            AppSmallButton(
-              onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
+            SizedBox(width: 8,),
+            FloatingActionButton(
+              backgroundColor: ThemeColors.defaultbuttonColor,
+
+              child: Icon(
+                  Icons.call,color: ThemeColors.whiteTextColor,size: 30,
+              ),
+              onPressed: () {
+                //...
               },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Make Quotation',
-              loading: loading,
-
-
             ),
           ],
         ),
@@ -135,8 +102,15 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           SizedBox(height: 7,),
           //Basic Info
           ExpansionTileCard(
+            initiallyExpanded: true,
             key: cardA,
-            leading: Text("Basic Info"),
+            leading: Text("Basic Info",
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins-Medium',
+              fontSize: 16,
+              fontWeight: FontWeight.w500
+            ),),
 
             title: SizedBox(),
             subtitle:SizedBox(),
@@ -148,7 +122,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                      Text("Company ID",style: ExpanstionTileLeftDataStyle,),
+                        Text("Company ID",style: ExpanstionTileLeftDataStyle,),
                         Text("#102GRDSA36987",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
@@ -185,10 +159,21 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               ),
             ],
           ),
-          // Machin Info
+          Divider(
+            // height: 2,
+            thickness: 2.0,
+          ),
+          /// Machin Info
           ExpansionTileCard(
             key: cardB,
-            leading: Text("Machine Information"),
+            initiallyExpanded: true,
+            leading: Text("Machine Information",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[
@@ -365,10 +350,22 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               ),
             ],
           ),
-          // Other Info
+
+          Divider(
+            // height: 2,
+            thickness: 2.0,
+          ),
+          /// Other Info
           ExpansionTileCard(
             key: cardC,
-            leading: Text("Other Info"),
+            initiallyExpanded: true,
+            leading: Text("Other Info",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[
@@ -379,15 +376,24 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Priority",style: ExpanstionTileLeftDataStyle,),
-                        Text("High",style: ExpanstionTileRightDataStyle,),
+                        Text("Priority",style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            )),
+                        Text("High",style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
                       ],
                     ),
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Maintenance Type",style: ExpanstionTileLeftDataStyle,),
-                        Text("Some Value here",style: ExpanstionTileRightDataStyle,),
+                        Text("Maintenance Type",style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            )),
+                        Text("Some Value here",style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
                       ],
                     ),
                     SizedBox(height: 10,),
@@ -519,6 +525,172 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               ),
             ],
           ),
+
+
+          Divider(
+            // height: 2,
+            thickness: 2.0,
+          ),
+
+          ///Working Days
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Working Days :",
+                style: TextStyle(fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w500)),
+                Text("4 Days",
+                    style: TextStyle(fontFamily: 'Poppins-Medium',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500))
+              ],
+            ),
+          ),
+
+          SizedBox(height: 5,),
+
+
+          Divider(
+            // height: 2,
+            thickness: 2.0,
+          ),
+
+          Divider(
+            // height: 2,
+            thickness: 2.0,
+          ),
+          
+          ///Track PRocess
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text("Track Process",
+                style: TextStyle(fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500)
+            ),
+          ),
+
+          ///Track Process List
+          Flexible(
+            // height: MediaQuery.of(context).size.height,
+            child: ListView.builder(
+                itemCount: 3,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (_, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
+                    child: Material(
+                      elevation: 5,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
+                        },
+                        child: Container(
+                          // height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.only(bottom: 8,top: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Lorem ipsum',
+                                      style: TextStyle(
+
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400)),
+                                  Text("Process",
+                                  style: TextStyle(color: Colors.red),)
+                                ],
+                              ),
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+                                  maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                  )),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Icon(
+                                  Icons.arrow_forward_ios,),
+                            ),
+                          ),
+                        ),
+
+                      ),
+                    ),
+                  );
+                }),
+          ),
+
+          ///Add task Button
+          Padding(
+            padding: EdgeInsets.all(15.0),
+          child: Material(
+            elevation: 5,
+            child: Container(
+              height: 60,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+
+                ),
+                  onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
+                      Text("Daily Update Task",
+                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black.withOpacity(0.55)
+                        ),)
+                    ],
+                  )),
+            ),
+          ),),
+
+          ///Mark as Completed Button
+          InkWell(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: ThemeColors.defaultbuttonColor,
+                    borderRadius: BorderRadius.circular(30)),
+                child: Center(child: Text("Mark As Completed",
+                    style: TextStyle(fontFamily: 'Poppins-Medium',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ))),
+              ),
+            ),
+          ),
+
+
+          SizedBox(
+            height: 80,
+          )
+
 
         ],
       ),

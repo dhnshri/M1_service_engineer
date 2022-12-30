@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
 import 'myTaskFilter.dart';
+import 'my_task_detail.dart';
 
 
 
@@ -294,7 +295,11 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
 
                 ],
               ),
-              SingleChildScrollView(child: Container(child: buildCustomerEnquiriesList())),
+              SingleChildScrollView(child: Container(child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MyTaskDetailsScreen()));
+                  },
+                  child: buildCustomerEnquiriesList()))),
             ],
           ),
         ),
