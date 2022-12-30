@@ -1,4 +1,4 @@
-package com.example.service_engineer
+package com.m1.serviceengineer
 
 import io.flutter.embedding.android.FlutterActivity
 

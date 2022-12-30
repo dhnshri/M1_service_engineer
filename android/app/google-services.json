@@ -1,0 +1,104 @@
+{
+  "project_info": {
+    "project_number": "507976200479",
+    "project_id": "the-m1-group",
+    "storage_bucket": "the-m1-group.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507976200479:android:b02273030181234cd4402a",
+        "android_client_info": {
+          "package_name": "com.m1.serviceengineer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507976200479-fb0pmmitfinikrd1clc38h1n6i0uktg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACF_-SK7rtFRIx0PM7llbA6wKNZEHM2rQ"
+        },
+        {
+          "current_key": "AIzaSyCwPL7Y7_nidtItTd3TH_JO47I6C-VNPZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507976200479-fb0pmmitfinikrd1clc38h1n6i0uktg5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "507976200479-tmql2pdr304c5r3st2mtbiobb0j42j9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.destek.m1group"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507976200479:android:16aa4d0d8dd25afbd4402a",
+        "android_client_info": {
+          "package_name": "com.user.m1group"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507976200479-gdrvdd60grcbi5eta0qdfgt2ofvt4m6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.user.m1group",
+            "certificate_hash": "a1aa3cbcd6b28e198618e0975fa267cf31634ef4"
+          }
+        },
+        {
+          "client_id": "507976200479-lm81eu92rjvprkfjom37g9et4l4n8khs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.user.m1group",
+            "certificate_hash": "a7775aebcd87ba6b77e4a3242590baf0dbd0fb42"
+          }
+        },
+        {
+          "client_id": "507976200479-fb0pmmitfinikrd1clc38h1n6i0uktg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACF_-SK7rtFRIx0PM7llbA6wKNZEHM2rQ"
+        },
+        {
+          "current_key": "AIzaSyCwPL7Y7_nidtItTd3TH_JO47I6C-VNPZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507976200479-fb0pmmitfinikrd1clc38h1n6i0uktg5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "507976200479-tmql2pdr304c5r3st2mtbiobb0j42j9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.destek.m1group"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

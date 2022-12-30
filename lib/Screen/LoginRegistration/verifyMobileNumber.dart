@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Screen/LoginRegistration/registration.dart';
+import 'package:service_engineer/Screen/LoginRegistration/verify_otp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 
 import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
@@ -21,12 +25,89 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
   String? phoneNum;
   String? role;
   bool loading = true;
+  var countrycode;
+  String authStatus="";
+  var verificationId;
+
 
   // String? smsCode;
   // bool smsCodeSent = false;
   // String? verificationId;
   final _formKey = GlobalKey<FormState>();
 
+  Future<void> verifyPhoneNumber(BuildContext context,String number) async {
+
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: countrycode+number,
+        timeout: const Duration(seconds: 15),
+        verificationCompleted: (AuthCredential authCredential) {
+          //  signIn(authCredential);
+          print('verfication completed called sent called');
+          //commented on 14/062021
+          // setState(() {
+          //   authStatus = "sucess";
+          // });
+          // if (authStatus != "") {
+          //   scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          //     content: Text(authStatus),
+          //   ));
+          // }
+        },
+        verificationFailed: (FirebaseAuthException authException) {
+          print(authException.message.toString() + "Inside auth failed");
+          setState(() {
+            // authStatus = "Authentication failed";
+            authStatus = authException.message!;
+          });
+          // loader.remove();
+          // Helper.hideLoader(loader);
+          if (authStatus != "") {
+            // scaffoldKey.currentState.showSnackBar(SnackBar(
+            //   content: Text(authStatus),
+            // ));
+            Fluttertoast.showToast(msg: authStatus);
+
+          }
+        },
+        codeSent: (String? verId, [int? forceCodeResent]) {
+          // loader.remove();
+          // Helper.hideLoader(loader);
+          // this.verificationId = verId;
+          setState(() {
+            // authStatus = "OTP has been successfully sent";
+            // // user.deviceToken = verId;
+            verificationId = verId;
+            loading=false;
+            // Navigator.push(context,MaterialPageRoute(builder: (context)=>
+            //     OtpScreen(
+            //       mobileNum:_mobilecontroller.text,
+            //       verificationId:verificationId.toString(),
+            //     )));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) =>
+                    // RegistrationScreen(dropValue: widget.dropValue,)
+                  VerificationScreen(dropValue: widget.dropValue,phoneNumber: countrycode+number,verificationId: verificationId,)
+                ));
+
+          });
+
+        },
+        codeAutoRetrievalTimeout: (String verId) {
+          // user.deviceToken = verId;
+          //    print('coderetreival sent called' + verificationId);
+          setState(() {
+            authStatus = "TIMEOUT";
+          });
+        },
+      );
+    }catch(e){
+      print(e);
+      Fluttertoast.showToast(msg: e.toString());
+
+    }
+
+  }
 
 
 
@@ -44,21 +125,7 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
     super.dispose();
     // getroleofstudent();
   }
-  // void saveDeviceTokenAndId() async {
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   //for device Id
-  //   var deviceInfo = DeviceInfoPlugin();
-  //   if (Platform.isAndroid) {
-  //     // import 'dart:io'
-  //     var androidDeviceId = await deviceInfo.androidInfo;
-  //     // print("androiId" + androidDeviceId.androidId);
-  //     sharedPreferences.setString('deviceId', androidDeviceId.androidId);
-  //   } else {
-  //     var iosDeviceId = await deviceInfo.iosInfo;
-  //     sharedPreferences.setString('deviceId', iosDeviceId.identifierForVendor);
-  //     print("iosId" + iosDeviceId.identifierForVendor);
-  //   }
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,238 +159,163 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                     ),
                   ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Column(
+                CountryListPick(
+                  appBar: AppBar(
+                    backgroundColor: Color(0xff062C56),
+                    title: Text('Pick your country',
+                    style: TextStyle(color: Colors.white),),
+                    leading: InkWell(
+                        onTap: (){
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
+                  ),
+                  // if you need custome picker use this
+                  pickerBuilder: (context, CountryCode? countryCode) {
+                    countrycode=countryCode!.dialCode.toString();
+                    return
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 20.0),
-                                  child: Container(
-                                    height: 42,
-                                    width: 70,
+                            Container(
+                                padding: EdgeInsets.all(8.0),
+                                height: 45.0,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(5.0),
+                                    bottomLeft: Radius.circular(5.0),
+                                  ),
+                                ),
+
+                                child:
+                                Row(
+                                  children: [
+                                    Align(
+                                        alignment: Alignment.center,
+                                        child:Text(countryCode.dialCode.toString(),
+                                          style: TextStyle(
+                                              color: Colors.black
+                                          ),
+
+                                        )),
+                                    Icon(Icons.arrow_drop_down,color: Colors.black,)
+                                  ],
+                                )),
+                            SizedBox(width: 5,),
+                            Expanded(
+                                child:
+                                Container(
+                                    height: 45.0,
+                                    // margin: EdgeInsets.only(right: 25.0),
                                     decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    child: Center(
-                                      child: DropdownButtonHideUnderline(
-                                          child: DropdownButton<String>(
-                                        value: dropdownValue,
-                                        icon: const Icon(Icons.arrow_drop_down_sharp),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        iconEnabledColor: primaryAppColor,
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
+                                      color: Colors.white,
+                                      borderRadius:   BorderRadius.only(
+                                        topRight: Radius.circular(5.0),
+                                        bottomRight: Radius.circular(5.0),
+                                      ),
+                                      // border: Border.all(
+                                      //
+                                      //   color: Theme.of(context).primaryColor,  // red as border color
+                                      // ),
+                                    ),
+                                    child:
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child:
+                                      TextFormField(
+                                        controller:_phoneNumberController,
                                         style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            dropdownValue = newValue!;
-                                          });
+                                            fontFamily: 'Poppins-Regular',color: Colors.black,fontSize: 15.0,
+                                            fontWeight: FontWeight.w500
+                                        ),
+                                        keyboardType: TextInputType.phone,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: "Mobile Number",
+                                        ),
+                                        onChanged: (value) {
+                                          // this.phoneNo=value;
+                                          print(value);
                                         },
-                                        items: <String>[
-                                          '+ 91',
-                                          '+ 1',
-                                          '+ 52',
-                                          '+ 00'
-                                        ].map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Center(child: Text(value)),
-                                          );
-                                        }).toList(),
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  height: 60,
-                                  child: TextFormField(
-                                    controller: _phoneNumberController,
-                                    keyboardType: TextInputType.number,
-                                    maxLength: 10,
-                                    cursorColor: primaryAppColor,
-                                    decoration: InputDecoration(
-                                      disabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors.white,
-                                          width: 1.0,
-                                        ),
                                       ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors.red,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: const BorderSide(
-                                            color: Colors.white, width: 1.0),
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          borderSide: const BorderSide(
-                                            color: Colors.white,
-                                            width: 1.0,
-                                          )),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors.white,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      hintText: 'Mobile Number',
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20.0, 20.0, 0.0, 0.0),
-                                      hintStyle: GoogleFonts.poppins(
-                                          color: Colors.grey,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    onChanged: (val) {
-                                      setState(() {
-                                        phoneNum = val;
-                                        // _phoneNumberController.text = val;
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                            // SizedBox(
-                            //   width:
-                            //   MediaQuery.of(context).size.width * 0.12,
-                            //   height: 60,
-                            //   child: TextFormField(
-                            //     controller: _phoneNumberController,
-                            //     keyboardType: TextInputType.number,
-                            //     maxLength: 10,
-                            //     cursorColor: primaryAppColor,
-                            //     decoration: InputDecoration(
-                            //       disabledBorder: OutlineInputBorder(
-                            //         borderRadius:
-                            //         BorderRadius.circular(8.0),
-                            //         borderSide: const BorderSide(
-                            //           color: Colors.white,
-                            //           width: 1.0,
-                            //         ),
-                            //       ),
-                            //       errorBorder: OutlineInputBorder(
-                            //         borderRadius:
-                            //         BorderRadius.circular(8.0),
-                            //         borderSide: const BorderSide(
-                            //           color: Colors.red,
-                            //           width: 1.0,
-                            //         ),
-                            //       ),
-                            //       fillColor: Colors.white,
-                            //       filled: true,
-                            //       focusedBorder: OutlineInputBorder(
-                            //         borderRadius:
-                            //         BorderRadius.circular(10.0),
-                            //         borderSide: const BorderSide(
-                            //             color: Colors.white, width: 1.0),
-                            //       ),
-                            //       focusedErrorBorder: OutlineInputBorder(
-                            //           borderRadius:
-                            //           BorderRadius.circular(8.0),
-                            //           borderSide: const BorderSide(
-                            //             color: Colors.white,
-                            //             width: 1.0,
-                            //           )),
-                            //       enabledBorder: OutlineInputBorder(
-                            //         borderRadius:
-                            //         BorderRadius.circular(8.0),
-                            //         borderSide: const BorderSide(
-                            //           color: Colors.white,
-                            //           width: 1.0,
-                            //         ),
-                            //       ),
-                            //       hintText: 'Mobile Number',
-                            //       contentPadding: const EdgeInsets.fromLTRB(
-                            //           20.0, 20.0, 0.0, 0.0),
-                            //       hintStyle: GoogleFonts.poppins(
-                            //           color: Colors.grey,
-                            //           fontSize: 12.0,
-                            //           fontWeight: FontWeight.w500),
-                            //     ),
-                            //     onChanged: (val) {
-                            //       setState(() {
-                            //         phoneNum = val;
-                            //         // _phoneNumberController.text = val;
-                            //       });
-                            //     },
-                            //   ),
-                            // ),
-                            // const SizedBox(
-                            //   height: 7.0,
-                            // ),
-                            Padding(
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 40.0),
-                                child: AppButton(
-                                  onPressed: () async {
-
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => RegistrationScreen(dropValue: widget.dropValue,)));
-                                    //   isconnectedToInternet = await ConnectivityCheck
-                                    //       .checkInternetConnectivity();
-                                    //   if (isconnectedToInternet == true) {
-                                    //     if (_formKey.currentState!.validate()) {
-                                    //       // setState(() {
-                                    //       //   loading=true;
-                                    //       // });
-                                    //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                                    //     }
-                                    //   } else {
-                                    //     CustomDialogs.showDialogCustom(
-                                    //         "Internet",
-                                    //         "Please check your Internet Connection!",
-                                    //         context);
-                                    //   }
-                                  },
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(50))),
-                                  text: 'Verify Number',
-                                  loading: loading,
-
-
+                                    )
                                 )
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                  },
+                  // theme: CountryTheme(
+                  //   isShowFlag: true,
+                  //   isShowTitle: true,
+                  //   isShowCode: true,
+                  //   isDownIcon: false,
+                  //   showEnglishName: true,
+                  // ),
+                  initialSelection: '+91',
+                  // or
+                  // initialSelection: 'US'
+                  onChanged: (CountryCode? code) {
+                    print(code!.name);
+                    print(code.code);
+                    print(code.dialCode);
+                    print(code.flagUri);
+                  },
                 ),
+
+                SizedBox(
+                  height: 40,
+                ),
+
+                Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: AppButton(
+                      onPressed: () async {
+
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) =>
+                                // RegistrationScreen(dropValue: widget.dropValue,)
+                              VerificationScreen(dropValue: widget.dropValue,phoneNumber: '',verificationId: verificationId,)
+                            ));
+                        // if(_phoneNumberController.text.isEmpty){
+                        //   Fluttertoast.showToast(msg: 'Please enter mobile number');
+                        // }else if(_phoneNumberController.text.length!=10){
+                        //   Fluttertoast.showToast(msg: 'Please enter valid number');
+                        // }else{
+                        //   // otpVerify.phone=_mobilecontroller.text;
+                        //   // otpVerify.countrycode=countrycode.toString();
+                        //   // otpVerify.flagRoleType=widget.flagRoleType.toString();
+                        //   // // Navigator.pushNamed(context, Routes.otp);
+                        //   // Navigator.push(
+                        //   //   context,
+                        //   //   MaterialPageRoute(
+                        //   //     builder: (context) => OtpScreen(),
+                        //   //   ),
+                        //   // );
+                        //   setState(() {
+                        //     loading=true;
+                        //   });
+                        //   verifyPhoneNumber(context, _phoneNumberController.text);
+                        // }
+
+                        // verifyPhoneNumber(context, _phoneNumberController.text);
+
+                      },
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(50))),
+                      text: 'Verify Number',
+                      loading: loading,
+
+
+                    )
+                ),
+
+
               ],
             ),
           ],

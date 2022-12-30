@@ -5,6 +5,7 @@ import 'package:service_engineer/Screen/Transportation/Profile/transportation_pr
 
 import '../Constant/theme_colors.dart';
 import 'Home/home.dart';
+import 'JobWorkEnquiry/Profile/job_work_enquiry_profile.dart';
 import 'Order/orderlist.dart';
 import 'Profile/profile.dart';
 import 'Quotations/quotationslist.dart';
@@ -80,6 +81,56 @@ class _BottomNavigationState extends State<BottomNavigation> {
       });
 
   }
+  List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
+    if(widget.dropValue == "Machine Maintenance"){
+      return[
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon: Icon(Icons.folder),
+          label: 'Order',
+        ),
+
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon:  Icon(CupertinoIcons.calendar),
+          label: 'Quotations',
+        ),
+
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon: Icon(Icons.person),
+          label: 'My Profile',
+        ),
+      ];
+    }else{
+      return[
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon:  Icon(CupertinoIcons.calendar),
+          label: 'Quotations',
+        ),
+
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon: Icon(Icons.person),
+          label: 'My Profile',
+        ),
+      ];
+    }
+
+  }
+
 
   @override
   void initState() {
@@ -104,12 +155,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children:
         <Widget>[
           // bottomOptions(context)
-          HomeScreen(),
-          OrderScreen(),
-          QuotationsScreen(),
-          // ProfileScreen(),
-          // TransportationProfileScreen(),
-          MachineProfileScreen(),
+          widget.dropValue == "Machine Maintenance"? HomeScreen():widget.dropValue == "Job Work Enquiry"?MachineProfileScreen(): widget.dropValue == "Transportation"? HomeScreen():SizedBox(),
+          // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
+          if(widget.dropValue == "Machine Maintenance")
+            OrderScreen(),
+          widget.dropValue == "Machine Maintenance"? QuotationsScreen():widget.dropValue == "Job Work Enquiry"?QuotationsScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
       ),
       // Center(
@@ -126,52 +177,32 @@ class _BottomNavigationState extends State<BottomNavigation> {
             topLeft: Radius.circular(15),
         ),
         child: BottomNavigationBar(
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                backgroundColor: ThemeColors.bottomNavColor,
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: ThemeColors.bottomNavColor,
-                icon: Icon(Icons.folder),
-                label: 'Order',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: ThemeColors.bottomNavColor,
-                icon:  Icon(CupertinoIcons.calendar),
-                // Stack(
-                //   children: [
-                //     Icon(
-                //       Icons.shopping_cart_rounded,
-                //     ),
-                //     // Application.cart!.cartQuantity != null ?
-                //     Application.cart == null ? Container() :
-                //     Positioned(
-                //       top: -3,
-                //       right: 2,
-                //       child: Center(
-                //           child: Text(Application.cart!.cartQuantity.toString(),
-                //             style: TextStyle(
-                //                 fontSize: 15,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: ThemeColors.whiteTextColor
-                //             ),
-                //           )),
-                //     )
-                //     // : Container(),
-                //   ],
-                // ),
-                label: 'Quotations',
-              ),
-
-              BottomNavigationBarItem(
-                backgroundColor: ThemeColors.bottomNavColor,
-                icon: Icon(Icons.person),
-                label: 'My Profile',
-              ),
-
-            ],
+            items: _bottomBarItem(context),
+            // <BottomNavigationBarItem>[
+            //   BottomNavigationBarItem(
+            //     backgroundColor: ThemeColors.bottomNavColor,
+            //     icon: Icon(Icons.home),
+            //     label: 'Home',
+            //   ),
+            //   BottomNavigationBarItem(
+            //     backgroundColor: ThemeColors.bottomNavColor,
+            //     icon: Icon(Icons.folder),
+            //     label: 'Order',
+            //   ),
+            //
+            //   BottomNavigationBarItem(
+            //     backgroundColor: ThemeColors.bottomNavColor,
+            //     icon:  Icon(CupertinoIcons.calendar),
+            //     label: 'Quotations',
+            //   ),
+            //
+            //   BottomNavigationBarItem(
+            //     backgroundColor: ThemeColors.bottomNavColor,
+            //     icon: Icon(Icons.person),
+            //     label: 'My Profile',
+            //   ),
+            //
+            // ],
             currentIndex: _selectedIndex,
             selectedItemColor: ThemeColors.redTextColor,
             selectedLabelStyle: TextStyle(
