@@ -15,6 +15,42 @@ var onlineOfflineStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w500,
 );
 
+var filterRadiobtnStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.normal,
+);
+
+var StepperHeadingStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 10,
+  fontWeight: FontWeight.normal,
+);
+
+var ExpanstionTileLeftDataStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.normal,
+);
+
+var ExpanstionTileOtherInfoStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.normal,
+);
+
+var ExpanstionTileRightDataStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 12,
+  fontWeight: FontWeight.bold,
+);
+
+var filterHeadingRadiobtnStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
+);
+
 var appBarheadingStyle = GoogleFonts.poppins(
   color: Colors.black,
   fontSize: 16,
@@ -31,14 +67,24 @@ var serviceRequestSubHeadingStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.bold,
 );
 
-
-// Live Lecture
-var lectureHeading = GoogleFonts.poppins(
+var showBottomModelHeading = GoogleFonts.poppins(
   color: Colors.black,
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: FontWeight.w700,
 );
-// Chemistry
+
+var itemRequiredCardHeading = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 11,
+  fontWeight: FontWeight.bold,
+);
+
+var itemRequiredCardSubtitle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 10,
+  fontWeight: FontWeight.normal,
+);
+
 var ksubjectHeadingStyle = GoogleFonts.poppins(
   color: Colors.white,
   fontSize: 18,

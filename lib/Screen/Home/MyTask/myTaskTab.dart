@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
+import 'myTaskFilter.dart';
 
 
 
@@ -279,8 +280,8 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                   InkWell(
                     onTap: ()
                     {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) =>  MyTaskFilterScreen()));
                     },
                     child: Row(
                       children: [
