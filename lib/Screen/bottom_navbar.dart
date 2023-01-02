@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/home.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/enquiry_quotations_reply.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Order/orderlist.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Profile/profile.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/home.dart';
 import 'package:service_engineer/Screen/Transportation/Profile/transportation_profile.dart';
 
 import '../Constant/theme_colors.dart';
-import 'Home/home.dart';
 import 'JobWorkEnquiry/Profile/job_work_enquiry_profile.dart';
-import 'Order/orderlist.dart';
-import 'Profile/profile.dart';
-import 'Quotations/quotationslist.dart';
 
 
 
@@ -28,51 +30,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
 
-
-  static List<Widget> _widgetOptions = <Widget>[
-    MachineMaintenanceHomeScreen(),
-    OrderScreen(),
-    QuotationsReplyScreen(),
-    MachineProfileScreen(),
-    // CartPage(backIcon: false),
-    // MyOrders(),
-    // MyProfile(),
-  ];
-
-  static List<Widget> _jobWorkEnquiryOptions = <Widget>[
-    MachineMaintenanceHomeScreen(),
-    QuotationsReplyScreen(),
-    MachineProfileScreen(),
-  ];
-
-   bottomOptions(BuildContext context){
-    if(widget.dropValue == "Machine Maintenance"){
-      List<Widget> _widgetOptions = <Widget>[
-        MachineMaintenanceHomeScreen(),
-        OrderScreen(),
-        QuotationsReplyScreen(),
-        MachineProfileScreen(),
-        // CartPage(backIcon: false),
-        // MyOrders(),
-        // MyProfile(),
-      ];
-    }
-    else if(widget.dropValue=="Job Work Enquiry"){
-      List<Widget> _widgetJobWorkEnquiryOptions = <Widget>[
-        MachineMaintenanceHomeScreen(),
-        QuotationsScreen(),
-        MachineProfileScreen(),
-      ];
-    }
-    else if(widget.dropValue=="Transportation"){
-      List<Widget> _widgetTransportationOptions = <Widget>[
-        MachineMaintenanceHomeScreen(),
-        QuotationsReplyScreen(),
-        MachineProfileScreen(),
-      ];
-    }
-
-  }
 
   void _onItemTapped(int index) {
 
@@ -155,11 +112,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children:
         <Widget>[
           // bottomOptions(context)
-          widget.dropValue == "Machine Maintenance"? HomeScreen():widget.dropValue == "Job Work Enquiry"?EnquiryHomeScreen(): widget.dropValue == "Transportation"? HomeScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? MachineMaintenanceHomeScreen():widget.dropValue == "Job Work Enquiry"?EnquiryHomeScreen(): widget.dropValue == "Transportation"? EnquiryHomeScreen():SizedBox(),
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
           if(widget.dropValue == "Machine Maintenance")
             OrderScreen(),
-          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?QuotationsScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsReplyScreen():SizedBox(),
           widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
       ),

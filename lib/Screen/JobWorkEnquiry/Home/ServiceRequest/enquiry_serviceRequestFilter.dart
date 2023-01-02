@@ -58,8 +58,7 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
           backgroundColor: Colors.white,
           leading: InkWell(
             onTap: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+              Navigator.of(context).pop();
             },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Service Request Filter',style:appBarheadingStyle ,),
@@ -67,25 +66,7 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
         bottomNavigationBar:Padding(
           padding: const EdgeInsets.all(10.0),
           child: FunctionButton(
-            onPressed: () async {
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
-              //   isconnectedToInternet = await ConnectivityCheck
-              //       .checkInternetConnectivity();
-              //   if (isconnectedToInternet == true) {
-              //     if (_formKey.currentState!.validate()) {
-              //       // setState(() {
-              //       //   loading=true;
-              //       // });
-              //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-              //     }
-              //   } else {
-              //     CustomDialogs.showDialogCustom(
-              //         "Internet",
-              //         "Please check your Internet Connection!",
-              //         context);
-              //   }
-            },
+            onPressed: () async {},
             shape: const RoundedRectangleBorder(
                 borderRadius:
                 BorderRadius.all(Radius.circular(50))),

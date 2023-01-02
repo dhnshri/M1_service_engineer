@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Config/font.dart';
-import 'package:service_engineer/Screen/Quotations/make_quotatons.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/ServiceRequest/enquiry_makeQuotation.dart';
 import 'package:service_engineer/Widget/app_small_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -72,6 +72,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
           children: [
             AppSmallButton(
               onPressed: () async {
+
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -85,7 +86,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
             AppSmallButton(
               onPressed: () async {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
+                    MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen ()));
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:

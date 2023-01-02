@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
@@ -5,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Screen/Home/MyTask/process_detail.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'add_task.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
@@ -33,6 +37,24 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
+  final Set<Marker> _markers = {};
+  late LatLng _lastMapPosition;
+  double? addressLat;
+  double? addressLong;
+  Completer<GoogleMapController> controller1 = Completer();
+
+
+  _onCameraMove(CameraPosition position) {
+    _lastMapPosition = position.target;
+  }
+
+  _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      controller1.complete(controller);
+    });
+  }
+
+  MapType _currentMapType = MapType.normal;
 
 
   @override
@@ -40,13 +62,27 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _phoneNumberController.clear();
+    addressLat = double.parse(21.1458.toString());
+    addressLong = double.parse(79.0882.toString());
+    _lastMapPosition = LatLng(addressLat!, addressLong!);
+
+    _markers.add(Marker(
+        markerId: MarkerId(151.toString()),
+        position: _lastMapPosition,
+        infoWindow: InfoWindow(
+            title: "You are here",
+            snippet: "This is a current location snippet",
+            onTap: () {}),
+        onTap: () {},
+        icon: BitmapDescriptor.defaultMarker));
 
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _phoneNumberController.clear();
+
     // getroleofstudent();
   }
 
@@ -194,6 +230,114 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                         Text("Pune Railway Station",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+                    Container(
+
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        width: MediaQuery.of(context).size.width * 0.99,
+                        decoration: BoxDecoration(
+                            color: Color(0Xfffdf1f5),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * 0.21,
+                                width: MediaQuery.of(context).size.width * 0.99,
+                                child: GoogleMap(
+                                  markers: _markers,
+                                  zoomControlsEnabled: true,
+                                  zoomGesturesEnabled: true,
+                                  rotateGesturesEnabled: false,
+                                  scrollGesturesEnabled: true,
+                                  mapType: _currentMapType,
+                                  initialCameraPosition: CameraPosition(
+                                    target: _lastMapPosition,
+                                    zoom: 16.4746,
+                                  ),
+                                  onMapCreated: _onMapCreated,
+                                  onCameraMove: _onCameraMove,
+                                  myLocationEnabled: false,
+                                  compassEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      // Radio(
+                                      //   value: 'current',
+                                      //   activeColor: Colors.pink,
+                                      //   focusColor: Colors.white,
+                                      //   groupValue: addressLabel.toString(),
+                                      //   onChanged: (value) {
+                                      //     setState(() {
+                                      //       addressLabel = value!;
+                                      //     });
+                                      //     addressController.addAddress(
+                                      //         addressLabel,
+                                      //         addressCurrent,
+                                      //         addressLat.toString(),
+                                      //         addressLong.toString());
+                                      //     Get.off(CheckoutPage());
+                                      //   },
+                                      // ),
+                                    ],
+                                  ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     setState(() {
+                                  //       addressLabel = 'current';
+                                  //     });
+                                  //     addressController.addAddress(
+                                  //         addressLabel,
+                                  //         addressCurrent,
+                                  //         addressLat.toString(),
+                                  //         addressLong.toString());
+                                  //     Get.off(CheckoutPage());
+                                  //   },
+                                  //   child: Column(
+                                  //     crossAxisAlignment:
+                                  //     CrossAxisAlignment.start,
+                                  //     children: [
+                                  //       Container(
+                                  //         child: Text(
+                                  //           'Current Location',
+                                  //           style: TextStyle(
+                                  //             fontWeight:
+                                  //             FontWeight.bold,
+                                  //             color: Color(0Xff3f3639),
+                                  //             fontSize: width * 0.04,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       Container(
+                                  //         width: width * 0.6,
+                                  //         child: Text(
+                                  //           addressCurrent.toString(),
+                                  //           style: TextStyle(
+                                  //             fontWeight:
+                                  //             FontWeight.bold,
+                                  //             color: const Color(
+                                  //                 0Xffaaa4a6),
+                                  //             fontSize: width * 0.032,
+                                  //           ),
+                                  //           overflow: TextOverflow.fade,
+                                  //           maxLines: 2,
+                                  //         ),
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // )
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
                     SizedBox(height: 10,),
                     Align(
                       alignment: Alignment.topLeft,
@@ -390,30 +534,45 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
           InkWell(
             onTap: (){
               // Navigator.of(context).pop();
-              AlertDialog(
-                title: new Text(""),
-                content: new Text("Are you sure, you want to mark service as completed?"),
-                actions: <Widget>[
-                  Row(
-                    children: [
-                      TextButton(
-                        child: new Text("No"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      SizedBox(width: 7,),
-                      TextButton(
-                        child: new Text("Yes"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+              showDialog(
+                  context: context,
+                  builder: (context) =>  AlertDialog(
+                    title: new Text("Are you sure, you want to mark it as complete?"),
+                    // content: new Text(""),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                              child: new Text("No",style: TextStyle(
+                                  color: Colors.black
+                              ),),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }, style: TextButton.styleFrom(
+                              side: BorderSide(
+                                  color: ThemeColors.defaultbuttonColor,
+                                  width: 1.5)
+                          )
+                          ),
+                          SizedBox(width: 7,),
+                          TextButton(
+                            child: new Text("Yes",style: TextStyle(
+                                color: Colors.white
+                            ),),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                  BottomNavigation(index: 0,dropValue: 'Job Work Enquiry',)));
+                            },
+                            style: TextButton.styleFrom(
+                                backgroundColor: ThemeColors.defaultbuttonColor
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                ],
-              );
-            },
+                  )
+              );            },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
