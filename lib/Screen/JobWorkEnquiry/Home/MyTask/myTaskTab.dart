@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Config/font.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'myTaskFilter.dart';
@@ -20,6 +21,7 @@ class EnquiryMyTaskScreen extends StatefulWidget {
 class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
 
   final _formKey = GlobalKey<FormState>();
+  final _searchController = TextEditingController();
 
 
 
@@ -360,13 +362,67 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                   top: 15.0, left: 10, right: 10, bottom: 5),              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.search),
-                      SizedBox(width: 5,),
-                      Text("Search all Orders")
-                    ],
+
+                  Expanded(
+                    child: TextFormField(
+                      // initialValue: Application.customerLogin!.name.toString(),
+                      controller: _searchController,
+                      textAlign: TextAlign.start,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 1.5,
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: ThemeColors.bottomNavColor,
+                        prefixIcon: Icon(Icons.search,color: ThemeColors.textFieldHintColor,),
+                        hintText: "Search all Orders",
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 15.0),
+                        hintStyle: TextStyle(fontSize: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.bottomNavColor
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.bottomNavColor),
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(1.0)),
+                            borderSide: BorderSide(
+                                width: 0.8,
+                                color: ThemeColors.bottomNavColor)),
+                      ),
+                      validator: (value) {
+                        Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
+                        RegExp regex = new RegExp(pattern.toString());
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter GST Number';
+                        }else if(!regex.hasMatch(value)){
+                          return 'Please enter valid GST Number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        // profile.name = value;
+                        setState(() {
+                          // _nameController.text = value;
+                          if (_formKey.currentState!.validate()) {}
+                        });
+                      },
+                    ),
                   ),
+
 
                   InkWell(
                     onTap: ()
