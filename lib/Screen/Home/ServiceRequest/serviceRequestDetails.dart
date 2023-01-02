@@ -137,7 +137,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ExpansionTileCard(
             key: cardA,
             leading: Text("Basic Info"),
-
+            initiallyExpanded: true,
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[

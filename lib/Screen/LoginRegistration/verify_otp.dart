@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:service_engineer/Screen/LoginRegistration/registration.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
 
 import '../../Constant/theme_colors.dart';
 import '../../Widget/app_button.dart';
@@ -302,50 +303,48 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: AppButton(
                       onPressed: () async {
 
-                        // Navigator.of(context).push(
-                        //     MaterialPageRoute(builder: (context) =>
-                        //     RegistrationScreen(dropValue: widget.dropValue,)
-                        //     // VerificationScreen()
-                        //     ));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
+
                         loading = false;
                         otp = _otpController.text;
 
-                        if (verificationId != null && otp != null) {
-                          try {
-                            // authservice =await FirebaseAuth.instance(
-                            //     PhoneAuthProvider.credential(
-                            //   verificationId: verificationId.toString,
-                            //   smsCode: otp,
-                            // ));
-                            authservice =
-                                PhoneAuthProvider.credential(
-                                  verificationId: verificationId,
-                                  smsCode: otp,
-                                );
-                          } catch (e) {
-                            print(e);
-                            Fluttertoast.showToast(msg: e.toString());                          }
-
-                          if (authservice != null){
-                            authResult = await FirebaseAuth.instance
-                                .signInWithCredential(authservice!)
-                                .catchError((onError) {
-                              print('SignIn Error: ${onError.toString()}\n\n');
-                            });
-
-                            if (authResult != null) {
-                              firebaseUser_Id=authResult!.user!.uid.toString();
-
-                              print("fb_id"+firebaseUser_Id);
-                              // _login(authController, widget.number);
-                              print("Otp verified successfully");
-
-                            } else {
-                              Fluttertoast.showToast(msg: 'Please enter valid sms code');
-                              loading= true;
-                            }
-                          }
-                        }
+                        // if (verificationId != null && otp != null) {
+                        //   try {
+                        //     // authservice =await FirebaseAuth.instance(
+                        //     //     PhoneAuthProvider.credential(
+                        //     //   verificationId: verificationId.toString,
+                        //     //   smsCode: otp,
+                        //     // ));
+                        //     authservice =
+                        //         PhoneAuthProvider.credential(
+                        //           verificationId: verificationId,
+                        //           smsCode: otp,
+                        //         );
+                        //   } catch (e) {
+                        //     print(e);
+                        //     Fluttertoast.showToast(msg: e.toString());                          }
+                        //
+                        //   if (authservice != null){
+                        //     authResult = await FirebaseAuth.instance
+                        //         .signInWithCredential(authservice!)
+                        //         .catchError((onError) {
+                        //       print('SignIn Error: ${onError.toString()}\n\n');
+                        //     });
+                        //
+                        //     if (authResult != null) {
+                        //       firebaseUser_Id=authResult!.user!.uid.toString();
+                        //
+                        //       print("fb_id"+firebaseUser_Id);
+                        //       // _login(authController, widget.number);
+                        //       print("Otp verified successfully");
+                        //
+                        //     } else {
+                        //       Fluttertoast.showToast(msg: 'Please enter valid sms code');
+                        //       loading= true;
+                        //     }
+                        //   }
+                        // }
 
                       },
                       shape: const RoundedRectangleBorder(

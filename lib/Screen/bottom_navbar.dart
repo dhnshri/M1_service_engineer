@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/home.dart';
 import 'package:service_engineer/Screen/Transportation/Profile/transportation_profile.dart';
 
 import '../Constant/theme_colors.dart';
@@ -155,7 +156,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children:
         <Widget>[
           // bottomOptions(context)
-          widget.dropValue == "Machine Maintenance"? HomeScreen():widget.dropValue == "Job Work Enquiry"?MachineProfileScreen(): widget.dropValue == "Transportation"? HomeScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? HomeScreen():widget.dropValue == "Job Work Enquiry"?EnquiryHomeScreen(): widget.dropValue == "Transportation"? HomeScreen():SizedBox(),
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
           if(widget.dropValue == "Machine Maintenance")
             OrderScreen(),

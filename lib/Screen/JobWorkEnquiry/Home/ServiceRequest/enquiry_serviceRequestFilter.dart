@@ -1,38 +1,26 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:service_engineer/Screen/Home/ServiceRequest/serviceRequest.dart';
-import 'package:service_engineer/Screen/Home/home.dart';
-import 'package:service_engineer/app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
-
-import '../../../Config/font.dart';
-import '../../../Widget/app_button.dart';
-import '../../../Widget/function_button.dart';
-import '../../bottom_navbar.dart';
+import 'package:service_engineer/Config/font.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
+import 'package:service_engineer/Widget/function_button.dart';
 
 
 
-class ServiceRequestFilterScreen extends StatefulWidget {
-  const ServiceRequestFilterScreen({Key? key}) : super(key: key);
+class EnquiryServiceRequestFilterScreen extends StatefulWidget {
+  const EnquiryServiceRequestFilterScreen({Key? key}) : super(key: key);
 
   @override
-  _ServiceRequestFilterScreenState createState() => _ServiceRequestFilterScreenState();
+  _EnquiryServiceRequestFilterScreenState createState() => _EnquiryServiceRequestFilterScreenState();
 }
 
-class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen> {
+class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceRequestFilterScreen> {
 
   final _formKey = GlobalKey<FormState>();
-  String radioBtnType = "Iron";
+  String radioBtnType = "Heavy";
   int machineCategoryId = 1;
-
-  String  numberOfItemsType = "0-100 items";
-  int numberOfItemsId = 1;
-
-  String  deliveryType = '0-20 KM';
-  int deliveryId = 1;
+  String  locationradioBtnType = "Location";
+  int locationId = 1;
 
   String  productMainCategoryradioBtnType = 'Category 1';
   int productMainCategoryId = 1;
@@ -40,8 +28,8 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
   String productSubCategoryradioBtnType = 'Category 1';
   int productSubCategoryId = 1;
 
-  String areaType = 'All India';
-  int areaId = 1;
+  String statusradioBtnType = 'All';
+  int statusId = 1;
 
   bool loading = true;
 
@@ -70,17 +58,33 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
           backgroundColor: Colors.white,
           leading: InkWell(
             onTap: (){
-              Navigator.of(context).pop();
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
               child: Icon(Icons.arrow_back_ios)),
-          title: Text('Filter for Service Request',),
+          title: Text('Service Request Filter',style:appBarheadingStyle ,),
         ),
         bottomNavigationBar:Padding(
           padding: const EdgeInsets.all(10.0),
           child: FunctionButton(
             onPressed: () async {
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
+              //   isconnectedToInternet = await ConnectivityCheck
+              //       .checkInternetConnectivity();
+              //   if (isconnectedToInternet == true) {
+              //     if (_formKey.currentState!.validate()) {
+              //       // setState(() {
+              //       //   loading=true;
+              //       // });
+              //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
+              //     }
+              //   } else {
+              //     CustomDialogs.showDialogCustom(
+              //         "Internet",
+              //         "Please check your Internet Connection!",
+              //         context);
+              //   }
             },
             shape: const RoundedRectangleBorder(
                 borderRadius:
@@ -113,11 +117,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Material for Product',style:TextStyle(
-                                            fontFamily: 'Poppins-Medium',
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600
-                                    ),)),
+                                    child: Text('Machine Category',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -127,17 +127,14 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                     groupValue: machineCategoryId,
                                     onChanged: (val) {
                                       setState(() {
-                                        radioBtnType = 'Iron';
+                                        radioBtnType = 'Heavy';
                                         machineCategoryId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    'Iron',
-                                    style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                    ),
+                                    'Heavy',
+                                    style:filterRadiobtnStyle,
                                   ),
                                 ],),
                                 Row(
@@ -148,17 +145,14 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                       onChanged: (val) {
                                         setState(() {
                                           radioBtnType =
-                                          'Steal';
+                                          'Light';
                                           machineCategoryId = 2;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Steal',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'Light',
+                                      style: filterRadiobtnStyle,
                                     ),
                                   ],
                                 ),
@@ -169,39 +163,14 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                       groupValue: machineCategoryId,
                                       onChanged: (val) {
                                         setState(() {
-                                          radioBtnType = 'Copper';
+                                          radioBtnType = 'Compact';
                                           machineCategoryId = 3;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Copper',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: machineCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Aluminum';
-                                          machineCategoryId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Aluminum',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'Compact',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -226,52 +195,42 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Number of Items Required',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
+                                    child: Text('Location',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
                                   Radio(
                                     value: 1,
-                                    groupValue: numberOfItemsId,
+                                    groupValue: locationId,
                                     onChanged: (val) {
                                       setState(() {
-                                        numberOfItemsType = '0-100 items';
-                                        numberOfItemsId = 1;
+                                        locationradioBtnType = 'With in 120 miles';
+                                        locationId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    '0-100 items',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
+                                    'With in 120 miles',
+                                    style:filterRadiobtnStyle,
                                   ),
                                 ],),
                                 Row(
                                   children: [
                                     Radio(
                                       value: 2,
-                                      groupValue: numberOfItemsId,
+                                      groupValue: locationId,
                                       onChanged: (val) {
                                         setState(() {
-                                          numberOfItemsType =
-                                          '100-500 items';
-                                          numberOfItemsId = 2;
+                                          radioBtnType =
+                                          'With in 200 miles';
+                                          locationId = 2;
                                         });
                                       },
                                     ),
                                     Text(
-                                      '100-500 items',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'With in 200 miles',
+                                      style: filterRadiobtnStyle,
                                     ),
                                   ],
                                 ),
@@ -279,20 +238,17 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                   children: [
                                     Radio(
                                       value: 3,
-                                      groupValue: numberOfItemsId,
+                                      groupValue: locationId,
                                       onChanged: (val) {
                                         setState(() {
-                                          numberOfItemsType = '500-1000 items';
-                                          numberOfItemsId = 3;
+                                          radioBtnType = 'With in 250 miles';
+                                          locationId = 3;
                                         });
                                       },
                                     ),
                                     Text(
-                                      '500-1000 items',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'With in 250 miles',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -301,20 +257,17 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                   children: [
                                     Radio(
                                       value: 4,
-                                      groupValue: numberOfItemsId,
+                                      groupValue: locationId,
                                       onChanged: (val) {
                                         setState(() {
-                                          numberOfItemsType = '400-500 items';
-                                          numberOfItemsId = 4;
+                                          radioBtnType = 'With in 300 miles';
+                                          locationId = 4;
                                         });
                                       },
                                     ),
                                     Text(
-                                      '400-500 items',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'With in 300 miles',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -339,52 +292,42 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Delivery Distance',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
+                                    child: Text('Product Main Category',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
                                   Radio(
                                     value: 1,
-                                    groupValue: deliveryId,
+                                    groupValue: productMainCategoryId,
                                     onChanged: (val) {
                                       setState(() {
-                                        deliveryType = '0-20 KM';
-                                        deliveryId = 1;
+                                        productMainCategoryradioBtnType = 'Category 1';
+                                        productMainCategoryId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    '0-20 KM',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
+                                    'Category 1',
+                                    style:filterRadiobtnStyle,
                                   ),
                                 ],),
                                 Row(
                                   children: [
                                     Radio(
                                       value: 2,
-                                      groupValue: deliveryId,
+                                      groupValue: productMainCategoryId,
                                       onChanged: (val) {
                                         setState(() {
-                                          deliveryType =
-                                          '20-50 KM';
-                                          deliveryId = 2;
+                                          radioBtnType =
+                                          'Category 2';
+                                          productMainCategoryId = 2;
                                         });
                                       },
                                     ),
                                     Text(
-                                      '20-50 KM',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'Category 2',
+                                      style: filterRadiobtnStyle,
                                     ),
                                   ],
                                 ),
@@ -392,20 +335,36 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                   children: [
                                     Radio(
                                       value: 3,
-                                      groupValue: deliveryId,
+                                      groupValue: productMainCategoryId,
                                       onChanged: (val) {
                                         setState(() {
-                                          deliveryType = '50-100 KM';
-                                          deliveryId = 3;
+                                          radioBtnType = 'Category 3';
+                                          productMainCategoryId = 3;
                                         });
                                       },
                                     ),
                                     Text(
-                                      '50-100 KM',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'Category 3',
+                                      style:filterRadiobtnStyle,
+                                    ),
+
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Radio(
+                                      value: 4,
+                                      groupValue: productMainCategoryId,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          radioBtnType = 'Category 4';
+                                          productMainCategoryId = 4;
+                                        });
+                                      },
+                                    ),
+                                    Text(
+                                      'Category 4',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -430,11 +389,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Product Main Category',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
+                                    child: Text('Product Sub Category',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -451,10 +406,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                   ),
                                   Text(
                                     'Category 1',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
+                                    style:filterRadiobtnStyle,
                                   ),
                                 ],),
                                 Row(
@@ -472,10 +424,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                     ),
                                     Text(
                                       'Category 2',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      style: filterRadiobtnStyle,
                                     ),
                                   ],
                                 ),
@@ -493,10 +442,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                     ),
                                     Text(
                                       'Category 3',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -515,10 +461,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                     ),
                                     Text(
                                       'Category 4',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -543,52 +486,42 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Product Sub Category',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
+                                    child: Text('Status',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
                                   Radio(
                                     value: 1,
-                                    groupValue: productSubCategoryId,
+                                    groupValue: statusId,
                                     onChanged: (val) {
                                       setState(() {
-                                        productSubCategoryradioBtnType = 'Category 1';
-                                        productSubCategoryId = 1;
+                                        statusradioBtnType = 'All';
+                                        statusId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    'Category 1',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
+                                    'All',
+                                    style:filterRadiobtnStyle,
                                   ),
                                 ],),
                                 Row(
                                   children: [
                                     Radio(
                                       value: 2,
-                                      groupValue: productSubCategoryId,
+                                      groupValue: statusId,
                                       onChanged: (val) {
                                         setState(() {
                                           radioBtnType =
-                                          'Category 2';
-                                          productSubCategoryId = 2;
+                                          'Live';
+                                          statusId = 2;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Category 2',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'Live',
+                                      style: filterRadiobtnStyle,
                                     ),
                                   ],
                                 ),
@@ -596,156 +529,17 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                                   children: [
                                     Radio(
                                       value: 3,
-                                      groupValue: productSubCategoryId,
+                                      groupValue: statusId,
                                       onChanged: (val) {
                                         setState(() {
-                                          radioBtnType = 'Category 3';
-                                          productSubCategoryId = 3;
+                                          radioBtnType = 'Closed';
+                                          statusId = 3;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Category 3',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 4,
-                                      groupValue: productSubCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Category 4';
-                                          productSubCategoryId = 4;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 4',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Area',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: areaId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        areaType = 'All India';
-                                        areaId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'All India',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: areaId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          areaType =
-                                          'Punjab';
-                                          areaId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Punjab',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: areaId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          areaType = 'Haryana';
-                                          areaId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Haryana',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: areaId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          areaType = 'Himachal';
-                                          areaId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Himachal',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'Closed',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
