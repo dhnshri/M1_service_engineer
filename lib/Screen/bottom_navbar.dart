@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:service_engineer/Screen/JobWorkEnquiry/Home/home.dart';
 import 'package:service_engineer/Screen/Transportation/Profile/transportation_profile.dart';
 
 import '../Constant/theme_colors.dart';
@@ -31,9 +30,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
 
   static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
+    MachineMaintenanceHomeScreen(),
     OrderScreen(),
-    QuotationsScreen(),
+    QuotationsReplyScreen(),
     MachineProfileScreen(),
     // CartPage(backIcon: false),
     // MyOrders(),
@@ -41,17 +40,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
   ];
 
   static List<Widget> _jobWorkEnquiryOptions = <Widget>[
-    HomeScreen(),
-    QuotationsScreen(),
+    MachineMaintenanceHomeScreen(),
+    QuotationsReplyScreen(),
     MachineProfileScreen(),
   ];
 
    bottomOptions(BuildContext context){
     if(widget.dropValue == "Machine Maintenance"){
       List<Widget> _widgetOptions = <Widget>[
-        HomeScreen(),
+        MachineMaintenanceHomeScreen(),
         OrderScreen(),
-        QuotationsScreen(),
+        QuotationsReplyScreen(),
         MachineProfileScreen(),
         // CartPage(backIcon: false),
         // MyOrders(),
@@ -59,16 +58,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
       ];
     }
     else if(widget.dropValue=="Job Work Enquiry"){
-      List<Widget> _widgetOptions = <Widget>[
-        HomeScreen(),
+      List<Widget> _widgetJobWorkEnquiryOptions = <Widget>[
+        MachineMaintenanceHomeScreen(),
         QuotationsScreen(),
         MachineProfileScreen(),
       ];
     }
     else if(widget.dropValue=="Transportation"){
-      List<Widget> _widgetOptions = <Widget>[
-        HomeScreen(),
-        QuotationsScreen(),
+      List<Widget> _widgetTransportationOptions = <Widget>[
+        MachineMaintenanceHomeScreen(),
+        QuotationsReplyScreen(),
         MachineProfileScreen(),
       ];
     }
@@ -160,7 +159,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
           if(widget.dropValue == "Machine Maintenance")
             OrderScreen(),
-          widget.dropValue == "Machine Maintenance"? QuotationsScreen():widget.dropValue == "Job Work Enquiry"?QuotationsScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?QuotationsScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
           widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
       ),

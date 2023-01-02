@@ -8,8 +8,8 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
 import '../../../Widget/app_small_button.dart';
-import '../../Quotations/make_quotatons.dart';
 import '../../bottom_navbar.dart';
+import '../MakeQuotations/make_quotatons.dart';
 
 
 
@@ -59,9 +59,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
@@ -137,7 +136,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ExpansionTileCard(
             key: cardA,
             leading: Text("Basic Info"),
-            initiallyExpanded: true,
+
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[

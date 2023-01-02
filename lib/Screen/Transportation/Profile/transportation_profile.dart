@@ -9,6 +9,7 @@ import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../image_file.dart';
+import '../../LoginRegistration/signUpAs.dart';
 
 // import '../../Config/font.dart';
 // import '../../Config/image.dart';
@@ -208,12 +209,30 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
       child: Scaffold(
           appBar: AppBar(
             leading: Icon(Icons.arrow_back_ios),
+            actions: [
+              InkWell(
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text("Logout"),
+                        SizedBox(width: 5,),
+                        Icon(Icons.logout,color: Colors.red,),
+                      ],
+                    ),
+                  ))
+            ],
             title: Text("Profile",
               style: TextStyle(
                   fontFamily: 'Poppins-Medium'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
+
           body:SingleChildScrollView(
             child: Form(
               key: _formKey,

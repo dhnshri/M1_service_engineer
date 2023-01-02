@@ -6,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../Config/font.dart';
-import '../../Widget/app_button.dart';
 
 class PreviewScreen extends StatefulWidget {
   const PreviewScreen({Key? key}) : super(key: key);
