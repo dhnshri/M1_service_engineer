@@ -59,9 +59,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
@@ -135,7 +134,6 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           SizedBox(height: 7,),
           //Basic Info
           ExpansionTileCard(
-            initiallyExpanded: true,
             key: cardA,
             leading: Text("Basic Info"),
 
