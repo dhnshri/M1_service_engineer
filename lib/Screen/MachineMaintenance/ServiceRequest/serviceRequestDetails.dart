@@ -8,7 +8,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
 import '../../../Widget/app_small_button.dart';
-import '../../Quotations/make_quotatons.dart';
 import '../../bottom_navbar.dart';
 import '../MakeQuotations/make_quotatons.dart';
 
@@ -136,6 +135,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           SizedBox(height: 7,),
           //Basic Info
           ExpansionTileCard(
+            initiallyExpanded: true,
             key: cardA,
             leading: Text("Basic Info"),
 
@@ -188,6 +188,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ),
           // Machin Info
           ExpansionTileCard(
+            initiallyExpanded: true,
             key: cardB,
             leading: Text("Machine Information"),
             title: SizedBox(),
@@ -368,6 +369,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ),
           // Other Info
           ExpansionTileCard(
+            initiallyExpanded: true,
             key: cardC,
             leading: Text("Other Info"),
             title: SizedBox(),

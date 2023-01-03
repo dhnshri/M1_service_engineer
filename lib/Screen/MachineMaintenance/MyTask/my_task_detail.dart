@@ -4,13 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Screen/Home/MyTask/process_detail.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/MyTask/process_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../Config/font.dart';
 import '../../../Widget/app_small_button.dart';
-import '../../Quotations/make_quotatons.dart';
 import '../../bottom_navbar.dart';
 import 'add_task.dart';
 

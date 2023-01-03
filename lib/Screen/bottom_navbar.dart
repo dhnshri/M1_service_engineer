@@ -6,6 +6,7 @@ import 'package:service_engineer/Screen/Transportation/Profile/transportation_pr
 import '../Constant/theme_colors.dart';
 import 'JobWorkEnquiry/Profile/job_work_enquiry_profile.dart';
 import 'MachineMaintenance/MakeQuotations/quotationslist.dart';
+import 'MachineMaintenance/Order/order_items.dart';
 import 'MachineMaintenance/Order/orderlist.dart';
 import 'MachineMaintenance/Profile/profile.dart';
 import 'MachineMaintenance/Quotations/quotations_reply.dart';
@@ -48,7 +49,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     if(widget.dropValue == "Machine Maintenance"){
       List<Widget> _widgetOptions = <Widget>[
         MachineMaintenanceHomeScreen(),
-        OrderScreen(),
+        OrderItemsScreen(),
         QuotationsReplyScreen(),
         MachineProfileScreen(),
       ];
@@ -154,7 +155,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           widget.dropValue == "Machine Maintenance"? MachineMaintenanceHomeScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
           if(widget.dropValue == "Machine Maintenance")
-            OrderScreen(),
+            OrderItemsScreen(),
           widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?QuotationsScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
           widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
