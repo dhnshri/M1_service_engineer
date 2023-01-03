@@ -69,6 +69,7 @@ dependencies:
   pin_code_fields: ^7.4.0
   country_list_pick: 1.0.1+5
   google_maps_flutter: ^2.1.1
+  another_stepper: ^1.1.6
 
 
 
