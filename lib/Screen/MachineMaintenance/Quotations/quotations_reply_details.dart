@@ -501,12 +501,13 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ],
         ),
       ),
-      body: Column(
+      body: ListView(
         children: [
           SizedBox(height: 7,),
           // Item Required
           ExpansionTileCard(
             key: cardItemRequired,
+            initiallyExpanded: true,
             leading: Text("Item Required"),
 
             title: SizedBox(),
@@ -583,6 +584,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           // Others Items
           ExpansionTileCard(
             key: cardOtherItemRequired,
+            initiallyExpanded: true,
             leading: Text("Other Items( item not available on app)"),
 
             title: SizedBox(),
@@ -670,6 +672,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ),
           ExpansionTileCard(
             key: cardQuotations,
+            //initiallyExpanded: true,
             leading: Text("Quotation"),
             title: SizedBox(),
             subtitle:SizedBox(),
@@ -737,6 +740,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ),
           ExpansionTileCard(
             key: cardTermsConditions,
+            initiallyExpanded: true,
             leading: Text("Terms and Conditions"),
             title: SizedBox(),
             subtitle:SizedBox(),
@@ -746,6 +750,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ),
           ExpansionTileCard(
             key: cardMessage,
+            initiallyExpanded: true,
             leading: Text("Message from Client"),
             title: SizedBox(),
             subtitle:SizedBox(),

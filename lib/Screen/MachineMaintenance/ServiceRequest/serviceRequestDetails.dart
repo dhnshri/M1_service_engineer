@@ -59,8 +59,9 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
+              Navigator.pop(context);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),

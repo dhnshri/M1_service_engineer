@@ -426,6 +426,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         // Item Required
         ExpansionTileCard(
           key: cardItemRequired,
+          initiallyExpanded: true,
           leading: Text("Item Required"),
 
           title: SizedBox(),
@@ -502,6 +503,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         // Others Items
         ExpansionTileCard(
           key: cardOtherItemRequired,
+          initiallyExpanded: true,
           leading: Text("Other Items( item not available on app)"),
 
           title: SizedBox(),
@@ -589,6 +591,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         ),
         ExpansionTileCard(
           key: cardQuotations,
+          initiallyExpanded: true,
           leading: Text("Quotation"),
           title: SizedBox(),
           subtitle:SizedBox(),
@@ -656,6 +659,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         ),
         ExpansionTileCard(
           key: cardTermsConditions,
+          initiallyExpanded: true,
           leading: Text("Terms and Conditions"),
           title: SizedBox(),
           subtitle:SizedBox(),
