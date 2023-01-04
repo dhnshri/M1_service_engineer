@@ -238,7 +238,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width/1.8,
+                      // width: MediaQuery.of(context).size.width/1.8,
                       child: Text(
                         "Job Title/Services Name or Any Other Name",
                         style: TextStyle(

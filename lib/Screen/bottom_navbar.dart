@@ -9,7 +9,6 @@ import 'package:service_engineer/Screen/Transportation/Profile/transportation_pr
 import '../Constant/theme_colors.dart';
 import 'JobWorkEnquiry/Profile/job_work_enquiry_profile.dart';
 import 'MachineMaintenance/MakeQuotations/quotationslist.dart';
-import 'MachineMaintenance/Order/orderlist.dart';
 import 'MachineMaintenance/Profile/profile.dart';
 import 'MachineMaintenance/Quotations/quotations_reply.dart';
 import 'MachineMaintenance/home.dart';
@@ -31,49 +30,8 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
   bool backIcon = false;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-
-
-  static List<Widget> _widgetOptions = <Widget>[
-    MachineMaintenanceHomeScreen(),
-    OrderScreen(),
-    QuotationsReplyScreen(),
-    MachineProfileScreen(),
-  ];
-
-  static List<Widget> _jobWorkEnquiryOptions = <Widget>[
-    MachineMaintenanceHomeScreen(),
-    QuotationsReplyScreen(),
-    MachineProfileScreen(),
-  ];
-
-   bottomOptions(BuildContext context){
-    if(widget.dropValue == "Machine Maintenance"){
-      List<Widget> _widgetOptions = <Widget>[
-        MachineMaintenanceHomeScreen(),
-        OrderScreen(),
-        QuotationsReplyScreen(),
-        MachineProfileScreen(),
-      ];
-    }
-    else if(widget.dropValue=="Job Work Enquiry"){
-      List<Widget> _widgetJobWorkEnquiryOptions = <Widget>[
-        MachineMaintenanceHomeScreen(),
-        QuotationsScreen(),
-        MachineProfileScreen(),
-      ];
-    }
-    else if(widget.dropValue=="Transportation"){
-      List<Widget> _widgetTransportationOptions = <Widget>[
-        MachineMaintenanceHomeScreen(),
-        QuotationsReplyScreen(),
-        MachineProfileScreen(),
-      ];
-    }
-
-  }
 
   void _onItemTapped(int index) {
 

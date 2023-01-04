@@ -109,10 +109,13 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ExpansionTileCard(
             initiallyExpanded: true,
             key: cardA,
-            leading: Text("Basic Info"),
-
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Basic Info",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -125,6 +128,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                         Text("#102GRDSA36987",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -132,6 +136,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                         Text("#102GRDSA36987",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -139,6 +145,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                         Text("24-Sep-2022",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -146,6 +154,8 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                         Text("Pune Railway Station",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -162,17 +172,22 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ExpansionTileCard(
             initiallyExpanded: true,
             key: cardB,
-            leading: Text("Machine Information"),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Machine Information",
+            style: TextStyle(
+          color: Colors.black,
+          fontFamily: 'Poppins-Medium',
+          fontSize: 16,
+          fontWeight: FontWeight.w500
+          )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
                 child: Column(
                   children: [
                     Container(
-                      height:180,
-                      width: 340,
+                      height:200,
+                      // width: 340,
+                      width: MediaQuery.of(context).size.width,
                       child: CachedNetworkImage(
                         filterQuality: FilterQuality.medium,
                         // imageUrl: Api.PHOTO_URL + widget.users.avatar,
@@ -188,7 +203,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                               width: 80,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(0),
                               ),
                             ),
                           );
@@ -202,7 +217,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                                 image: imageProvider,
                                 fit: BoxFit.cover,
                               ),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(0),
                             ),
                           );
                         },
@@ -216,7 +231,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                               width: 80,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(0),
                               ),
                               child: Icon(Icons.error),
                             ),
@@ -343,9 +358,13 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           ExpansionTileCard(
             initiallyExpanded: true,
             key: cardC,
-            leading: Text("Other Info"),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Other Info",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -383,113 +402,119 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                   ],
                 ),
               ),
-              Container(
-                height:100,
-                width: 330,
-                child: CachedNetworkImage(
-                  filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
-                  placeholder: (context, url) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
+              Padding(
+                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                child: Container(
+                  height:130,
+                  width: MediaQuery.of(context).size.width,
+                  child: CachedNetworkImage(
+                    filterQuality: FilterQuality.medium,
+                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                    // imageUrl: "https://picsum.photos/250?image=9",
+                    imageUrl: "https://picsum.photos/250?image=9",
+                    placeholder: (context, url) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                      );
+                    },
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
                         height: 80,
                         width: 80,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(0),
                         ),
-                      ),
-                    );
-                  },
-                  imageBuilder: (context, imageProvider) {
-                    return Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: Icon(Icons.error),
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    );
-                  },
-                  errorWidget: (context, url, error) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.error),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-              SizedBox(height: 10,),
-              Container(
-                height:180,
-                width: 340,
-                child: CachedNetworkImage(
-                  filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=16",
-                  placeholder: (context, url) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
+              SizedBox(height: 5,),
+              Padding(
+                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                child: Container(
+                  height:180,
+                  width: MediaQuery.of(context).size.width,
+                  child: CachedNetworkImage(
+                    filterQuality: FilterQuality.medium,
+                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                    // imageUrl: "https://picsum.photos/250?image=9",
+                    imageUrl: "https://picsum.photos/250?image=16",
+                    placeholder: (context, url) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                      );
+                    },
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
                         height: 80,
                         width: 80,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(0),
                         ),
-                      ),
-                    );
-                  },
-                  imageBuilder: (context, imageProvider) {
-                    return Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: Icon(Icons.error),
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    );
-                  },
-                  errorWidget: (context, url, error) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.error),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

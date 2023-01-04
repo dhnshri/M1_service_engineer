@@ -308,7 +308,7 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                       children: [
                         Container(
                           // width: MediaQuery.of(context).size.width / 1.8,
-                          width: MediaQuery.of(context).size.width / 1.9,
+                          // width: MediaQuery.of(context).size.width / 1.9,
                           child: Text(
                             "Job Title/Services Name or Any Other Name",
                             style: TextStyle(

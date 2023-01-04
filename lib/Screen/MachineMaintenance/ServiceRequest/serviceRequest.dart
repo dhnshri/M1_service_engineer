@@ -254,7 +254,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width/2.5,
+                      // width: MediaQuery.of(context).size.width/2.5,
                       child: Text(
                         "Job Title/Services Name or Any Other Name",
                         style: TextStyle(

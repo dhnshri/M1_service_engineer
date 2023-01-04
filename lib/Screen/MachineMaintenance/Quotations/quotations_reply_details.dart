@@ -440,6 +440,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppSmallButton(
               onPressed: () async {
@@ -452,7 +453,6 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
 
 
             ),
-            SizedBox(width:8),
             AppSmallButton(
               onPressed: () async {
                 Navigator.push(context,
@@ -476,71 +476,81 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ExpansionTileCard(
             key: cardItemRequired,
             initiallyExpanded: true,
-            leading: Text("Item Required"),
-
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Item Required",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
-              Container(
-                color: Color(0xffE47273),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("S no.",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Item Name",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(width: 50,),
-                              Text("QTY",style: TextStyle(color: Colors.white),),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Rate",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Amount",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              buildItemRequiredList(),
-              Container(
-                color: Color(0xffFFE4E5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
+                child: Column(
                   children: [
-                    SizedBox(),
-                    Padding(
-                      padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                    Container(
+                      color: Color(0xffE47273),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("S no.",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Item Name",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(width: 50,),
+                                    Text("QTY",style: TextStyle(color: Colors.white),),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Rate",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Amount",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    buildItemRequiredList(),
+                    Container(
+                      color: Color(0xffFFE4E5),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                          SizedBox(width: 15,),
-                          Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                          SizedBox(),
+                          Padding(
+                            padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                            child: Row(
+                              children: [
+                                Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
+                                SizedBox(width: 15,),
+                                Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -553,71 +563,81 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ExpansionTileCard(
             key: cardOtherItemRequired,
             initiallyExpanded: true,
-            leading: Text("Other Items( item not available on app)"),
-
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Other Items( item not available on app)",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
-              Container(
-                color: Color(0xffE47273),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("S no.",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Item Name",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(width: 50,),
-                              Text("QTY",style: TextStyle(color: Colors.white),),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Rate",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Amount",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              buildOtherItemsList(),
-              Container(
-                color: Color(0xffFFE4E5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
+                child: Column(
                   children: [
-                    SizedBox(),
-                    Padding(
-                      padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                    Container(
+                      color: Color(0xffE47273),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("S no.",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Item Name",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(width: 50,),
+                                    Text("QTY",style: TextStyle(color: Colors.white),),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Rate",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Amount",style: TextStyle(color: Colors.white),),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    buildOtherItemsList(),
+                    Container(
+                      color: Color(0xffFFE4E5),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                          SizedBox(width: 15,),
-                          Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                          SizedBox(),
+                          Padding(
+                            padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                            child: Row(
+                              children: [
+                                Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
+                                SizedBox(width: 15,),
+                                Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -626,29 +646,57 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
               ),
             ],
           ),
+
+          Divider(
+            thickness: 2,
+          ),
+
           // Date and Time
           Padding(
             padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 8.0,top: 8.0),
             child: Container(
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Date & Time"),
-                    Text("20 Nov, 2022 / 12PM - 4PM"),
+                    Text("Date & Time",
+                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                    Container(
+                      child: Text("20 Nov, 2022 / 12PM - 4PM",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 15,
+                            color: Colors.black.withOpacity(0.5)
+                              )),
+                    ),
                   ],
                 )
             ),
           ),
+          Divider(
+            thickness: 2,
+          ),
+          Divider(
+            thickness: 2,
+          ),
+
+          ///Quotation
           ExpansionTileCard(
             key: cardQuotations,
-            //initiallyExpanded: true,
-            leading: Text("Quotation"),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            initiallyExpanded: true,
+            // finalPadding: const EdgeInsets.only(bottom: 0.0),
+            title: Text("Quotation",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(right: 8.0,left: 8.0, bottom: 8.0),
+                padding: const EdgeInsets.only(right: 10.0,left: 10.0, bottom: 8.0),
                 child: Column(
                   children: [
+                    Divider(thickness: 1,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -656,6 +704,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                         Text("₹ 20,000"),
                       ],
                     ),
+                    SizedBox(height: 5,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -663,6 +712,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                         Text("₹ 1500"),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -670,6 +721,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                         Text("₹ 1500"),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -677,6 +730,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                         Text("₹ 1500"),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -684,6 +739,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                         Text("₹ 550"),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -695,8 +752,20 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Amount"),
-                        Text("₹20000"),
+                        Text("Amount",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Poppins-Medium',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500
+                            )),
+                        Text("₹20000",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Poppins-Medium',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500
+                            )),
                       ],
                     ),
                   ],
@@ -706,22 +775,34 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
 
             ],
           ),
+
+          ///Terms and Conditions
           ExpansionTileCard(
             key: cardTermsConditions,
             initiallyExpanded: true,
-            leading: Text("Terms and Conditions"),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title:  Text("Terms and Conditions",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
 
             ],
           ),
+
+          ///Message from Client
           ExpansionTileCard(
             key: cardMessage,
             initiallyExpanded: true,
-            leading: Text("Message from Client"),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title:  Text("Message from Client",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),

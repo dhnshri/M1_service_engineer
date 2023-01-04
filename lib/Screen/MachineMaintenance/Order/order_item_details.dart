@@ -235,6 +235,9 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                     ],
                   ),
 
+                  Divider(
+                    thickness: 1,
+                  ),
                   ///Track
                   ExpansionTileCard(
                     key: cardA,
@@ -250,10 +253,11 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: AnotherStepper(
+                          gap: 25,
                           stepperList: stepperData,
                           stepperDirection: Axis.vertical,
-                          iconWidth: 25, // Height that will be applied to all the stepper icons
-                          iconHeight: 25, // Width that will be applied to all the stepper icons
+                          iconWidth: 20, // Height that will be applied to all the stepper icons
+                          iconHeight: 20, // Width that will be applied to all the stepper icons
                           activeIndex: 1,
                           activeBarColor: Colors.red,
                         ),
@@ -527,60 +531,75 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
   List<StepperData> stepperData = [
     StepperData(
         title: StepperText(
-          "Order Placed"),
+          "Order Placed",textStyle: TextStyle(
+          fontSize: 13,
+          fontFamily: 'Poppins-Medium',
+          fontWeight: FontWeight.w500
+        )),
         subtitle: StepperText("24, Nov 2023"),
         iconWidget: Container(
-          padding: const EdgeInsets.all(0),
           decoration: const BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: const Icon(Icons.circle, color: Colors.red),
+          child: const Icon(Icons.circle, color: Colors.red,size: 10,),
         )
         ),
     StepperData(
-        title: StepperText("Order is ready for dispatch"),
+        title: StepperText("Order is ready for dispatch",textStyle: TextStyle(
+            fontSize: 13,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
         subtitle: StepperText("24, Nov 2023"),
         iconWidget: Container(
-          padding: const EdgeInsets.all(0),
           decoration: const BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: const Icon(Icons.circle, color: Colors.red),
+          child: const Icon(Icons.circle, color: Colors.red,size: 10,),
         )
         ),
     StepperData(
-        title: StepperText("Order is reached your city"),
+        title: StepperText("Order is reached your city",textStyle: TextStyle(
+            fontSize: 13,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
         subtitle: StepperText(
             "24, Nov 2023"),
         iconWidget: Container(
-          padding: const EdgeInsets.all(0),
           decoration: const BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: const Icon(Icons.circle, color: Colors.red),
+          child: const Icon(Icons.circle, color: Colors.red,size: 10,),
         )
         ),
     StepperData(
-        title: StepperText("Order is reached your location\nplease verify and recive"),
+        title: StepperText("Order is reached your location\nplease verify and recive",textStyle: TextStyle(
+            fontSize: 13,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
         subtitle: StepperText(
             "24, Nov 2023"),
         iconWidget: Container(
-          padding: const EdgeInsets.all(0),
           decoration: const BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: const Icon(Icons.circle, color: Colors.red),
+          child: const Icon(Icons.circle, color: Colors.red,size: 10,),
         )
         ),
     StepperData(
-      title: StepperText("Delivered",),
+      title: StepperText("Delivered",textStyle: TextStyle(
+          fontSize: 13,
+          fontFamily: 'Poppins-Medium',
+          fontWeight: FontWeight.w500
+      )),
       subtitle: StepperText("24, Nov 2023"),
         iconWidget: Container(
-          padding: const EdgeInsets.all(0),
           decoration: const BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: const Icon(Icons.circle, color: Colors.red),
+          child: const Icon(Icons.circle, color: Colors.red,size: 10,),
         )
     ),
   ];
