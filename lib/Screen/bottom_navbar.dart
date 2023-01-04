@@ -160,7 +160,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
           if(widget.dropValue == "Machine Maintenance")
             OrderItemsScreen(),
-          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsReplyTransportationScreen():SizedBox(),
           widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
       ),
