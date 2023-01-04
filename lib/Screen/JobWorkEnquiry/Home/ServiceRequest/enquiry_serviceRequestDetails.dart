@@ -107,16 +107,14 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
           //Basic Info
           ExpansionTileCard(
             key: cardA,
-            leading:  Text("Basic Info",
+            initiallyExpanded: true,
+            title:  Text("Basic Info",
                 style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'Poppins-Medium',
                     fontSize: 16,
                     fontWeight: FontWeight.w500
                 )),
-            initiallyExpanded: true,
-            title: SizedBox(),
-            subtitle:SizedBox(),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -156,19 +154,17 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
               ),
             ],
           ),
-          // Machin Info
+          ///Item Required
           ExpansionTileCard(
             initiallyExpanded: true,
             key: cardB,
-            leading:  Text("Item Required",
+            title: Text("Item Required",
                 style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'Poppins-Medium',
                     fontSize: 16,
                     fontWeight: FontWeight.w500
                 )),
-            title: SizedBox(),
-            subtitle:SizedBox(),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),

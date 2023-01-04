@@ -452,7 +452,6 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                         ],
                       ),
                     )
-
                   ],
                 ),
               ),
