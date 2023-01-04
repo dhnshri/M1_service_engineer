@@ -257,16 +257,18 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               ),
                             ),
                             SizedBox(width: 20,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Hello",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
-                                Text("Mcxeeco Sanasam",
-                                  style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
-                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                )
-                              ],
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Hello",
+                                    style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
+                                  Text("Mcxeeco Sanasam",
+                                    style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -1646,11 +1648,15 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Text("MSME/Udhyog Aadhar License",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.5,
+
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Text("MSME/Udhyog Aadhar License",
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
                                   Container(

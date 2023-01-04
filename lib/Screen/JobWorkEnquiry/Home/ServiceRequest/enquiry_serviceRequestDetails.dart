@@ -83,18 +83,20 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
 
             ),
             // SizedBox(width:8),
-            AppSmallButton(
-              onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen ()));
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Make Quotation',
-              loading: loading,
+            Flexible(
+              child: AppSmallButton(
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen ()));
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Make Quotation',
+                loading: loading,
 
 
+              ),
             ),
           ],
         ),

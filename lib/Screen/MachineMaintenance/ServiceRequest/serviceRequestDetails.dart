@@ -59,8 +59,9 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
+              Navigator.pop(context);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
@@ -71,23 +72,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           children: [
             AppSmallButton(
               onPressed: () async {
-                // Navigator.of(context).push(
-                //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
+
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -98,33 +83,21 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
 
             ),
             SizedBox(width:8),
-            AppSmallButton(
-              onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Make Quotation',
-              loading: loading,
+            Expanded(
+              child: AppSmallButton(
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
+
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Make Quotation',
+                loading: loading,
 
 
+              ),
             ),
           ],
         ),
@@ -134,6 +107,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           SizedBox(height: 7,),
           //Basic Info
           ExpansionTileCard(
+            initiallyExpanded: true,
             key: cardA,
             leading: Text("Basic Info"),
 

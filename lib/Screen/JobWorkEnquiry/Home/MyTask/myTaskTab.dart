@@ -243,106 +243,114 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.8,
-                    child: Text(
-                      "Job Title/Services Name or Any Other Name",
-                      style: TextStyle(
-                          fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width/1.8,
+                      child: Text(
+                        "Job Title/Services Name or Any Other Name",
+                        style: TextStyle(
+                            fontFamily: 'Poppins-SemiBold',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
                     ),
-                  ),
-                  SizedBox(height: 4,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Items:",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold
+                    SizedBox(height: 4,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Items:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width/5.8,
-                      ),
-                      Text(
-                        "Items Name",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-Regular',
-                            fontSize: 12,
-                            // fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 3,),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/5.8,
+                        // ),
+                        Container(
+                          child: Text(
+                            "Items Name",
+                            style: TextStyle(
+                                fontFamily: 'Poppins-Regular',
+                                fontSize: 12,
+                                // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 3,),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Task Status:",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Task Status:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width/11.3,
-                      ),
-                      Text(
-                        "Step 1",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-Regular',
-                            fontSize: 12,
-                            // fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 3,),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/11.3,
+                        // ),
+                        Container(
+                          child: Text(
+                            "Step 1",
+                            style: TextStyle(
+                                fontFamily: 'Poppins-Regular',
+                                fontSize: 12,
+                                // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 3,),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Date & Time:",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Date & Time:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width/12.5,
-                      ),
-                      Text(
-                        "12 Nov 2022, 12:00AM",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-Regular',
-                            fontSize: 12,
-                            // fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
-                ],
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/12.5,
+                        // ),
+                        Container(
+                          child: Text(
+                            "12 Nov 2022, 12:00AM",
+                            style: TextStyle(
+                                fontFamily: 'Poppins-Regular',
+                                fontSize: 12,
+                                // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -357,93 +365,97 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
       body:Container(
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, left: 10, right: 10, bottom: 5),              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+            Container(
+              decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 0.2,),
+                  )
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 15.0, left: 10, right: 10, bottom: 5),              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
 
-                  Expanded(
-                    child: TextFormField(
-                      // initialValue: Application.customerLogin!.name.toString(),
-                      controller: _searchController,
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        fontSize: 18,
-                        height: 1.5,
-                      ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: ThemeColors.bottomNavColor,
-                        prefixIcon: Icon(Icons.search,color: ThemeColors.textFieldHintColor,),
-                        hintText: "Search all Orders",
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 15.0),
-                        hintStyle: TextStyle(fontSize: 15),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(1.0)),
-                          borderSide: BorderSide(
-                              width: 0.8,
-                              color: ThemeColors.bottomNavColor
-                          ),
+                    Expanded(
+                      child: TextFormField(
+                        // initialValue: Application.customerLogin!.name.toString(),
+                        controller: _searchController,
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(
+                          fontSize: 18,
+                          height: 1.5,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(1.0)),
-                          borderSide: BorderSide(
-                              width: 0.8,
-                              color: ThemeColors.bottomNavColor),
-                        ),
-                        border: OutlineInputBorder(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: ThemeColors.bottomNavColor,
+                          prefixIcon: Icon(Icons.search,color: ThemeColors.textFieldHintColor,),
+                          hintText: "Search all Orders",
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 15.0),
+                          hintStyle: TextStyle(fontSize: 15),
+                          enabledBorder: OutlineInputBorder(
                             borderRadius:
                             BorderRadius.all(Radius.circular(1.0)),
                             borderSide: BorderSide(
                                 width: 0.8,
-                                color: ThemeColors.bottomNavColor)),
+                                color: ThemeColors.bottomNavColor
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(1.0)),
+                            borderSide: BorderSide(
+                                width: 0.8,
+                                color: ThemeColors.bottomNavColor),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.bottomNavColor)),
+                        ),
+                        validator: (value) {
+                          Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
+                          RegExp regex = new RegExp(pattern.toString());
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter GST Number';
+                          }else if(!regex.hasMatch(value)){
+                            return 'Please enter valid GST Number';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          // profile.name = value;
+                          setState(() {
+                            // _nameController.text = value;
+                            if (_formKey.currentState!.validate()) {}
+                          });
+                        },
                       ),
-                      validator: (value) {
-                        Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                        RegExp regex = new RegExp(pattern.toString());
-                        if (value == null || value.isEmpty) {
-                          return 'Please Enter GST Number';
-                        }else if(!regex.hasMatch(value)){
-                          return 'Please enter valid GST Number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        // profile.name = value;
-                        setState(() {
-                          // _nameController.text = value;
-                          if (_formKey.currentState!.validate()) {}
-                        });
-                      },
                     ),
-                  ),
 
 
-                  InkWell(
-                    onTap: ()
-                    {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) =>  EnquiryMyTaskFilterScreen()));
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.filter_list),
-                        SizedBox(width: 5,),
-                        Text("Filter")
-                      ],
-                    ),
-                  )
+                    InkWell(
+                      onTap: ()
+                      {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) =>  EnquiryMyTaskFilterScreen()));
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.filter_list),
+                          SizedBox(width: 5,),
+                          Text("Filter")
+                        ],
+                      ),
+                    )
 
-                ],
+                  ],
+                ),
               ),
-            ),
-            Divider(
-              thickness: 1,
             ),
             SingleChildScrollView(child: Container(child: InkWell(
                 onTap: (){

@@ -89,18 +89,20 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
 
 
             ),
-            AppSmallButton(
-              onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EnquiryReviceQuotationScreen()));
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Revise Quotation',
-              loading: loading,
+            Flexible(
+              child: AppSmallButton(
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EnquiryReviceQuotationScreen()));
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Revise Quotation',
+                loading: loading,
 
 
+              ),
             ),
           ],
         ),

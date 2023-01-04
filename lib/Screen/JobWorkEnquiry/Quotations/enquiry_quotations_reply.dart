@@ -230,80 +230,86 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.8,
-                    child: Text(
-                      "Job Title/Services Name or Any Other Name",
-                      style: TextStyle(
-                          fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width/1.8,
+                      child: Text(
+                        "Job Title/Services Name or Any Other Name",
+                        style: TextStyle(
+                            fontFamily: 'Poppins-SemiBold',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
                     ),
-                  ),
-                  SizedBox(height: 4,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Enquiry ID:",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold
+                    SizedBox(height: 4,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Enquiry ID:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width/9,
-                      ),
-                      Text(
-                        "#102GRDSA36987",
-                        style: TextStyle(
-                          fontFamily: 'Poppins-Regular',
-                          fontSize: 12,
-                          // fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 3,),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/9,
+                        // ),
+                        Container(
+                          child: Text(
+                            "#102GRDSA36987",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 3,),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Item:",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Item:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width/5.3,
-                      ),
-                      Text(
-                        "Steal Plates",
-                        style: TextStyle(
-                          fontFamily: 'Poppins-Regular',
-                          fontSize: 12,
-                          // fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/5.3,
+                        // ),
+                        Container(
+                          child: Text(
+                            "Steal Plates",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
 
-                ],
+                  ],
+                ),
               ),
             ),
           ],

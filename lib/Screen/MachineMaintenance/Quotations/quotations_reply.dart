@@ -160,81 +160,162 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
   Widget quotationsaReplyCard()
   {
-    return Padding(
-      padding: const EdgeInsets.only(bottom:8.0),
+    return Container(
+      width: MediaQuery.of(context).size.width ,
       child: Card(
-        elevation: 1,
-        child: ListTile(
-          leading: CachedNetworkImage(
-            filterQuality: FilterQuality.medium,
-            // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-            // imageUrl: "https://picsum.photos/250?image=9",
-            imageUrl: "https://picsum.photos/250?image=9",
-            placeholder: (context, url) {
-              return Shimmer.fromColors(
-                baseColor: Theme.of(context).hoverColor,
-                highlightColor: Theme.of(context).highlightColor,
-                enabled: true,
-                child: Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+        // color: Colors.white70,
+        elevation: 5,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.28,
+                  maxHeight: MediaQuery.of(context).size.width * 0.28,
                 ),
-              );
-            },
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  filterQuality: FilterQuality.medium,
+                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                  // imageUrl: "https://picsum.photos/250?image=9",
+                  imageUrl: "https://picsum.photos/250?image=9",
+                  placeholder: (context, url) {
+                    return Shimmer.fromColors(
+                      baseColor: Theme.of(context).hoverColor,
+                      highlightColor: Theme.of(context).highlightColor,
+                      enabled: true,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                      ),
+                    );
+                  },
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, error) {
+                    return Shimmer.fromColors(
+                      baseColor: Theme.of(context).hoverColor,
+                      highlightColor: Theme.of(context).highlightColor,
+                      enabled: true,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(Icons.error),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-            errorWidget: (context, url, error) {
-              return Shimmer.fromColors(
-                baseColor: Theme.of(context).hoverColor,
-                highlightColor: Theme.of(context).highlightColor,
-                enabled: true,
-                child: Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.error),
-                ),
-              );
-            },
-          ),
-          title: Column(
-            children: [
-              Text("Job Title/Services Name or Any Other Name...",style: serviceRequestHeadingStyle,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Enquiry ID:",style: serviceRequestSubHeadingStyle,),
-                  Text("#102GRDSA36987",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
-                ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Timings:",style: serviceRequestSubHeadingStyle,),
-                  Text("10AM - 6PM",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
-                ],
-              ),
-            ],
-          ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width/1.8,
+                      child: Text(
+                        "Job Title/Services Name or Any Other Name",
+                        style: TextStyle(
+                            fontFamily: 'Poppins-SemiBold',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
+                    SizedBox(height: 4,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Enquiry ID:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/9,
+                        // ),
+                        Container(
+                          // width: MediaQuery.of(context).size.width*0.2,
+                          child: Text(
+                            "#102GRDSA36987",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
 
+                      ],
+                    ),
+                    SizedBox(height: 3,),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Timing:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/6.3,
+                        // ),
+                        Container(
+                          // width: MediaQuery.of(context).size.width*0.2,
+                          child: Text(
+                            "10 AM - 6 PM",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
