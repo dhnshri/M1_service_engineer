@@ -340,11 +340,15 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body:Container(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ListView(
-              children: [
-                Padding(
+          child: ListView(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 0.2,),
+                    )
+                ),
+                child: Padding(
                   padding: const EdgeInsets.only(
                       top: 10.0, left: 10, right: 10, bottom: 5),
                   child: Row(
@@ -425,43 +429,14 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     ],
                   ),
                 ),
-
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Row(
-                //       children: [
-                //         Icon(Icons.search),
-                //         SizedBox(width: 5,),
-                //         Text("Search all Orders")
-                //       ],
-                //     ),
-                //
-                //     InkWell(
-                //       onTap: ()
-                //       {
-                //         Navigator.push(context,
-                //             MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
-                //       },
-                //       child: Row(
-                //         children: [
-                //           Icon(Icons.filter_list),
-                //           SizedBox(width: 5,),
-                //           Text("Filter")
-                //         ],
-                //       ),
-                //     )
-                //
-                //   ],
-                // ),
-              InkWell(
-                onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
-                },
-                  child: buildCustomerEnquiriesList()),
-              ],
-            ),
+              ),
+            InkWell(
+              onTap: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+              },
+                child: buildCustomerEnquiriesList()),
+            ],
           ),
         ),
 

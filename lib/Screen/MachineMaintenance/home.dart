@@ -42,10 +42,10 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
   Widget androidSwitch() => Transform.scale(
     scale: 1.2,
     child: Switch(
-      activeColor: Colors.deepOrangeAccent,
+      activeColor: Colors.red,
       activeTrackColor: Color(0xffFFBBBC),
-      inactiveThumbColor: Colors.red,
-      inactiveTrackColor: Color(0xffFFBBBC),
+      inactiveThumbColor: Colors.grey,
+      inactiveTrackColor: Color(0xffe1d6d6),
       splashRadius: 50.0,
       value: isSwitched,
       onChanged: (value)=> setState(() =>
@@ -61,13 +61,6 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          // leading: Row(
-          //   children: [
-          //     Icon(Icons.circle,color: Colors.red,),
-          //     SizedBox(width: 5,),
-          //     Text("Online"),
-          //   ],
-          // ),
           leading: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -75,19 +68,9 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
                 padding: const EdgeInsets.only(left:30.0),
                 child: androidSwitch(),
               )),
-              // SizedBox(width:17.0,),
-              // Expanded(
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(left:0.0),
-              //     child: Text('$isSwitched', style: TextStyle(color: Colors.red,
-              //         fontSize: 14.0),),
-              //   ),
-              // )
-
-              //  Center(child: Text("Offline",style: TextStyle(fontSize: 14,color: Colors.red,fontWeight: FontWeight.bold),)),
-            ],
+              ],
           ),
-          title: Text("Online",style: onlineOfflineStyle,),
+          title: Text(isSwitched? "Online" : "Offline",style: onlineOfflineStyle,),
           actions: [
             notification(context),
             SizedBox(width: 10,)
