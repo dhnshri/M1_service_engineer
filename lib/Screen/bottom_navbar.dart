@@ -17,6 +17,8 @@ import 'MachineMaintenance/Order/orderlist.dart';
 import 'MachineMaintenance/Profile/profile.dart';
 import 'MachineMaintenance/Quotations/quotations_reply.dart';
 import 'MachineMaintenance/home.dart';
+import 'Transportation/QuotationTransportation/quotation_reply_transportation.dart';
+import 'Transportation/transportation_home.dart';
 
 
 
@@ -119,13 +121,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children:
         <Widget>[
           // bottomOptions(context)
-          widget.dropValue == "Machine Maintenance"? MachineMaintenanceHomeScreen():widget.dropValue == "Job Work Enquiry"?EnquiryHomeScreen(): widget.dropValue == "Transportation"? EnquiryHomeScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? MachineMaintenanceHomeScreen():widget.dropValue == "Job Work Enquiry"?EnquiryHomeScreen(): widget.dropValue == "Transportation"? TransportationQuotationsHomeScreen():SizedBox(),
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
           if(widget.dropValue == "Machine Maintenance")
             OrderScreen(),
-          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsReplyScreen():SizedBox(),
-            OrderItemsScreen(),
-          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?QuotationsScreen(): widget.dropValue == "Transportation"? QuotationsScreen():SizedBox(),
+          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsReplyTransportationScreen():SizedBox(),
           widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
       ),
