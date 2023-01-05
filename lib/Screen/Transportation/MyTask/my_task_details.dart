@@ -544,6 +544,44 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                     )),
               ),
             ),),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 50,
+              color: ThemeColors.textFieldBackgroundColor,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text("Upload Receipt Copy",
+                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: (){
+                       // _openGallery(context);
+                      },
+                      child: Container(
+                        height: 30,
+                        color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4,right: 4),
+                          child: Center(child: Text("+Add Image",
+                            style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
 
           ///Mark as Completed Button
           InkWell(

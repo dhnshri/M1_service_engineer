@@ -508,7 +508,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardVehicleDetailsTransposation,
               initiallyExpanded: true,
-              leading: Text("Vehicle Details"),
+              leading: Text("Vehicle Details",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
 
               title: SizedBox(),
               subtitle:SizedBox(),
@@ -544,7 +544,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardQuotationsTransposation,
               initiallyExpanded: true,
-              leading: Text("Quotations"),
+              leading: Text("Quotations",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
 
               title: SizedBox(),
               subtitle:SizedBox(),
@@ -615,7 +615,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardQuotations,
               initiallyExpanded: true,
-              leading: Text("Quotations"),
+              leading: Text("Quotations",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
 
               title: SizedBox(),
               subtitle:SizedBox(),
@@ -683,7 +683,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardTermsConditionsTransposation,
               initiallyExpanded: true,
-              leading: Text("Terms and Conditions"),
+              leading: Text("Terms and Conditions",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
               title: SizedBox(),
               subtitle:SizedBox(),
               children: <Widget>[
@@ -693,7 +693,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardMessage,
               initiallyExpanded: true,
-              leading: Text("Message from Client"),
+              leading: Text("Message from Client",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
               title: SizedBox(),
               subtitle:SizedBox(),
               children: <Widget>[

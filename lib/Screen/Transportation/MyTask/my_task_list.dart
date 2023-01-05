@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
+import 'package:service_engineer/Screen/Transportation/MyTask/transportation_filter_my_task.dart';
 import 'package:service_engineer/Screen/Transportation/ServiceRequest/transportation_service_request_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -168,7 +169,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  myTaskCard();
+        return  myTaskCardNew();
       },
       itemCount: 7,
     );
@@ -263,6 +264,165 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
     );
   }
 
+  Widget myTaskCardNew() {
+    return Container(
+      width: MediaQuery.of(context).size.width ,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+        // color: Colors.white70,
+        elevation: 5,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.28,
+                  maxHeight: MediaQuery.of(context).size.width * 0.28,
+                ),
+                child: CachedNetworkImage(
+                  filterQuality: FilterQuality.medium,
+                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                  // imageUrl: "https://picsum.photos/250?image=9",
+                  imageUrl: "https://picsum.photos/250?image=9",
+                  placeholder: (context, url) {
+                    return Shimmer.fromColors(
+                      baseColor: Theme.of(context).hoverColor,
+                      highlightColor: Theme.of(context).highlightColor,
+                      enabled: true,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                      ),
+                    );
+                  },
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, error) {
+                    return Shimmer.fromColors(
+                      baseColor: Theme.of(context).hoverColor,
+                      highlightColor: Theme.of(context).highlightColor,
+                      enabled: true,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(Icons.error),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width/1.8,
+                      child: Text(
+                        "Job Title/Services Name or Any Other Name...",
+                        style: TextStyle(
+                            fontFamily: 'Poppins-SemiBold',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
+                    SizedBox(height: 4,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Enquiry ID:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/9,
+                        // ),
+                        Container(
+                          child: Text(
+                            "#102GRDSA36987",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 3,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Task Status:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
+                          overflow: TextOverflow.ellipsis,
+
+                        ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/12.5,
+                        // ),
+                        Container(
+                          child: Text(
+                            "Step 1 ( Lorem Ipsum)",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,7 +446,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                     onTap: ()
                     {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
+                          MaterialPageRoute(builder: (context) => MyTaskTransportationFilterScreen()));
                     },
                     child: Row(
                       children: [

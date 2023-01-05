@@ -61,7 +61,7 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
         leading: InkWell(
             onTap: (){
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
@@ -136,8 +136,8 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
           //Basic Info
           ExpansionTileCard(
             key: cardA,
-            leading: Text("Basic Info"),
-
+            leading: Text("Basic Info",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+            initiallyExpanded: true,
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[
@@ -181,8 +181,8 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
           //Load Detail
           ExpansionTileCard(
             key: cardB,
-            leading: Text("Load Details"),
-
+            leading: Text("Load Details",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+            initiallyExpanded: true,
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[

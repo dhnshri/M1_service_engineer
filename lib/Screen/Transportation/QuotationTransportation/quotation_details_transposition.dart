@@ -520,7 +520,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
             ExpansionTileCard(
               key: cardVehicleDetailsTransposation,
               initiallyExpanded: true,
-              leading: Text("Vehicle Details"),
+              leading: Text("Vehicle Details",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
 
               title: SizedBox(),
               subtitle:SizedBox(),
@@ -556,7 +556,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
             ExpansionTileCard(
               key: cardQuotationsTransposation,
               initiallyExpanded: true,
-              leading: Text("Quotations"),
+              leading: Text("Quotations",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
 
               title: SizedBox(),
               subtitle:SizedBox(),
@@ -656,7 +656,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
             ExpansionTileCard(
               key: cardMessage,
               initiallyExpanded: true,
-              leading: Text("Message from Client"),
+              leading: Text("Message from Client",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
               title: SizedBox(),
               subtitle:SizedBox(),
               children: <Widget>[

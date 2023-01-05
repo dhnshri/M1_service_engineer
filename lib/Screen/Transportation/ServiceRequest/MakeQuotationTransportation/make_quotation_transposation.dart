@@ -61,7 +61,7 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                   MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
+        title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
@@ -94,142 +94,145 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
 
         ),
       ),
-      body: ListView(
-        children: [
-          SizedBox(height: 10,),
-          SizedBox(
-            width:
-            MediaQuery.of(context).size.width * 0.8,
-            height: 60,
-            child: TextFormField(
-              controller: ServiceCallChargesController,
-              keyboardType: TextInputType.number,
-              // maxLength: 10,
-              cursorColor: primaryAppColor,
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 1.0,
-                  ),
-                ),
-                fillColor: Color(0xffF5F5F5),
-                filled: true,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                      color: Colors.white, width: 1.0),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ListView(
+          children: [
+            SizedBox(height: 10,),
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: ServiceCallChargesController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
                     borderRadius:
                     BorderRadius.circular(8.0),
                     borderSide: const BorderSide(
                       color: Colors.white,
                       width: 1.0,
-                    )),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
+                    ),
                   ),
-                ),
-                hintText: 'Service/Call Charges',
-                contentPadding: const EdgeInsets.fromLTRB(
-                    20.0, 20.0, 0.0, 0.0),
-                hintStyle: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500),
-              ),
-              onChanged: (val) {
-                setState(() {
-                  phoneNum = val;
-                  // _phoneNumberController.text = val;
-                });
-              },
-            ),
-          ),
-          SizedBox(
-            width:
-            MediaQuery.of(context).size.width * 0.8,
-            height: 60,
-            child: TextFormField(
-              controller: HandlingChargesController,
-              keyboardType: TextInputType.number,
-              // maxLength: 10,
-              cursorColor: primaryAppColor,
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
                   ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 1.0,
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
                   ),
-                ),
-                fillColor: Color(0xffF5F5F5),
-                filled: true,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                      color: Colors.white, width: 1.0),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
                     borderRadius:
                     BorderRadius.circular(8.0),
                     borderSide: const BorderSide(
                       color: Colors.white,
                       width: 1.0,
-                    )),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
+                    ),
                   ),
+                  hintText: 'Service/Call Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
                 ),
-                hintText: 'Handling Charges',
-                contentPadding: const EdgeInsets.fromLTRB(
-                    20.0, 20.0, 0.0, 0.0),
-                hintStyle: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
               ),
-              onChanged: (val) {
-                setState(() {
-                  phoneNum = val;
-                  // _phoneNumberController.text = val;
-                });
-              },
             ),
-          ),
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: HandlingChargesController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'Handling Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
+              ),
+            ),
 
 
-        ],
+          ],
+        ),
       ),
     );
   }

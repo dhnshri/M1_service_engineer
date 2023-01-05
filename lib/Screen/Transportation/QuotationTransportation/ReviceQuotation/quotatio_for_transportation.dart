@@ -233,7 +233,7 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
           ExpansionTileCard(
             key: cardMessage,
             initiallyExpanded: true,
-            leading: Text("Message from Client"),
+            leading: Text("Message from Client",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
             title: SizedBox(),
             subtitle:SizedBox(),
             children: <Widget>[
