@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/enquiry_quotations_reply_details.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply_details.dart';
+import 'package:service_engineer/Screen/Transportation/QuotationTransportation/quotation_details_transposition.dart';
 import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -11,17 +11,18 @@ import 'package:shimmer/shimmer.dart';
 import '../../../Config/font.dart';
 import '../../../Widget/app_button.dart';
 import '../../../Widget/function_button.dart';
+import '../../bottom_navbar.dart';
 
 
 
-class EnquiryQuotationsReplyScreen extends StatefulWidget {
-  const EnquiryQuotationsReplyScreen({Key? key}) : super(key: key);
+class QuotationsReplyTransportationScreen extends StatefulWidget {
+  const QuotationsReplyTransportationScreen({Key? key}) : super(key: key);
 
   @override
-  _EnquiryQuotationsReplyScreenState createState() => _EnquiryQuotationsReplyScreenState();
+  _QuotationsReplyTransportationScreenState createState() => _QuotationsReplyTransportationScreenState();
 }
 
-class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScreen> {
+class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTransportationScreen> {
 
   final _formKey = GlobalKey<FormState>();
   bool loading = true;
@@ -152,14 +153,13 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  quotationsaReplyCard();
+        return  quotationsReplyCardNew();
       },
       itemCount: 20,
     );
   }
 
-  Widget quotationsaReplyCard()
-  {
+  Widget quotationsReplyCardNew() {
     return Container(
       width: MediaQuery.of(context).size.width ,
       child: Card(
@@ -240,7 +240,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                     Container(
                       width: MediaQuery.of(context).size.width/1.8,
                       child: Text(
-                        "Job Title/Services Name or Any Other Name",
+                        "Job Title/Services Name or Any Other Name...",
                         style: TextStyle(
                             fontFamily: 'Poppins-SemiBold',
                             fontSize: 16,
@@ -279,24 +279,25 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                       ],
                     ),
                     SizedBox(height: 3,),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Item:",
+                          "Timings:",
                           style: TextStyle(
                               fontFamily: 'Poppins-SemiBold',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
+                          overflow: TextOverflow.ellipsis,
+
                         ),
                         // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/5.3,
+                        //   width: MediaQuery.of(context).size.width/12.5,
                         // ),
                         Container(
                           child: Text(
-                            "Steal Plates",
+                            "10AM - 6PM",
                             style: TextStyle(
                               fontFamily: 'Poppins-Regular',
                               fontSize: 12,
@@ -307,12 +308,93 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                         )
                       ],
                     ),
-
                   ],
                 ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget quotationsaReplyCard()
+  {
+    return Padding(
+      padding: const EdgeInsets.only(bottom:8.0),
+      child: Card(
+        elevation: 1,
+        child: ListTile(
+          leading: CachedNetworkImage(
+            filterQuality: FilterQuality.medium,
+            // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+            // imageUrl: "https://picsum.photos/250?image=9",
+            imageUrl: "https://picsum.photos/250?image=9",
+            placeholder: (context, url) {
+              return Shimmer.fromColors(
+                baseColor: Theme.of(context).hoverColor,
+                highlightColor: Theme.of(context).highlightColor,
+                enabled: true,
+                child: Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              );
+            },
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              );
+            },
+            errorWidget: (context, url, error) {
+              return Shimmer.fromColors(
+                baseColor: Theme.of(context).hoverColor,
+                highlightColor: Theme.of(context).highlightColor,
+                enabled: true,
+                child: Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.error),
+                ),
+              );
+            },
+          ),
+          title: Column(
+            children: [
+              Text("Title/Services Name or Any Other Name...",style: serviceRequestHeadingStyle,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Enquiry ID:",style: serviceRequestSubHeadingStyle,),
+                  Text("#102GRDSA36987",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Timings:",style: serviceRequestSubHeadingStyle,),
+                  Text("10AM - 6PM",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
+                ],
+              ),
+            ],
+          ),
+
         ),
       ),
     );
@@ -343,8 +425,8 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: (){
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation Reply',),
@@ -358,7 +440,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                 InkWell(
                     onTap: (){
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => EnquiryQuotationsReplyDetailsScreen()));
+                          MaterialPageRoute(builder: (context) => QuotationForTransportation()));
                     },
                     child: buildQuotationsaReplyList()),
               ],

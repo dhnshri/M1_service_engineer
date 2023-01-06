@@ -72,7 +72,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
           children: [
             AppSmallButton(
               onPressed: () async {
-                
+
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -88,7 +88,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                 onPressed: () async {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
-                  
+
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius:
