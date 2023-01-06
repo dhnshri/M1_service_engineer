@@ -585,6 +585,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
 
           ///Track Process List
           Column(
+            // height: MediaQuery.of(context).size.height,
             children: [
               ListView.builder(
                   itemCount: 3,
@@ -617,7 +618,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w400)),
                                     Text("Process",
-                                    style: TextStyle(color: Colors.red),)
+                                      style: TextStyle(color: Colors.red),)
                                   ],
                                 ),
                               ),
@@ -626,13 +627,13 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                 child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
                                     maxLines: 2, overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                        fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
                                     )),
                               ),
                               trailing: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Icon(
-                                    Icons.arrow_forward_ios,),
+                                  Icons.arrow_forward_ios,),
                               ),
                             ),
                           ),
@@ -640,7 +641,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                         ),
                       ),
                     );
-                  }),
+                  })
             ],
           ),
 

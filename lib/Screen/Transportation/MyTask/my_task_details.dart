@@ -140,16 +140,13 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
           ExpansionTileCard(
             initiallyExpanded: true,
             key: cardA,
-            leading: Text("Basic Info",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
-              ),),
-
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title:Text("Basic Info",
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w500
+            ),),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -162,6 +159,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("Lorem Ipsume",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -169,6 +167,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("abcd12@gmail.com",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -176,6 +176,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("#102GRDSA36987",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -196,15 +198,13 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
           ExpansionTileCard(
             key: cardB,
             initiallyExpanded: true,
-            leading: Text("Load Details",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Load Details",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+              )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -217,6 +217,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("Machine",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -224,6 +225,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("10 tonne",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -231,6 +234,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("12 * 12",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -238,6 +243,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         Text("Pune Railway Station",style: ExpanstionTileRightDataStyle,),
                       ],
                     ),
+                    SizedBox(height: 5,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -246,6 +253,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ],
                     ),
                     SizedBox(height: 5,),
+
+                    ///Map
                     Container(
 
                         height: MediaQuery.of(context).size.height * 0.21,
@@ -353,72 +362,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             ),
                           ],
                         )),
-                    SizedBox(height: 10,),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Drawing Attachment:",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Poppins-Medium',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
-                          )),
-                    ),
-                    SizedBox(height: 5,),
-                    Container(
-                      height:180,
-                      width: 340,
-                      child: CachedNetworkImage(
-                        filterQuality: FilterQuality.medium,
-                        // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                        // imageUrl: "https://picsum.photos/250?image=9",
-                        imageUrl: "https://picsum.photos/250?image=9",
-                        placeholder: (context, url) {
-                          return Shimmer.fromColors(
-                            baseColor: Theme.of(context).hoverColor,
-                            highlightColor: Theme.of(context).highlightColor,
-                            enabled: true,
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          );
-                        },
-                        imageBuilder: (context, imageProvider) {
-                          return Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          );
-                        },
-                        errorWidget: (context, url, error) {
-                          return Shimmer.fromColors(
-                            baseColor: Theme.of(context).hoverColor,
-                            highlightColor: Theme.of(context).highlightColor,
-                            enabled: true,
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Icon(Icons.error),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+
                     SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(

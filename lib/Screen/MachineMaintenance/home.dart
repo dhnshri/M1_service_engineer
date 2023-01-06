@@ -91,7 +91,7 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
         ),
         body: TabBarView(
         children: [
-          ServiceRequestScreen(),
+          ServiceRequestScreen(isSwitched: isSwitched),
           MyTaskScreen()
         ],
       ) ,

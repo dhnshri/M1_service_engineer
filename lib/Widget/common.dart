@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Notification/NotificationPage.dart';
 
 
 Widget notificationIcon(BuildContext context) {
@@ -42,7 +43,7 @@ Widget notificationIcon(BuildContext context) {
                       shape: BoxShape.circle,
                       //color: Color(0xffc32c37),
                       color: Colors.red,
-                      border: Border.all(color: Colors.black, width: 1)),
+                      border: Border.all(width: 1)),
                   child: const Padding(
                     padding: EdgeInsets.all(0.0),
                     child: Center(
@@ -95,7 +96,7 @@ Widget addIcon(){
 Widget notification(BuildContext context) {
   return InkWell(
     onTap: (){
-      // Navigator.push(context, MaterialPageRoute(builder: (context)=> NotificationPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> NotificationPage()));
 
     },
     child: Container(

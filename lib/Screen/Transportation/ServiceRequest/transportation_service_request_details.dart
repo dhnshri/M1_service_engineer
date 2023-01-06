@@ -69,26 +69,10 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppSmallButton(
               onPressed: () async {
-                // Navigator.of(context).push(
-                //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -98,26 +82,10 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
 
 
             ),
-            SizedBox(width:8),
             AppSmallButton(
               onPressed: () async {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MakeQuotationTransposationScreen()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -136,10 +104,13 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
           //Basic Info
           ExpansionTileCard(
             key: cardA,
-            leading: Text("Basic Info",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
             initiallyExpanded: true,
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Basic Info",style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w500
+            )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -181,10 +152,13 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
           //Load Detail
           ExpansionTileCard(
             key: cardB,
-            leading: Text("Load Details",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
             initiallyExpanded: true,
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Load Details",style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w500
+            )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),

@@ -349,13 +349,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   Text("Hello",
                                     style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
                                   Container(
-                                    // width: MediaQuery.of(context).size.width*0.24,
-                                    child: Text("Mcxeeco Sanasam",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
-                                      textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                    ),
+                                      child:Text("Mcxeeco Sanasam",
+                                        style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      )
                                   )
-
                                 ],
                               ),
                             )
@@ -1077,15 +1075,16 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       children: [
 
                         expCompanyForms.isNotEmpty
-                        ? Container(
-                          height: MediaQuery.of(context).size.height,
-                          child: ListView.builder(
-                              itemCount: expCompanyForms.length,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (_, index) {
-                                return expCompanyForms[index];
-                              }),
+                        ? Column(
+                          children: [
+                            ListView.builder(
+                                itemCount: expCompanyForms.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (_, index) {
+                                  return expCompanyForms[index];
+                                }),
+                          ],
                         )
                             : SizedBox(),
 
@@ -1102,15 +1101,10 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               onTap: (){
                                 onAdd();
                               },
-                              child: Container(
-                                  height: MediaQuery.of(context).size.height/16,
-                                  width: MediaQuery.of(context).size.width/8,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: ThemeColors.redTextColor,
-                                  ),
-                                  child: Icon(Icons.add,color: ThemeColors.whiteTextColor,)
-                              ),
+                              child: CircleAvatar(
+                                backgroundColor: ThemeColors.redTextColor,
+                                child: Icon(Icons.add,color: Colors.white,),
+                              )
                             )
                           ],
                         )
@@ -1385,14 +1379,9 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
-                            Container(
-                                height: MediaQuery.of(context).size.height/16,
-                                width: MediaQuery.of(context).size.width/8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: ThemeColors.redTextColor,
-                                ),
-                                child: Icon(Icons.add,color: ThemeColors.whiteTextColor,)
+                            CircleAvatar(
+                              backgroundColor: ThemeColors.redTextColor,
+                              child: Icon(Icons.add,color: Colors.white,),
                             )
                           ],
                         )
