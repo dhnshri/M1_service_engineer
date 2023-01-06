@@ -2468,14 +2468,9 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
-                            Container(
-                              height: MediaQuery.of(context).size.height/16,
-                                width: MediaQuery.of(context).size.width/8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: ThemeColors.redTextColor,
-                                ),
-                                child: Icon(Icons.add,color: ThemeColors.whiteTextColor,)
+                            CircleAvatar(
+                              backgroundColor: ThemeColors.redTextColor,
+                              child: Icon(Icons.add,color: Colors.white,),
                             )
                           ],
                         )

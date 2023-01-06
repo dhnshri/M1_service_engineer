@@ -233,6 +233,9 @@ class _EnquiryQuotationsPreviewScreenState
                             context: context,
                             builder: (context) => AlertDialog(
                                   title: new Text("Are you sure, you want to send this quotation?"),
+
+
+
                                   // content: new Text(""),
                                   actions: <Widget>[
                                     Row(

@@ -369,63 +369,64 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
           ),
 
           ///Track Process List
-          Flexible(
-            // height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-                itemCount: 3,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (_, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
-                    child: Material(
-                      elevation: 5,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
-                        },
-                        child: Container(
-                          // height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.only(bottom: 8,top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Lorem ipsum',
-                                      style: TextStyle(
+          Column(
+            children: [
+              ListView.builder(
+                  itemCount: 8,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (_, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
+                      child: Material(
+                        elevation: 5,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
+                          },
+                          child: Container(
+                            // height: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: ListTile(
+                              title: Padding(
+                                padding: const EdgeInsets.only(bottom: 8,top: 5),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Lorem ipsum',
+                                        style: TextStyle(
 
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w400)),
-                                  Text("Process",
-                                    style: TextStyle(color: Colors.red),)
-                                ],
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400)),
+                                    Text("Process",
+                                      style: TextStyle(color: Colors.red),)
+                                  ],
+                                ),
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+                                    maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                    )),
+                              ),
+                              trailing: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,),
                               ),
                             ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-                                  maxLines: 2, overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
-                                  )),
-                            ),
-                            trailing: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Icon(
-                                Icons.arrow_forward_ios,),
-                            ),
                           ),
-                        ),
 
+                        ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+            ],
           ),
 
           ///Add task Button
