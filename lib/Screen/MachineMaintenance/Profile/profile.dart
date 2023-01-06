@@ -349,13 +349,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   Text("Hello",
                                     style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
                                   Container(
-                                    // width: MediaQuery.of(context).size.width*0.24,
-                                    child: Text("Mcxeeco Sanasam",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
-                                      textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                    ),
+                                      child:Text("Mcxeeco Sanasam",
+                                        style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      )
                                   )
-
                                 ],
                               ),
                             )

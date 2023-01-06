@@ -296,7 +296,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   ]),
                 ) ,
 
-                _otpController.text.length >= 6?
+                // _otpController.text.length >= 6?
                 Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 40.0),
@@ -355,7 +355,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
 
                     )
-                ) : SizedBox(),
+                )
+                    // : SizedBox(),
 
               ],
             ),

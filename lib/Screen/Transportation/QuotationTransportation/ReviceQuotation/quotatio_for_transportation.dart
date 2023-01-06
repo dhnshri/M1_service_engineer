@@ -64,7 +64,7 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
                   MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),
+        title: Text('Quotation for #102GRDSA36987'),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
@@ -72,21 +72,6 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
           onPressed: () async {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => NextQuotationFor()));
-            //   isconnectedToInternet = await ConnectivityCheck
-            //       .checkInternetConnectivity();
-            //   if (isconnectedToInternet == true) {
-            //     if (_formKey.currentState!.validate()) {
-            //       // setState(() {
-            //       //   loading=true;
-            //       // });
-            //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-            //     }
-            //   } else {
-            //     CustomDialogs.showDialogCustom(
-            //         "Internet",
-            //         "Please check your Internet Connection!",
-            //         context);
-            //   }
           },
           shape: const RoundedRectangleBorder(
               borderRadius:

@@ -449,27 +449,14 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppSmallButton(
               onPressed: () async {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => BottomNavigation(
                       index: 0, dropValue: "Transportation",)));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
+
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -484,21 +471,6 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
               onPressed: () async {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ReviceQuotationTransposationScreen ()));
-                //   isconnectedToInternet = await ConnectivityCheck
-                //       .checkInternetConnectivity();
-                //   if (isconnectedToInternet == true) {
-                //     if (_formKey.currentState!.validate()) {
-                //       // setState(() {
-                //       //   loading=true;
-                //       // });
-                //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                //     }
-                //   } else {
-                //     CustomDialogs.showDialogCustom(
-                //         "Internet",
-                //         "Please check your Internet Connection!",
-                //         context);
-                //   }
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -516,94 +488,114 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         child: ListView(
           children: [
             SizedBox(height: 7,),
-            // Item Required
+            /// Vehicle Details
             ExpansionTileCard(
               key: cardVehicleDetailsTransposation,
               initiallyExpanded: true,
-              leading: Text("Vehicle Details",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title:  Text("Vehicle Details",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+              ),),
               children: <Widget>[
-                Container(
-                  color: Color(0xffEBEBEB),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("S no.",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                          ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Color(0xffEBEBEB),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("S no.",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Item Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Item Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                      buildVehicleDetailsList(),
+                    ],
                   ),
                 ),
-                buildVehicleDetailsList(),
 
               ],
             ),
-            // Others Items
+            /// Quotation
             ExpansionTileCard(
               key: cardQuotationsTransposation,
               initiallyExpanded: true,
-              leading: Text("Quotations",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title:  Text("Quotations",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
-                Container(
-                  color: Color(0xffEBEBEB),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("S no.",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Service Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Amount",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                buildQuotationList(),
-                Container(
-                  color: Color(0xffF5F5F5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                  child: Column(
                     children: [
-                      SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                      Container(
+                        color: Color(0xffEBEBEB),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("S no.",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Service Name",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Amount",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      buildQuotationList(),
+                      Container(
+                        color: Color(0xffF5F5F5),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                            SizedBox(width: 15,),
-                            Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                            SizedBox(),
+                            Padding(
+                              padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                              child: Row(
+                                children: [
+                                  Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
+                                  SizedBox(width: 15,),
+                                  Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -612,34 +604,63 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                 ),
               ],
             ),
-            // Date and Time
+
+            Divider(thickness: 2,),
+            ///Amount
             Padding(
               padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0,top: 16.0),
               child: Column(
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Amount",style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("₹20000",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text("Amount",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
+                      Text("₹20000",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
                     ],
                   ),
+                  SizedBox(height: 5,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Labour Charge",style: TextStyle(fontWeight: FontWeight.normal),),
-                      Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.normal),),
+                      Text("Labour Charge",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal)),
+                      Text("₹ 1500",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal)),
                     ],
                   ),
+                  SizedBox(height: 5,),
+
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Gst amount",style: TextStyle(fontWeight: FontWeight.normal),),
-                      Text("₹50.00",style: TextStyle(fontWeight: FontWeight.normal),),
+                      Text("Gst amount",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal)),
+                      Text("₹50.00",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal)),
                     ],
                   ),
-                  Divider(),
+                  Divider(thickness: 1,),
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("₹20050.00",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text("Total",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
+                      Text("₹20050.00",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
 
                     ],
                   ),
@@ -653,12 +674,17 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                 ],
               ),
             ),
+            Divider(thickness: 1,),
             ExpansionTileCard(
               key: cardMessage,
               initiallyExpanded: true,
-              leading: Text("Message from Client",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title:  Text("Message from Client",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),

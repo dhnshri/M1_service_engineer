@@ -386,52 +386,6 @@ class NextQuotationForState extends State<NextQuotationFor> {
     );
   }
 
-  Widget Alertmessage() {
-    return AlertDialog(
-      title: new Text(""),
-      content: new Text("Are you sure, you want to send this quotation ?"),
-      actions: <Widget>[
-        Row(
-          children: [
-            TextButton(
-              child: new Text("No"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            SizedBox(width: 7,),
-            TextButton(
-              child: new Text("Yes"),
-              onPressed: () {
-                // AlertDialog(
-                //   title: new Text(""),
-                //   content: new Text("Quotation sent Successfully"),
-                //   actions: <Widget>[
-                //     Row(
-                //       children: [
-                //         TextButton(
-                //           child: new Text("Done"),
-                //           onPressed: () {
-                //             Navigator.push(context,
-                //                 MaterialPageRoute(builder: (context) => BottomNavigation(index: 0)));
-                //           },
-                //         ),
-                //       ],
-                //     ),
-                //   ],
-                // );
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>
-                        BottomNavigation(
-                          index: 0, dropValue: "Transportation",)));
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -444,7 +398,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
                   MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),
+        title: Text('Quotation for #102GRDSA36987'),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
@@ -457,35 +411,66 @@ class NextQuotationForState extends State<NextQuotationFor> {
                   // content: new Text(""),
                   actions: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: [
                         TextButton(
-                            child: new Text("No",style: TextStyle(
-                                color: Colors.black
-                            ),),
+                            child: new Text(
+                              "No",
+                              style: TextStyle(
+                                  color: Colors.black),
+                            ),
                             onPressed: () {
                               Navigator.of(context).pop();
-                            }, style: TextButton.styleFrom(
-                            side: BorderSide(
-                                color: ThemeColors.defaultbuttonColor,
-                                width: 1.5)
-                        )
+                            },
+                            style: TextButton.styleFrom(
+                              fixedSize: const Size(120, 30),
+                              shape:
+                              const RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.all(
+                                      Radius.circular(
+                                          25))),
+                              side: BorderSide(
+                                  color: ThemeColors
+                                      .defaultbuttonColor,
+                                  width: 1.5),
+                            )),
+                        SizedBox(
+                          width: 7,
                         ),
-                        SizedBox(width: 7,),
                         TextButton(
-                          child: new Text("Yes",style: TextStyle(
-                              color: Colors.white
-                          ),),
+                          child: new Text(
+                            "Yes",
+                            style:
+                            TextStyle(color: Colors.white),
+                          ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                BottomNavigation(index: 0,dropValue: 'Transportation',)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BottomNavigation(
+                                          index: 0,
+                                          dropValue:
+                                          'Transportation',
+                                        )));
                           },
                           style: TextButton.styleFrom(
-                              backgroundColor: ThemeColors.defaultbuttonColor
-                          ),
+                            fixedSize: const Size(120, 30),
+                            backgroundColor: ThemeColors
+                                .defaultbuttonColor,
+                            shape:
+                            const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(
+                                    Radius.circular(
+                                        25))),),
+
                         ),
                       ],
                     ),
+
                   ],
                 )
             );
@@ -508,35 +493,45 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardVehicleDetailsTransposation,
               initiallyExpanded: true,
-              leading: Text("Vehicle Details",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title: Text("Vehicle Details",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
-                Container(
-                  color: Color(0xffE47273),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("S no.",style: TextStyle(color: Colors.white),),
-                          ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Color(0xffE47273),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("S no.",style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Item Name",style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Item Name",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                      buildVehicleDetailsList(),
+                    ],
                   ),
                 ),
-                buildVehicleDetailsList(),
 
               ],
             ),
@@ -544,54 +539,65 @@ class NextQuotationForState extends State<NextQuotationFor> {
             ExpansionTileCard(
               key: cardQuotationsTransposation,
               initiallyExpanded: true,
-              leading: Text("Quotations",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
 
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title: Text("Quotations",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
-                Container(
-                  color: Color(0xffE47273),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("S no.",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Service Name",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Amount",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                buildQuotationList(),
-                Container(
-                  color: Color(0xffFFE4E5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                  child: Column(
                     children: [
-                      SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                      Container(
+                        color: Color(0xffE47273),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("S no.",style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Service Name",style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Amount",style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      buildQuotationList(),
+                      Container(
+                        color: Color(0xffFFE4E5),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                            SizedBox(width: 15,),
-                            Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                            SizedBox(),
+                            Padding(
+                              padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                              child: Row(
+                                children: [
+                                  Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
+                                  SizedBox(width: 15,),
+                                  Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -600,28 +606,21 @@ class NextQuotationForState extends State<NextQuotationFor> {
                 ),
               ],
             ),
-            // Date and Time
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0,top: 16.0),
-              child: Container(
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("GST Number",style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("07AAGFF2194N1Z1",style: TextStyle(fontWeight: FontWeight.bold),),
-                    ],
-                  )
-              ),
-            ),
+
+            ///Quotation
             ExpansionTileCard(
               key: cardQuotations,
               initiallyExpanded: true,
-              leading: Text("Quotations",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title:  Text("Quotations",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
                Padding(
-                 padding: const EdgeInsets.all(8.0),
+                 padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
                  child: Column(
                    children: [
                      Row(
@@ -670,8 +669,9 @@ class NextQuotationForState extends State<NextQuotationFor> {
                      Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
-                         Text("Amount",style: TextStyle(fontSize: 14),),
-                         Text("₹20000",style: TextStyle(fontSize: 14),)
+                         Text("Amount",style: TextStyle(fontWeight: FontWeight.bold),),
+                         SizedBox(width: 15,),
+                         Text("₹ 20000",style: TextStyle(fontWeight: FontWeight.bold),)
                        ],
                      ),
                    ],
@@ -680,22 +680,34 @@ class NextQuotationForState extends State<NextQuotationFor> {
 
               ],
             ),
+
+            ///Terms and Conditions
             ExpansionTileCard(
               key: cardTermsConditionsTransposation,
               initiallyExpanded: true,
-              leading: Text("Terms and Conditions",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title: Text("Terms and Conditions",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
 
               ],
             ),
+
+            ///Message
             ExpansionTileCard(
               key: cardMessage,
               initiallyExpanded: true,
-              leading: Text("Message from Client",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-              title: SizedBox(),
-              subtitle:SizedBox(),
+              title: Text("Message from Client",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                ),),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
