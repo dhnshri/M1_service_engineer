@@ -70,6 +70,11 @@ dependencies:
   country_list_pick: 1.0.1+5
   google_maps_flutter: ^2.1.1
   another_stepper: ^1.1.6
+  flutter_pdfview: ^1.2.5
+  permission_handler: 6.0.0
+  dio: ^4.0.6
+
+
 
 
 

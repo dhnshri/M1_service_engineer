@@ -25,7 +25,7 @@ class ThemeColors {
   static const Color backGroundColor=Color(0xFFFFFFFF);
   static const Color textColor=Color(0xff333333);
   static const Color logOutButtonColor=Color(0xffE31F1F);
-  static const Color discountBackgroundColor=Color(0xff9d061a);
+  static const Color imageContainerBG=Color(0xffFFE0E1);
 
 
 

@@ -139,16 +139,13 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
           ExpansionTileCard(
             initiallyExpanded: true,
             key: cardA,
-            leading: Text("Basic Info",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
-              ),),
-
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Basic Info",
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w500
+            ),),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
@@ -195,15 +192,13 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
           ExpansionTileCard(
             key: cardB,
             initiallyExpanded: true,
-            leading: Text("Item Required",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            title: SizedBox(),
-            subtitle:SizedBox(),
+            title: Text("Item Required",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+              )),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
