@@ -44,49 +44,28 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
         verificationCompleted: (AuthCredential authCredential) {
           //  signIn(authCredential);
           print('verfication completed called sent called');
-          //commented on 14/062021
-          // setState(() {
-          //   authStatus = "sucess";
-          // });
-          // if (authStatus != "") {
-          //   scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          //     content: Text(authStatus),
-          //   ));
-          // }
         },
         verificationFailed: (FirebaseAuthException authException) {
           print(authException.message.toString() + "Inside auth failed");
           setState(() {
-            // authStatus = "Authentication failed";
             authStatus = authException.message!;
           });
-          // loader.remove();
-          // Helper.hideLoader(loader);
+
           if (authStatus != "") {
-            // scaffoldKey.currentState.showSnackBar(SnackBar(
-            //   content: Text(authStatus),
-            // ));
+
             Fluttertoast.showToast(msg: authStatus);
 
           }
         },
         codeSent: (String? verId, [int? forceCodeResent]) {
-          // loader.remove();
-          // Helper.hideLoader(loader);
-          // this.verificationId = verId;
+
           setState(() {
-            // authStatus = "OTP has been successfully sent";
-            // // user.deviceToken = verId;
+
             verificationId = verId;
             loading=true;
-            // Navigator.push(context,MaterialPageRoute(builder: (context)=>
-            //     OtpScreen(
-            //       mobileNum:_mobilecontroller.text,
-            //       verificationId:verificationId.toString(),
-            //     )));
+
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) =>
-                    // RegistrationScreen(dropValue: widget.dropValue,)
                   VerificationScreen(dropValue: widget.dropValue,phoneNumber: countrycode+number,verificationId: verificationId,)
                 ));
 
@@ -94,8 +73,6 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
 
         },
         codeAutoRetrievalTimeout: (String verId) {
-          // user.deviceToken = verId;
-          //    print('coderetreival sent called' + verificationId);
           setState(() {
             authStatus = "TIMEOUT";
           });
@@ -276,21 +253,21 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                     child: AppButton(
                       onPressed: () async {
 
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) =>
-                                // RegistrationScreen(dropValue: widget.dropValue,)
-                              VerificationScreen(dropValue: widget.dropValue,phoneNumber: '',verificationId: verificationId,)
-                            ));
-                        // if(_phoneNumberController.text.isEmpty){
-                        //   Fluttertoast.showToast(msg: 'Please enter mobile number');
-                        // }else if(_phoneNumberController.text.length!=10){
-                        //   Fluttertoast.showToast(msg: 'Please enter valid number');
-                        // }else{
-                        //   setState(() {
-                        //     loading=false;
-                        //   });
-                        //   verifyPhoneNumber(context, _phoneNumberController.text);
-                        // }
+                        // Navigator.of(context).push(
+                        //     MaterialPageRoute(builder: (context) =>
+                        //         // RegistrationScreen(dropValue: widget.dropValue,)
+                        //       VerificationScreen(dropValue: widget.dropValue,phoneNumber: '',verificationId: verificationId,)
+                        //     ));
+                        if(_phoneNumberController.text.isEmpty){
+                          Fluttertoast.showToast(msg: 'Please enter mobile number');
+                        }else if(_phoneNumberController.text.length!=10){
+                          Fluttertoast.showToast(msg: 'Please enter valid number');
+                        }else{
+                          setState(() {
+                            loading=false;
+                          });
+                          verifyPhoneNumber(context, _phoneNumberController.text);
+                        }
 
                         // verifyPhoneNumber(context, _phoneNumberController.text);
 

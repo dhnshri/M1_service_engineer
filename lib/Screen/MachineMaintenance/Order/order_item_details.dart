@@ -24,7 +24,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
   final GlobalKey<ExpansionTileCardState> cardQuotations = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
 
-
+  bool value = false;
 
 
   @override
@@ -513,6 +513,25 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                             fontWeight: FontWeight.w500
                         )),
                     children: <Widget>[
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: this.value,
+                            activeColor: Colors.red,
+                            onChanged: (value) {
+                              setState(() {
+                                this.value = value!;
+                              });
+                            },
+                          ),
+                          const Text("I agree to the terms and conditions.",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins-Medium',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400))
+                        ],
+                      )
 
                     ],
                   ),

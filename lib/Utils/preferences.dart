@@ -1,5 +1,7 @@
 class Preferences {
 
+  static String phoneNo='phonenumber';
+  static String role='role';
   static String user = 'user';
   static String address = 'address';
   static String cart = 'cart';

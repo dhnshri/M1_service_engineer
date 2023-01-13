@@ -4,6 +4,7 @@ class Images {
   static const String minus = "assets/images/minus.png";
   static const String profile_icon = "assets/images/profile-icon.png";
   static const String bg = "assets/images/bg.png";
+  static const String dashboardBG = "assets/images/dashboardBg.png";
 
 
   ///Singleton factory

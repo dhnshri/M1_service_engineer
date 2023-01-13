@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:service_engineer/Screen/SplashScreen/splash_screen.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
 
 import 'Config/language.dart';
 import 'Config/theme.dart';
+import 'Repository/UserRepository.dart';
 import 'Utils/routes.dart';
 import 'Utils/translate.dart';
 import 'app_bloc.dart';
@@ -25,6 +27,7 @@ class _AppState extends State<App> {
   final route = Routes();
 
   var locator;
+  String? role='';
 
 
   @override
@@ -38,6 +41,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    role = UserRepository().getRole();
 
   }
 
@@ -67,7 +71,7 @@ class _AppState extends State<App> {
 
 
           onGenerateRoute: route.generateRoute,
-          home: SplashScreen()
+          home: UserRepository().getPhoneNo() != null? BottomNavigation(index:0,dropValue: role,): SplashScreen()
           // BlocBuilder<AuthBloc, AuthenticationState>(
           //   builder: (context, app) {
           //

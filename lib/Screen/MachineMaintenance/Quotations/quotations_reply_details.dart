@@ -36,7 +36,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardMessage = new GlobalKey();
 
-
+  bool value = false;
 
 
 
@@ -788,6 +788,25 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                     fontWeight: FontWeight.w500
                 )),
             children: <Widget>[
+              Row(
+                children: [
+                  Checkbox(
+                    value: this.value,
+                    activeColor: Colors.red,
+                    onChanged: (value) {
+                      setState(() {
+                        this.value = value!;
+                      });
+                    },
+                  ),
+                  const Text("I agree to the terms and conditions.",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400))
+                ],
+              )
 
             ],
           ),

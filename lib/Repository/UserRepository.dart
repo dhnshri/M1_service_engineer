@@ -7,6 +7,28 @@ import '../Utils/util_preferences.dart';
 
 class UserRepository {
 
+  Future<dynamic> savePhoneNo(String phoneNo) async {
+    return await UtilPreferences.setString(
+      Preferences.phoneNo,
+      phoneNo,
+    );
+  }
+
+  dynamic getPhoneNo() {
+      return UtilPreferences.getString(Preferences.phoneNo);
+    }
+
+  Future<dynamic> saveRole(String role) async {
+    return await UtilPreferences.setString(
+      Preferences.role,
+      role,
+    );
+  }
+
+  dynamic getRole() {
+    return UtilPreferences.getString(Preferences.role);
+  }
+
   // ///Fetch api login
   // Future<dynamic> login({String? email,String? password}) async {
   //   final params = {"user_email":email,"password":password};
