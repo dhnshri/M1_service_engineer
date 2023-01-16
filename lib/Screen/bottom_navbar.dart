@@ -7,6 +7,7 @@ import 'package:service_engineer/Screen/MachineMaintenance/Order/order_items.dar
 import 'package:service_engineer/Screen/Transportation/Profile/transportation_profile.dart';
 
 import '../Constant/theme_colors.dart';
+import 'Dashboard/dashboard_screen.dart';
 import 'JobWorkEnquiry/Profile/job_work_enquiry_profile.dart';
 import 'MachineMaintenance/MakeQuotations/quotationslist.dart';
 import 'MachineMaintenance/Profile/profile.dart';
@@ -62,6 +63,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
         BottomNavigationBarItem(
           backgroundColor: ThemeColors.bottomNavColor,
+          icon:  Icon(Icons.dashboard),
+          label: 'Dashboard',
+        ),
+
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
           icon: Icon(Icons.person),
           label: 'My Profile',
         ),
@@ -78,6 +85,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
           backgroundColor: ThemeColors.bottomNavColor,
           icon:  Icon(CupertinoIcons.calendar),
           label: 'Quotations',
+        ),
+
+        BottomNavigationBarItem(
+          backgroundColor: ThemeColors.bottomNavColor,
+          icon:  Icon(Icons.dashboard),
+          label: 'Dashboard',
         ),
 
         BottomNavigationBarItem(
@@ -119,49 +132,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
           if(widget.dropValue == "Machine Maintenance")
             OrderItemsScreen(),
           widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen():widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsReplyTransportationScreen():SizedBox(),
+          DashboardScreen(),
           widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
         ],
       ),
-      // Center(
-      //   child:
-      //   _widgetOptions.elementAt(_selectedIndex),
-      // ),
       bottomNavigationBar:
-          // MyBottomNavigation(_onItemTapped, _selectedIndex)
-          SizedBox(
-            height: 70,
-            child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(15),
-            topLeft: Radius.circular(15),
-        ),
-        child: BottomNavigationBar(
+          BottomNavigationBar(
             items: _bottomBarItem(context),
-            // <BottomNavigationBarItem>[
-            //   BottomNavigationBarItem(
-            //     backgroundColor: ThemeColors.bottomNavColor,
-            //     icon: Icon(Icons.home),
-            //     label: 'Home',
-            //   ),
-            //   BottomNavigationBarItem(
-            //     backgroundColor: ThemeColors.bottomNavColor,
-            //     icon: Icon(Icons.folder),
-            //     label: 'Order',
-            //   ),
-            //
-            //   BottomNavigationBarItem(
-            //     backgroundColor: ThemeColors.bottomNavColor,
-            //     icon:  Icon(CupertinoIcons.calendar),
-            //     label: 'Quotations',
-            //   ),
-            //
-            //   BottomNavigationBarItem(
-            //     backgroundColor: ThemeColors.bottomNavColor,
-            //     icon: Icon(Icons.person),
-            //     label: 'My Profile',
-            //   ),
-            //
-            // ],
             currentIndex: _selectedIndex,
             selectedItemColor: ThemeColors.redTextColor,
             selectedLabelStyle: TextStyle(
@@ -170,12 +147,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
             showUnselectedLabels: true,
             unselectedItemColor: ThemeColors.blackColor,
-
+            type: BottomNavigationBarType.fixed,
             // backgroundColor: Colors.red,
             onTap: _onItemTapped,
             elevation: 20,
-        ),
-      ),
           ),
     );
   }

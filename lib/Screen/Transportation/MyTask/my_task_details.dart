@@ -31,9 +31,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
   String? role;
   bool loading = true;
 
-  // String? smsCode;
-  // bool smsCodeSent = false;
-  // String? verificationId;
+
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
@@ -57,6 +55,67 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
 
   MapType _currentMapType = MapType.normal;
 
+  int _currentStep = 0;
+  StepperType stepperType = StepperType.vertical;
+
+  tapped(int step){
+    setState(() => _currentStep = step);
+  }
+
+  continued(){
+    _currentStep < 2 ?
+    setState(() => _currentStep += 1): null;
+  }
+  cancel(){
+    _currentStep > 0 ?
+    setState(() => _currentStep -= 1) : null;
+  }
+
+  List<Step> getSteps(){
+    return <Step>[
+      Step(
+        title: new Text('Reached at pickup location',style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
+        content: SizedBox( ),
+        isActive: _currentStep >= 0,
+        state: _currentStep >= 0 ? StepState.complete : StepState.disabled,
+      ),
+      Step(
+        title: new Text('Loading completed',style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
+        content: SizedBox(),
+        isActive: _currentStep >= 0,
+        state: _currentStep >= 1 ?
+        StepState.complete : StepState.disabled,
+      ),
+      Step(
+        title: new Text('On the way to drop location',style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
+        content: SizedBox(),
+        isActive:_currentStep >= 0,
+        state: _currentStep >= 2 ? StepState.complete : StepState.disabled,
+      ),
+      Step(
+        title: new Text('Reached on drop location',style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Poppins-Medium',
+            fontWeight: FontWeight.w500
+        )),
+        content: SizedBox(),
+        isActive:_currentStep >= 0,
+        state: _currentStep >= 3 ? StepState.complete : StepState.disabled,
+      )
+    ];
+  }
 
   @override
   void initState() {
@@ -390,105 +449,220 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
           ),
 
           ///Track PRocess
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text("Track Process",
-                style: TextStyle(fontFamily: 'Poppins-Medium',
+          ExpansionTileCard(
+            key: cardC,
+            initiallyExpanded: true,
+            title: Text("Track Process",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins-Medium',
                     fontSize: 16,
-                    fontWeight: FontWeight.w500)
-            ),
-          ),
-
-          ///Track Process List
-          Column(
-            children: [
-              ListView.builder(
-                  itemCount: 3,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
-                      child: Material(
-                        elevation: 5,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
-                          },
-                          child: Container(
-                            // height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ListTile(
-                              title: Padding(
-                                padding: const EdgeInsets.only(bottom: 8,top: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Reached at Pickup Location',
-                                        style: TextStyle(
-
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400)),
-                                    Text("Process",
-                                      style: TextStyle(color: Colors.red),)
-                                  ],
-                                ),
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-                                    maxLines: 2, overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
-                                    )),
-                              ),
-                              trailing: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,),
-                              ),
-                            ),
-                          ),
-
+                    fontWeight: FontWeight.w500
+                )),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                child: Column(
+                  children: [
+                    Theme(
+                      data: ThemeData(
+                        colorScheme: Theme.of(context).colorScheme.copyWith(
+                          primary: Colors.red,
                         ),
                       ),
-                    );
-                  }),
+                      child: Stepper(
+                        type: stepperType,
+                        physics: ScrollPhysics(),
+                        currentStep: _currentStep,
+                        onStepTapped: (step) => tapped(step),
+                        // onStepContinue:  continued,
+                        // onStepCancel: cancel,
+                        steps: getSteps(),
+                        controlsBuilder: (context,_){
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              // _currentStep == 3 ? SizedBox():
+                              TextButton(
+                                onPressed: () {
+                                  // continued;
+                                  setState(() {
+                                    if(_currentStep<3) {
+                                      _currentStep++;
+                                    }
+                                  });
+                                },
+                                child: const Text(
+                                    'Update',style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'Poppins-Medium',
+                                    fontWeight: FontWeight.bold
+                                )
+                                ),
+                              ),
+
+                            ],
+                          );
+                        },
+                      ),
+                    )
+
+                  ],
+                ),
+              ),
             ],
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(15.0),
+          //   child: Text("Track Process",
+          //       style: TextStyle(fontFamily: 'Poppins-Medium',
+          //           fontSize: 16,
+          //           fontWeight: FontWeight.w500)
+          //   ),
+          // ),
 
-          ///Add task Button
-          Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Material(
-              elevation: 5,
-              child: Container(
-                height: 60,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+          ///Track Process List
+          // Column(
+          //   children: [
+          //     Theme(
+          //       data: ThemeData(
+          //         colorScheme: Theme.of(context).colorScheme.copyWith(
+          //           primary: Colors.red,
+          //         ),
+          //       ),
+          //       child: Stepper(
+          //           type: stepperType,
+          //           physics: ScrollPhysics(),
+          //           currentStep: _currentStep,
+          //           onStepTapped: (step) => tapped(step),
+          //           // onStepContinue:  continued,
+          //           // onStepCancel: cancel,
+          //           steps: getSteps(),
+          //         controlsBuilder: (context,_){
+          //             return Row(
+          //               mainAxisAlignment: MainAxisAlignment.end,
+          //               children: [
+          //               // _currentStep == 3 ? SizedBox():
+          //                 TextButton(
+          //                   onPressed: () {
+          //                     // continued;
+          //                     setState(() {
+          //                       if(_currentStep<3) {
+          //                       _currentStep++;
+          //                     }
+          //                   });
+          //                   },
+          //                   child: const Text(
+          //                     'Update',style: TextStyle(
+          //                       fontSize: 15,
+          //                       fontFamily: 'Poppins-Medium',
+          //                       fontWeight: FontWeight.bold
+          //                   )
+          //                   ),
+          //                 ),
+          //
+          //               ],
+          //             );
+          //         },
+          //       ),
+          //     )
+          //   ],
+          // ),
+          // Column(
+          //   children: [
+          //     ListView.builder(
+          //         itemCount: 3,
+          //         physics: NeverScrollableScrollPhysics(),
+          //         shrinkWrap: true,
+          //         itemBuilder: (_, index) {
+          //           return Padding(
+          //             padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
+          //             child: Material(
+          //               elevation: 5,
+          //               child: GestureDetector(
+          //                 onTap: () {
+          //                   Navigator.push(context,
+          //                       MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
+          //                 },
+          //                 child: Container(
+          //                   // height: 60,
+          //                   decoration: BoxDecoration(
+          //                     borderRadius: BorderRadius.circular(20),
+          //                   ),
+          //                   child: ListTile(
+          //                     title: Padding(
+          //                       padding: const EdgeInsets.only(bottom: 8,top: 5),
+          //                       child: Row(
+          //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                         children: [
+          //                           Text('Reached at Pickup Location',
+          //                               style: TextStyle(
+          //
+          //                                   fontSize: 14,
+          //                                   fontWeight: FontWeight.w400)),
+          //                           Text("Process",
+          //                             style: TextStyle(color: Colors.red),)
+          //                         ],
+          //                       ),
+          //                     ),
+          //                     subtitle: Padding(
+          //                       padding: const EdgeInsets.only(bottom: 8.0),
+          //                       child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+          //                           maxLines: 2, overflow: TextOverflow.ellipsis,
+          //                           style: TextStyle(
+          //                               fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+          //                           )),
+          //                     ),
+          //                     trailing: Padding(
+          //                       padding: const EdgeInsets.only(top: 8.0),
+          //                       child: Icon(
+          //                         Icons.arrow_forward_ios,),
+          //                     ),
+          //                   ),
+          //                 ),
+          //
+          //               ),
+          //             ),
+          //           );
+          //         }),
+          //   ],
+          // ),
 
-                    ),
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTask ()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                        Text("Daily Update Task",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.55)
-                          ),)
-                      ],
-                    )),
-              ),
-            ),),
+          // ///Add task Button
+          // Padding(
+          //   padding: EdgeInsets.all(15.0),
+          //   child: Material(
+          //     elevation: 5,
+          //     child: Container(
+          //       height: 60,
+          //       child: ElevatedButton(
+          //           style: ButtonStyle(
+          //             backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+          //
+          //           ),
+          //           onPressed: (){
+          //             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTask ()));
+          //           },
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
+          //               Text("Daily Update Task",
+          //                 style: TextStyle(fontFamily: 'Poppins-Medium',
+          //                     fontSize: 16,
+          //                     fontWeight: FontWeight.w500,
+          //                     color: Colors.black.withOpacity(0.55)
+          //                 ),)
+          //             ],
+          //           )),
+          //     ),
+          //   ),),
+
+          SizedBox(
+            height: 20,
+          ),
+
+          ///Upload Receipt Copy
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(

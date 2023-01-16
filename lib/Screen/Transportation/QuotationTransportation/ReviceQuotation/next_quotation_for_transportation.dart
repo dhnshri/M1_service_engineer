@@ -30,6 +30,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
   String? role;
   bool loading = true;
   bool isSwitched = false;
+  bool value = false;
 
   var mainHeight, mainWidth;
   var quantity = 0;
@@ -693,6 +694,25 @@ class NextQuotationForState extends State<NextQuotationFor> {
                     fontWeight: FontWeight.w500
                 ),),
               children: <Widget>[
+                Row(
+                  children: [
+                    Checkbox(
+                      value: this.value,
+                      activeColor: Colors.red,
+                      onChanged: (value) {
+                        setState(() {
+                          this.value = value!;
+                        });
+                      },
+                    ),
+                    const Text("I agree to the terms and conditions.",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400))
+                  ],
+                )
 
               ],
             ),

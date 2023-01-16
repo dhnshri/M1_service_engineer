@@ -35,6 +35,7 @@ class QuotationForState extends State<QuotationFor> {
   var quantity = 0;
   var totalValue = 0;
   int prodValue = 15000;
+  bool value = false;
 
   final GlobalKey<ExpansionTileCardState> cardVehicleDetailsTransposation = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequiredTransposation = new GlobalKey();
@@ -737,6 +738,25 @@ class QuotationForState extends State<QuotationFor> {
                     fontWeight: FontWeight.w500
                 )),
               children: <Widget>[
+                Row(
+                  children: [
+                    Checkbox(
+                      value: this.value,
+                      activeColor: Colors.red,
+                      onChanged: (value) {
+                        setState(() {
+                          this.value = value!;
+                        });
+                      },
+                    ),
+                    const Text("I agree to the terms and conditions.",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400))
+                  ],
+                )
 
               ],
             ),

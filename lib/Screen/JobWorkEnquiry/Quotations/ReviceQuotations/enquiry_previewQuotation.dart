@@ -22,10 +22,7 @@ class _EnquiryQuotationsPreviewScreenState
   String? phoneNum;
   String? role;
   bool loading = true;
-
-  // String? smsCode;
-  // bool smsCodeSent = false;
-  // String? verificationId;
+  bool value = false;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequired =
@@ -191,7 +188,27 @@ class _EnquiryQuotationsPreviewScreenState
                     fontFamily: 'Poppins-Medium',
                     fontSize: 16,
                     fontWeight: FontWeight.w500)),
-            children: <Widget>[],
+            children: <Widget>[
+              Row(
+                children: [
+                  Checkbox(
+                    value: this.value,
+                    activeColor: Colors.red,
+                    onChanged: (value) {
+                      setState(() {
+                        this.value = value!;
+                      });
+                    },
+                  ),
+                  const Text("I agree to the terms and conditions.",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400))
+                ],
+              )
+            ],
           ),
 
           ///Message from client

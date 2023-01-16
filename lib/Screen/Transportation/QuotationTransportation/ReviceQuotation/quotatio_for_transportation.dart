@@ -104,8 +104,7 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
                   ),
                 ),
                 errorBorder: OutlineInputBorder(
-                  borderRadius:
-                  BorderRadius.circular(8.0),
+                  borderRadius:BorderRadius.circular(8.0),
                   borderSide: const BorderSide(
                     color: Colors.red,
                     width: 1.0,

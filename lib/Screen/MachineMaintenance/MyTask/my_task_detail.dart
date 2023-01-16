@@ -2,14 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:path/path.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/process_detail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:service_engineer/Widget/pdfViewer.dart';
+import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
-
+import 'package:flutter/foundation.dart';
 import '../../../Config/font.dart';
-import '../../../Widget/app_small_button.dart';
+import 'package:path_provider/path_provider.dart';
+import '../../Chat/chat_listing.dart';
 import '../../bottom_navbar.dart';
 import 'add_task.dart';
 
@@ -36,7 +38,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
-
+  String? url =
+      "http://www.africau.edu/images/default/sample.pdf";
 
   @override
   void initState() {
@@ -82,7 +85,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
               ),
               onPressed: () {
-                //...
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>chatListing()));
               },
             ),
             SizedBox(width: 8,),
@@ -415,124 +418,103 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                           style:ExpanstionTileOtherInfoStyle ,),
                       ),
                     ),
+                    SizedBox(height: 10,),
+
+                    Container(
+                      decoration: BoxDecoration(
+                          color: ThemeColors.imageContainerBG
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Text('Image-abc',
+                                  style: TextStyle(
+                                      color: ThemeColors.buttonColor,
+                                      fontFamily: 'Poppins-Regular',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400
+                                  )),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                final file = await loadPdfFromNetwork(url.toString());
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PDFScreen(file: file,url: url.toString(),),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                child: Text('View',
+                                    style: TextStyle(
+                                        color: ThemeColors.buttonColor,
+                                        fontFamily: 'Poppins-Regular',
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    )),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 10,),
+
+                    Container(
+                      decoration: BoxDecoration(
+                          color: ThemeColors.imageContainerBG
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Text('Image-abc',
+                                  style: TextStyle(
+                                      color: ThemeColors.buttonColor,
+                                      fontFamily: 'Poppins-Regular',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400
+                                  )),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                final file = await loadPdfFromNetwork(url.toString());
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PDFScreen(file: file,url: url.toString(),),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                child: Text('View',
+                                    style: TextStyle(
+                                        color: ThemeColors.buttonColor,
+                                        fontFamily: 'Poppins-Regular',
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    )),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                child: Container(
-                  height:130,
-                  width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                    filterQuality: FilterQuality.medium,
-                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                    // imageUrl: "https://picsum.photos/250?image=9",
-                    imageUrl: "https://picsum.photos/250?image=9",
-                    placeholder: (context, url) {
-                      return Shimmer.fromColors(
-                        baseColor: Theme.of(context).hoverColor,
-                        highlightColor: Theme.of(context).highlightColor,
-                        enabled: true,
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      );
-                    },
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return Shimmer.fromColors(
-                        baseColor: Theme.of(context).hoverColor,
-                        highlightColor: Theme.of(context).highlightColor,
-                        enabled: true,
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(Icons.error),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 5,),
-              Padding(
-                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                child: Container(
-                  height:180,
-                  width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                    filterQuality: FilterQuality.medium,
-                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                    // imageUrl: "https://picsum.photos/250?image=9",
-                    imageUrl: "https://picsum.photos/250?image=16",
-                    placeholder: (context, url) {
-                      return Shimmer.fromColors(
-                        baseColor: Theme.of(context).hoverColor,
-                        highlightColor: Theme.of(context).highlightColor,
-                        enabled: true,
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      );
-                    },
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return Shimmer.fromColors(
-                        baseColor: Theme.of(context).hoverColor,
-                        highlightColor: Theme.of(context).highlightColor,
-                        enabled: true,
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(Icons.error),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+
             ],
           ),
 
@@ -730,5 +712,21 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
         ],
       ),
     );
+  }
+
+  Future<File> loadPdfFromNetwork(String url) async {
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+    return _storeFile(url, bytes);
+  }
+  Future<File> _storeFile(String url, List<int> bytes) async {
+    final filename = basename(url);
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$filename');
+    await file.writeAsBytes(bytes, flush: true);
+    if (kDebugMode) {
+      print('$file');
+    }
+    return file;
   }
 }
