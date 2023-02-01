@@ -11,7 +11,7 @@ import firebase_auth
 import firebase_core
 import firebase_messaging
 import firebase_storage
-import path_provider_macos
+import path_provider_foundation
 import shared_preferences_macos
 import sqflite
 import wakelock_macos

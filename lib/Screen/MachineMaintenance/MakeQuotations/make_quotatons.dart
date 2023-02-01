@@ -152,70 +152,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  // StepperButton(
-                  //   onPressed: () async {
-                  //     if (_currentStep < (stepList().length - 1)) {
-                  //       setState(() {
-                  //         _currentStep += 1;
-                  //       });
-                  //     }
-                  //   },
-                  //   shape: const RoundedRectangleBorder(
-                  //       borderRadius:
-                  //       BorderRadius.all(Radius.circular(50))),
-                  //   text: 'Next',
-                  //   loading: loading,
-                  // ),
-                  // if (_currentStep != 0)
-                  //   StepperButton(
-                  //     onPressed: () async {
-                  //       if (_currentStep == 0) {
-                  //         return;
-                  //       }
-                  //
-                  //       setState(() {
-                  //         _currentStep -= 1;
-                  //       });
-                  //     },
-                  //     shape: const RoundedRectangleBorder(
-                  //         borderRadius:
-                  //         BorderRadius.all(Radius.circular(50))),
-                  //     text: 'Back',
-                  //     loading: loading,
-                  //   ),
-                  StepperButton(
 
-                    onPressed: () async {
-                      final isLastStep = _currentStep == stepList().length - 1;
-                      if(isLastStep)
-                        {
-                          setState(() {
-                            isCompleted = true;
-                          });
-                        }
-                      else
-                        {
-                        setState(() {
-                            _currentStep += 1;
-                          });
-                        }
-                      // if (_currentStep < (stepList().length - 1)) {
-                      //   setState(() {
-                      //     _currentStep += 1;
-                      //   });
-                      // };
-                      // if(_currentStep == 3)
-                      // {
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
-                      // }
-                    },
-                    shape: const RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(50))),
-                    text: 'Next',
-                    loading: loading,
-                  ),
                   if (_currentStep != 0)
                     StepperButton(
                       onPressed: () async {
@@ -233,6 +170,29 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                       text: 'Back',
                       loading: loading,
                     ),
+                  StepperButton(
+
+                    onPressed: () async {
+                      final isLastStep = _currentStep == stepList().length - 1;
+                      if(isLastStep)
+                      {
+                        setState(() {
+                          isCompleted = true;
+                        });
+                      }
+                      else
+                      {
+                        setState(() {
+                          _currentStep += 1;
+                        });
+                      }
+                    },
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(50))),
+                    text: 'Next',
+                    loading: loading,
+                  ),
                 ],
               ),
             );

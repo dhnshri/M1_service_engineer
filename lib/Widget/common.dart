@@ -76,7 +76,8 @@ Widget addIcon(){
           shape: BoxShape.circle,
           color: Color(0xffEC2326),
           //color: Colors.red,
-          border: Border.all(color: Colors.black, width: 1)),
+          // border: Border.all(color: Colors.black, width: 1)
+      ),
       child: Container(
         width: 30,
         height: 30,
