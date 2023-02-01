@@ -97,41 +97,36 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
         ),
         body:isCompleted
             ? AlertDialog(
-          title: new Text(""),
-          content: new Text("Are you sure, you want to send this quotation ?"),
+          title: new Text("Are you sure, you want to send this quotation ?"),
+          // content: new Text(""),
           actions: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  child: new Text("No"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                    child: new Text("No",style: TextStyle(
+                        color: Colors.black
+                    ),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }, style: TextButton.styleFrom(
+                    side: BorderSide(
+                        color: ThemeColors.defaultbuttonColor,
+                        width: 1.5)
+                )
                 ),
                 SizedBox(width: 7,),
                 TextButton(
-                  child: new Text("Yes"),
+                  child: new Text("Yes",style: TextStyle(
+                      color: Colors.white
+                  ),),
                   onPressed: () {
-                    // AlertDialog(
-                    //   title: new Text(""),
-                    //   content: new Text("Quotation sent Successfully"),
-                    //   actions: <Widget>[
-                    //     Row(
-                    //       children: [
-                    //         TextButton(
-                    //           child: new Text("Done"),
-                    //           onPressed: () {
-                    //             Navigator.push(context,
-                    //                 MaterialPageRoute(builder: (context) => BottomNavigation(index: 0)));
-                    //           },
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ],
-                    // );
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BottomNavigation(index: 2,dropValue:"Machine Maintenance",)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                        BottomNavigation(index: 0,dropValue: 'Machine Maintenance',)));
                   },
+                  style: TextButton.styleFrom(
+                      backgroundColor: ThemeColors.defaultbuttonColor
+                  ),
                 ),
               ],
             ),

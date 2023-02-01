@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
@@ -7,6 +8,7 @@ import 'package:service_engineer/Screen/Chat/database.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatWithUsername, name;
+
   ChatScreen(this.chatWithUsername, this.name);
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -17,13 +19,13 @@ class _ChatScreenState extends State<ChatScreen> {
   Stream? messageStream;
   String? myName, myProfilePic, myUserName, myEmail;
   TextEditingController messageTextEdittingController = TextEditingController();
-
+  DateTime current_date = DateTime.now();
   getMyInfoFromSharedPreference() async {
     myName = "Pratik";
     myProfilePic = '';
     myUserName =
-    UserRepository().getRole() == 'Machine Maintenance' ? 'pratik' : 'test';
-    myEmail = 'pratik.rane@desteksolutions.com';
+    UserRepository().getRole() == 'Machine Maintenance' ? 'dhanshri' : 'test';
+    myEmail = 'dhanshri.gunjawte@desteksolutions.com';
 
     chatRoomId = getChatRoomIdByUsernames(widget.chatWithUsername, myUserName!);
   }
@@ -75,30 +77,39 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Widget chatMessageTile(String message, bool sendByMe) {
+  Widget chatMessageTile(String message, bool sendByMe, String lastMessageTs ) {
     return Row(
       mainAxisAlignment:
       sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
-          child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  bottomRight:
-                  sendByMe ? Radius.circular(0) : Radius.circular(24),
-                  topRight: Radius.circular(24),
-                  bottomLeft:
-                  sendByMe ? Radius.circular(24) : Radius.circular(0),
-                ),
-                color: sendByMe ? Colors.blue : Color(0xff381b1b),
+          child: Column(
+            children: [
+
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      bottomRight:
+                      sendByMe ? Radius.circular(0) : Radius.circular(24),
+                      topRight: Radius.circular(24),
+                      bottomLeft:
+                      sendByMe ? Radius.circular(24) : Radius.circular(0),
+                    ),
+                    color: sendByMe ? Colors.blue : Color(0xff381b1b),
+                  ),
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    message,
+                    style: TextStyle(color: Colors.white),
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(lastMessageTs,style: TextStyle(fontSize: 10),),
               ),
-              padding: EdgeInsets.all(16),
-              child: Text(
-                message,
-                style: TextStyle(color: Colors.white),
-              )),
+            ],
+          ),
         ),
       ],
     );
@@ -115,8 +126,11 @@ class _ChatScreenState extends State<ChatScreen> {
             reverse: true,
             itemBuilder: (context, index) {
               DocumentSnapshot ds = snapshot.data.docs[index];
+              DateTime dt = (ds['ts'] as Timestamp).toDate();
+              print(dt);
+              String dataTime = DateFormat('MM/dd/yyyy, hh:mm a').format(dt);
               return chatMessageTile(
-                  ds["message"], myUserName == ds["sendBy"]);
+                  ds["message"], myUserName == ds["sendBy"], dataTime);
             })
             : Center(child: CircularProgressIndicator());
       },

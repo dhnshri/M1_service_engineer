@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../JobWorkEnquiry/Home/MyTask/show_google_map.dart';
 import 'add_task.dart';
 
 
@@ -313,114 +314,29 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                     ),
                     SizedBox(height: 5,),
 
-                    ///Map
-                    Container(
-
-                        height: MediaQuery.of(context).size.height * 0.21,
-                        width: MediaQuery.of(context).size.width * 0.99,
-                        decoration: BoxDecoration(
-                            color: Color(0Xfffdf1f5),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * 0.21,
-                                width: MediaQuery.of(context).size.width * 0.99,
-                                child: GoogleMap(
-                                  markers: _markers,
-                                  zoomControlsEnabled: true,
-                                  zoomGesturesEnabled: true,
-                                  rotateGesturesEnabled: false,
-                                  scrollGesturesEnabled: true,
-                                  mapType: _currentMapType,
-                                  initialCameraPosition: CameraPosition(
-                                    target: _lastMapPosition,
-                                    zoom: 16.4746,
-                                  ),
-                                  onMapCreated: _onMapCreated,
-                                  onCameraMove: _onCameraMove,
-                                  myLocationEnabled: false,
-                                  compassEnabled: false,
-                                  myLocationButtonEnabled: false,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      // Radio(
-                                      //   value: 'current',
-                                      //   activeColor: Colors.pink,
-                                      //   focusColor: Colors.white,
-                                      //   groupValue: addressLabel.toString(),
-                                      //   onChanged: (value) {
-                                      //     setState(() {
-                                      //       addressLabel = value!;
-                                      //     });
-                                      //     addressController.addAddress(
-                                      //         addressLabel,
-                                      //         addressCurrent,
-                                      //         addressLat.toString(),
-                                      //         addressLong.toString());
-                                      //     Get.off(CheckoutPage());
-                                      //   },
-                                      // ),
-                                    ],
-                                  ),
-                                  // InkWell(
-                                  //   onTap: () {
-                                  //     setState(() {
-                                  //       addressLabel = 'current';
-                                  //     });
-                                  //     addressController.addAddress(
-                                  //         addressLabel,
-                                  //         addressCurrent,
-                                  //         addressLat.toString(),
-                                  //         addressLong.toString());
-                                  //     Get.off(CheckoutPage());
-                                  //   },
-                                  //   child: Column(
-                                  //     crossAxisAlignment:
-                                  //     CrossAxisAlignment.start,
-                                  //     children: [
-                                  //       Container(
-                                  //         child: Text(
-                                  //           'Current Location',
-                                  //           style: TextStyle(
-                                  //             fontWeight:
-                                  //             FontWeight.bold,
-                                  //             color: Color(0Xff3f3639),
-                                  //             fontSize: width * 0.04,
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //       Container(
-                                  //         width: width * 0.6,
-                                  //         child: Text(
-                                  //           addressCurrent.toString(),
-                                  //           style: TextStyle(
-                                  //             fontWeight:
-                                  //             FontWeight.bold,
-                                  //             color: const Color(
-                                  //                 0Xffaaa4a6),
-                                  //             fontSize: width * 0.032,
-                                  //           ),
-                                  //           overflow: TextOverflow.fade,
-                                  //           maxLines: 2,
-                                  //         ),
-                                  //       )
-                                  //     ],
-                                  //   ),
-                                  // )
-                                ],
-                              ),
-                            ),
-                          ],
-                        )),
+                    SizedBox(height: 5,),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => MapSample()));
+                      },
+                      child: Container(
+                        color:Color(0xFFFFE0E1),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Transform.rotate (
+                                  angle: 180 * math.pi / 100,
+                                  child: Icon(Icons.send,color: Colors.red, size: 11,)),
+                              SizedBox(width: 10,),
+                              Text("Google location Link | Google location Link ….",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
 
                     SizedBox(height: 10,),
                     Container(

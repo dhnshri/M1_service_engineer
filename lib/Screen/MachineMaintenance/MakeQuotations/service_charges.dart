@@ -169,7 +169,6 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
   @override
   Widget build(BuildContext context) {
     return Column(
-
       children: [
         SizedBox(
           width:

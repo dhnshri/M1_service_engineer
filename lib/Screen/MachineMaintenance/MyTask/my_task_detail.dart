@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
@@ -12,8 +14,10 @@ import 'package:flutter/foundation.dart';
 import '../../../Config/font.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../Chat/chat_listing.dart';
+import '../../JobWorkEnquiry/Home/MyTask/show_google_map.dart';
 import '../../bottom_navbar.dart';
 import 'add_task.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
@@ -30,7 +34,6 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   String? phoneNum;
   String? role;
   bool loading = true;
-
   // String? smsCode;
   // bool smsCodeSent = false;
   // String? verificationId;
@@ -41,12 +44,46 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   String? url =
       "http://www.africau.edu/images/default/sample.pdf";
 
+  final Set<Marker> _markers = {};
+  late LatLng _lastMapPosition;
+  double? addressLat;
+  double? addressLong;
+  Completer<GoogleMapController> controller1 = Completer();
+
+
+  _onCameraMove(CameraPosition position) {
+    _lastMapPosition = position.target;
+  }
+
+  _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      controller1.complete(controller);
+    });
+  }
+
+  MapType _currentMapType = MapType.normal;
+
+
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
     _phoneNumberController.clear();
+    super.initState();
+    addressLat = double.parse(21.1458.toString());
+    addressLong = double.parse(79.0882.toString());
+    _lastMapPosition = LatLng(addressLat!, addressLong!);
+
+    _markers.add(Marker(
+        markerId: MarkerId(151.toString()),
+        position: _lastMapPosition,
+        infoWindow: InfoWindow(
+            title: "You are here",
+            snippet: "This is a current location snippet",
+            onTap: () {}),
+        onTap: () {},
+        icon: BitmapDescriptor.defaultMarker));
 
   }
   @override
@@ -151,8 +188,50 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Location :",style: ExpanstionTileLeftDataStyle,),
-                        Text("Pune Railway Station",style: ExpanstionTileRightDataStyle,),
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => MapSample()));
+                          },
+                            child: Row(
+                              children: [
+                                Text("Pune Railway Station",style: ExpanstionTileRightDataStyle,),
+                                // Transform.rotate(
+                                //   angle: 180 * math.pi / 100,
+                                //   child: IconButton(
+                                //     icon: Icon(
+                                //       Icons.send,
+                                //       color: Colors.red,
+                                //     ),
+                                //     onPressed: null,
+                                //   ),
+                                // ),
+                              ],
+                            )),
                       ],
+                    ),
+                    SizedBox(height: 5,),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => MapSample()));
+                      },
+                      child: Container(
+                        color:Color(0xFFFFE0E1),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Transform.rotate (
+                                  angle: 180 * math.pi / 100,
+                                  child: Icon(Icons.send,color: Colors.red, size: 11,)),
+                              SizedBox(width: 10,),
+                              Text("Google location Link | Google location Link ….",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 5,),
 
@@ -161,8 +240,10 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                       children: [
                         Text("Date & Timing :",style: ExpanstionTileLeftDataStyle,),
                         Text("12 Nov 2022, 10AM - 4PM",style: ExpanstionTileRightDataStyle,),
+
                       ],
                     ),
+
                   ],
                 ),
               ),

@@ -3,12 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:another_stepper/another_stepper.dart';
 import '../../../Config/font.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Widget/app_button.dart';
+import 'order_items.dart';
 
 class OrderItemDetailsScreen extends StatefulWidget {
   const OrderItemDetailsScreen({Key? key}) : super(key: key);
@@ -49,9 +51,9 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: () {
-                Navigator.pop(context);
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+               Navigator.pop(context);
+               //  Navigator.push(context,
+               //      MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: 'Machine Maintenance',)));
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text(
@@ -62,6 +64,45 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
           padding: const EdgeInsets.all(10.0),
           child: AppButton(
             onPressed: () async {
+              showDialog(
+                  context: context,
+                  builder: (context) =>  AlertDialog(
+                    title: new Text("Are you sure, you want to cancel this order?"),
+                    // content: new Text(""),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                              child: new Text("No",style: TextStyle(
+                                  color: Colors.black
+                              ),),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }, style: TextButton.styleFrom(
+                              side: BorderSide(
+                                  color: ThemeColors.defaultbuttonColor,
+                                  width: 1.5)
+                          )
+                          ),
+                          SizedBox(width: 7,),
+                          TextButton(
+                            child: new Text("Yes",style: TextStyle(
+                                color: Colors.white
+                            ),),
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => BottomNavigation (index:1,dropValue: 'Machine Maintenance',)));
+                            },
+                            style: TextButton.styleFrom(
+                                backgroundColor: ThemeColors.defaultbuttonColor
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+              );
 
             },
             shape: const RoundedRectangleBorder(

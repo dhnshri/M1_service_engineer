@@ -6,9 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
+import '../bottom_navbar.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  final String? dropValue;
+  const LoginScreen({Key? key,required this.dropValue}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -358,6 +360,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: AppButton(
                                 onPressed: () async {
 
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
                                 //   isconnectedToInternet = await ConnectivityCheck
                                 //       .checkInternetConnectivity();
                                 //   if (isconnectedToInternet == true) {
