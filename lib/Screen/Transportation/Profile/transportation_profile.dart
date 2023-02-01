@@ -1832,6 +1832,23 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                             ),
                           ),
                         ),
+
+                        SizedBox(height: 15,),
+                        ///Add More
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text("Add More",
+                              style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(width: 5,),
+                            CircleAvatar(
+                              backgroundColor: ThemeColors.redTextColor,
+                              child: Icon(Icons.add,color: Colors.white,),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),

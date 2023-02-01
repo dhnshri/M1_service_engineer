@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Config/font.dart';
+import '../../../Constant/theme_colors.dart';
 import '../../../Widget/common.dart';
 import '../../../Widget/stepper_button.dart';
 import 'make_quotatons.dart';
@@ -563,18 +564,27 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(),
-            InkWell(
-              onTap: (){
-                AddOtherCharges();
-              },
-              child: Row(
-                children: [
-                  Text("Other Charges"),
-                  SizedBox(width: 2,),
-                  addIcon(),
-                ],
-              ),
-            )
+            ///Add More
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text("Add Charges",
+                  style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(width: 5,),
+                InkWell(
+                  onTap: (){
+                    AddOtherCharges();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: ThemeColors.redTextColor,
+                    child: Icon(Icons.add,color: Colors.white,),
+                  ),
+                )
+              ],
+            ),
+
           ],
         ),
 

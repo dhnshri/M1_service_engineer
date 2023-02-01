@@ -358,7 +358,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       if (documents.length == 0) {
         // Update data to server if new user
         FirebaseFirestore.instance.collection('users').doc(firebaseUser).set(
-            { 'nickname': 'pratik', 'photoUrl': '', 'id': firebaseUser });
+            { 'nickname': 'dhanshri', 'photoUrl': '', 'id': firebaseUser });
       }
     }
   }

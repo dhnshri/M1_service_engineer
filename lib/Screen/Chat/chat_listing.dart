@@ -18,10 +18,13 @@ class _chatListingState extends State<chatListing> {
   TextEditingController();
 
   getMyInfoFromSharedPreference() async {
-    myName = 'Pratik';
+    // myName = 'Pratik';
+    myName = 'Dhanshri';
     myProfilePic = '';
-    myUserName = 'pratik';
-    myEmail = 'pratik';
+    // myUserName = 'pratik';
+    myUserName = 'dhanshri';
+    // myEmail = 'pratik';
+    myEmail = 'dhanshri';
     setState(() {});
   }
 
@@ -126,7 +129,7 @@ class _chatListingState extends State<chatListing> {
   onScreenLoaded() async {
     await getMyInfoFromSharedPreference();
     myUserName =
-    UserRepository().getRole() == 'Machine Maintenance' ? 'pratik' : 'test';
+    UserRepository().getRole() == 'Machine Maintenance' ? 'dhanshri' : 'test';
     getChatRooms();
   }
 
@@ -227,8 +230,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     username =
         widget.chatRoomId.replaceAll(widget.myUsername, "").replaceAll("_", "");
     QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username);
-    print(
-        "something bla bla ${querySnapshot.docs[0].id} ${querySnapshot.docs[0]["nickname"]}  ${querySnapshot.docs[0]["photoUrl"]}");
+    print("something bla bla ${querySnapshot.docs[0].id} ${querySnapshot.docs[0]["nickname"]}  ${querySnapshot.docs[0]["photoUrl"]}");
     name = "${querySnapshot.docs[0]["nickname"]}";
     profilePicUrl = "${querySnapshot.docs[0]["photoUrl"]}";
     print(username);

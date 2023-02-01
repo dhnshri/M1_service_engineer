@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
@@ -9,6 +9,7 @@ import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Screen/Chat/chat_listing.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/show_google_map.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
 import 'package:service_engineer/Widget/pdf.dart';
 import 'package:service_engineer/Widget/pdfViewer.dart';
@@ -228,41 +229,28 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                       ],
                     ),
                     SizedBox(height: 5,),
-                    Container(
-
-                        height: MediaQuery.of(context).size.height * 0.21,
-                        width: MediaQuery.of(context).size.width * 0.99,
-                        decoration: BoxDecoration(
-                            color: Color(0Xfffdf1f5),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * 0.21,
-                                width: MediaQuery.of(context).size.width * 0.99,
-                                child: GoogleMap(
-                                  markers: _markers,
-                                  zoomControlsEnabled: true,
-                                  zoomGesturesEnabled: true,
-                                  rotateGesturesEnabled: false,
-                                  scrollGesturesEnabled: true,
-                                  mapType: _currentMapType,
-                                  initialCameraPosition: CameraPosition(
-                                    target: _lastMapPosition,
-                                    zoom: 16.4746,
-                                  ),
-                                  onMapCreated: _onMapCreated,
-                                  onCameraMove: _onCameraMove,
-                                  myLocationEnabled: false,
-                                  compassEnabled: false,
-                                  myLocationButtonEnabled: false,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => MapSample()));
+                      },
+                      child: Container(
+                        color:Color(0xFFFFE0E1),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Transform.rotate (
+                                  angle: 180 * math.pi / 100,
+                                  child: Icon(Icons.send,color: Colors.red, size: 11,)),
+                              SizedBox(width: 10,),
+                              Text("Google location Link | Google location Link ….",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 10,),
                     Align(
                       alignment: Alignment.topLeft,

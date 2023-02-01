@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../Config/font.dart';
 import '../../Widget/app_button.dart';
+import 'login_screen.dart';
 
 class SignUpAsScreen extends StatefulWidget {
   const SignUpAsScreen({Key? key}) : super(key: key);
@@ -70,8 +71,10 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
           child: AppButton(
             onPressed: () async {
               UserRepository().saveRole(dropdownValue);
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen(dropValue: dropdownValue,)));
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen(dropValue: dropdownValue,)));
+                     MaterialPageRoute(builder: (context) => LoginScreen(dropValue: dropdownValue,)));
               //   isconnectedToInternet = await ConnectivityCheck
               //       .checkInternetConnectivity();
               //   if (isconnectedToInternet == true) {

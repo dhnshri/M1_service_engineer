@@ -66,6 +66,7 @@ dependencies:
   firebase_core: ^2.3.0
   firebase_core_platform_interface: 4.5.2
   firebase_messaging: ^14.1.2
+  flutter_local_notifications:
   cloud_firestore: ^4.3.1
   firebase_storage: ^11.0.10
   pin_code_fields: ^7.4.0
@@ -76,6 +77,7 @@ dependencies:
   permission_handler: 6.0.0
   dio: ^4.0.6
   random_string: ^2.3.1
+  google_maps_flutter_web: ^0.4.0+4
 
 
 
