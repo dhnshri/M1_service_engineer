@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // add your code here.
 
                 Timer.periodic(const Duration(seconds: 10), (timer) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: 'Machine Maintenance',)));
                   Fluttertoast.showToast(msg: state.message.toString());
                   timer.cancel();
                 });
@@ -130,222 +130,219 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Column(
-                                  children: [
-                                    SizedBox(
-                                      width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                      height: 60,
-                                      child: TextFormField(
-                                        controller: _textPhoneNumberController,
-                                        keyboardType: TextInputType.number,
-                                        maxLength: 10,
-                                        cursorColor: primaryAppColor,
-                                        decoration: InputDecoration(
-                                          disabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8.0),
-                                            borderSide: const BorderSide(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.8,
+                                    height: 60,
+                                    child: TextFormField(
+                                      controller: _textPhoneNumberController,
+                                      keyboardType: TextInputType.text,
+                                      maxLength: 10,
+                                      cursorColor: primaryAppColor,
+                                      decoration: InputDecoration(
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.white,
+                                            width: 1.0,
                                           ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8.0),
-                                            borderSide: const BorderSide(
-                                              color: Colors.red,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(10.0),
-                                            borderSide: const BorderSide(
-                                                color: Colors.white, width: 1.0),
-                                          ),
-                                          focusedErrorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(8.0),
-                                              borderSide: const BorderSide(
-                                                color: Colors.white,
-                                                width: 1.0,
-                                              )),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8.0),
-                                            borderSide: const BorderSide(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          hintText: 'Mobile Number',
-                                          contentPadding: const EdgeInsets.fromLTRB(
-                                              20.0, 20.0, 0.0, 0.0),
-                                          hintStyle: GoogleFonts.poppins(
-                                              color: Colors.grey,
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.w500),
                                         ),
-                                        onChanged: (val) {
-                                          setState(() {
-                                            phoneNum = val;
-                                            // _phoneNumberController.text = val;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 7.0,
-                                    ),
-                                    SizedBox(
-                                      width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                      height: 60,
-                                      child: TextFormField(
-                                        controller: _textPasswordController,
-                                        keyboardType: TextInputType.number,
-                                        maxLength: 10,
-                                        cursorColor: primaryAppColor,
-                                        decoration: InputDecoration(
-                                          disabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8.0),
-                                            borderSide: const BorderSide(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.red,
+                                            width: 1.0,
                                           ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8.0),
-                                            borderSide: const BorderSide(
-                                              color: Colors.red,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(10.0),
-                                            borderSide: const BorderSide(
-                                                color: Colors.white, width: 1.0),
-                                          ),
-                                          focusedErrorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(8.0),
-                                              borderSide: const BorderSide(
-                                                color: Colors.white,
-                                                width: 1.0,
-                                              )),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(8.0),
-                                            borderSide: const BorderSide(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          hintText: 'Password',
-                                          contentPadding: const EdgeInsets.fromLTRB(
-                                              20.0, 20.0, 0.0, 0.0),
-                                          hintStyle: GoogleFonts.poppins(
-                                              color: Colors.grey,
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.w500),
                                         ),
-                                        onChanged: (val) {
-                                          setState(() {
-                                            phoneNum = val;
-                                            // _phoneNumberController.text = val;
-                                          });
-                                        },
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white, width: 1.0),
+                                        ),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(8.0),
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                              width: 1.0,
+                                            )),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.white,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        hintText: 'Username',
+                                        contentPadding: const EdgeInsets.fromLTRB(
+                                            20.0, 20.0, 0.0, 0.0),
+                                        hintStyle: GoogleFonts.poppins(
+                                            color: Colors.grey,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w500),
                                       ),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          phoneNum = val;
+                                          // _phoneNumberController.text = val;
+                                        });
+                                      },
                                     ),
-                                    const SizedBox(
-                                      height: 7.0,
+                                  ),
+                                  const SizedBox(
+                                    height: 7.0,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.8,
+                                    height: 60,
+                                    child: TextFormField(
+                                      controller: _textPasswordController,
+                                      keyboardType: TextInputType.text,
+                                      maxLength: 10,
+                                      cursorColor: primaryAppColor,
+                                      decoration: InputDecoration(
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.white,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.red,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white, width: 1.0),
+                                        ),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(8.0),
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                              width: 1.0,
+                                            )),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.white,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        hintText: 'Password',
+                                        contentPadding: const EdgeInsets.fromLTRB(
+                                            20.0, 20.0, 0.0, 0.0),
+                                        hintStyle: GoogleFonts.poppins(
+                                            color: Colors.grey,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          phoneNum = val;
+                                          // _phoneNumberController.text = val;
+                                        });
+                                      },
                                     ),
-                                    Padding(
-                                        padding:
-                                        const EdgeInsets.symmetric(horizontal: 40.0),
-                                        child: AppButton(
-                                          onPressed: () async {
+                                  ),
+                                  const SizedBox(
+                                    height: 7.0,
+                                  ),
+                                  Padding(
+                                      padding:
+                                      const EdgeInsets.symmetric(horizontal: 40.0),
+                                      child: AppButton(
+                                        onPressed: () async {
 
-                                            // Navigator.of(context).push(
-                                            //     MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
-                                              isconnectedToInternet = await ConnectivityCheck
-                                                  .checkInternetConnectivity();
-                                              if (isconnectedToInternet == true) {
-                                                if (_formKey.currentState!.validate()) {
-                                                  // setState(() {
-                                                  //   loading=true;
-                                                  // });
-                                                  _userLoginBloc!.add(OnLogin(mobile: _textPhoneNumberController.text,password: _textPasswordController.text));
-                                                }
-                                              } else {
-                                                CustomDialogs.showDialogCustom(
-                                                    "Internet",
-                                                    "Please check your Internet Connection!",
-                                                    context);
+                                          // Navigator.of(context).push(
+                                          //     MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
+                                            isconnectedToInternet = await ConnectivityCheck
+                                                .checkInternetConnectivity();
+                                            if (isconnectedToInternet == true) {
+                                              if (_formKey.currentState!.validate()) {
+                                                // setState(() {
+                                                //   loading=true;
+                                                // });
+                                                _userLoginBloc!.add(OnLogin(username: _textPhoneNumberController.text,password: _textPasswordController.text));
                                               }
-                                          },
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(50))),
-                                          text: 'Sign in',
-                                          loading: loading,
+                                            } else {
+                                              CustomDialogs.showDialogCustom(
+                                                  "Internet",
+                                                  "Please check your Internet Connection!",
+                                                  context);
+                                            }
+                                        },
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(50))),
+                                        text: 'Sign in',
+                                        loading: loading,
 
 
-                                        )
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                TextButton(
-                                    child: const Text(
-                                      'Forget Password?',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          letterSpacing: 1,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
-                                    ),
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //         context,
-                                      //         MaterialPageRoute(
-                                      //             builder: (context) =>
-                                      //             RegistrationScreen()
-                                      //                 // WebViewContainer(
-                                      //                 // "https://rccedu.org/register.php")
-                                      //         ))
-                                      //     .whenComplete(() => Navigator.pop(context));
-                                      // print('Pressed');
-                                    }),
+                                      )
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              TextButton(
+                                  child: const Text(
+                                    'Forget Password?',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        letterSpacing: 1,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  onPressed: () {
+                                    // Navigator.push(
+                                    //         context,
+                                    //         MaterialPageRoute(
+                                    //             builder: (context) =>
+                                    //             RegistrationScreen()
+                                    //                 // WebViewContainer(
+                                    //                 // "https://rccedu.org/register.php")
+                                    //         ))
+                                    //     .whenComplete(() => Navigator.pop(context));
+                                    // print('Pressed');
+                                  }),
 
-                                TextButton(
-                                    child: const Text(
-                                      'Do not have any account? Create Account',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          letterSpacing: 1,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14),
-                                    ),
-                                    onPressed: () {
-                                      // Navigator.of(context).push(
-                                      //     MaterialPageRoute(builder: (context) => RegistrationScreen()));
-                                    })
-                              ],
-                            ),
+                              TextButton(
+                                  child: const Text(
+                                    'Do not have any account? Create Account',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        letterSpacing: 1,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                                  ),
+                                  onPressed: () {
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(builder: (context) => RegistrationScreen()));
+                                  })
+                            ],
                           ),
                         ),
                       ],

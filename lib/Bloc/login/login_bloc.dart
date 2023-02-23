@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:service_engineer/main.dart';
 
 
 
@@ -37,10 +38,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       var fcmToken = await FirebaseMessaging.instance.getToken();
       print(fcmToken);
 
+      String deviceId = await getUniqueDeviceId();
+      print(deviceId);
+
       ///Fetch API via repository
       final CustomerLoginRepo result = await userRepository!.login(
-        mobile: event.mobile,
+          username: event.username,
         password: event.password,
+        token: fcmToken,
+        deviceID: deviceId
       );
       print(result);
 
@@ -49,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ///Login API success
         // final  VendorLogin user = VendorLogin.fromJson(result.data);
         CustomerLogin user = new CustomerLogin();
-        user.status = user.status!.toInt();
+        // user.status = user.status!.toInt();
         user = result.data!;
         AppBloc.authBloc.add(OnSaveUser(user));
         try {

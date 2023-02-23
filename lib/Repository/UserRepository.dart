@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:service_engineer/Model/customer_login.dart';
+
 import '../Api/api.dart';
 import '../Utils/preferences.dart';
 import '../Utils/util_preferences.dart';
@@ -30,8 +32,8 @@ class UserRepository {
   }
 
   // ///Fetch api login
-  Future<dynamic> login({String? mobile,String? password}) async {
-    final params = {"mobile":mobile,"password":password};
+  Future<dynamic> login({String? username,String? password,String? token,String? deviceID}) async {
+    final params = {"username":username,"password":password, "token": token,"device_id": deviceID};
     return await Api.login(params);
   }
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
@@ -196,13 +198,13 @@ class UserRepository {
   // //
   // //
   //
-  // ///Save Storage
-  // Future<dynamic> saveUser(CustomerLogin user) async {
-  //   return await UtilPreferences.setString(
-  //     Preferences.user,
-  //     jsonEncode(user.toJson()),
-  //   );
-  // }
+  // ///Save User
+  Future<dynamic> saveUser(CustomerLogin user) async {
+    return await UtilPreferences.setString(
+      Preferences.user,
+      jsonEncode(user.toJson()),
+    );
+  }
   //
   // ///Get from Storage
   // dynamic getUser() {
