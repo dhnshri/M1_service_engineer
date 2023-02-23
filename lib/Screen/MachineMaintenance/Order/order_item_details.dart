@@ -294,7 +294,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: AnotherStepper(
-                          gap: 25,
+                         // gap: 25,
                           stepperList: stepperData,
                           stepperDirection: Axis.vertical,
                           iconWidth: 20, // Height that will be applied to all the stepper icons
