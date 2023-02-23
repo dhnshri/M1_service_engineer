@@ -78,6 +78,8 @@ dependencies:
   dio: ^4.0.6
   random_string: ^2.3.1
   google_maps_flutter_web: ^0.4.0+4
+  flutter_speed_dial: ^6.2.0
+  device_info_plus:
 
 
 

@@ -6,9 +6,9 @@ abstract class LoginEvent {}
 
 class OnLogin extends LoginEvent {
 
-  var mobile,password;
+  var username,password;
 
-  OnLogin({this.mobile,this.password});
+  OnLogin({this.username,this.password});
 
 }
 
