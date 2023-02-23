@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 
+import '../../Api/api.dart';
 import '../../Model/customer_login.dart';
 import '../../Repository/UserRepository.dart';
 import '../../Utils/application.dart';
@@ -93,54 +94,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     //
     //
     //
-    //   if (event is OnRegistration) {
-    //     yield VendorRegistrationLoading();
-    //
-    //
-    //     MultipartRequest request = new MultipartRequest(
-    //         'POST', Uri.parse(Api.VENDOR_Registration));
-    //     request.fields['user_type'] = event.userType;
-    //     request.fields['full_name'] = event.fullName;
-    //     request.fields['cat_id'] = event.catId;
-    //     request.fields['subcat_id'] = event.subId;
-    //     request.fields['subsubcat_id'] = event.subSubId;
-    //     request.fields['bussiness_name'] = event.businessName;
-    //     request.fields['ownership_type'] = event.ownershipType;
-    //     request.fields['est_year'] = event.estYear;
-    //     request.fields['tot_employee'] = event.totalEmp;
-    //     request.fields['annual_turnover'] = event.annualTurnover;
-    //     request.fields['gst_no'] = event.gSTIN;
-    //     request.fields['address'] = event.address;
-    //     request.fields['pin_code'] = event.pinCode;
-    //     request.fields['mobile_no'] = event.mobile;
-    //     request.fields['email'] = event.email;
-    //     request.fields['refer_by'] = event.referby;
-    //
-    //     List<MultipartFile> imageUpload = <MultipartFile>[];
-    //
-    //     final multipartFile = await http.MultipartFile.fromPath(
-    //       'com_logo', event.comLogo!.imagePath.toString(),
-    //       // contentType: MediaType(mimeTypeData[0], mimeTypeData[1])
-    //     );
-    //
-    //     imageUpload.add(multipartFile);
-    //     request.files.addAll(imageUpload);
-    //     final streamedResponse = await request.send();
-    //     final response = await http.Response.fromStream(streamedResponse);
-    //     var resp = json.decode(response.body);
-    //     try {
-    //       if (resp['result'] == 'Success') {
-    //         yield VendorRegistrationSuccess(msg: resp['Message']);
-    //       }else{
-    //         yield VendorRegistrationFail(msg: resp['Message']);
-    //
-    //       }
-    //     } catch (e) {
-    //       yield VendorRegistrationFail(msg: resp['Message']);
-    //       rethrow;
-    //     }
-    //   }
-    //
+    if (event is OnRegistration) {
+      yield CustomerRegistrationLoading();
+
+      Map<String,dynamic> params={
+        'name':event.fullname,
+        'password':event.createPassword,
+        'password_confirmation':event.reCreatePassword,
+        'email':event.email,
+        'mobile':event.mobileNo,
+        'role':event.role,
+      };
+
+      var response=await http.post(Uri.parse(Api.CUSTOMER_REGISTER),body: params);
+
+      try {
+        var resp = json.decode(response.body);
+        if (response.statusCode == 200) {
+          yield CustomerRegistrationSuccess(msg: resp['message']);
+        }else{
+          yield CustomerRegistrationFail(msg: resp['message']);
+
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
      }
 
     // yield LogoutSuccess();

@@ -24,16 +24,16 @@ class LoginSuccess extends LoginState {
 
 }
 
-class VendorRegistrationLoading extends LoginState {}
+class CustomerRegistrationLoading extends LoginState {}
 
-class VendorRegistrationSuccess extends LoginState {
+class CustomerRegistrationSuccess extends LoginState {
   String msg;
-  VendorRegistrationSuccess({required this.msg});
+  CustomerRegistrationSuccess({required this.msg});
 }
 
-class VendorRegistrationFail extends LoginState {
+class CustomerRegistrationFail extends LoginState {
   String msg;
-  VendorRegistrationFail({required this.msg});
+  CustomerRegistrationFail({required this.msg});
 }
 
 class LogoutLoading extends LoginState {}
