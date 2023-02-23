@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Model/customer_login.dart';
+
 
 class Application {
   static bool debug = false;
@@ -9,7 +11,7 @@ class Application {
   static String googleMapsKey="AIzaSyC08LZ461W_8xfd0alHTiPz8iLcYYrUdps";
   static SharedPreferences? preferences;
 
-  // static CustomerLogin? customerLogin;
+  static CustomerLogin? customerLogin;
   // static ProductModel? products;
   // static AddressModel? address;
   // static CartListRepo? cart;

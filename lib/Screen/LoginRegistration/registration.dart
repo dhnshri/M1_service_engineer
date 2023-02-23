@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'dart:io';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +22,11 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailIdController = TextEditingController();
+  final TextEditingController _createPasswordController = TextEditingController();
+  final TextEditingController _reEnterPasswordController = TextEditingController();
+  String dropdownValueModule = 'Machine Maintenance';
   String dropdownValue = '+ 91';
   String? phoneNum;
   String? role;
@@ -102,6 +108,134 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               MediaQuery.of(context).size.width * 0.8,
                               height: 60,
                               child: TextFormField(
+                                controller: _fullNameController,
+                                keyboardType: TextInputType.number,
+                                maxLength: 10,
+                                cursorColor: primaryAppColor,
+                                decoration: InputDecoration(
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 1.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                        width: 1.0,
+                                      )),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'Full Name',
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20.0, 20.0, 0.0, 0.0),
+                                  hintStyle: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    // _phoneNumberController.text = val;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width:
+                              MediaQuery.of(context).size.width * 0.8,
+                              height: 60,
+                              child: TextFormField(
+                                controller: _emailIdController,
+                                keyboardType: TextInputType.number,
+                                maxLength: 10,
+                                cursorColor: primaryAppColor,
+                                decoration: InputDecoration(
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 1.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                        width: 1.0,
+                                      )),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'Email id',
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20.0, 20.0, 0.0, 0.0),
+                                  hintStyle: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    // _phoneNumberController.text = val;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width:
+                              MediaQuery.of(context).size.width * 0.8,
+                              height: 60,
+                              child: TextFormField(
                                 controller: _phoneNumberController,
                                 keyboardType: TextInputType.number,
                                 maxLength: 10,
@@ -168,7 +302,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               MediaQuery.of(context).size.width * 0.8,
                               height: 60,
                               child: TextFormField(
-                                controller: _phoneNumberController,
+                                controller: _createPasswordController,
                                 keyboardType: TextInputType.number,
                                // maxLength: 10,
                                 cursorColor: primaryAppColor,
@@ -234,7 +368,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               MediaQuery.of(context).size.width * 0.8,
                               height: 60,
                               child: TextFormField(
-                                controller: _phoneNumberController,
+                                controller: _reEnterPasswordController,
                                 keyboardType: TextInputType.number,
                               //  maxLength: 10,
                                 cursorColor: primaryAppColor,
@@ -292,6 +426,91 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     // _phoneNumberController.text = val;
                                   });
                                 },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: Container(
+                                width:
+                                MediaQuery.of(context).size.width * 0.9,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.circular(8.0)),
+                                child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      items: <String>[
+                                        'Machine Maintenance',
+                                        'Job Work Enquiry',
+                                        'Transportation',
+
+                                      ].map((item) =>
+                                          DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                  fontFamily: 'Poppins-Medium',
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                            ),
+                                          ))
+                                          .toList(),
+                                      value: dropdownValueModule,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          dropdownValueModule = value as String;
+                                        });
+                                      },
+                                      buttonHeight: 40,
+                                      buttonWidth: 140,
+                                      itemHeight: 40,
+                                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
+                                      dropdownDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        // color: Colors.redAccent,
+                                      ),
+                                      // itemWidth: 140,
+                                    )
+                                  // DropdownButton<String>(
+                                  //   isExpanded: true,
+                                  //   value: dropdownValue,
+                                  //   icon: Padding(
+                                  //     padding: const EdgeInsets.only(left:100.0),
+                                  //     child: const Icon(Icons.arrow_drop_down_sharp),
+                                  //   ),
+                                  //   iconSize: 24,
+                                  //   elevation: 16,
+                                  //   iconEnabledColor: primaryAppColor,
+                                  //   borderRadius:
+                                  //   BorderRadius.circular(8.0),
+                                  //   style: TextStyle(
+                                  //       color: Colors.black,
+                                  //       fontSize: 16,
+                                  //       fontWeight: FontWeight.normal),
+                                  //   onChanged: (String? newValue) {
+                                  //     setState(() {
+                                  //       dropdownValue = newValue!;
+                                  //     });
+                                  //   },
+                                  //   items: <String>[
+                                  //     'Machine Maintenance',
+                                  //     'Job Work Enquiry',
+                                  //     'Transportation',
+                                  //
+                                  //   ].map<DropdownMenuItem<String>>(
+                                  //           (String value) {
+                                  //         return DropdownMenuItem<String>(
+                                  //           value: value,
+                                  //           child: Center(child: Text(value)),
+                                  //         );
+                                  //       }).toList(),
+                                  // )),
+                                ),
                               ),
                             ),
                             Padding(

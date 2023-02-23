@@ -30,10 +30,10 @@ class UserRepository {
   }
 
   // ///Fetch api login
-  // Future<dynamic> login({String? email,String? password}) async {
-  //   final params = {"user_email":email,"password":password};
-  //   return await Api.login(params);
-  // }
+  Future<dynamic> login({String? mobile,String? password}) async {
+    final params = {"mobile":mobile,"password":password};
+    return await Api.login(params);
+  }
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
   //   final params = {"per_page":perPage,
   //     "start_from":startFrom};
