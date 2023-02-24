@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:service_engineer/Model/customer_registration.dart';
 import 'dart:convert';
 
 import '../Model/customer_login.dart';
@@ -26,6 +27,19 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return CustomerLoginRepo.fromJson(responseJson);
+    }
+  }
+
+  ///Registration api
+  static Future<dynamic> registration(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CUSTOMER_REGISTER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return RegistrationRepo.fromJson(responseJson);
     }
   }
 

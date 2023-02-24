@@ -31,10 +31,22 @@ class UserRepository {
     return UtilPreferences.getString(Preferences.role);
   }
 
-  // ///Fetch api login
+  // ///Fetch api, required String deviceID login
   Future<dynamic> login({String? username,String? password,String? token,String? deviceID}) async {
     final params = {"username":username,"password":password, "token": token,"device_id": deviceID};
     return await Api.login(params);
+  }
+
+  Future<dynamic> registration({String? fullname,String? createPassword,String? reCreatePassword,String? email,String? mobileNo,String? role,String? username}) async {
+    final params = {
+      'name':fullname,
+      'password':createPassword,
+      'password_confirmation':reCreatePassword,
+      'username':username,
+      'email':email,
+      'mobile':mobileNo,
+      'role':role,};
+    return await Api.registration(params);
   }
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
   //   final params = {"per_page":perPage,

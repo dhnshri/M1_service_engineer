@@ -24,7 +24,9 @@ class LoginSuccess extends LoginState {
 
 }
 
-class CustomerRegistrationLoading extends LoginState {}
+class CustomerRegistrationLoading extends LoginState {
+
+}
 
 class CustomerRegistrationSuccess extends LoginState {
   String msg;

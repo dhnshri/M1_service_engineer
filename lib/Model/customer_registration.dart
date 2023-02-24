@@ -1,25 +1,25 @@
 class RegistrationRepo {
-  String? message;
-  User? user;
+  dynamic message;
+  dynamic user;
 
   RegistrationRepo({this.message, this.user});
 
-  RegistrationRepo.fromJson(Map<String, dynamic> json) {
-    message = json['message'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+  factory RegistrationRepo.fromJson(Map<dynamic, dynamic> json) {
+    try {
+      return RegistrationRepo(
+        message: json['message'],
+        user: json['user'] != null ? new RegistrationModel.fromJson(json['user']) : null,
+      );
+    } catch (error) {
+      return RegistrationRepo(
+        message: json['message'],
+        user: null,
+      );
     }
-    return data;
   }
 }
 
-class User {
+class RegistrationModel {
   String? name;
   String? email;
   String? username;
@@ -30,7 +30,7 @@ class User {
   String? createdAt;
   int? id;
 
-  User(
+  RegistrationModel(
       {this.name,
         this.email,
         this.username,
@@ -41,7 +41,7 @@ class User {
         this.createdAt,
         this.id});
 
-  User.fromJson(Map<String, dynamic> json) {
+  RegistrationModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
     username = json['username'];

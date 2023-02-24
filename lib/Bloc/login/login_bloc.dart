@@ -9,6 +9,7 @@ import 'package:service_engineer/main.dart';
 
 import '../../Api/api.dart';
 import '../../Model/customer_login.dart';
+import '../../Model/customer_registration.dart';
 import '../../Repository/UserRepository.dart';
 import '../../Utils/application.dart';
 
@@ -16,7 +17,7 @@ import '../../Utils/application.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-
+import 'package:service_engineer/main.dart';
 import '../../app_bloc.dart';
 import '../authentication/authentication_event.dart';
 import 'login_event.dart';
@@ -103,29 +104,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is OnRegistration) {
       yield CustomerRegistrationLoading();
 
-      Map<String,dynamic> params={
-        'name':event.fullname,
-        'password':event.createPassword,
-        'password_confirmation':event.reCreatePassword,
-        'email':event.email,
-        'mobile':event.mobileNo,
-        'role':event.role,
-      };
+      final RegistrationRepo result = await userRepository!.registration(
+        fullname:event.fullname,
+        createPassword:event.createPassword,
+        reCreatePassword:event.reCreatePassword,
+        email:event.email,
+        mobileNo:event.mobileNo,
+        role:event.role,
+        username:event.username,
+      );
+      print(result);
+      if (result.message == "Service User successfully registered") {
+        ///Login API success
+        RegistrationModel user = RegistrationModel();
+       // RegistrationModel user = new RegistrationModel();
+       //  user.status = user.status!.toInt();
+        user = result.user!;
+        print(user);
+      //  AppBloc.authBloc.add(OnSaveUser(user));
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
 
-      var response=await http.post(Uri.parse(Api.CUSTOMER_REGISTER),body: params);
-
-      try {
-        var resp = json.decode(response.body);
-        if (response.statusCode == 200) {
-          yield CustomerRegistrationSuccess(msg: resp['message']);
-        }else{
-          yield CustomerRegistrationFail(msg: resp['message']);
-
+          yield CustomerRegistrationSuccess(msg: result.message);
+        } catch (error) {
+          ///Notify loading to UI
+          yield CustomerRegistrationFail(msg: result.message);
         }
-      } catch (e) {
-        print(e);
+      } else {
+        ///Notify loading to UI
+        yield CustomerRegistrationFail(msg: result.message);
       }
     }
+
      }
 
     // yield LogoutSuccess();

@@ -33,6 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _emailIdController = TextEditingController();
   final TextEditingController _createPasswordController = TextEditingController();
   final TextEditingController _reEnterPasswordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String dropdownValueModule = 'Machine Maintenance';
   String dropdownValue = '+ 91';
@@ -179,6 +180,70 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ),
                                   ),
                                   hintText: 'Full Name',
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20.0, 20.0, 0.0, 0.0),
+                                  hintStyle: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    if ( _formKey.currentState!.validate()) {}
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width:
+                              MediaQuery.of(context).size.width * 0.8,
+                              height: 60,
+                              child: TextFormField(
+                                controller: _userNameController,
+                                keyboardType: TextInputType.text,
+                                maxLength: 10,
+                                cursorColor: primaryAppColor,
+                                decoration: InputDecoration(
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 1.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                        width: 1.0,
+                                      )),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'UserName',
                                   contentPadding: const EdgeInsets.fromLTRB(
                                       20.0, 20.0, 0.0, 0.0),
                                   hintStyle: GoogleFonts.poppins(
@@ -553,7 +618,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => LoginScreen(dropValue: role,)));
+                                                builder: (context) => LoginScreen(dropValue:dropdownValueModule,)));
                                         Fluttertoast.showToast(msg: state.msg);
                                         loading = false;
 
@@ -579,7 +644,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               else if (_phoneNumberController == null) {
                                                 Fluttertoast.showToast(
                                                     msg: "Please enter mobile number");
-                                              } else if (_emailIdController == null) {
+                                              } else if (_userNameController == null) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Please enter Username");
+                                              }else if (_emailIdController == null) {
                                                 Fluttertoast.showToast(
                                                     msg: "Please enter email");
                                               }
@@ -587,6 +655,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               if (_formKey.currentState!.validate()) {
                                                 _userLoginBloc!.add(OnRegistration(
                                                   fullname:_fullNameController.text,
+                                                  username: _userNameController.text,
                                                   createPassword:_createPasswordController.text,
                                                   reCreatePassword: _reEnterPasswordController.text,
                                                   role:dropdownValueModule,
