@@ -1,8 +1,14 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/home/Home_event.dart';
+import 'package:service_engineer/Bloc/home/Home_state.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +33,8 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
 
+  HomeBloc? _homeBloc;
+  List<ServiceRequestModel>? serviceList = [];
 
 
   @override
@@ -34,7 +42,8 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc!.add(OnServiceRequest(userID: '10',statusID: '0',offSet: '6'));
   }
   @override
   void dispose() {
@@ -341,106 +350,126 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.isSwitched?
-      Container(
-          child: ListView(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 0.2,),
-                    )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, left: 10, right: 10, bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          // initialValue: Application.customerLogin!.name.toString(),
-                          controller: _searchController,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(
-                            fontSize: 18,
-                            height: 1.5,
+      BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+        return BlocListener<HomeBloc, HomeState>(
+            listener: (context, state) {
+              if(state is HomeSuccess){
+                serviceList = state.serviceListData;
+              }
+              if(state is HomeFail){
+                Fluttertoast.showToast(msg: state.msg.toString());
+              }
+            },
+            child: Container(
+              child: ListView(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 0.2,),
+                        )
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 10, right: 10, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              // initialValue: Application.customerLogin!.name.toString(),
+                              controller: _searchController,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 18,
+                                height: 1.5,
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: ThemeColors.bottomNavColor,
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: ThemeColors.textFieldHintColor,
+                                ),
+                                hintText: "Search all Orders",
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 15.0),
+                                hintStyle: TextStyle(fontSize: 15),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8, color: ThemeColors.bottomNavColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8, color: ThemeColors.bottomNavColor),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8, color: ThemeColors.bottomNavColor)),
+                              ),
+                              validator: (value) {
+                                Pattern pattern =
+                                    r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
+                                RegExp regex = new RegExp(pattern.toString());
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter GST Number';
+                                } else if (!regex.hasMatch(value)) {
+                                  return 'Please enter valid GST Number';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                // profile.name = value;
+                                setState(() {
+                                  // _nameController.text = value;
+                                  if (_formKey.currentState!.validate()) {}
+                                });
+                              },
+                            ),
                           ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: ThemeColors.bottomNavColor,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: ThemeColors.textFieldHintColor,
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.filter_list),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("Filter")
+                              ],
                             ),
-                            hintText: "Search all Orders",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 15.0),
-                            hintStyle: TextStyle(fontSize: 15),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8, color: ThemeColors.bottomNavColor),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8, color: ThemeColors.bottomNavColor),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
-                                borderSide: BorderSide(
-                                    width: 0.8, color: ThemeColors.bottomNavColor)),
-                          ),
-                          validator: (value) {
-                            Pattern pattern =
-                                r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                            RegExp regex = new RegExp(pattern.toString());
-                            if (value == null || value.isEmpty) {
-                              return 'Please Enter GST Number';
-                            } else if (!regex.hasMatch(value)) {
-                              return 'Please enter valid GST Number';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            // profile.name = value;
-                            setState(() {
-                              // _nameController.text = value;
-                              if (_formKey.currentState!.validate()) {}
-                            });
-                          },
-                        ),
+                          )
+                        ],
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.filter_list),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("Filter")
-                          ],
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                  InkWell(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+                      },
+                      child: buildCustomerEnquiriesList())
+                ],
               ),
-            InkWell(
-              onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
-              },
-                child: buildCustomerEnquiriesList())
-            ],
-          ),
-        ):Center(
+            )
+
+          // Center(
+          //   child: CircularProgressIndicator(),
+          // )
+
+        );
+
+
+      })
+      :Center(
         child: Column(
           mainAxisAlignment:MainAxisAlignment.center,
           children: [

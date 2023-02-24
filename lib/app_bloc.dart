@@ -1,6 +1,7 @@
 
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
@@ -14,6 +15,7 @@ class AppBloc {
 
  static final authBloc = AuthBloc(userRepository: userRepository);
   static final loginBloc = LoginBloc(userRepository: userRepository);
+  static final homeBloc = HomeBloc(userRepository: userRepository);
   // static final profileBloc = ProfileBloc(profileRepo: userRepository);
   // static final contactUsBloc = ContactUsBloc(contactUsRepo: userRepository);
   // static final changePassBloc = ChangePassBloc(changePassRepo: userRepository);
@@ -42,30 +44,10 @@ class AppBloc {
     BlocProvider<LoginBloc>(
       create: (context) => loginBloc,
     ),
-    // BlocProvider<ProfileBloc>(
-    //   create: (context) => profileBloc,
-    // ),
-    // BlocProvider<ContactUsBloc>(
-    //   create: (context) => contactUsBloc,
-    // ),
-    // BlocProvider<ChangePassBloc>(
-    //   create: (context) => changePassBloc,
-    // ),
-    // BlocProvider<CategoryBloc>(
-    //   create: (context) => categoryBloc,
-    // ),
-    // BlocProvider<HomeBloc>(
-    //   create: (context) => homeBloc,
-    // ),
-    // BlocProvider<AddressBloc>(
-    //   create: (context) => addressBloc,
-    // ),
-    // BlocProvider<MyOrdersBloc>(
-    //   create: (context) => myOrderBloc,
-    // ),
-    // BlocProvider<CartBloc>(
-    //   create: (context) => cartBloc,
-    // ),
+    BlocProvider<HomeBloc>(
+      create: (context) => homeBloc,
+    ),
+
   ];
 
   static void dispose() {
@@ -74,14 +56,7 @@ class AppBloc {
     themeBloc.close();
     authBloc.close();
     loginBloc.close();
-    // profileBloc.close();
-    // contactUsBloc.close();
-    // categoryBloc.close();
-    // changePassBloc.close();
-    // homeBloc.close();
-    // addressBloc.close();
-    // myOrderBloc.close();
-    // cartBloc.close();
+    homeBloc.close();
   }
 
   ///Singleton factory

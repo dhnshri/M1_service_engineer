@@ -33,14 +33,15 @@ class UserRepository {
 
   // ///Fetch api login
   Future<dynamic> login({String? username,String? password,String? token,String? deviceID}) async {
-    final params = {"username":username,"password":password, "token": token,"device_id": deviceID};
+    final params = {"username":username,"password":password, "token": 'Bearer $token',"device_id": deviceID};
     return await Api.login(params);
   }
-  // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
-  //   final params = {"per_page":perPage,
-  //     "start_from":startFrom};
-  //   return await Api.getCategory(params);
-  // }
+
+  //Service Request Api
+  Future<dynamic> fetchServiceRequestList({String? userID, String? offSet, String? statusID}) async {
+    final params = {"user_id":userID, "offset":offSet, "status_id":statusID};
+    return await Api.getServiceRequestList(params);
+  }
   //
   // Future<dynamic> fetchProductCategory({String? ssCatId}) async {
   //   final params = {"sscat_id":ssCatId};

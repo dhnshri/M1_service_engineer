@@ -4,18 +4,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:service_engineer/main.dart';
-
-
-
 import '../../Model/customer_login.dart';
 import '../../Repository/UserRepository.dart';
-import '../../Utils/application.dart';
-
-//for multipart
-import 'package:http_parser/http_parser.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-
 import '../../app_bloc.dart';
 import '../authentication/authentication_event.dart';
 import 'login_event.dart';
