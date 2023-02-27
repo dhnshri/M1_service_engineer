@@ -13,7 +13,7 @@ class Api {
   static const String HOST_URL="http://mone.ezii.live/service_engineer/";
   // static const String HOST_URL="http://unstoppabletrade.ezii.live/App_details/";
   static const String CUSTOMER_LOGIN="login";
-  static const String Service_Request_List="machine_maintainance_list";
+  static const String Service_Request_List="machine_service_request_list";
 
 
 

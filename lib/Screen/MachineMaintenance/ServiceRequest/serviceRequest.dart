@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Bloc/home/Home_event.dart';
 import 'package:service_engineer/Bloc/home/Home_state.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
@@ -11,12 +10,8 @@ import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../Config/font.dart';
-import '../../JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestDetails.dart';
-import '../../JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestFilter.dart';
 
 
 
@@ -43,7 +38,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequest(userID: '10',statusID: '0',offSet: '6'));
+    _homeBloc!.add(OnServiceRequest(userID: '1',offSet: '0'));
   }
   @override
   void dispose() {
@@ -52,8 +47,8 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     // getroleofstudent();
   }
 
-  Widget buildCustomerEnquiriesList() {
-    // if (productList.length <= 0) {
+  Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
+    // if (serviceList.length <= 0) {
     //   return ListView.builder(
     //     scrollDirection: Axis.vertical,
     //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
@@ -62,107 +57,190 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     //         baseColor: Theme.of(context).hoverColor,
     //         highlightColor: Theme.of(context).highlightColor,
     //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
+    //         child: Container(
+    //           width: MediaQuery.of(context).size.width,
+    //           child: Card(
+    //             shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(0.0),
+    //             ),
+    //             // color: Colors.white70,
+    //             elevation: 5,
+    //             child: Row(
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: [
+    //                 Padding(
+    //                   padding: const EdgeInsets.all(10.0),
+    //                   child: ConstrainedBox(
+    //                     constraints: BoxConstraints(
+    //                       maxWidth: MediaQuery.of(context).size.width * 0.28,
+    //                       maxHeight: MediaQuery.of(context).size.width * 0.28,
     //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
+    //                     child: CachedNetworkImage(
+    //                       filterQuality: FilterQuality.medium,
+    //                       imageUrl: '',
+    //                       placeholder: (context, url) {
+    //                         return Shimmer.fromColors(
+    //                           baseColor: Theme.of(context).hoverColor,
+    //                           highlightColor: Theme.of(context).highlightColor,
+    //                           enabled: true,
+    //                           child: Container(
+    //                             height: 80,
+    //                             width: 80,
+    //                             decoration: BoxDecoration(
+    //                               color: Colors.white,
+    //                               borderRadius: BorderRadius.circular(0),
     //                             ),
     //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
+    //                         );
+    //                       },
+    //                       imageBuilder: (context, imageProvider) {
+    //                         return Container(
+    //                           height: 100,
+    //                           width: 100,
+    //                           decoration: BoxDecoration(
+    //                             image: DecorationImage(
+    //                               image: imageProvider,
+    //                               fit: BoxFit.cover,
+    //                             ),
+    //                             borderRadius: BorderRadius.circular(0),
+    //                           ),
+    //                         );
+    //                       },
+    //                       errorWidget: (context, url, error) {
+    //                         return Shimmer.fromColors(
+    //                           baseColor: Theme.of(context).hoverColor,
+    //                           highlightColor: Theme.of(context).highlightColor,
+    //                           enabled: true,
+    //                           child: Container(
+    //                             height: 80,
+    //                             width: 80,
+    //                             decoration: BoxDecoration(
+    //                               color: Colors.white,
+    //                               borderRadius: BorderRadius.circular(8),
+    //                             ),
+    //                             child: Icon(Icons.error),
+    //                           ),
+    //                         );
+    //                       },
+    //                     ),
     //                   ),
-    //                 ],
-    //               ),
+    //                 ),
+    //                 Flexible(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(10.0),
+    //                     child: Column(
+    //                       crossAxisAlignment: CrossAxisAlignment.start,
+    //                       // mainAxisAlignment: MainAxisAlignment.start,
+    //                       children: [
+    //                         Container(
+    //                           // width: MediaQuery.of(context).size.width/2.5,
+    //                           child: Text(
+    //                             '',
+    //                             style: TextStyle(
+    //                                 fontFamily: 'Poppins-SemiBold',
+    //                                 fontSize: 16,
+    //                                 fontWeight: FontWeight.bold
+    //                             ),
+    //                             overflow: TextOverflow.ellipsis,
+    //                             maxLines: 2,
+    //                           ),
+    //                         ),
+    //                         SizedBox(height: 4,),
+    //                         Row(
+    //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                           children: [
+    //                             Text(
+    //                               "Enquiry ID:",
+    //                               style: TextStyle(
+    //                                   fontFamily: 'Poppins-SemiBold',
+    //                                   fontSize: 12,
+    //                                   fontWeight: FontWeight.bold
+    //                               ),
+    //                             ),
+    //                             // SizedBox(
+    //                             //   // width: MediaQuery.of(context).size.width/,
+    //                             // ),
+    //                             Container(
+    //                               // width: MediaQuery.of(context).size.width*0.2,
+    //                               child: Text(
+    //                                 '',
+    //                                 style: TextStyle(
+    //                                   fontFamily: 'Poppins-Regular',
+    //                                   fontSize: 12,
+    //                                   // fontWeight: FontWeight.bold
+    //                                 ),
+    //                                 overflow: TextOverflow.ellipsis,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                         SizedBox(height: 3,),
+    //
+    //                         Row(
+    //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                           children: [
+    //                             Text(
+    //                               "Working Timing:",
+    //                               style: TextStyle(
+    //                                   fontFamily: 'Poppins-SemiBold',
+    //                                   fontSize: 12,
+    //                                   fontWeight: FontWeight.bold
+    //                               ),
+    //                             ),
+    //                             // SizedBox(
+    //                             //   width: MediaQuery.of(context).size.width/6.3,
+    //                             // ),
+    //                             Container(
+    //                               // width: MediaQuery.of(context).size.width*0.2,
+    //                               child: Text(
+    //                                 "10 AM - 6 PM",
+    //                                 style: TextStyle(
+    //                                   fontFamily: 'Poppins-Regular',
+    //                                   fontSize: 12,
+    //                                   // fontWeight: FontWeight.bold
+    //                                 ),
+    //                                 overflow: TextOverflow.ellipsis,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                         SizedBox(height: 3,),
+    //
+    //                         Row(
+    //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                           children: [
+    //                             Text(
+    //                               "Date & Time:",
+    //                               style: TextStyle(
+    //                                   fontFamily: 'Poppins-SemiBold',
+    //                                   fontSize: 12,
+    //                                   fontWeight: FontWeight.bold
+    //                               ),
+    //                             ),
+    //                             // SizedBox(
+    //                             //   width: MediaQuery.of(context).size.width/6.3,
+    //                             // ),
+    //                             Container(
+    //                               // width: MediaQuery.of(context).size.width*0.2,
+    //                               child: Text(
+    //                                 '',
+    //                                 style: TextStyle(
+    //                                   fontFamily: 'Poppins-Regular',
+    //                                   fontSize: 12,
+    //                                   // fontWeight: FontWeight.bold
+    //                                 ),
+    //                                 overflow: TextOverflow.ellipsis,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //
+    //                       ],
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ],
     //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
     //           ),
     //         ),
     //       );
@@ -178,13 +256,13 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  serviceRequestCard();
+        return  serviceRequestCard(context, serviceList[index]);
       },
-      itemCount: 20,
+      itemCount: serviceList.length,
     );
   }
 
-  Widget serviceRequestCard()
+  Widget serviceRequestCard(BuildContext context, ServiceRequestModel serviceListData)
   {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -206,9 +284,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                 ),
                 child: CachedNetworkImage(
                   filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
+                  imageUrl: serviceListData.machineImg!,
                   placeholder: (context, url) {
                     return Shimmer.fromColors(
                       baseColor: Theme.of(context).hoverColor,
@@ -266,7 +342,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     Container(
                       // width: MediaQuery.of(context).size.width/2.5,
                       child: Text(
-                        "Job Title/Services Name or Any Other Name",
+                        serviceListData.machineName!,
                         style: TextStyle(
                             fontFamily: 'Poppins-SemiBold',
                             fontSize: 16,
@@ -294,7 +370,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         Container(
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
-                            "#102GRDSA36987",
+                            serviceListData.enquiryId.toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins-Regular',
                               fontSize: 12,
@@ -311,7 +387,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Timing:",
+                          "Working Timing:",
                           style: TextStyle(
                               fontFamily: 'Poppins-SemiBold',
                               fontSize: 12,
@@ -325,6 +401,36 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
                             "10 AM - 6 PM",
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 3,),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Date & Time:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/6.3,
+                        // ),
+                        Container(
+                          // width: MediaQuery.of(context).size.width*0.2,
+                          child: Text(
+                            serviceListData.dateAndTime!,
                             style: TextStyle(
                               fontFamily: 'Poppins-Regular',
                               fontSize: 12,
@@ -353,10 +459,10 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
       BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         return BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
-              if(state is HomeSuccess){
+              if(state is ServiceRequestSuccess){
                 serviceList = state.serviceListData;
               }
-              if(state is HomeFail){
+              if(state is ServiceRequestFail){
                 Fluttertoast.showToast(msg: state.msg.toString());
               }
             },
@@ -456,7 +562,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
                       },
-                      child: buildCustomerEnquiriesList())
+                      child: buildCustomerEnquiriesList(context, serviceList!))
                 ],
               ),
             )

@@ -38,8 +38,8 @@ class UserRepository {
   }
 
   //Service Request Api
-  Future<dynamic> fetchServiceRequestList({String? userID, String? offSet, String? statusID}) async {
-    final params = {"user_id":userID, "offset":offSet, "status_id":statusID};
+  Future<dynamic> fetchServiceRequestList({String? userID, String? offSet}) async {
+    final params = {"user_id":userID, "offset":offSet};
     return await Api.getServiceRequestList(params);
   }
   //

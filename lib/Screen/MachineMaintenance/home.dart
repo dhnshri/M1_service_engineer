@@ -19,7 +19,7 @@ class MachineMaintenanceHomeScreen extends StatefulWidget {
 
 class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScreen> {
   bool loading = true;
-  bool isSwitched = false;
+  bool isSwitched = true;
 
   final _formKey = GlobalKey<FormState>();
 

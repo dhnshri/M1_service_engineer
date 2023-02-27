@@ -10,16 +10,15 @@ abstract class HomeState {}
 
 class InitialHomeState extends HomeState {}
 
-class HomeLoading extends HomeState {}
+class ServiceRequestLoading extends HomeState {}
 
-class HomeFail extends HomeState {
+class ServiceRequestFail extends HomeState {
   final String? msg;
-
-  HomeFail({this.msg});
+  ServiceRequestFail({this.msg});
 }
 
-class HomeSuccess extends HomeState {
+class ServiceRequestSuccess extends HomeState {
   List<ServiceRequestModel> serviceListData;
   String message;
-  HomeSuccess({required this.serviceListData,required this.message});
+  ServiceRequestSuccess({required this.serviceListData,required this.message});
 }

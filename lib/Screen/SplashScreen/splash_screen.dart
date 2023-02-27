@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
 
 import '../../Config/image.dart';
 import '../LoginRegistration/login_screen.dart';
@@ -32,7 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
      // authBloc = BlocProvider.of<AuthBloc>(context);
     //  authBloc!.add(OnAuthCheck());
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+          // MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+          MaterialPageRoute(builder: (context) => BottomNavigation(index: 0,dropValue: 'Machine Maintenance')));
     });
   }
 
