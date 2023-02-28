@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Screen/LoginRegistration/registration.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Bloc/login/login_bloc.dart';
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 Timer.periodic(const Duration(seconds: 10), (timer) {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: 'Machine Maintenance',)));
-                  Fluttertoast.showToast(msg: state.message.toString());
+                  showCustomSnackBar(context,'Login Successfully',isError: false);
                   timer.cancel();
                 });
               });
@@ -96,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             }
             if(state is LoginFail){
-              Fluttertoast.showToast(msg: state.msg.toString());
+              showCustomSnackBar(context,'Login Failed');
               // Fluttertoast.showToast(msg: "Login Failed");
             }
           },

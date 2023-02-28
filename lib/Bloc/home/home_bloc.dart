@@ -2,11 +2,12 @@ import 'dart:async';
 
 
 import 'package:bloc/bloc.dart';
-import 'package:service_engineer/Bloc/home/Home_event.dart';
+import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
-import 'Home_state.dart';
+import 'home_event.dart';
+import 'home_state.dart';
 
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -18,10 +19,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(event) async* {
 
 
-    ///Event for Home
+    ///Event for Service Request
     if (event is OnServiceRequest) {
       ///Notify loading to UI
-      yield ServiceRequestLoading();
+      yield ServiceRequestLoading(
+        isLoading: false,
+      );
 
       ///Fetch API via repository
       final ServiceRequestRepo result = await userRepository!
@@ -34,9 +37,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Case API fail but not have token
       if (result.success == true) {
         ///Home API success
-        // final  VendorHome user = VendorHome.fromJson(result.data);
-        // List<ServiceRequestModel> user = result.data!;
-        // user = result.data!;
         final Iterable refactorServiceRequestList = result.data! ?? [];
         final serviceRequestList = refactorServiceRequestList.map((item) {
           return ServiceRequestModel.fromJson(item);
@@ -44,7 +44,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print('Service Request List: $serviceRequestList');
         try {
           ///Begin start AuthBloc Event AuthenticationSave
-
+          yield ServiceRequestLoading(
+              isLoading: true,
+          );
           yield ServiceRequestSuccess(serviceListData: serviceRequestList, message: result.msg!);
         } catch (error) {
           ///Notify loading to UI
@@ -53,6 +55,47 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } else {
         ///Notify loading to UI
         yield ServiceRequestFail(msg: result.msg!);
+      }
+    }
+
+    ///Event for Service Request Detail
+    if (event is OnServiceRequestDetail) {
+      ///Notify loading to UI
+      yield ServiceRequestDetailLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final ServiceRequestDetailRepo result = await userRepository!
+          .fetchServiceRequestDetail(
+        userID: event.userID,
+        machineEnquiryId: event.machineServiceId,
+        jobWorkEnquiryId: event.jobWorkServiceId,
+        transportEnquiryId: event.transportServiceId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestDetail = result.machineServiceDetails! ?? [];
+        final serviceRequestDetail = refactorServiceRequestDetail.map((item) {
+          return MachineServiceDetailsModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $serviceRequestDetail');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ServiceRequestLoading(
+            isLoading: true,
+          );
+          yield ServiceRequestDetailSuccess(machineServiceDetail: serviceRequestDetail, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield ServiceRequestDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield ServiceRequestDetailFail(msg: result.msg!);
       }
     }
   }

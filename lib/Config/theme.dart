@@ -24,10 +24,10 @@ class AppTheme {
   static Color appColor=Color(0xffDF5F00);
 
   ///Default font
-  static String currentFont = "SF-Pro-Display";
+  static String currentFont = "Poppins";
 
   ///List Font support
-  static List<String> fontSupport = ["SF-Pro-Display", "Roboto"];
+  static List<String> fontSupport = ["Poppins"];
 
   ///Default Theme
   static ThemeModel currentTheme = ThemeModel.fromJson({

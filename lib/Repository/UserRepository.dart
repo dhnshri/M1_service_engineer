@@ -42,6 +42,14 @@ class UserRepository {
     final params = {"user_id":userID, "offset":offSet};
     return await Api.getServiceRequestList(params);
   }
+
+  //Service Request Detail Api
+  Future<dynamic> fetchServiceRequestDetail({String? userID, String? machineEnquiryId,
+    String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
+    final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
+    'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getServiceRequestDetail(params);
+  }
   //
   // Future<dynamic> fetchProductCategory({String? ssCatId}) async {
   //   final params = {"sscat_id":ssCatId};

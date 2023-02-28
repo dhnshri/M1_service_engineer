@@ -37,12 +37,14 @@ class CustomerLogin {
   int? id;
   String? name;
   String? email;
+  String? mobile;
+  String? username;
   String? password;
   String? rememberToken;
-  String? mobile;
-  int? machineMaitainance;
+  int? role;
   int? status;
   String? deviceId;
+  String? fcmId;
   String? createdAt;
   String? updatedAt;
 
@@ -51,12 +53,14 @@ class CustomerLogin {
         this.id,
         this.name,
         this.email,
+        this.mobile,
+        this.username,
         this.password,
         this.rememberToken,
-        this.mobile,
-        this.machineMaitainance,
+        this.role,
         this.status,
         this.deviceId,
+        this.fcmId,
         this.createdAt,
         this.updatedAt
       });
@@ -65,12 +69,14 @@ class CustomerLogin {
     id = json['id'];
     name = json['name'];
     email = json['email'];
+    mobile = json['mobile'];
+    username = json['username'];
     password = json['password'];
     rememberToken = json['remember_token'];
-    mobile = json['mobile'];
-    machineMaitainance = json['machine_maitainance'];
+    role = json['role'];
     status = json['status'];
     deviceId = json['device_id'];
+    fcmId = json['fcm_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -80,12 +86,14 @@ class CustomerLogin {
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
+    data['mobile'] = this.mobile;
+    data['username'] = this.username;
     data['password'] = this.password;
     data['remember_token'] = this.rememberToken;
-    data['mobile'] = this.mobile;
-    data['machine_maitainance'] = this.machineMaitainance;
+    data['role'] = this.role;
     data['status'] = this.status;
     data['device_id'] = this.deviceId;
+    data['fcm_id'] = this.fcmId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

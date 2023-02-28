@@ -10,3 +10,11 @@ class OnServiceRequest extends HomeEvent {
 
 }
 
+class OnServiceRequestDetail extends HomeEvent {
+
+  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+
+  OnServiceRequestDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+
+}
+

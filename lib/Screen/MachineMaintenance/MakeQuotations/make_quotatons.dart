@@ -94,8 +94,9 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+                Navigator.of(context).pop();
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),
