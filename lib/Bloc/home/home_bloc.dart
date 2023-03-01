@@ -58,7 +58,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    ///Event for Service Request Detail
+    //Event for Service Request Detail
     if (event is OnServiceRequestDetail) {
       ///Notify loading to UI
       yield ServiceRequestDetailLoading(isLoading: false);

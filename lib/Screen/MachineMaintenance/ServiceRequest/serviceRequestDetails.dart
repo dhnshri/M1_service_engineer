@@ -251,7 +251,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Date & Timing :",style: ExpanstionTileLeftDataStyle,),
-                              Text("12 Nov 2022, 10AM - 4PM",style: ExpanstionTileRightDataStyle,),
+                              Text(DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceRequestData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
                             ],
                           ),
                           SizedBox(height: 5,),
@@ -401,7 +401,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Controler",style: ExpanstionTileLeftDataStyle,),
-                                      Text("Mitsubishi",style: ExpanstionTileRightDataStyle,),
+                                      Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                 ],
@@ -492,7 +492,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Maintenance Type",style: ExpanstionTileLeftDataStyle,),
-                              Text("Some Value here",style: ExpanstionTileRightDataStyle,),
+                              Text(serviceRequestData![0].serviceCategoryName.toString(),style: ExpanstionTileRightDataStyle,),
                             ],
                           ),
                           SizedBox(height: 10,),
