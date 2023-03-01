@@ -2,6 +2,7 @@ import 'dart:async';
 
 
 import 'package:bloc/bloc.dart';
+import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
@@ -137,6 +138,46 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ServiceRequestDetailFail(msg: result.msg!);
       }
     }
+
+    //Product List
+    if (event is ProductList) {
+      ///Notify loading to UI
+      yield ProductListLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final ProductRepo result = await userRepository!
+          .fetchProductList(
+        prodId: event.prodId,
+        offset: event.offSet
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorProductList = result.data!['product_details'] ?? [];
+        final productList = refactorProductList.map((item) {
+          return ProductDetails.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $productList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ProductListLoading(
+            isLoading: true,
+          );
+          yield ProductListSuccess(productList: productList, message: '');
+        } catch (error) {
+          ///Notify loading to UI
+          yield ProductListFail(msg: 'Failed to fetch data.');
+        }
+      } else {
+        ///Notify loading to UI
+        yield ProductListFail(msg: 'Failed to fetch data.');
+      }
+    }
+
   }
 
 

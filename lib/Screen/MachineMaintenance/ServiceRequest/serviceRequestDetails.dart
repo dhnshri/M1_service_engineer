@@ -202,7 +202,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                 // Fluttertoast.showToast(msg: state.msg.toString());
               }
             },
-            child: _isLoading ? ListView(
+            child: _isLoading ? serviceRequestData!.length <=0 ? Center(child: CircularProgressIndicator(),):ListView(
               children: [
                 SizedBox(height: 7,),
                 //Basic Info

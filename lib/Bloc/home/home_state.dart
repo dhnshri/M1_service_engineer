@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
+import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 
@@ -57,4 +58,20 @@ class MyTaskListSuccess extends HomeState {
 class MyTaskListLoadFail extends HomeState {
   final String? msg;
   MyTaskListLoadFail({this.msg});
+}
+
+class ProductListLoading extends HomeState {
+  bool isLoading;
+  ProductListLoading({required this.isLoading});
+}
+
+class ProductListFail extends HomeState {
+  final String? msg;
+  ProductListFail({this.msg});
+}
+
+class ProductListSuccess extends HomeState {
+  List<ProductDetails> productList;
+  String message;
+  ProductListSuccess({required this.productList, required this.message});
 }

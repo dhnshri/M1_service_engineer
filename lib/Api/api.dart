@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/customer_registration.dart';
+import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'dart:convert';
@@ -20,6 +21,7 @@ class Api {
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
   static const String CUSTOMER_REGISTER="register_service";
   static const String MY_TASK_LIST="machine_service_my_task_list";
+  static const String PRODUCT_LIST="get_product_list";
 
 
 
@@ -82,6 +84,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return MyTaskRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getProductList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+PRODUCT_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return ProductRepo.fromJson(responseJson);
     }
   }
 

@@ -24,3 +24,11 @@ class OnServiceRequestDetail extends HomeEvent {
 
 }
 
+class ProductList extends HomeEvent {
+
+  String prodId,offSet;
+
+  ProductList({required this.prodId,required this.offSet,});
+
+}
+

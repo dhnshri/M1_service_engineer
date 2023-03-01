@@ -10,20 +10,25 @@ import '../../../Widget/stepper_button.dart';
 import 'make_quotatons.dart';
 
 class ServiceChargesScreen extends StatefulWidget {
-  const ServiceChargesScreen({Key? key}) : super(key: key);
+   TextEditingController workingTimeController = TextEditingController();
+   TextEditingController dateofJoiningController = TextEditingController();
+   TextEditingController serviceCallChargesController = TextEditingController();
+   TextEditingController handlingChargesController = TextEditingController();
+   TextEditingController otherChargesController = TextEditingController();
+   TextEditingController transportChargesController = TextEditingController();
+  ServiceChargesScreen({Key? key,required this.dateofJoiningController,
+  required this.handlingChargesController,
+  required this.otherChargesController,
+  required this.serviceCallChargesController,
+  required this.transportChargesController,
+  required this.workingTimeController}) : super(key: key);
 
   @override
   _ServiceChargesScreenState createState() => _ServiceChargesScreenState();
 }
 
 class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
-  final TextEditingController _workingTimeController = TextEditingController();
-  final TextEditingController _dateofJoiningController = TextEditingController();
-  final TextEditingController _serviceCallChargesController = TextEditingController();
-  final TextEditingController _handlingChargesController = TextEditingController();
-  final TextEditingController _otherChargesController = TextEditingController();
-  final TextEditingController _transportChargesController = TextEditingController();
-  final TextEditingController _serviceTitleController = TextEditingController();
+
 
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   bool serviceValue = false;
@@ -72,7 +77,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: _serviceTitleController,
+                controller: widget.serviceCallChargesController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -170,12 +175,13 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        ///Working Time Field
         SizedBox(
           width:
           MediaQuery.of(context).size.width * 0.8,
           height: 60,
           child: TextFormField(
-            controller: _workingTimeController,
+            controller: widget.workingTimeController,
             keyboardType: TextInputType.number,
             // maxLength: 10,
             cursorColor: primaryAppColor,
@@ -235,12 +241,14 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
             },
           ),
         ),
+
+        ///Date of Joining Field
         SizedBox(
           width:
           MediaQuery.of(context).size.width * 0.8,
           height: 60,
           child: TextFormField(
-            controller: _dateofJoiningController,
+            controller: widget.dateofJoiningController,
             keyboardType: TextInputType.number,
             // maxLength: 10,
             cursorColor: primaryAppColor,
@@ -307,6 +315,8 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
             },
           ),
         ),
+
+        ///Service/Call Charges Field
         serviceValue ? Column(
           children: [
             Align(
@@ -321,7 +331,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: _serviceCallChargesController,
+                controller: widget.serviceCallChargesController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -383,6 +393,8 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
             ),
           ],
         ) : Container(),
+
+        ///Handling Charges Field
         handlingValue ? Column(
           children: [
             Align(
@@ -397,7 +409,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: _handlingChargesController,
+                controller: widget.handlingChargesController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -459,6 +471,8 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
             ),
           ],
         ) : Container(),
+
+        ///Other Charges Field
         otherValue? Column(
           children: [
             Align(
@@ -473,7 +487,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: _otherChargesController,
+                controller: widget.otherChargesController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -535,6 +549,8 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
             ),
           ],
         ) : Container(),
+
+        ///Transport Charges Field
         transportValue? Column(
           children: [
             Align(
@@ -549,7 +565,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: _transportChargesController,
+                controller: widget.transportChargesController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -611,14 +627,16 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
             ),
           ],
         ) : Container(),
+
         SizedBox(height: 20,),
+
+        ///Addd Charges Button
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(),
             InkWell(
               onTap: (){
-                AddOtherCharges();
               },
               child: Row(
                 children: [
