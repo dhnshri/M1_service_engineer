@@ -1,12 +1,18 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../Bloc/machineMaintance/myTask/myTask_bloc.dart';
+import '../../../Bloc/machineMaintance/myTask/myTask_event.dart';
+import '../../../Bloc/machineMaintance/myTask/myTask_state.dart';
 import '../../../Config/font.dart';
+import '../../../Model/MachineMaintance/myTaskModel.dart';
+import '../../../Utils/application.dart';
 import 'myTaskFilter.dart';
 import 'my_task_detail.dart';
 
@@ -20,6 +26,8 @@ class MyTaskScreen extends StatefulWidget {
 }
 
 class _MyTaskScreenState extends State<MyTaskScreen> {
+  MyTaskBloc? _myTaskBloc;
+  List<MyTaskModel> myTaskList=[];
 
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
@@ -35,6 +43,8 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
     super.initState();
     _loading = false;
     _progressValue = 0.5;
+    _myTaskBloc = BlocProvider.of<MyTaskBloc>(context);
+    _myTaskBloc!.add(OnLoadingMyTaskList(userid: Application.customerLogin!.id.toString(), offset: ''));
   }
   @override
   void dispose() {
@@ -43,124 +53,124 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
     // getroleofstudent();
   }
 
-  Widget buildCustomerEnquiriesList() {
-    // if (productList.length <= 0) {
-    //   return ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-    //     itemBuilder: (context, index) {
-    //       return Shimmer.fromColors(
-    //         baseColor: Theme.of(context).hoverColor,
-    //         highlightColor: Theme.of(context).highlightColor,
-    //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //     itemCount: List.generate(8, (index) => index).length,
-    //   );
-    // }
+  Widget buildCustomerEnquiriesList(List<MyTaskModel> myTaskList) {
+    if (myTaskList.length <= 0) {
+      return ListView.builder(
+        scrollDirection: Axis.vertical,
+        // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
+        itemBuilder: (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Theme.of(context).hoverColor,
+            highlightColor: Theme.of(context).highlightColor,
+            enabled: true,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                  // leading: nameIcon(),
+                  leading: CachedNetworkImage(
+                    filterQuality: FilterQuality.medium,
+                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                    imageUrl: "https://picsum.photos/250?image=9",
+                    // imageUrl: model.cart[index].productImg == null
+                    //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                    //     : model.cart[index].productImg,
+                    placeholder: (context, url) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      );
+                    },
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.error),
+                        ),
+                      );
+                    },
+                  ),
+                  title: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Loading...",
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0,
+                            //color: Theme.of(context).accentColor
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                ".......",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black87,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.white),
+              ),
+            ),
+          );
+        },
+        itemCount: List.generate(8, (index) => index).length,
+      );
+    }
 
     // return ListView.builder(
     return ListView.builder(
@@ -169,13 +179,13 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return   myTaskCard();
+        return myTaskCard(context,myTaskList[index]);
       },
-      itemCount: 20,
+      itemCount: myTaskList.length,
     );
   }
 
-  Widget myTaskCard()
+  Widget myTaskCard(BuildContext context,MyTaskModel myTaskData)
   {
     return Container(
       width: MediaQuery.of(context).size.width ,
@@ -199,7 +209,9 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                   filterQuality: FilterQuality.medium,
                   // imageUrl: Api.PHOTO_URL + widget.users.avatar,
                   // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
+                  imageUrl: myTaskData.machineImg == null
+                      ? "https://picsum.photos/250?image=9"
+                      : myTaskData.machineImg.toString(),
                   placeholder: (context, url) {
                     return Shimmer.fromColors(
                       baseColor: Theme.of(context).hoverColor,
@@ -257,7 +269,8 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                     Container(
                       // width: MediaQuery.of(context).size.width/1.8,
                       child: Text(
-                        "Job Title/Services Name or Any Other Name",
+                        myTaskData.machineName.toString(),
+                       // "Job Title/Services Name or Any Other Name",
                         style: TextStyle(
                             fontFamily: 'Poppins-SemiBold',
                             fontSize: 16,
@@ -285,7 +298,8 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         Container(
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
-                            "#102GRDSA36987",
+                            myTaskData.enquiryId.toString(),
+                           // "#102GRDSA36987",
                             style: TextStyle(
                               fontFamily: 'Poppins-Regular',
                               fontSize: 12,
@@ -316,7 +330,8 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         Container(
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
-                            "Step 1",
+                            myTaskData.taskStatus.toString(),
+                            //"Step 1",
                             style: TextStyle(
                               fontFamily: 'Poppins-Regular',
                               fontSize: 12,
@@ -370,7 +385,12 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Container(
+      body:BlocBuilder<MyTaskBloc,MyTaskState>(builder:(context,state)
+    {
+      if (state is MyTaskListSuccess) {
+        myTaskList = state.MyTaskList!;
+      }
+      return Container(
         child: ListView(
           children: [
             Container(
@@ -407,12 +427,14 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               vertical: 10.0, horizontal: 15.0),
                           hintStyle: TextStyle(fontSize: 15),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(1.0)),
                             borderSide: BorderSide(
                                 width: 0.8, color: ThemeColors.bottomNavColor),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(1.0)),
                             borderSide: BorderSide(
                                 width: 0.8, color: ThemeColors.bottomNavColor),
                           ),
@@ -420,7 +442,8 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               borderRadius:
                               BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
-                                  width: 0.8, color: ThemeColors.bottomNavColor)),
+                                  width: 0.8,
+                                  color: ThemeColors.bottomNavColor)),
                         ),
                         validator: (value) {
                           Pattern pattern =
@@ -445,7 +468,9 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                     InkWell(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) =>  MyTaskFilterScreen()));;
+                            MaterialPageRoute(builder: (context) =>
+                                MyTaskFilterScreen()));
+                        ;
                       },
                       child: Row(
                         children: [
@@ -462,13 +487,15 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
               ),
             ),
             SingleChildScrollView(child: Container(child: InkWell(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>MyTaskDetailsScreen()));
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => MyTaskDetailsScreen()));
                 },
-                child: buildCustomerEnquiriesList()))),
+                child: buildCustomerEnquiriesList(myTaskList)))),
           ],
         ),
-      ),
+      );
+    })
 
     );
   }

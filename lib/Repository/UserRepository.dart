@@ -59,6 +59,13 @@ class UserRepository {
     final params = {"user_id":userID, "offset":offSet, "status_id":statusID};
     return await Api.getServiceRequestList(params);
   }
+
+  //MachineMaintainceMyTaskList
+  Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
+    final params = {"user_id":userId,
+      "offset":offset};
+    return await Api.getMyTaskList(params);
+  }
   //
   // Future<dynamic> fetchProductCategory({String? ssCatId}) async {
   //   final params = {"sscat_id":ssCatId};

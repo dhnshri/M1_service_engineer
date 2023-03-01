@@ -4,6 +4,7 @@ import 'package:service_engineer/Model/customer_registration.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'dart:convert';
 
+import '../Model/MachineMaintance/myTaskModel.dart';
 import '../Model/customer_login.dart';
 
 
@@ -16,6 +17,7 @@ class Api {
   static const String CUSTOMER_LOGIN="login";
   static const String CUSTOMER_REGISTER="register_service";
   static const String Service_Request_List="machine_maintainance_list";
+  static const String My_Task_List="machine_service_my_task_list";
 
 
 
@@ -54,6 +56,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return ServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getMyTaskList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+My_Task_List),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return MyTaskRepo.fromJson(responseJson);
     }
   }
 
