@@ -6,6 +6,7 @@ import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
+import '../../Model/MachineMaintance/myTaskModel.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
@@ -19,7 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(event) async* {
 
 
-    ///Event for Service Request
+    //Event for Service Request
     if (event is OnServiceRequest) {
       ///Notify loading to UI
       yield ServiceRequestLoading(
@@ -54,9 +55,47 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       } else {
         ///Notify loading to UI
+        yield MyTaskLoading(isLoading: false);
         yield ServiceRequestFail(msg: result.msg!);
       }
     }
+
+    //Event for My Task List
+    if (event is MyTaskList) {
+      ///Notify loading to UI
+      yield MyTaskLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final MyTaskRepo response = await userRepository!
+          .fetchMachineMaintainceMyTaskList(
+          userId: event.userid,
+          offset:event.offset
+      );
+      print(response);
+
+      if(response.success == true){
+        final Iterable refactorMyTask = response.data ?? [];
+        final listMyTask = refactorMyTask.map((item) {
+          return MyTaskModel.fromJson(item);
+        }).toList();
+
+        print("Task List: $listMyTask");
+
+        try{
+          yield MyTaskLoading(isLoading: true);
+          yield MyTaskListSuccess(MyTaskList: listMyTask);
+        }catch(error){
+          yield MyTaskLoading(isLoading: false);
+          yield MyTaskListLoadFail(msg: response.msg);
+        }
+      }
+      else {
+        ///Notify loading to UI
+        yield MyTaskLoading(isLoading: false);
+        yield MyTaskListLoadFail(msg: response.msg);
+      }
+    }
+
 
     //Event for Service Request Detail
     if (event is OnServiceRequestDetail) {

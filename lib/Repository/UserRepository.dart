@@ -239,10 +239,10 @@ class UserRepository {
     );
   }
   //
-  // ///Get from Storage
-  // dynamic getUser() {
-  //   return UtilPreferences.getString(Preferences.user);
-  // }
+  ///Get from Storage
+  dynamic getUser() {
+    return UtilPreferences.getString(Preferences.user);
+  }
   //
   // ///Save address
   // Future<dynamic> saveAddress(AddressModel address) async {

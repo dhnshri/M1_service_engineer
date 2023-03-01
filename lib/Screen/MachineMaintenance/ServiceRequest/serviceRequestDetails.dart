@@ -15,6 +15,7 @@ import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/image_view_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../Config/font.dart';
@@ -149,7 +150,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('#${widget.serviceRequestData.enquiryId.toString()}'),
+        title: Text('${widget.serviceRequestData.machineName.toString()}'),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
@@ -510,222 +511,68 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
 
                           SizedBox(height: 10,),
 
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemCount: serviceRequestData![0].machineProblemImg!.length,
+              padding: EdgeInsets.only(top: 10, bottom: 15),
+              itemBuilder: (context, index) {
+                
+                return  Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: ThemeColors.imageContainerBG
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Container(
-                            decoration: BoxDecoration(
-                                color: ThemeColors.imageContainerBG
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Text('Image-abc',
-                                        style: TextStyle(
-                                            color: ThemeColors.buttonColor,
-                                            fontFamily: 'Poppins-Regular',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400
-                                        )),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      // String imgpath = serviceRequestData![0].machineProblemImg![0].toString();
-                                      // File imgfile = File(imgpath);
-                                      // createPDF(serviceRequestData![0].machineProblemImg![0].toString());
-                                      _convertImageToPDF(serviceRequestData![0].machineProblemImg![0].toString());
-                                      // final file = await loadPdfFromNetwork(serviceRequestData![0].machineProblemImg![0].toString());
-                                      //
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         PDFScreen(file: file,url: serviceRequestData![0].machineProblemImg![0].toString(),),
-                                      //   ),
-                                      // );
-                                    },
-                                    child: Container(
-                                      child: Text('View',
-                                          style: TextStyle(
-                                              color: ThemeColors.buttonColor,
-                                              fontFamily: 'Poppins-Regular',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500
-                                          )),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            width:200,
+                            child: Text(serviceRequestData![0].machineProblemImg![index].split('/').last.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: ThemeColors.buttonColor,
+                                    fontFamily: 'Poppins-Regular',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400
+                                )),
                           ),
-
-                          SizedBox(height: 10,),
-
-                          Container(
-                            decoration: BoxDecoration(
-                                color: ThemeColors.imageContainerBG
+                          InkWell(
+                            onTap: () async {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                  ImageViewerScreen(url: serviceRequestData![0].machineProblemImg![index])));
+                            },
+                            child: Container(
+                              child: Text('View',
+                                  style: TextStyle(
+                                      color: ThemeColors.buttonColor,
+                                      fontFamily: 'Poppins-Regular',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
+                                  )),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Text('Image-abc',
-                                        style: TextStyle(
-                                            color: ThemeColors.buttonColor,
-                                            fontFamily: 'Poppins-Regular',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400
-                                        )),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      final file = await loadPdfFromNetwork(url.toString());
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
 
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PDFScreen(file: file,url: url.toString(),),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      child: Text('View',
-                                          style: TextStyle(
-                                              color: ThemeColors.buttonColor,
-                                              fontFamily: 'Poppins-Regular',
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500
-                                          )),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+
+
+
 
 
                         ],
                       ),
                     ),
 
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                    //   child: Container(
-                    //     height:130,
-                    //     width: MediaQuery.of(context).size.width,
-                    //     child: CachedNetworkImage(
-                    //       filterQuality: FilterQuality.medium,
-                    //       // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                    //       // imageUrl: "https://picsum.photos/250?image=9",
-                    //       imageUrl: "https://picsum.photos/250?image=9",
-                    //       placeholder: (context, url) {
-                    //         return Shimmer.fromColors(
-                    //           baseColor: Theme.of(context).hoverColor,
-                    //           highlightColor: Theme.of(context).highlightColor,
-                    //           enabled: true,
-                    //           child: Container(
-                    //             height: 80,
-                    //             width: 80,
-                    //             decoration: BoxDecoration(
-                    //               color: Colors.white,
-                    //               borderRadius: BorderRadius.circular(0),
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //       imageBuilder: (context, imageProvider) {
-                    //         return Container(
-                    //           height: 80,
-                    //           width: 80,
-                    //           decoration: BoxDecoration(
-                    //             image: DecorationImage(
-                    //               image: imageProvider,
-                    //               fit: BoxFit.cover,
-                    //             ),
-                    //             borderRadius: BorderRadius.circular(0),
-                    //           ),
-                    //         );
-                    //       },
-                    //       errorWidget: (context, url, error) {
-                    //         return Shimmer.fromColors(
-                    //           baseColor: Theme.of(context).hoverColor,
-                    //           highlightColor: Theme.of(context).highlightColor,
-                    //           enabled: true,
-                    //           child: Container(
-                    //             height: 80,
-                    //             width: 80,
-                    //             decoration: BoxDecoration(
-                    //               color: Colors.white,
-                    //               borderRadius: BorderRadius.circular(0),
-                    //             ),
-                    //             child: Icon(Icons.error),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
-                    // SizedBox(height: 5,),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                    //   child: Container(
-                    //     height:180,
-                    //     width: MediaQuery.of(context).size.width,
-                    //     child: CachedNetworkImage(
-                    //       filterQuality: FilterQuality.medium,
-                    //       // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                    //       // imageUrl: "https://picsum.photos/250?image=9",
-                    //       imageUrl: "https://picsum.photos/250?image=16",
-                    //       placeholder: (context, url) {
-                    //         return Shimmer.fromColors(
-                    //           baseColor: Theme.of(context).hoverColor,
-                    //           highlightColor: Theme.of(context).highlightColor,
-                    //           enabled: true,
-                    //           child: Container(
-                    //             height: 80,
-                    //             width: 80,
-                    //             decoration: BoxDecoration(
-                    //               color: Colors.white,
-                    //               borderRadius: BorderRadius.circular(0),
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //       imageBuilder: (context, imageProvider) {
-                    //         return Container(
-                    //           height: 80,
-                    //           width: 80,
-                    //           decoration: BoxDecoration(
-                    //             image: DecorationImage(
-                    //               image: imageProvider,
-                    //               fit: BoxFit.cover,
-                    //             ),
-                    //             borderRadius: BorderRadius.circular(0),
-                    //           ),
-                    //         );
-                    //       },
-                    //       errorWidget: (context, url, error) {
-                    //         return Shimmer.fromColors(
-                    //           baseColor: Theme.of(context).hoverColor,
-                    //           highlightColor: Theme.of(context).highlightColor,
-                    //           enabled: true,
-                    //           child: Container(
-                    //             height: 80,
-                    //             width: 80,
-                    //             decoration: BoxDecoration(
-                    //               color: Colors.white,
-                    //               borderRadius: BorderRadius.circular(0),
-                    //             ),
-                    //             child: Icon(Icons.error),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
 
                   ],
                 ),

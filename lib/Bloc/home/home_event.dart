@@ -10,6 +10,12 @@ class OnServiceRequest extends HomeEvent {
 
 }
 
+class MyTaskList extends HomeEvent {
+  String userid;
+  String offset;
+  MyTaskList({required this.userid, required this.offset });
+}
+
 class OnServiceRequestDetail extends HomeEvent {
 
   String userID,machineServiceId,jobWorkServiceId,transportServiceId;

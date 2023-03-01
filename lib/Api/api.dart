@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
+import 'package:service_engineer/Model/customer_registration.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'dart:convert';
@@ -17,8 +19,7 @@ class Api {
   static const String SERVICE_REQUEST_LIST="machine_service_request_list";
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
   static const String CUSTOMER_REGISTER="register_service";
-  static const String Service_Request_List="machine_maintainance_list";
-  static const String My_Task_List="machine_service_my_task_list";
+  static const String MY_TASK_LIST="machine_service_my_task_list";
 
 
 
@@ -74,7 +75,7 @@ class Api {
 
   static Future<dynamic> getMyTaskList(params) async {
     final response = await http.post(
-      Uri.parse(HOST_URL+My_Task_List),
+      Uri.parse(HOST_URL+MY_TASK_LIST),
       body: params,
     );
     if (response.statusCode == 200) {
