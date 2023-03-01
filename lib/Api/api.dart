@@ -16,6 +16,9 @@ class Api {
   static const String CUSTOMER_LOGIN="login";
   static const String SERVICE_REQUEST_LIST="machine_service_request_list";
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
+  static const String CUSTOMER_REGISTER="register_service";
+  static const String Service_Request_List="machine_maintainance_list";
+  static const String My_Task_List="machine_service_my_task_list";
 
 
 
@@ -29,6 +32,19 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return CustomerLoginRepo.fromJson(responseJson);
+    }
+  }
+
+  ///Registration api
+  static Future<dynamic> registration(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CUSTOMER_REGISTER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return RegistrationRepo.fromJson(responseJson);
     }
   }
 
@@ -53,6 +69,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return ServiceRequestDetailRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getMyTaskList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+My_Task_List),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return MyTaskRepo.fromJson(responseJson);
     }
   }
 

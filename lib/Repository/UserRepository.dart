@@ -37,6 +37,23 @@ class UserRepository {
     return await Api.login(params);
   }
 
+  Future<dynamic> registration({String? fullname,String? createPassword,String? reCreatePassword,String? email,String? mobileNo,String? role,String? username}) async {
+    final params = {
+      'name':fullname,
+      'password':createPassword,
+      'password_confirmation':reCreatePassword,
+      'username':username,
+      'email':email,
+      'mobile':mobileNo,
+      'role':role,};
+    return await Api.registration(params);
+  }
+  // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
+  //   final params = {"per_page":perPage,
+  //     "start_from":startFrom};
+  //   return await Api.getCategory(params);
+  // }
+
   //Service Request Api
   Future<dynamic> fetchServiceRequestList({String? userID, String? offSet}) async {
     final params = {"user_id":userID, "offset":offSet};
@@ -49,6 +66,13 @@ class UserRepository {
     final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
     'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
     return await Api.getServiceRequestDetail(params);
+  }
+
+  //MachineMaintainceMyTaskList
+  Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
+    final params = {"user_id":userId,
+      "offset":offset};
+    return await Api.getMyTaskList(params);
   }
   //
   // Future<dynamic> fetchProductCategory({String? ssCatId}) async {

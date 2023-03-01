@@ -4,11 +4,18 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Bloc/login/login_bloc.dart';
+import '../../Bloc/login/login_event.dart';
+import '../../Bloc/login/login_state.dart';
 import '../../Config/font.dart';
+import '../../Utils/connectivity_check.dart';
 import '../../Widget/app_button.dart';
 import '../../Screen/bottom_navbar.dart';
+import '../../Widget/app_dialogs.dart';
 import 'login_screen.dart';
 
 
@@ -26,21 +33,36 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _emailIdController = TextEditingController();
   final TextEditingController _createPasswordController = TextEditingController();
   final TextEditingController _reEnterPasswordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   String dropdownValueModule = 'Machine Maintenance';
   String dropdownValue = '+ 91';
   String? phoneNum;
   String? role;
   bool loading = true;
+  String _value = "1";
+  LoginBloc? _userLoginBloc;
+  bool isconnectedToInternet = false;
+
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _userLoginBloc = BlocProvider.of<LoginBloc>(context);
+    loading;
   }
 
   @override
   void dispose() {
+    // TODO: implement dispose
     super.dispose();
+   _fullNameController.clear();
+   _emailIdController.clear();
+   _phoneNumberController.clear();
+   _createPasswordController.clear();
+   _reEnterPasswordController.clear();
   }
 
 
@@ -60,21 +82,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.10,
-                    ),
-                    Center(
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: Image.asset(
-                              'assets/images/Logo.png')),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                  ],
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+
+                      SizedBox(
+                       // height: MediaQuery.of(context).size.height * 0.10,
+                        height: 10,
+                      ),
+                      Center(
+                        child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            child: Image.asset(
+                                'assets/images/Logo.png')),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                   flex: 1,
@@ -109,7 +136,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 60,
                               child: TextFormField(
                                 controller: _fullNameController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
@@ -162,7 +189,71 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                                 onChanged: (val) {
                                   setState(() {
-                                    // _phoneNumberController.text = val;
+                                    if ( _formKey.currentState!.validate()) {}
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width:
+                              MediaQuery.of(context).size.width * 0.8,
+                              height: 60,
+                              child: TextFormField(
+                                controller: _userNameController,
+                                keyboardType: TextInputType.text,
+                                maxLength: 10,
+                                cursorColor: primaryAppColor,
+                                decoration: InputDecoration(
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 1.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(8.0),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                        width: 1.0,
+                                      )),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(8.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  hintText: 'UserName',
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20.0, 20.0, 0.0, 0.0),
+                                  hintStyle: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    if ( _formKey.currentState!.validate()) {}
                                   });
                                 },
                               ),
@@ -173,7 +264,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 60,
                               child: TextFormField(
                                 controller: _emailIdController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
@@ -226,7 +317,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                                 onChanged: (val) {
                                   setState(() {
-                                    // _phoneNumberController.text = val;
+                                    if ( _formKey.currentState!.validate()) {}
                                   });
                                 },
                               ),
@@ -280,7 +371,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       width: 1.0,
                                     ),
                                   ),
-                                  hintText: '+91 9657563423',
+                                  hintText: '+91 **********',
                                   contentPadding: const EdgeInsets.fromLTRB(
                                       20.0, 20.0, 0.0, 0.0),
                                   hintStyle: GoogleFonts.poppins(
@@ -290,8 +381,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                                 onChanged: (val) {
                                   setState(() {
-                                    phoneNum = val;
-                                    // _phoneNumberController.text = val;
+                                    if ( _formKey.currentState!.validate()) {}
                                   });
                                 },
                               ),
@@ -303,7 +393,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 60,
                               child: TextFormField(
                                 controller: _createPasswordController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                // maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
@@ -356,8 +446,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                                 onChanged: (val) {
                                   setState(() {
-                                    phoneNum = val;
-                                    // _phoneNumberController.text = val;
+                                    if ( _formKey.currentState!.validate()) {}
                                   });
                                 },
                               ),
@@ -369,7 +458,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 60,
                               child: TextFormField(
                                 controller: _reEnterPasswordController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                               //  maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
@@ -420,10 +509,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w500),
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter confirm password';
+                                  } else if (_createPasswordController.text != value) {
+                                    return 'Confirm password did not match with create password';
+                                  }
+                                  return null;
+                                },
                                 onChanged: (val) {
                                   setState(() {
-                                    phoneNum = val;
-                                    // _phoneNumberController.text = val;
+                                    if ( _formKey.currentState!.validate()) {}
                                   });
                                 },
                               ),
@@ -513,76 +609,111 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 ),
                               ),
                             ),
-                            Padding(
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 40.0),
-                                child: AppButton(
-                                  onPressed: () async {
 
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
-                                    //   isconnectedToInternet = await ConnectivityCheck
-                                    //       .checkInternetConnectivity();
-                                    //   if (isconnectedToInternet == true) {
-                                    //     if (_formKey.currentState!.validate()) {
-                                    //       // setState(() {
-                                    //       //   loading=true;
-                                    //       // });
-                                    //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-                                    //     }
-                                    //   } else {
-                                    //     CustomDialogs.showDialogCustom(
-                                    //         "Internet",
-                                    //         "Please check your Internet Connection!",
-                                    //         context);
-                                    //   }
-                                  },
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(50))),
-                                  text: 'Sign in',
-                                  loading: loading,
+                            BlocBuilder<LoginBloc, LoginState>(
+                                builder: (context, signup) {
+                                  return BlocListener<LoginBloc, LoginState>(
+                                    listener: (context, state) {
+                                      if (state is CustomerRegistrationSuccess) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => LoginScreen(dropValue:dropdownValueModule,)));
+                                        Fluttertoast.showToast(msg: state.msg);
+                                        loading = false;
 
+                                      }
 
-                                )
+                                      if (state is CustomerRegistrationFail) {
+                                        Fluttertoast.showToast(msg: state.msg);
+                                      }
+                                    },
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: AppButton(
+                                          loading: loading,
+                                          onPressed: () async {
+                                            isconnectedToInternet =
+                                            await ConnectivityCheck
+                                                .checkInternetConnectivity();
+                                            if (isconnectedToInternet == true) {
+                                              if (_fullNameController == null) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Please enter full name");
+                                              }
+                                              else if (_phoneNumberController == null) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Please enter mobile number");
+                                              } else if (_userNameController == null) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Please enter Username");
+                                              }else if (_emailIdController == null) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Please enter email");
+                                              }
+                                              else
+                                              if (_formKey.currentState!.validate()) {
+                                                _userLoginBloc!.add(OnRegistration(
+                                                  fullname:_fullNameController.text,
+                                                  username: _userNameController.text,
+                                                  createPassword:_createPasswordController.text,
+                                                  reCreatePassword: _reEnterPasswordController.text,
+                                                  role:dropdownValueModule,
+                                                  email: _emailIdController.text,
+                                                  mobileNo: _phoneNumberController.text,
+                                                ));
+                                              }
+                                            } else {
+                                              CustomDialogs.showDialogCustom(
+                                                  "Internet",
+                                                  "Please check your Internet Connection!",
+                                                  context);
+                                            }
+                                          },
+                                          text: 'Register',
+                                        )
+
+                                    ),
+                                  );
+                                }
                             ),
                           ],
                         ),
-                        SizedBox(height: 7),
-                        TextButton(
-                            child: const Text(
-                              'Forget Password?',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14),
-                            ),
-                            onPressed: () {
-                              // Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: (context) =>
-                              //             RegistrationScreen()
-                              //                 // WebViewContainer(
-                              //                 // "https://rccedu.org/register.php")
-                              //         ))
-                              //     .whenComplete(() => Navigator.pop(context));
-                              // print('Pressed');
-                            }),
-
-                        TextButton(
-                            child: const Text(
-                              'Do not have any account? Create Account',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  letterSpacing: 1,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14),
-                            ),
-                            onPressed: () {
-
-                            })
+                        // SizedBox(height: 7),
+                        // TextButton(
+                        //     child: const Text(
+                        //       'Forget Password?',
+                        //       style: TextStyle(
+                        //           color: Colors.white,
+                        //           letterSpacing: 1,
+                        //           fontWeight: FontWeight.w400,
+                        //           fontSize: 14),
+                        //     ),
+                        //     onPressed: () {
+                        //       // Navigator.push(
+                        //       //         context,
+                        //       //         MaterialPageRoute(
+                        //       //             builder: (context) =>
+                        //       //             RegistrationScreen()
+                        //       //                 // WebViewContainer(
+                        //       //                 // "https://rccedu.org/register.php")
+                        //       //         ))
+                        //       //     .whenComplete(() => Navigator.pop(context));
+                        //       // print('Pressed');
+                        //     }),
+                        //
+                        // TextButton(
+                        //     child: const Text(
+                        //       'Do not have any account? Create Account',
+                        //       style: TextStyle(
+                        //           color: Colors.white,
+                        //           letterSpacing: 1,
+                        //           fontWeight: FontWeight.w400,
+                        //           fontSize: 14),
+                        //     ),
+                        //     onPressed: () {
+                        //
+                        //     })
                       ],
                     ),
                   ),

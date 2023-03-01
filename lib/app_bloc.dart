@@ -5,6 +5,7 @@ import 'package:service_engineer/Bloc/home/home_bloc.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
+import 'Bloc/machineMaintance/myTask/myTask_bloc.dart';
 import 'Bloc/theme/theme_bloc.dart';
 import 'Repository/UserRepository.dart';
 
@@ -16,6 +17,8 @@ class AppBloc {
  static final authBloc = AuthBloc(userRepository: userRepository);
   static final loginBloc = LoginBloc(userRepository: userRepository);
   static final homeBloc = HomeBloc(userRepository: userRepository);
+  static final myTaskBloc = MyTaskBloc(userRepository: userRepository);
+
   // static final profileBloc = ProfileBloc(profileRepo: userRepository);
   // static final contactUsBloc = ContactUsBloc(contactUsRepo: userRepository);
   // static final changePassBloc = ChangePassBloc(changePassRepo: userRepository);
@@ -47,6 +50,9 @@ class AppBloc {
     BlocProvider<HomeBloc>(
       create: (context) => homeBloc,
     ),
+    BlocProvider<MyTaskBloc>(
+      create: (context) => myTaskBloc,
+    ),
 
   ];
 
@@ -57,6 +63,7 @@ class AppBloc {
     authBloc.close();
     loginBloc.close();
     homeBloc.close();
+    myTaskBloc.close();
   }
 
   ///Singleton factory

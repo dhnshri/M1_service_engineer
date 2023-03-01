@@ -340,8 +340,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 14),
                                   ),
                                   onPressed: () {
-                                    // Navigator.of(context).push(
-                                    //     MaterialPageRoute(builder: (context) => RegistrationScreen()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) => RegistrationScreen(dropValue:dropdownValue ,)));
                                   })
                             ],
                           ),

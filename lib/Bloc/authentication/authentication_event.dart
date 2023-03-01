@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 import '../../Model/customer_login.dart';
 
 abstract class AuthenticationEvent {}
