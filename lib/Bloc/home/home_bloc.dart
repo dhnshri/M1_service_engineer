@@ -2,17 +2,14 @@ import 'dart:async';
 
 
 import 'package:bloc/bloc.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
-import 'package:service_engineer/main.dart';
 
-
-
-import '../../app_bloc.dart';
-import '../authentication/authentication_event.dart';
-import 'Home_event.dart';
-import 'Home_state.dart';
+import '../../Model/MachineMaintance/myTaskModel.dart';
+import 'home_event.dart';
+import 'home_state.dart';
 
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -24,16 +21,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(event) async* {
 
 
-    ///Event for Home
+    //Event for Service Request
     if (event is OnServiceRequest) {
       ///Notify loading to UI
-      yield HomeLoading();
+      yield ServiceRequestLoading(
+        isLoading: false,
+      );
 
       ///Fetch API via repository
       final ServiceRequestRepo result = await userRepository!
           .fetchServiceRequestList(
         offSet: event.offSet,
-        statusID: event.statusID,
         userID: event.userID,
       );
       print(result);
@@ -41,23 +39,145 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Case API fail but not have token
       if (result.success == true) {
         ///Home API success
-        // final  VendorHome user = VendorHome.fromJson(result.data);
-        ServiceRequestModel user = new ServiceRequestModel();
-        // user.status = user.status!.toInt();
-        user = result.data!;
+        final Iterable refactorServiceRequestList = result.data! ?? [];
+        final serviceRequestList = refactorServiceRequestList.map((item) {
+          return ServiceRequestModel.fromJson(item);
+        }).toList();
+        print('Service Request List: $serviceRequestList');
         try {
           ///Begin start AuthBloc Event AuthenticationSave
-
-          // yield HomeSuccess(userModel: user, message: "Home Successfully");
+          yield ServiceRequestLoading(
+              isLoading: true,
+          );
+          yield ServiceRequestSuccess(serviceListData: serviceRequestList, message: result.msg!);
         } catch (error) {
           ///Notify loading to UI
-          yield HomeFail(msg: "Home Fail");
+          yield ServiceRequestFail(msg: result.msg!);
         }
       } else {
         ///Notify loading to UI
-        yield HomeFail(msg: "Home Fail");
+        yield MyTaskLoading(isLoading: false);
+        yield ServiceRequestFail(msg: result.msg!);
       }
     }
+
+    //Event for My Task List
+    if (event is MyTaskList) {
+      ///Notify loading to UI
+      yield MyTaskLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final MyTaskRepo response = await userRepository!
+          .fetchMachineMaintainceMyTaskList(
+          userId: event.userid,
+          offset:event.offset
+      );
+      print(response);
+
+      if(response.success == true){
+        final Iterable refactorMyTask = response.data ?? [];
+        final listMyTask = refactorMyTask.map((item) {
+          return MyTaskModel.fromJson(item);
+        }).toList();
+
+        print("Task List: $listMyTask");
+
+        try{
+          yield MyTaskLoading(isLoading: true);
+          yield MyTaskListSuccess(MyTaskList: listMyTask);
+        }catch(error){
+          yield MyTaskLoading(isLoading: false);
+          yield MyTaskListLoadFail(msg: response.msg);
+        }
+      }
+      else {
+        ///Notify loading to UI
+        yield MyTaskLoading(isLoading: false);
+        yield MyTaskListLoadFail(msg: response.msg);
+      }
+    }
+
+
+    //Event for Service Request Detail
+    if (event is OnServiceRequestDetail) {
+      ///Notify loading to UI
+      yield ServiceRequestDetailLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final ServiceRequestDetailRepo result = await userRepository!
+          .fetchServiceRequestDetail(
+        userID: event.userID,
+        machineEnquiryId: event.machineServiceId,
+        jobWorkEnquiryId: event.jobWorkServiceId,
+        transportEnquiryId: event.transportServiceId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestDetail = result.machineServiceDetails! ?? [];
+        final serviceRequestDetail = refactorServiceRequestDetail.map((item) {
+          return MachineServiceDetailsModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $serviceRequestDetail');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ServiceRequestLoading(
+            isLoading: true,
+          );
+          yield ServiceRequestDetailSuccess(machineServiceDetail: serviceRequestDetail, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield ServiceRequestDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield ServiceRequestDetailFail(msg: result.msg!);
+      }
+    }
+
+    //Product List
+    if (event is ProductList) {
+      ///Notify loading to UI
+      yield ProductListLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final ProductRepo result = await userRepository!
+          .fetchProductList(
+        prodId: event.prodId,
+        offset: event.offSet
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorProductList = result.data!['product_details'] ?? [];
+        final productList = refactorProductList.map((item) {
+          return ProductDetails.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $productList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ProductListLoading(
+            isLoading: true,
+          );
+          yield ProductListSuccess(productList: productList, message: '');
+        } catch (error) {
+          ///Notify loading to UI
+          yield ProductListFail(msg: 'Failed to fetch data.');
+        }
+      } else {
+        ///Notify loading to UI
+        yield ProductListFail(msg: 'Failed to fetch data.');
+      }
+    }
+
   }
 
 

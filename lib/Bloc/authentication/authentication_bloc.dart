@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       if (hasUser!=null ) {
         ///Getting data from Storage
         final customerModel = CustomerLogin.fromJson(jsonDecode(hasUser));
-
+        print(customerModel);
         ///Set token network
         // httpManager.getOption.headers["Authorization"] = "Bearer " + user.token;
         // httpManager.postOption.headers["Authorization"] =
@@ -87,38 +87,6 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
         throw Exception(message);
       }
     }
-    // if (event is OnSaveImage) {
-    //   ///Save to Storage user via repository
-    //   final savePreferences = await userRepository.saveImage(event.profilePic);
-    //
-    //   ///Check result save user
-    //   if (savePreferences) {
-    //     ///Set token network
-    //     // httpManager.getOption.headers["Authorization"] =
-    //     //     "Bearer " + event.user.token;
-    //     // httpManager.postOption.headers["Authorization"] =
-    //     //     "Bearer " + event.user.token;
-    //
-    //     ///Set user
-    //     Application.profile_pic = event.profilePic;
-    //     // UtilPreferences.setString(Preferences.user, Application.user.toString());
-    //
-    //     ///Notify loading to UI
-    //     if(Application.user.fbId!=null && Application.user.isRegistered=="true") {
-    //       yield AuthenticationSuccess();
-    //     }else{
-    //       yield AuthenticationFail();
-    //     }
-    //
-    //
-    //   } else {
-    //     final String message = "Cannot save user data to storage phone";
-    //     throw Exception(message);
-    //   }
-    // }
-
-
-    //updated for cart List
 
 
     if (event is OnClear) {

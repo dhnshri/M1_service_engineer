@@ -1,12 +1,22 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Bloc/home/home_state.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
+import 'package:service_engineer/Model/service_request_detail_repo.dart';
+import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/process_detail.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/image_view_screen.dart';
 import 'package:service_engineer/Widget/pdfViewer.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
@@ -22,7 +32,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class MyTaskDetailsScreen extends StatefulWidget {
-  const MyTaskDetailsScreen({Key? key}) : super(key: key);
+  MyTaskModel myTaskData;
+
+  MyTaskDetailsScreen({Key? key,required this.myTaskData}) : super(key: key);
 
   @override
   _MyTaskDetailsScreenState createState() => _MyTaskDetailsScreenState();
@@ -34,9 +46,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   String? phoneNum;
   String? role;
   bool loading = true;
-  // String? smsCode;
-  // bool smsCodeSent = false;
-  // String? verificationId;
+  bool _isLoading = false;
+
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
@@ -49,7 +60,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   double? addressLat;
   double? addressLong;
   Completer<GoogleMapController> controller1 = Completer();
-
+  HomeBloc? _homeBloc;
+  List<MachineServiceDetailsModel>? serviceRequestData = [];
 
   _onCameraMove(CameraPosition position) {
     _lastMapPosition = position.target;
@@ -69,8 +81,11 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    _homeBloc = BlocProvider.of<HomeBloc>(this.context);
+    _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+
     _phoneNumberController.clear();
-    super.initState();
     addressLat = double.parse(21.1458.toString());
     addressLong = double.parse(79.0882.toString());
     _lastMapPosition = LatLng(addressLat!, addressLong!);
@@ -108,7 +123,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
               //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
+        title: Text(widget.myTaskData.machineName.toString(),style:appBarheadingStyle ,),
       ),
       floatingActionButton:Padding(
         padding: const EdgeInsets.all(8.0),
@@ -139,659 +154,655 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          SizedBox(height: 7,),
-          //Basic Info
-          ExpansionTileCard(
-            initiallyExpanded: true,
-            key: cardA,
-            title: Text("Basic Info",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
-              ),),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Company ID",style: ExpanstionTileLeftDataStyle,),
-                        Text("#102GRDSA36987",style: ExpanstionTileRightDataStyle,),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Enquiry ID:",style: ExpanstionTileLeftDataStyle,),
-                        Text("#102GRDSA36987",style: ExpanstionTileRightDataStyle,),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Enquiry Date:",style: ExpanstionTileLeftDataStyle,),
-                        Text("24-Sep-2022",style: ExpanstionTileRightDataStyle,),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Location :",style: ExpanstionTileLeftDataStyle,),
-                        InkWell(
-                          onTap: (){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => MapSample()));
-                          },
-                            child: Row(
-                              children: [
-                                Text("Pune Railway Station",style: ExpanstionTileRightDataStyle,),
-                                // Transform.rotate(
-                                //   angle: 180 * math.pi / 100,
-                                //   child: IconButton(
-                                //     icon: Icon(
-                                //       Icons.send,
-                                //       color: Colors.red,
-                                //     ),
-                                //     onPressed: null,
-                                //   ),
-                                // ),
-                              ],
-                            )),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-                    InkWell(
-                      onTap: (){
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => MapSample()));
-                      },
-                      child: Container(
-                        color:Color(0xFFFFE0E1),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+      body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+        return BlocListener<HomeBloc, HomeState>(
+            listener: (context, state) {
+              if(state is ServiceRequestLoading){
+                _isLoading = state.isLoading;
+              }
+              if(state is ServiceRequestDetailSuccess){
+                serviceRequestData = state.machineServiceDetail;
+              }
+              if(state is ServiceRequestFail){
+                // Fluttertoast.showToast(msg: state.msg.toString());
+              }
+            },
+            child: _isLoading ? ListView(
+              children: [
+                SizedBox(height: 7,),
+                //Basic Info
+                ExpansionTileCard(
+                  initiallyExpanded: true,
+                  key: cardA,
+                  title: Text("Basic Info",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500
+                    ),),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Transform.rotate (
-                                  angle: 180 * math.pi / 100,
-                                  child: Icon(Icons.send,color: Colors.red, size: 11,)),
-                              SizedBox(width: 10,),
-                              Text("Google location Link | Google location Link ….",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
+                              Text("Company Name",style: ExpanstionTileLeftDataStyle,),
+                              Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5,),
+                          SizedBox(height: 5,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Enquiry ID:",style: ExpanstionTileLeftDataStyle,),
+                              Text(serviceRequestData![0].machineEnquiryId.toString(),style: ExpanstionTileRightDataStyle,),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Date & Timing :",style: ExpanstionTileLeftDataStyle,),
-                        Text("12 Nov 2022, 10AM - 4PM",style: ExpanstionTileRightDataStyle,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Enquiry Date:",style: ExpanstionTileLeftDataStyle,),
+                              Text(DateFormat('MM-dd-yyyy').format(DateTime.parse(serviceRequestData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
 
-                      ],
-                    ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Date & Timing :",style: ExpanstionTileLeftDataStyle,),
+                              Text(DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceRequestData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
 
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Divider(
-            // height: 2,
-            thickness: 2.0,
-          ),
-          /// Machin Info
-          ExpansionTileCard(
-            key: cardB,
-            initiallyExpanded: true,
-            title: Text("Machine Information",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                child: Column(
-                  children: [
-                    Container(
-                      height:200,
-                      width: MediaQuery.of(context).size.width,
-                      child: CachedNetworkImage(
-                        filterQuality: FilterQuality.medium,
-                        // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                        // imageUrl: "https://picsum.photos/250?image=9",
-                        imageUrl: "https://picsum.photos/250?image=9",
-                        placeholder: (context, url) {
-                          return Shimmer.fromColors(
-                            baseColor: Theme.of(context).hoverColor,
-                            highlightColor: Theme.of(context).highlightColor,
-                            enabled: true,
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          );
-                        },
-                        imageBuilder: (context, imageProvider) {
-                          return Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          );
-                        },
-                        errorWidget: (context, url, error) {
-                          return Shimmer.fromColors(
-                            baseColor: Theme.of(context).hoverColor,
-                            highlightColor: Theme.of(context).highlightColor,
-                            enabled: true,
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Icon(Icons.error),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Category",style: ExpanstionTileLeftDataStyle,),
-                                Text("Heavy",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Machine Name",style: ExpanstionTileLeftDataStyle,),
-                                Text("Grinder 2LA",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Manufacturer (Brand)",style: ExpanstionTileLeftDataStyle,),
-                                Text("John Deer",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Make",style: ExpanstionTileLeftDataStyle,),
-                                Text("Some Value here",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Machine No.",style: ExpanstionTileLeftDataStyle,),
-                                Text("032154CS32",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Controler",style: ExpanstionTileLeftDataStyle,),
-                                Text("Mitsubishi",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Sub-Category",style: ExpanstionTileLeftDataStyle,),
-                                Text("Semi Iron",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Machine Type",style: ExpanstionTileLeftDataStyle,),
-                                Text("Latte",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("System name",style: ExpanstionTileLeftDataStyle,),
-                                Text("MH23GTSF",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Model no.",style: ExpanstionTileLeftDataStyle,),
-                                Text("02GRDSA36",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Machine Size",style: ExpanstionTileLeftDataStyle,),
-                                Text("255m",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 7,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Manufacture Date",style: ExpanstionTileLeftDataStyle,),
-                                Text("24-July-2022",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
 
-          Divider(
-            // height: 2,
-            thickness: 2.0,
-          ),
-          /// Other Info
-          ExpansionTileCard(
-            key: cardC,
-            initiallyExpanded: true,
-            leading: Text("Other Info",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            title: SizedBox(),
-            subtitle:SizedBox(),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Priority",style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            )),
-                        Text("High",style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Maintenance Type",style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            )),
-                        Text("Some Value here",style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black,width: 1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Vestibulum blandit viverra convallis. Pellentesque ligula urna,"
-                            " fermentum ut semper in, tincidunt nec dui. Morbi mauris lacus, consequat"
-                            " eget justo in, semper gravida enim. Donec ultrices varius ligula. "
-                            "Ut non pretium augue. Etiam non rutrum metus. In varius sit amet "
-                            "lorem tempus sagittis. Cras sed maximus enim, vel ultricies tortor.",
-                          style:ExpanstionTileOtherInfoStyle ,),
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-
-                    Container(
-                      decoration: BoxDecoration(
-                          color: ThemeColors.imageContainerBG
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Text('Image-abc',
-                                  style: TextStyle(
-                                      color: ThemeColors.buttonColor,
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400
-                                  )),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                final file = await loadPdfFromNetwork(url.toString());
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PDFScreen(file: file,url: url.toString(),),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Location :",style: ExpanstionTileLeftDataStyle,),
+                              InkWell(
+                                  onTap: (){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => MapSample()));
+                                  },
+                                  child: Container(
+                                    width: 140,
+                                    child: Text(serviceRequestData![0].location.toString(),
+                                      maxLines: 5,
+                                      overflow: TextOverflow.ellipsis,style:TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12,
+                                        fontFamily: 'Poppins-Bold',
+                                        fontWeight: FontWeight.bold,
+                                      ),),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                child: Text('View',
-                                    style: TextStyle(
-                                        color: ThemeColors.buttonColor,
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500
-                                    )),
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 10,),
-
-                    Container(
-                      decoration: BoxDecoration(
-                          color: ThemeColors.imageContainerBG
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Text('Image-abc',
-                                  style: TextStyle(
-                                      color: ThemeColors.buttonColor,
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400
-                                  )),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                final file = await loadPdfFromNetwork(url.toString());
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PDFScreen(file: file,url: url.toString(),),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                child: Text('View',
-                                    style: TextStyle(
-                                        color: ThemeColors.buttonColor,
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500
-                                    )),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-            ],
-          ),
-
-
-          Divider(
-            // height: 2,
-            thickness: 2.0,
-          ),
-
-          ///Working Days
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Working Days :",
-                style: TextStyle(fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w500)),
-                Text("4 Days",
-                    style: TextStyle(fontFamily: 'Poppins-Medium',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500))
-              ],
-            ),
-          ),
-
-          SizedBox(height: 5,),
-
-
-          Divider(
-            // height: 2,
-            thickness: 2.0,
-          ),
-
-          Divider(
-            // height: 2,
-            thickness: 2.0,
-          ),
-
-          ///Track PRocess
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text("Track Process",
-                style: TextStyle(fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500)
-            ),
-          ),
-
-          ///Track Process List
-          Column(
-            // height: MediaQuery.of(context).size.height,
-            children: [
-              ListView.builder(
-                  itemCount: 3,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
-                      child: Material(
-                        elevation: 5,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
-                          },
-                          child: Container(
-                            // height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ListTile(
-                              title: Padding(
-                                padding: const EdgeInsets.only(bottom: 8,top: 5),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => MapSample()));
+                            },
+                            child: Container(
+                              color:Color(0xFFFFE0E1),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text('Lorem ipsum',
-                                        style: TextStyle(
-
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w400)),
-                                    Text("Process",
-                                      style: TextStyle(color: Colors.red),)
+                                    Transform.rotate (
+                                        angle: 180 * math.pi / 100,
+                                        child: Icon(Icons.send,color: Colors.red, size: 11,)),
+                                    SizedBox(width: 10,),
+                                    Text("Google location Link | Google location Link ….",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
                                   ],
                                 ),
                               ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
-                                    maxLines: 2, overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
-                                    )),
-                              ),
-                              trailing: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,),
-                              ),
                             ),
                           ),
 
-                        ),
+
+                        ],
                       ),
-                    );
-                  })
-            ],
-          ),
-
-          ///Add task Button
-          Padding(
-            padding: EdgeInsets.all(15.0),
-          child: Material(
-            elevation: 5,
-            child: Container(
-              height: 60,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
-
+                    ),
+                  ],
                 ),
-                  onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                      Text("Daily Update Task",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black.withOpacity(0.55)
-                        ),)
-                    ],
-                  )),
-            ),
-          ),),
+                Divider(
+                  // height: 2,
+                  thickness: 2.0,
+                ),
+                /// Machin Info
+                ExpansionTileCard(
+                  key: cardB,
+                  initiallyExpanded: true,
+                  title: Text("Machine Information",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            height:200,
+                            width: MediaQuery.of(context).size.width,
+                            child: CachedNetworkImage(
+                              filterQuality: FilterQuality.medium,
+                              imageUrl: serviceRequestData![0].machineImg.toString(),
+                              placeholder: (context, url) {
+                                return Shimmer.fromColors(
+                                  baseColor: Theme.of(context).hoverColor,
+                                  highlightColor: Theme.of(context).highlightColor,
+                                  enabled: true,
+                                  child: Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                );
+                              },
+                              imageBuilder: (context, imageProvider) {
+                                return Container(
+                                  height: 80,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return Shimmer.fromColors(
+                                  baseColor: Theme.of(context).hoverColor,
+                                  highlightColor: Theme.of(context).highlightColor,
+                                  enabled: true,
+                                  child: Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Icon(Icons.error),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Category",style: ExpanstionTileLeftDataStyle,),
+                                      Container(
+                                        width: 150,
+                                        child: Text(serviceRequestData![0].serviceCategoryName.toString(),
+                                          maxLines: 5,
+                                          overflow: TextOverflow.ellipsis,style:TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontFamily: 'Poppins-Bold',
+                                            fontWeight: FontWeight.bold,
+                                          ),),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Machine Name",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].machineName.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Manufacturer (Brand)",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].brand.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Make",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].make.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Machine No.",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].machineNumber.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Controler",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Sub-Category",style: ExpanstionTileLeftDataStyle,),
+                                      Container(
+                                        width: 150,
+                                        child: Text(serviceRequestData![0].serviceSubCategoryName.toString(),
+                                          maxLines: 5,
+                                          overflow: TextOverflow.ellipsis,style:TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontFamily: 'Poppins-Bold',
+                                            fontWeight: FontWeight.bold,
+                                          ),),
+                                      ),                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Machine Type",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].machineType.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("System name",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].systemName.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Model no.",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].modelNumber.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Machine Size",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].machineSize.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Manufacture Date",style: ExpanstionTileLeftDataStyle,),
+                                      Text(serviceRequestData![0].manufacturingDate.toString(),style: ExpanstionTileRightDataStyle,),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
 
-          ///Mark as Completed Button
-          InkWell(
-            onTap: (){
-              // Navigator.of(context).pop();
-              AlertDialog(
-                title: new Text(""),
-                content: new Text("Are you sure, you want to mark service as completed?"),
-                actions: <Widget>[
-                  Row(
+                Divider(
+                  // height: 2,
+                  thickness: 2.0,
+                ),
+                /// Other Info
+                ExpansionTileCard(
+                  key: cardC,
+                  initiallyExpanded: true,
+                  leading: Text("Other Info",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  title: SizedBox(),
+                  subtitle:SizedBox(),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Priority",style: TextStyle(fontFamily: 'Poppins-Medium',
+                                fontSize: 16,
+                              )),
+                              Text(serviceRequestData![0].otherInfoName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Maintenance Type",style: TextStyle(fontFamily: 'Poppins-Medium',
+                                fontSize: 16,
+                              )),
+                              Text(serviceRequestData![0].serviceCategoryName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black,width: 1),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(serviceRequestData![0].machineProblem.toString(),
+                                style:ExpanstionTileOtherInfoStyle ,),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: serviceRequestData![0].machineProblemImg!.length,
+                            padding: EdgeInsets.only(top: 10, bottom: 15),
+                            itemBuilder: (context, index) {
+
+                              return  Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: ThemeColors.imageContainerBG
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width:200,
+                                          child: Text(serviceRequestData![0].machineProblemImg![index].split('/').last.toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: ThemeColors.buttonColor,
+                                                  fontFamily: 'Poppins-Regular',
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400
+                                              )),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                                ImageViewerScreen(url: serviceRequestData![0].machineProblemImg![index])));
+                                          },
+                                          child: Container(
+                                            child: Text('View',
+                                                style: TextStyle(
+                                                    color: ThemeColors.buttonColor,
+                                                    fontFamily: 'Poppins-Regular',
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500
+                                                )),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+
+
+                Divider(
+                  // height: 2,
+                  thickness: 2.0,
+                ),
+
+                ///Working Days
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        child: new Text("No"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      SizedBox(width: 7,),
-                      TextButton(
-                        child: new Text("Yes"),
-                        onPressed: () {
-                         Navigator.of(context).pop();
-                        },
-                      ),
+                      Text("Working Days :",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500)),
+                      Text("4 Days",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500))
                     ],
                   ),
-                ],
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: ThemeColors.defaultbuttonColor,
-                    borderRadius: BorderRadius.circular(30)),
-                child: Center(child: Text("Mark As Completed",
-                    style: TextStyle(fontFamily: 'Poppins-Medium',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ))),
-              ),
-            ),
-          ),
+                ),
+
+                SizedBox(height: 5,),
 
 
-          SizedBox(
-            height: 80,
-          )
+                Divider(
+                  // height: 2,
+                  thickness: 2.0,
+                ),
+
+                Divider(
+                  // height: 2,
+                  thickness: 2.0,
+                ),
+
+                ///Track PRocess
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text("Track Process",
+                      style: TextStyle(fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500)
+                  ),
+                ),
+
+                ///Track Process List
+                Column(
+                  // height: MediaQuery.of(context).size.height,
+                  children: [
+                    ListView.builder(
+                        itemCount: 3,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (_, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
+                            child: Material(
+                              elevation: 5,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
+                                },
+                                child: Container(
+                                  // height: 60,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: ListTile(
+                                    title: Padding(
+                                      padding: const EdgeInsets.only(bottom: 8,top: 5),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Lorem ipsum',
+                                              style: TextStyle(
+
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w400)),
+                                          Text("Process",
+                                            style: TextStyle(color: Colors.red),)
+                                        ],
+                                      ),
+                                    ),
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+                                          maxLines: 2, overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                          )),
+                                    ),
+                                    trailing: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,),
+                                    ),
+                                  ),
+                                ),
+
+                              ),
+                            ),
+                          );
+                        })
+                  ],
+                ),
+
+                ///Add task Button
+                Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Material(
+                    elevation: 5,
+                    child: Container(
+                      height: 60,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+
+                          ),
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
+                              Text("Daily Update Task",
+                                style: TextStyle(fontFamily: 'Poppins-Medium',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black.withOpacity(0.55)
+                                ),)
+                            ],
+                          )),
+                    ),
+                  ),),
+
+                ///Mark as Completed Button
+                InkWell(
+                  onTap: (){
+                    // Navigator.of(context).pop();
+                    AlertDialog(
+                      title: new Text(""),
+                      content: new Text("Are you sure, you want to mark service as completed?"),
+                      actions: <Widget>[
+                        Row(
+                          children: [
+                            TextButton(
+                              child: new Text("No"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            SizedBox(width: 7,),
+                            TextButton(
+                              child: new Text("Yes"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: ThemeColors.defaultbuttonColor,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Center(child: Text("Mark As Completed",
+                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ))),
+                    ),
+                  ),
+                ),
 
 
-        ],
-      ),
+                SizedBox(
+                  height: 80,
+                )
+
+
+              ],
+            )
+                : Center(
+              child: CircularProgressIndicator(),
+            )
+
+        );
+
+
+      })
+
     );
   }
 

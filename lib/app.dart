@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:service_engineer/Screen/LoginRegistration/signUpAs.dart';
 import 'package:service_engineer/Screen/SplashScreen/splash_screen.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
 
@@ -83,7 +84,7 @@ class _AppState extends State<App> {
                 return BottomNavigation(index: 0,dropValue: role);
               }
               if (app is AuthenticationFail) {
-               return LoginScreen(dropValue: role,);
+               return SignUpAsScreen();
               //  return BottomNavigation(index: 0,);
               }
               return SplashScreen();
