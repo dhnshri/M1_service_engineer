@@ -82,6 +82,13 @@ class UserRepository {
     return await Api.getProductList(params);
   }
 
+  //Add To Cart
+  Future<dynamic> addToCart({String? prodId,String? userId, String? quantity}) async {
+    final params = {"user_id":userId,
+      "qty":userId,'product_id':prodId};
+    return await Api.getAddToCart(params);
+  }
+
   //Save User
   Future<dynamic> saveUser(CustomerLogin user) async {
     return await UtilPreferences.setString(

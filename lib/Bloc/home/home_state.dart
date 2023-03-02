@@ -75,3 +75,19 @@ class ProductListSuccess extends HomeState {
   String message;
   ProductListSuccess({required this.productList, required this.message});
 }
+
+
+class AddToCartLoading extends HomeState {
+  bool isLoading;
+  AddToCartLoading({required this.isLoading});
+}
+
+class AddToCartFail extends HomeState {
+  final String? msg;
+  AddToCartFail({this.msg});
+}
+
+class AddToCartSuccess extends HomeState {
+  String message;
+  AddToCartSuccess({required this.message});
+}

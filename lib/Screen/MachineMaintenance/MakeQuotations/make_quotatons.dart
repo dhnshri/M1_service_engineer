@@ -8,15 +8,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
+import 'package:service_engineer/Model/product_model.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MakeQuotations/preview.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MakeQuotations/service_charges.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/src/material/date_picker.dart';
 import '../../../Config/font.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Model/item_not_available_model.dart';
 import '../../../Widget/app_button.dart';
 import '../../../Widget/common.dart';
 import '../../../Widget/function_button.dart';
@@ -56,6 +60,11 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
+  final TextEditingController _srNumberController = TextEditingController();
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _rateController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
 
@@ -63,8 +72,12 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   var totalValue = 0;
   int prodValue = 15000;
 
+  bool _cartLoading = true;
+  bool _isLoading = false;
+
   HomeBloc? _homeBloc;
   List<ProductDetails>? productDetail = [];
+  var productQuantity = new Map<int, int>();
 
 
 
@@ -88,72 +101,86 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
   var mainHeight, mainWidth;
 
+  int itemNo = 0;
+  List<ItemNotAvailableModel> itemNotAvailabeList = List.empty(growable: true);
 
+  onAdd() {
+    setState(() {
+      ItemNotAvailableModel _contactModel = ItemNotAvailableModel(id: itemNotAvailabeList.length);
+      itemNotAvailabeList.add(ItemNotAvailableModel(
+        id: itemNo++,
+        itemName: _itemNameController.text,
+        quantity: _quantityController.text,
+        amount: _amountController.text,
+        rate: _rateController.text,
+      ));
+    });
+  }
 
   Widget buildItemRequiredList() {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
+      itemCount: itemNotAvailabeList.length,
       padding: EdgeInsets.only(top: 0, bottom: 1),
       itemBuilder: (context, index) {
-        return  ItemRequiredCard();
-      },
-      itemCount: 3,
-    );
-  }
+        return  Padding(
+            padding: const EdgeInsets.only(bottom:0.0),
+            child: Container(
+              // color: Color(0xffFFE4E5),
+                decoration: BoxDecoration(
+                  color: Color(0xffFFE4E5),
+                ),
+                child:Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
 
-  Widget ItemRequiredCard()
-  {
-    return Padding(
-        padding: const EdgeInsets.only(bottom:0.0),
-        child: Container(
-          // color: Color(0xffFFE4E5),
-            decoration: BoxDecoration(
-              color: Color(0xffFFE4E5),
-            ),
-            child:Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("1")
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(itemNotAvailabeList[index].id.toString())
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(itemNotAvailabeList[index].itemName.toString())
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(itemNotAvailabeList[index].quantity.toString())
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("₹ ${itemNotAvailabeList[index].rate.toString()}")
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("₹ ${itemNotAvailabeList[index].amount.toString()}")
+                        ],
+                      ),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Item Name...")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("00")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 0")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 0")
-                    ],
-                  ),
-                ],
-              ),
+                )
             )
-        )
+        );
+      },
+
     );
   }
+
+
+
+  int _itemCount = 0;
 
   ///Item Required Widget
   Widget ItemRequired(BuildContext context, List<ProductDetails>? productList) {
@@ -189,6 +216,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
           ],
         ),
+        _isLoading ?
         Container(
           height: 350,
           child:SingleChildScrollView(
@@ -264,17 +292,23 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                       children: [
                                         Text(productList[index].productName.toString(),style:itemRequiredCardHeading,),
                                         Text("ID: ${productList[index].id.toString()}",style: itemRequiredCardSubtitle),
-                                        Text("₹${productList[index].discountPrice.toString()}",style:itemRequiredCardSubtitle),
+                                        Text("₹ ${productList[index].discountPrice.toString()}",style:itemRequiredCardSubtitle),
                                       ],
 
                                     ),
 
-                                    Expanded(
+                                    Flexible(
                                       child: Container(
-                                        width: mainWidth / 3,
-                                        //width: 80,
+                                        height: 40,
+                                        // width: 110,
+                                        width: MediaQuery.of(context).size.width*0.266,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.black),
+                                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                                        ),
                                         child: Row(
                                           children: [
+                                            _itemCount != 0?
                                             IconButton(
                                               icon: Icon(
                                                 Icons.remove_circle,
@@ -282,31 +316,37 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  if (quantity > 1) {
+                                                  if (quantity > 0) {
                                                     quantity--;
                                                     totalValue = prodValue * quantity;
                                                   }
                                                 });
                                               },
+                                            ):Padding(
+                                              padding: const EdgeInsets.only(left:20.0),
+                                              child: const Text('Add',style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Poppins-Medium'
+                                              )),
                                             ),
+                                            _itemCount != 0 ?
                                             Text(
-                                              quantity.toString(),
+                                              _itemCount.toString(),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 18),
-                                            ),
+                                            ): SizedBox(),
                                             IconButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  if (quantity < 10) {
-                                                    quantity++;
-                                                    totalValue = prodValue * quantity;
-                                                  }
-                                                  // var qty = cert.cart[index].qty! + 1;
-                                                  // cert.updateProduct(
-                                                  //     cert.cart[index].id,
-                                                  //     cert.cart[index].price.toString(),
-                                                  //     qty);
+                                                  // if (quantity < 10) {
+                                                  //   quantity++;
+                                                  //   totalValue = prodValue * quantity;
+                                                  // }
+                                                  _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: '1'));
+
                                                 });
                                               },
                                               icon: Icon(
@@ -330,17 +370,18 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               },
             ),
           ),
-        ),
+        ):Center(child: CircularProgressIndicator(),),
         SizedBox(height: 15,),
         Align(
             alignment: Alignment.topLeft,
-            child: Text("Items not available on app",style: TextStyle(
+            child: Text("Add Items not available in list here.",style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins-Medium'
             ),)),
         SizedBox(height: 5,),
+        itemNotAvailabeList.length <= 0? Container():
         Container(
           color: Color(0xffE47273),
           child: Padding(
@@ -393,6 +434,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
         InkWell(
           onTap: (){
             //AddOtherCharges();
+            AddItemNotAvailable(context);
+
           },
           child:  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -402,7 +445,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Add More",
+                  Text(itemNotAvailabeList.length <= 0? "Add Items":"Add More",
                     style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                   ),
@@ -410,6 +453,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   InkWell(
                     onTap: (){
                       // AddOtherCharges();
+                      AddItemNotAvailable(context);
                     },
                     child: CircleAvatar(
                       backgroundColor: ThemeColors.redTextColor,
@@ -423,26 +467,314 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
           ),
 
         )
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     SizedBox(),
-        //     InkWell(
-        //       onTap: (){
-        //
-        //       },
-        //       child: Row(
-        //         children: [
-        //           Text("Add More"),
-        //           SizedBox(width: 5,),
-        //           addIcon(),
-        //         ],
-        //       ),
-        //     )
-        //   ],
-        // ),
       ],
     );
+  }
+
+
+  AddItemNotAvailable(BuildContext context) {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: SizedBox(
+                    width:
+                    MediaQuery.of(context).size.width * 0.8,
+                    height: 60,
+                    child: TextFormField(
+                      controller: _itemNameController,
+                      keyboardType: TextInputType.text,
+                      maxLength: 10,
+                      cursorColor: primaryAppColor,
+                      decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 1.0,
+                          ),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black, width: 1.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.black,
+                              width: 1.0,
+                            )),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        hintText: 'Item Name',
+                        contentPadding: const EdgeInsets.fromLTRB(
+                            20.0, 20.0, 0.0, 0.0),
+                        hintStyle: GoogleFonts.poppins(
+                            color: Colors.grey,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (val) {
+                        setState(() {
+                          if ( _formKey.currentState!.validate()) {}
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width:
+                  MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _quantityController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                            color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Quantity',
+                      contentPadding: const EdgeInsets.fromLTRB(
+                          20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if ( _formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width:
+                  MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _rateController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                            color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Rate',
+                      contentPadding: const EdgeInsets.fromLTRB(
+                          20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if ( _formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width:
+                  MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _amountController,
+                    keyboardType: TextInputType.number,
+                    // maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                            color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Amount',
+                      contentPadding: const EdgeInsets.fromLTRB(
+                          20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if ( _formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+
+                Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: AppButton(
+                      onPressed: () async {
+                        onAdd();
+                        print(itemNotAvailabeList);
+                        _itemNameController.clear();
+                        _rateController.clear();
+                        _amountController.clear();
+                        _quantityController.clear();
+                        Navigator.of(context).pop();
+                        showCustomSnackBar(context,'Item Added Successfully',isError: false);
+
+                      },
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(50))),
+                      text: 'Add Product',
+                      loading: loading,
+
+
+                    )
+                ),
+
+              ],
+            ),
+          );
+
+        });
   }
 
 
@@ -468,13 +800,22 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             return BlocListener<HomeBloc, HomeState>(
                 listener: (context, state) {
                   if(state is ProductListLoading){
-                    // _isLoading = state.isLoading;
+                    _isLoading = state.isLoading;
                   }
                   if(state is ProductListSuccess){
                     productDetail = state.productList;
                   }
                   if(state is ProductListFail){
                     // Fluttertoast.showToast(msg: state.msg.toString());
+                  }
+                  if(state is AddToCartSuccess){
+                    showCustomSnackBar(context,state.message,isError: false);
+                  }
+                  if(state is AddToCartFail){
+                    showCustomSnackBar(context,state.msg.toString(),isError: true);
+                  }
+                  if(state is AddToCartLoading){
+                    _cartLoading = state.isLoading;
                   }
                 },
                 child: ItemRequired(context,productDetail),
@@ -607,6 +948,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           ),
                         StepperButton(
                           onPressed: () async {
+
                             print(
                                 "Working Time: ${workingTimeController.text}");
                             final isLastStep =
@@ -1157,6 +1499,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
       ),
     );
   }
+
+
 }
 
 

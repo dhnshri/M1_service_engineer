@@ -2,6 +2,7 @@ import 'dart:async';
 
 
 import 'package:bloc/bloc.dart';
+import 'package:service_engineer/Model/cart_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
@@ -177,6 +178,40 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ProductListFail(msg: 'Failed to fetch data.');
       }
     }
+
+    //Add to Cart
+    if (event is AddToCart) {
+      ///Notify loading to UI
+      yield AddToCartLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final CartRepo result = await userRepository!
+          .addToCart(
+          prodId: event.prodId,
+          userId: event.userId,
+          quantity: event.quantity
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield AddToCartLoading(
+            isLoading: true,
+          );
+          yield AddToCartSuccess( message: result.data);
+        } catch (error) {
+          ///Notify loading to UI
+          yield AddToCartFail(msg: result.data);
+        }
+      } else {
+        ///Notify loading to UI
+        yield AddToCartFail(msg: result.data);
+      }
+    }
+
 
   }
 

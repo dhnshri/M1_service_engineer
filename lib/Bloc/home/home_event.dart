@@ -32,3 +32,11 @@ class ProductList extends HomeEvent {
 
 }
 
+class AddToCart extends HomeEvent {
+
+  String prodId,quantity,userId;
+
+  AddToCart({required this.prodId,required this.quantity, required this.userId});
+
+}
+
