@@ -9,6 +9,7 @@ import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
 import '../../Model/MachineMaintance/myTaskModel.dart';
+import '../../Model/cart_list_repo.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
@@ -209,6 +210,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } else {
         ///Notify loading to UI
         yield AddToCartFail(msg: result.data);
+      }
+    }
+
+    //Cart List
+    if (event is CartList) {
+      ///Notify loading to UI
+      yield CartListLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final CartListRepo result = await userRepository!
+          .fetchCartList(
+          userId: event.userId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        final Iterable refactorCartList = result.data! ?? [];
+        final cartList = refactorCartList.map((item) {
+          return CartListModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $cartList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield CartListLoading(
+            isLoading: true,
+          );
+          yield CartListSuccess(cartList: cartList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield CartListFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield CartListFail(msg: result.msg);
       }
     }
 

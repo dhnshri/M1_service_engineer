@@ -8,6 +8,7 @@ import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'dart:convert';
 
+import '../Model/cart_list_repo.dart';
 import '../Model/customer_login.dart';
 
 
@@ -23,7 +24,8 @@ class Api {
   static const String CUSTOMER_REGISTER="register_service";
   static const String MY_TASK_LIST="machine_service_my_task_list";
   static const String PRODUCT_LIST="get_product_list";
-  static const String CART_API="add_to_cart";
+  static const String CART_API="add_to_cart_list";
+  static const String CART_LIST="get_cart_list";
 
 
 
@@ -103,13 +105,25 @@ class Api {
 
   static Future<dynamic> getAddToCart(params) async {
     final response = await http.post(
-      Uri.parse('http://mone.ezii.live/api/add_to_cart'),
+      Uri.parse(HOST_URL+CART_API),
       body: params,
     );
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return CartRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getCartList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CART_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CartListRepo.fromJson(responseJson);
     }
   }
 }

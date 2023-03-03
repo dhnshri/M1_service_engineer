@@ -14,3 +14,14 @@ class ItemNotAvailableModel {
     this.amount,
   });
 }
+
+class ItemRequiredAmountModel {
+  int? id;
+  int? amount;
+
+
+  ItemRequiredAmountModel({
+    this.id,
+    this.amount,
+  });
+}

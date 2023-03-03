@@ -40,3 +40,10 @@ class AddToCart extends HomeEvent {
 
 }
 
+class CartList extends HomeEvent {
+
+  String userId;
+
+  CartList({ required this.userId});
+
+}

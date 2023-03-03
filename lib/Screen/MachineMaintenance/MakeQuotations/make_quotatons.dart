@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
+import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/product_model.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MakeQuotations/preview.dart';
@@ -77,8 +78,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
   HomeBloc? _homeBloc;
   List<ProductDetails>? productDetail = [];
-  var productQuantity = new Map<int, int>();
-
+  List<CartListModel>? cartList=[];
 
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -117,70 +117,84 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     });
   }
 
-  Widget buildItemRequiredList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemCount: itemNotAvailabeList.length,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  Padding(
-            padding: const EdgeInsets.only(bottom:0.0),
-            child: Container(
-              // color: Color(0xffFFE4E5),
-                decoration: BoxDecoration(
-                  color: Color(0xffFFE4E5),
-                ),
-                child:Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
+  // Widget buildItemRequiredList() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     scrollDirection: Axis.vertical,
+  //     itemCount: itemNotAvailabeList.length,
+  //     padding: EdgeInsets.only(top: 0, bottom: 1),
+  //     itemBuilder: (context, index) {
+  //       return  Padding(
+  //           padding: const EdgeInsets.only(bottom:0.0),
+  //           child: Container(
+  //             // color: Color(0xffFFE4E5),
+  //               decoration: BoxDecoration(
+  //                 color: Color(0xffFFE4E5),
+  //               ),
+  //               child:Padding(
+  //                 padding: const EdgeInsets.all(8.0),
+  //                 child: Row(
+  //
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(itemNotAvailabeList[index].id.toString())
+  //                       ],
+  //                     ),
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(itemNotAvailabeList[index].itemName.toString())
+  //                       ],
+  //                     ),
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(itemNotAvailabeList[index].quantity.toString())
+  //                       ],
+  //                     ),
+  //                     Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text("₹ ${itemNotAvailabeList[index].rate.toString()}")
+  //                       ],
+  //                     ),
+  //                     // Column(
+  //                     //   crossAxisAlignment: CrossAxisAlignment.start,
+  //                     //   children: [
+  //                     //     Text("₹ ${itemNotAvailabeList[index].amount.toString()}")
+  //                     //   ],
+  //                     // ),
+  //                   ],
+  //                 ),
+  //               )
+  //           )
+  //       );
+  //     },
+  //
+  //   );
+  // }
 
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(itemNotAvailabeList[index].id.toString())
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(itemNotAvailabeList[index].itemName.toString())
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(itemNotAvailabeList[index].quantity.toString())
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("₹ ${itemNotAvailabeList[index].rate.toString()}")
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("₹ ${itemNotAvailabeList[index].amount.toString()}")
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-            )
-        );
-      },
 
+  DataRow _buildItemRequiredList(ItemNotAvailableModel? itemNotAvailabeList,index) {
+    return DataRow(
+      color: MaterialStateColor.resolveWith((states) {
+        return Color(0xffFFE4E5); //make tha magic!
+      }),
+      cells: <DataCell>[
+        DataCell(Text(itemNotAvailabeList!.id.toString())),
+        DataCell(Text(itemNotAvailabeList.itemName.toString())),
+        DataCell(Text(itemNotAvailabeList.quantity.toString())),
+        DataCell(Text('₹${itemNotAvailabeList.rate.toString()}')),
+        // DataCell(Text('₹${amount.toString()}')),
+      ],
     );
   }
 
 
-
-  int _itemCount = 0;
 
   ///Item Required Widget
   Widget ItemRequired(BuildContext context, List<ProductDetails>? productList) {
@@ -236,7 +250,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                             filterQuality: FilterQuality.medium,
                             // imageUrl: Api.PHOTO_URL + widget.users.avatar,
                             // imageUrl: "https://picsum.photos/250?image=9",
-                            imageUrl: "https://picsum.photos/250?image=9",
+                            imageUrl: productList[index].prodImg.toString(),
                             placeholder: (context, url) {
                               return Shimmer.fromColors(
                                 baseColor: Theme.of(context).hoverColor,
@@ -308,7 +322,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                         ),
                                         child: Row(
                                           children: [
-                                            _itemCount != 0?
+                                            productList[index].cartQuantity != 0?
                                             IconButton(
                                               icon: Icon(
                                                 Icons.remove_circle,
@@ -316,9 +330,11 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  if (quantity > 0) {
-                                                    quantity--;
-                                                    totalValue = prodValue * quantity;
+                                                  if (productList[index].cartQuantity! > 0) {
+                                                    productList[index].cartQuantity = productList[index].cartQuantity! - 1;
+                                                    _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
+                                                    loadApi();
+
                                                   }
                                                 });
                                               },
@@ -331,27 +347,36 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                                   fontFamily: 'Poppins-Medium'
                                               )),
                                             ),
-                                            _itemCount != 0 ?
+                                            productList[index].cartQuantity != 0 ?
                                             Text(
-                                              _itemCount.toString(),
+                                              productList[index].cartQuantity.toString(),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 18),
                                             ): SizedBox(),
-                                            IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  // if (quantity < 10) {
-                                                  //   quantity++;
-                                                  //   totalValue = prodValue * quantity;
-                                                  // }
-                                                  _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: '1'));
+                                            Expanded(
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    // if (quantity < 10) {
+                                                    //   quantity++;
+                                                    //   totalValue = prodValue * quantity;
+                                                    // }
+                                                    // _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: '1'));
+                                                    if(productList[index].cartQuantity! <= productList[index].productQty!){
+                                                      productList[index].cartQuantity = productList[index].cartQuantity! + 1;
+                                                      _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
+                                                      loadApi();
 
-                                                });
-                                              },
-                                              icon: Icon(
-                                                Icons.add_circle,
-                                                color: ThemeColors.baseThemeColor,
+                                                    }else{
+                                                      showCustomSnackBar(context,'Quantity is not available.',isError: true);
+                                                    }
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  Icons.add_circle,
+                                                  color: ThemeColors.baseThemeColor,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -382,53 +407,36 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             ),)),
         SizedBox(height: 5,),
         itemNotAvailabeList.length <= 0? Container():
-        Container(
-          color: Color(0xffE47273),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("S no.",style: TextStyle(color: Colors.white),),
-                  ],
+
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DataTable(
+              headingRowHeight: 40,
+              headingRowColor: MaterialStateColor.resolveWith(
+                      (states) => Color(0xffE47273)),
+              columnSpacing: 15.0,
+              columns: const [
+                DataColumn(
+                  label: Expanded(child: Text('S no')),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Item Name",style: TextStyle(color: Colors.white),),
-                  ],
+                DataColumn(
+                  label: Text('Item Name'),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(width: 50,),
-                        Text("QTY",style: TextStyle(color: Colors.white),),
-                      ],
-                    ),
-                  ],
+                DataColumn(
+                  label: Text('QTY'),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Rate",style: TextStyle(color: Colors.white),),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Amount",style: TextStyle(color: Colors.white),),
-                  ],
+                DataColumn(
+                  label: Text('Rate'),
                 ),
               ],
+              rows: List.generate(itemNotAvailabeList.length, (index) {
+                return _buildItemRequiredList(itemNotAvailabeList[index],index);
+              }),
             ),
-          ),
+          ],
         ),
-        buildItemRequiredList(),
+
         SizedBox(height: 7,),
         SizedBox(width: 5,),
         InkWell(
@@ -472,6 +480,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   }
 
 
+  ///Item which are added manualy widget
   AddItemNotAvailable(BuildContext context) {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -680,70 +689,70 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     },
                   ),
                 ),
-                SizedBox(
-                  width:
-                  MediaQuery.of(context).size.width * 0.8,
-                  height: 60,
-                  child: TextFormField(
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    // maxLength: 10,
-                    cursorColor: primaryAppColor,
-                    decoration: InputDecoration(
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(
-                          color: Colors.red,
-                          width: 1.0,
-                        ),
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                            color: Colors.black, width: 1.0),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
-                          borderSide: const BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          )),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                      ),
-                      hintText: 'Amount',
-                      contentPadding: const EdgeInsets.fromLTRB(
-                          20.0, 20.0, 0.0, 0.0),
-                      hintStyle: GoogleFonts.poppins(
-                          color: Colors.grey,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        if ( _formKey.currentState!.validate()) {}
-                      });
-                    },
-                  ),
-                ),
+                // SizedBox(
+                //   width:
+                //   MediaQuery.of(context).size.width * 0.8,
+                //   height: 60,
+                //   child: TextFormField(
+                //     controller: _amountController,
+                //     keyboardType: TextInputType.number,
+                //     // maxLength: 10,
+                //     cursorColor: primaryAppColor,
+                //     decoration: InputDecoration(
+                //       disabledBorder: OutlineInputBorder(
+                //         borderRadius:
+                //         BorderRadius.circular(8.0),
+                //         borderSide: const BorderSide(
+                //           color: Colors.black,
+                //           width: 1.0,
+                //         ),
+                //       ),
+                //       errorBorder: OutlineInputBorder(
+                //         borderRadius:
+                //         BorderRadius.circular(8.0),
+                //         borderSide: const BorderSide(
+                //           color: Colors.red,
+                //           width: 1.0,
+                //         ),
+                //       ),
+                //       fillColor: Colors.white,
+                //       filled: true,
+                //       focusedBorder: OutlineInputBorder(
+                //         borderRadius:
+                //         BorderRadius.circular(10.0),
+                //         borderSide: const BorderSide(
+                //             color: Colors.black, width: 1.0),
+                //       ),
+                //       focusedErrorBorder: OutlineInputBorder(
+                //           borderRadius:
+                //           BorderRadius.circular(8.0),
+                //           borderSide: const BorderSide(
+                //             color: Colors.black,
+                //             width: 1.0,
+                //           )),
+                //       enabledBorder: OutlineInputBorder(
+                //         borderRadius:
+                //         BorderRadius.circular(8.0),
+                //         borderSide: const BorderSide(
+                //           color: Colors.black,
+                //           width: 1.0,
+                //         ),
+                //       ),
+                //       hintText: 'Amount',
+                //       contentPadding: const EdgeInsets.fromLTRB(
+                //           20.0, 20.0, 0.0, 0.0),
+                //       hintStyle: GoogleFonts.poppins(
+                //           color: Colors.grey,
+                //           fontSize: 12.0,
+                //           fontWeight: FontWeight.w500),
+                //     ),
+                //     onChanged: (val) {
+                //       setState(() {
+                //         if ( _formKey.currentState!.validate()) {}
+                //       });
+                //     },
+                //   ),
+                // ),
 
                 Padding(
                     padding:
@@ -776,6 +785,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
         });
   }
+
+
 
 
   List<Step> stepList() => [
@@ -817,6 +828,16 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   if(state is AddToCartLoading){
                     _cartLoading = state.isLoading;
                   }
+                  if(state is CartListLoading){
+                    // showCustomSnackBar(context,'',isError: false);
+                  }
+                  if(state is CartListSuccess){
+                    // showCustomSnackBar(context,state.message.toString(),isError: true);
+                    cartList = state.cartList;
+                  }
+                  if(state is CartListFail){
+                    // _cartLoading = state.isLoading;
+                  }
                 },
                 child: ItemRequired(context,productDetail),
 
@@ -826,6 +847,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
           })
           // ItemRequired(context),
         ),
+        ///Preview
         Step(
           state: StepState.complete,
           isActive: _currentStep >= 2,
@@ -833,10 +855,17 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             'Preview',
             style: StepperHeadingStyle,
           ),
-          content: PreviewScreen(),
+          content: PreviewScreen(cartList: cartList,itemNotAvailableList: itemNotAvailabeList,
+            workingTimeController: workingTimeController,
+            dateofJoiningController: dateofJoiningController,
+            serviceCallChargesController: serviceCallChargesController,
+            transportChargesController: transportChargesController,
+            otherChargesController: otherChargesController,
+            handlingChargesController: handlingChargesController),
         ),
       ];
 
+  int total=0;
   @override
   void initState() {
     // TODO: implement initState
@@ -844,15 +873,31 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
     _homeBloc!.add(ProductList(prodId: '0',offSet: '0'));
-
+    loadApi();
+    // setState((){
+    //   if(_quantityController.text != '' && _rateController.text != ''){
+    //     total = int.parse(_quantityController.text.toString()) * int.parse(_rateController.text.toString());
+    //   }
+    //   print(total);
+    // });
     selectedDate;
     dateofJoiningController.text = DateFormat.yMd('es').format(DateTime.now());
   }
+
+  loadApi(){
+    _homeBloc!.add(CartList(userId: Application.customerLogin!.id.toString()));
+    // _homeBloc!.add(CartList(userId: '1'));
+  }
+
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _rateController.clear();
+    _quantityController.clear();
+    _amountController.clear();
+    _itemNameController.clear();
   }
 
   @override
@@ -919,6 +964,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                 ],
               )
             : Stepper(
+                physics: ScrollPhysics(),
                 type: StepperType.horizontal,
                 currentStep: _currentStep,
                 steps: stepList(),
@@ -948,9 +994,6 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           ),
                         StepperButton(
                           onPressed: () async {
-
-                            print(
-                                "Working Time: ${workingTimeController.text}");
                             final isLastStep =
                                 _currentStep == stepList().length - 1;
                             if (isLastStep) {
@@ -1506,11 +1549,11 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
 
 
-class _Preview extends StatelessWidget {
-  const _Preview({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PreviewScreen();
-  }
-}
+// class _Preview extends StatelessWidget {
+//   const _Preview({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return PreviewScreen();
+//   }
+// }

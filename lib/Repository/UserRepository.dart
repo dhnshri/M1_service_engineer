@@ -85,8 +85,14 @@ class UserRepository {
   //Add To Cart
   Future<dynamic> addToCart({String? prodId,String? userId, String? quantity}) async {
     final params = {"user_id":userId,
-      "qty":userId,'product_id':prodId};
+      "qty":quantity,'product_id':prodId};
     return await Api.getAddToCart(params);
+  }
+
+  //Cart List
+  Future<dynamic> fetchCartList({String? userId}) async {
+    final params = {"user_id":userId,};
+    return await Api.getCartList(params);
   }
 
   //Save User

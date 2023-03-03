@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
+import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
@@ -90,4 +91,20 @@ class AddToCartFail extends HomeState {
 class AddToCartSuccess extends HomeState {
   String message;
   AddToCartSuccess({required this.message});
+}
+
+class CartListLoading extends HomeState {
+  bool isLoading;
+  CartListLoading({required this.isLoading});
+}
+
+class CartListFail extends HomeState {
+  final String? msg;
+  CartListFail({this.msg});
+}
+
+class CartListSuccess extends HomeState {
+  List<CartListModel> cartList;
+  String message;
+  CartListSuccess({required this.cartList,required this.message});
 }
