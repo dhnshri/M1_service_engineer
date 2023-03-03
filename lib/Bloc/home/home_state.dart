@@ -4,13 +4,15 @@ import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 
+import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/customer_login.dart';
 
 @immutable
 abstract class HomeState {}
 
 class InitialHomeState extends HomeState {}
-
+//Machine Maintaince Home
 class ServiceRequestLoading extends HomeState {
   bool isLoading;
   ServiceRequestLoading({required this.isLoading});
@@ -74,4 +76,37 @@ class ProductListSuccess extends HomeState {
   List<ProductDetails> productList;
   String message;
   ProductListSuccess({required this.productList, required this.message});
+}
+
+//Job Work Enquiry Home
+
+class ServiceRequestJWELoading extends HomeState {
+  bool isLoading;
+  ServiceRequestJWELoading({required this.isLoading});
+}
+
+class ServiceRequestJWEFail extends HomeState {
+  final String? msg;
+  ServiceRequestJWEFail({this.msg});
+}
+
+class ServiceRequestJWESuccess extends HomeState {
+  List<JobWorkEnquiryServiceRequestModel> serviceListData;
+  String message;
+  ServiceRequestJWESuccess({required this.serviceListData, required this.message});
+}
+class MyTaskJWELoading extends HomeState {
+  bool isLoading;
+  MyTaskJWELoading({required this.isLoading});
+}
+
+
+class MyTaskJWEListSuccess extends HomeState {
+  List<JobWorkEnquiryMyTaskModel> MyTaskJWEList;
+  MyTaskJWEListSuccess({required this.MyTaskJWEList});
+}
+
+class MyTaskJWEListLoadFail extends HomeState {
+  final String? msg;
+  MyTaskJWEListLoadFail({this.msg});
 }

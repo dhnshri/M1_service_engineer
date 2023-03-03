@@ -1,7 +1,7 @@
 
 
 abstract class HomeEvent {}
-
+// Machine Maintaince Home
 class OnServiceRequest extends HomeEvent {
 
   String userID,offSet;
@@ -31,4 +31,17 @@ class ProductList extends HomeEvent {
   ProductList({required this.prodId,required this.offSet,});
 
 }
+// Job Work Enquiry Home
 
+class OnServiceRequestJWEList extends HomeEvent {
+
+  String offSet;
+
+  OnServiceRequestJWEList({required this.offSet});
+
+}
+class OnMyTaskJWEList extends HomeEvent {
+  String userid;
+  String offset;
+  OnMyTaskJWEList({required this.userid, required this.offset });
+}

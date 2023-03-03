@@ -7,6 +7,8 @@ import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'dart:convert';
 
+import '../Model/JobWorkEnquiry/my_task_model.dart';
+import '../Model/JobWorkEnquiry/service_request_model.dart';
 import '../Model/customer_login.dart';
 
 
@@ -18,9 +20,11 @@ class Api {
   // static const String HOST_URL="http://unstoppabletrade.ezii.live/App_details/";
   static const String CUSTOMER_LOGIN="login";
   static const String SERVICE_REQUEST_LIST="machine_service_request_list";
+  static const String SERVICE_REQUEST_LIST_JWE="job_work_enquiry_service_request_list";
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
   static const String CUSTOMER_REGISTER="register_service";
   static const String MY_TASK_LIST="machine_service_my_task_list";
+  static const String JOB_WORK_ENQUIRY_MY_TASK_LIST="job_work_enquiry_service_my_task_list";
   static const String PRODUCT_LIST="get_product_list";
 
 
@@ -63,6 +67,18 @@ class Api {
     }
   }
 
+  static Future<dynamic> getServiceRequestJobWorkEnquiryList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+SERVICE_REQUEST_LIST_JWE),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkEnquiryServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
   static Future<dynamic> getServiceRequestDetail(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+SERVICE_REQUEST_DETAIL),
@@ -84,6 +100,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return MyTaskRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getMyTaskJWEList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOB_WORK_ENQUIRY_MY_TASK_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkEnquiryMyTaskRepo.fromJson(responseJson);
     }
   }
 

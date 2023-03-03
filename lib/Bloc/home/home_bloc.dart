@@ -7,6 +7,8 @@ import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
+import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
 import 'home_event.dart';
 import 'home_state.dart';
@@ -175,6 +177,84 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } else {
         ///Notify loading to UI
         yield ProductListFail(msg: 'Failed to fetch data.');
+      }
+    }
+
+
+    // *******  Job Work Enquiry ******* //
+
+    //Event for Job Work Enquiry Service Request
+    if (event is OnServiceRequestJWEList) {
+      ///Notify loading to UI
+      yield ServiceRequestJWELoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkEnquiryServiceRequestRepo result = await userRepository!
+          .fetchServiceRequestJobWorkEnquiryList(
+        offSet: event.offSet,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestJobWorkEnquiryList = result.data! ?? [];
+        final serviceRequestJobWorkEnquiryList = refactorServiceRequestJobWorkEnquiryList.map((item) {
+          return JobWorkEnquiryServiceRequestModel.fromJson(item);
+        }).toList();
+        print('Service Request JobWorkEnquiry List: $ServiceRequestJWESuccess');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ServiceRequestJWELoading(
+            isLoading: true,
+          );
+          yield ServiceRequestJWESuccess(serviceListData: serviceRequestJobWorkEnquiryList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield ServiceRequestJWEFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield ServiceRequestJWELoading(isLoading: false);
+        yield ServiceRequestJWEFail(msg: result.msg!);
+      }
+    }
+
+    //Event for Job Work Enquiry  My Task List
+    if (event is OnMyTaskJWEList) {
+      ///Notify loading to UI
+      yield MyTaskJWELoading(isLoading: false);
+
+      ///Fetch API via repository
+      final JobWorkEnquiryMyTaskRepo response = await userRepository!
+          .fetchJobWorkEnquiryMyTaskList(
+          userId: event.userid,
+          offset:event.offset
+      );
+      print(response);
+
+      if(response.success == true){
+        final Iterable refactorMyTaskJWE = response.data ?? [];
+        final listJWEMyTask = refactorMyTaskJWE.map((item) {
+          return  JobWorkEnquiryMyTaskModel.fromJson(item);
+        }).toList();
+
+        print("Task List: $listJWEMyTask");
+
+        try{
+          yield MyTaskJWELoading(isLoading: true);
+          yield MyTaskJWEListSuccess(MyTaskJWEList: listJWEMyTask);
+        }catch(error){
+          yield MyTaskJWELoading(isLoading: false);
+          yield MyTaskJWEListLoadFail(msg: response.msg);
+        }
+      }
+      else {
+        ///Notify loading to UI
+        yield MyTaskLoading(isLoading: false);
+        yield MyTaskListLoadFail(msg: response.msg);
       }
     }
 

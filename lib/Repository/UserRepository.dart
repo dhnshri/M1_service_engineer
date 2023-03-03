@@ -60,6 +60,11 @@ class UserRepository {
     return await Api.getServiceRequestList(params);
   }
 
+  //Job Work Enquiry Service Request Api
+  Future<dynamic> fetchServiceRequestJobWorkEnquiryList({String? userID, String? offSet}) async {
+    final params = {"offset":offSet};
+    return await Api.getServiceRequestJobWorkEnquiryList(params);
+  }
   //Service Request Detail Api
   Future<dynamic> fetchServiceRequestDetail({String? userID, String? machineEnquiryId,
     String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
@@ -75,6 +80,11 @@ class UserRepository {
     return await Api.getMyTaskList(params);
   }
 
+  Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset}) async {
+    final params = {"user_id":userId,
+      "offset":offset};
+    return await Api.getMyTaskJWEList(params);
+  }
   //Fetch Product List
   Future<dynamic> fetchProductList({String? prodId,String? offset}) async {
     final params = {"user_id":prodId,

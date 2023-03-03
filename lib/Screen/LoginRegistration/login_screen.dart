@@ -16,6 +16,7 @@ import '../../Config/font.dart';
 import '../../Utils/connectivity_check.dart';
 import '../../Widget/app_button.dart';
 import '../../Widget/app_dialogs.dart';
+import '../JobWorkEnquiry/Home/home.dart';
 import '../bottom_navbar.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,7 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
   LoginBloc? _userLoginBloc;
   final _textPhoneNumberController = TextEditingController();
   final _textPasswordController = TextEditingController();
-  String dropdownValue = '+ 91';
+  //String dropdownValue = '+ 91';
+  String dropdownValue = 'Machine Maintenance';
   String? phoneNum;
   String? role;
   bool loading = true;
@@ -85,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // add your code here.
 
                 Timer.periodic(const Duration(seconds: 10), (timer) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: 'Machine Maintenance',)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 1,dropValue: 'Job Work Enquiry',)));
                   showCustomSnackBar(context,'Login Successfully',isError: false);
                   timer.cancel();
                 });
@@ -318,16 +320,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 14),
                                   ),
                                   onPressed: () {
-                                    // Navigator.push(
-                                    //         context,
-                                    //         MaterialPageRoute(
-                                    //             builder: (context) =>
-                                    //             RegistrationScreen()
-                                    //                 // WebViewContainer(
-                                    //                 // "https://rccedu.org/register.php")
-                                    //         ))
-                                    //     .whenComplete(() => Navigator.pop(context));
-                                    // print('Pressed');
                                   }),
 
                               TextButton(
@@ -342,6 +334,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onPressed: () {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(builder: (context) => RegistrationScreen(dropValue:dropdownValue ,)));
+                                    // Navigator.push(context,
+                                    //         MaterialPageRoute(builder: (context) => EnquiryHomeScreen()));
                                   })
                             ],
                           ),

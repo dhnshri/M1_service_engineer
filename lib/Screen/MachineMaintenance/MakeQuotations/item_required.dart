@@ -9,6 +9,8 @@ import '../../../Config/font.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Widget/common.dart';
 import 'item_required_filter.dart';
+import '../../../Widget/stepper_button.dart';
+import 'make_quotatons.dart';
 
 
 class ItemRequired extends StatefulWidget {
@@ -19,8 +21,14 @@ class ItemRequired extends StatefulWidget {
 }
 
 class ItemRequiredState extends State<ItemRequired> {
+
+
+  final TextEditingController _srNumberController = TextEditingController();
   final TextEditingController _itemNameController = TextEditingController();
-  final TextEditingController _itemPriceController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _rateController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+
 
   String dropdownValue = '+ 91';
   String? phoneNum;
@@ -367,6 +375,398 @@ class ItemRequiredState extends State<ItemRequired> {
     );
   }
 
+  Future AddItemNotAvailable() {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+
+        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35.0),
+                topRight: Radius.circular(35.0))),
+        context: context,
+        builder: (BuildContext context) {
+          return NotAvailableItemCard();
+
+        });
+  }
+
+  Widget NotAvailableItemCard()
+  {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 1,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8,
+                      height: 60,
+                      child: TextFormField(
+                        controller: _srNumberController,
+                        keyboardType: TextInputType.text,
+                        maxLength: 10,
+                        cursorColor: primaryAppColor,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8.0),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              )),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          hintText: 'Number',
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              20.0, 20.0, 0.0, 0.0),
+                          hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            if ( _formKey.currentState!.validate()) {}
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8,
+                      height: 60,
+                      child: TextFormField(
+                        controller: _itemNameController,
+                        keyboardType: TextInputType.text,
+                        maxLength: 10,
+                        cursorColor: primaryAppColor,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8.0),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              )),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          hintText: 'Item Name',
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              20.0, 20.0, 0.0, 0.0),
+                          hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            if ( _formKey.currentState!.validate()) {}
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8,
+                      height: 60,
+                      child: TextFormField(
+                        controller: _quantityController,
+                        keyboardType: TextInputType.text,
+                        maxLength: 10,
+                        cursorColor: primaryAppColor,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8.0),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              )),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          hintText: 'Quantity',
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              20.0, 20.0, 0.0, 0.0),
+                          hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            if ( _formKey.currentState!.validate()) {}
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8,
+                      height: 60,
+                      child: TextFormField(
+                        controller: _rateController,
+                        keyboardType: TextInputType.number,
+                        maxLength: 10,
+                        cursorColor: primaryAppColor,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8.0),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              )),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          hintText: 'Rate',
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              20.0, 20.0, 0.0, 0.0),
+                          hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            if ( _formKey.currentState!.validate()) {}
+                          });
+                        },
+                      ),
+                    ),
+
+                    SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width * 0.8,
+                      height: 60,
+                      child: TextFormField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.text,
+                        // maxLength: 10,
+                        cursorColor: primaryAppColor,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 1.0,
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 1.0),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8.0),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              )),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(8.0),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          hintText: 'Amount',
+                          contentPadding: const EdgeInsets.fromLTRB(
+                              20.0, 20.0, 0.0, 0.0),
+                          hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        onChanged: (val) {
+                          setState(() {
+                            if ( _formKey.currentState!.validate()) {}
+                          });
+                        },
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        StepperButton(
+                          onPressed: () async {
+                            // Navigator.of(context).push(
+                            //     MaterialPageRoute(builder: (context) => MakeQuotationScreen()));
+                          },
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(50))),
+                          text: 'Cancel',
+                          loading: loading,
+                        ),
+                        SizedBox(width: 15,),
+                        StepperButton(
+                          onPressed: () async {
+                            // Navigator.of(context).push(
+                            //     MaterialPageRoute(builder: (context) => MakeQuotationScreen()));
+                          },
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(50))),
+                          text: 'Done',
+                          loading: loading,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -472,7 +872,7 @@ class ItemRequiredState extends State<ItemRequired> {
         SizedBox(width: 5,),
         InkWell(
           onTap: (){
-            //AddOtherCharges();
+            AddItemNotAvailable();
           },
           child:  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -489,7 +889,7 @@ class ItemRequiredState extends State<ItemRequired> {
                   SizedBox(width: 5,),
                   InkWell(
                     onTap: (){
-                     // AddOtherCharges();
+                      AddItemNotAvailable();
                     },
                     child: CircleAvatar(
                       backgroundColor: ThemeColors.redTextColor,
