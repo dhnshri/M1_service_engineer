@@ -4,6 +4,7 @@ import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_process_repo.dart';
 
 import '../../Model/customer_login.dart';
 
@@ -107,4 +108,65 @@ class CartListSuccess extends HomeState {
   List<CartListModel> cartList;
   String message;
   CartListSuccess({required this.cartList,required this.message});
+}
+
+class TrackProcssListLoading extends HomeState {
+  bool isLoading;
+  TrackProcssListLoading({required this.isLoading});
+}
+
+class TrackProcssListFail extends HomeState {
+  final String? msg;
+  TrackProcssListFail({this.msg});
+}
+
+class TrackProcssListSuccess extends HomeState {
+  List<TrackProcessModel> trackProgressList;
+  String message;
+  TrackProcssListSuccess({required this.trackProgressList,required this.message});
+}
+
+class CreateTaskLoading extends HomeState {
+  bool isLoading;
+  CreateTaskLoading({required this.isLoading});
+}
+
+class CreateTaskFail extends HomeState {
+  final String? msg;
+  CreateTaskFail({this.msg});
+}
+
+class CreateTaskSuccess extends HomeState {
+  String message;
+  CreateTaskSuccess({required this.message});
+}
+
+class TaskCompleteLoading extends HomeState {
+  bool isLoading;
+  TaskCompleteLoading({required this.isLoading});
+}
+
+class TaskCompleteFail extends HomeState {
+  final String? msg;
+  TaskCompleteFail({this.msg});
+}
+
+class TaskCompleteSuccess extends HomeState {
+  String message;
+  TaskCompleteSuccess({required this.message});
+}
+
+class SendQuotationLoading extends HomeState {
+  bool isLoading;
+  SendQuotationLoading({required this.isLoading});
+}
+
+class SendQuotationFail extends HomeState {
+  final String? msg;
+  SendQuotationFail({this.msg});
+}
+
+class SendQuotationSuccess extends HomeState {
+  String message;
+  SendQuotationSuccess({required this.message});
 }

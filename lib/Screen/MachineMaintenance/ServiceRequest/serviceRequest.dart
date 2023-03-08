@@ -35,6 +35,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
   HomeBloc? _homeBloc;
   List<ServiceRequestModel>? serviceList = [];
+  final ScrollController _scrollController = ScrollController();
 
 
   @override
@@ -55,6 +56,10 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
   Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
     return ListView.builder(
+      controller: _scrollController
+       ..addListener(() {
+         if(_scrollController.offset == _scrollController.position.maxScrollExtent){}
+       }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -277,7 +282,6 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
               }
               if(state is ServiceRequestFail){
                 showCustomSnackBar(context,state.msg.toString());
-
               }
             },
             child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):

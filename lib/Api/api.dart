@@ -6,6 +6,7 @@ import 'package:service_engineer/Model/customer_registration.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_process_repo.dart';
 import 'dart:convert';
 
 import '../Model/cart_list_repo.dart';
@@ -26,6 +27,10 @@ class Api {
   static const String PRODUCT_LIST="get_product_list";
   static const String CART_API="add_to_cart_list";
   static const String CART_LIST="get_cart_list";
+  static const String TRACK_PROGRESS_LIST="get_daily_update_task";
+  static const String CREATE_TASK="add_daily_update_task";
+  static const String COMPLETE_TASK="update_daily_my_task_list";
+  static const String MACHINE_QUOTATION="machine_maintainence_quatation";
 
 
 
@@ -124,6 +129,61 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return CartListRepo.fromJson(responseJson);
+    }
+  }
+
+  //Track Progress List
+  static Future<dynamic> getTrackProgressList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRACK_PROGRESS_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return TrackProcessRepo.fromJson(responseJson);
+    }
+  }
+
+  //Create Task
+  static Future<dynamic> createTask(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CREATE_TASK),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CreateTaskRepo.fromJson(responseJson);
+    }
+  }
+
+  //Complete task
+  static Future<dynamic> completeTask(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+COMPLETE_TASK),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CreateTaskRepo.fromJson(responseJson);
+    }
+  }
+
+  //Send Quotation
+  static Future<dynamic> sendQuotation(params) async {
+    var response = await http.MultipartRequest(
+      'POST',Uri.parse(HOST_URL+MACHINE_QUOTATION)
+    );
+    response.fields.addAll(params);
+    var _response = await response.send();
+
+    if (_response.statusCode == 200) {
+      print(_response);
+      // final responseJson = json.decode(response.body);
+      // print(responseJson);
+      // return CreateTaskRepo.fromJson(responseJson);
     }
   }
 }

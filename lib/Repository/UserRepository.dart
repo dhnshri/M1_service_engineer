@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:service_engineer/Bloc/home/block.dart';
 import 'package:service_engineer/Model/customer_login.dart';
 
 import '../Api/api.dart';
+import '../Model/cart_list_repo.dart';
 import '../Utils/preferences.dart';
 import '../Utils/util_preferences.dart';
 
@@ -94,6 +96,44 @@ class UserRepository {
     final params = {"user_id":userId,};
     return await Api.getCartList(params);
   }
+
+  //Fetch Track Progress List
+  Future<dynamic> fetchTrackProgressList({String? userId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId}) async {
+    final params = {"service_user_id":userId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getTrackProgressList(params);
+  }
+
+  //Create Task
+  Future<dynamic> createTask({String? userId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? heading,String? description,int? status}) async {
+    final params = {"service_user_id":userId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
+    "heading":heading,"description":description,'status': status.toString()};
+    return await Api.createTask(params);
+  }
+
+  //Complete Task
+  Future<dynamic> completeTask({String? serviceUserId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? dailyTaskId,int? status}) async {
+    final params = {"service_user_id":serviceUserId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
+      "daily_my_task_id":dailyTaskId,'status': status.toString()};
+    return await Api.completeTask(params);
+  }
+
+  Future<dynamic> SendQuotationPara({String? serviceUserId,String? workingTime,String? dateOfJoining,String? serviceCharge,String? handlingCharge,String? transportCharge,
+    List<ProductListModel>? itemList, List<ProductNotAvailableListModel>? itemNotAvailableList,String? commission,String? machineEnqDate,String? machineEnqId}) async {
+    final params = {"service_user_id":serviceUserId,
+      'working_time':workingTime,
+      'date_of_joining':dateOfJoining,
+      'service_charge':serviceCharge,
+      "handling_charge":handlingCharge,
+      'transport_charge': transportCharge,
+      'items_available': itemList,
+      'items_not_available': itemNotAvailableList,
+      'commission': commission,
+      'machine_enquiry_date': machineEnqDate,
+      'machine_enquiry_id': machineEnqId,
+    };
+    return await Api.sendQuotation(params);
+  }
+
 
   //Save User
   Future<dynamic> saveUser(CustomerLogin user) async {

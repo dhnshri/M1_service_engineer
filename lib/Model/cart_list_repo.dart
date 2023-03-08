@@ -40,6 +40,7 @@ class CartListModel {
   int? userId;
   String? discountPrice;
   String? price;
+  String? gst;
 
   CartListModel(
       {this.categoryName,
@@ -51,7 +52,8 @@ class CartListModel {
         this.subcategoryId,
         this.userId,
         this.discountPrice,
-        this.price});
+        this.price,
+        this.gst});
 
   CartListModel.fromJson(Map<String, dynamic> json) {
     categoryName = json['category_name'];
@@ -64,6 +66,7 @@ class CartListModel {
     userId = json['user_id'];
     discountPrice = json['discount_price'];
     price = json['price'];
+    gst = json['gst'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +81,95 @@ class CartListModel {
     data['user_id'] = this.userId;
     data['discount_price'] = this.discountPrice;
     data['price'] = this.price;
+    data['gst'] = this.gst;
+    return data;
+  }
+}
+
+class ProductListModel {
+  String? qty;
+  String? itemId;
+  String? itemSize;
+  String? discountPrice;
+  String? price;
+  String? amount;
+  String? gst;
+
+  ProductListModel(
+      {
+        this.qty,
+        this.itemId,
+        this.itemSize,
+        this.discountPrice,
+        this.price,
+        this.amount,
+        this.gst});
+
+  ProductListModel.fromJson(Map<String, dynamic> json) {
+
+    qty = json['qty'];
+    itemId = json['item_id'];
+    itemSize = json['item_size'];
+    discountPrice = json['discount_price'];
+    price = json['price'];
+    amount = json['amount'];
+    gst = json['gst'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['qty'] = this.qty;
+    data['item_id'] = this.itemId;
+    data['item_size'] = this.itemSize;
+    data['discount_price'] = this.discountPrice;
+    data['price'] = this.price;
+    data['amount'] = this.amount;
+    data['gst'] = this.gst;
+    return data;
+  }
+}
+
+class ProductNotAvailableListModel {
+  String? qty;
+  String? itemId;
+  String? itemSize;
+  String? discountPrice;
+  String? price;
+  String? amount;
+  String? gst;
+
+  ProductNotAvailableListModel(
+      {
+        this.qty,
+        this.itemId,
+        this.itemSize,
+        this.discountPrice,
+        this.price,
+        this.amount,
+        this.gst});
+
+  ProductNotAvailableListModel.fromJson(Map<String, dynamic> json) {
+
+    qty = json['qty'];
+    itemId = json['item_id'];
+    itemSize = json['item_size'];
+    discountPrice = json['discount_price'];
+    price = json['price'];
+    amount = json['amount'];
+    gst = json['gst'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['qty'] = this.qty;
+    data['item_id'] = this.itemId;
+    data['item_size'] = this.itemSize;
+    data['discount_price'] = this.discountPrice;
+    data['price'] = this.price;
+    data['amount'] = this.amount;
+    data['gst'] = this.gst;
     return data;
   }
 }

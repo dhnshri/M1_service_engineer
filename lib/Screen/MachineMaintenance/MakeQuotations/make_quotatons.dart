@@ -22,6 +22,7 @@ import 'package:flutter/src/material/date_picker.dart';
 import '../../../Config/font.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Model/item_not_available_model.dart';
+import '../../../Model/service_request_detail_repo.dart';
 import '../../../Widget/app_button.dart';
 import '../../../Widget/common.dart';
 import '../../../Widget/function_button.dart';
@@ -32,7 +33,8 @@ import 'item_required.dart';
 import 'item_required_filter.dart';
 
 class MakeQuotationScreen extends StatefulWidget {
-  const MakeQuotationScreen({Key? key}) : super(key: key);
+  MachineServiceDetailsModel? serviceRequestData;
+  MakeQuotationScreen({Key? key,this.serviceRequestData}) : super(key: key);
 
   @override
   _MakeQuotationScreenState createState() => _MakeQuotationScreenState();
@@ -66,6 +68,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _rateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _gstController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
 
@@ -107,12 +110,19 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   onAdd() {
     setState(() {
       ItemNotAvailableModel _contactModel = ItemNotAvailableModel(id: itemNotAvailabeList.length);
+
+      double amount = int.parse(_rateController.text) * 100/100+int.parse(_gstController.text);
+
+      double amountWithGST = amount *
+          int.parse(_quantityController.text);
+
       itemNotAvailabeList.add(ItemNotAvailableModel(
         id: itemNo++,
         itemName: _itemNameController.text,
         quantity: _quantityController.text,
-        amount: _amountController.text,
+        amount: amountWithGST.toString(),
         rate: _rateController.text,
+        gst: _gstController.text
       ));
     });
   }
@@ -689,70 +699,70 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     },
                   ),
                 ),
-                // SizedBox(
-                //   width:
-                //   MediaQuery.of(context).size.width * 0.8,
-                //   height: 60,
-                //   child: TextFormField(
-                //     controller: _amountController,
-                //     keyboardType: TextInputType.number,
-                //     // maxLength: 10,
-                //     cursorColor: primaryAppColor,
-                //     decoration: InputDecoration(
-                //       disabledBorder: OutlineInputBorder(
-                //         borderRadius:
-                //         BorderRadius.circular(8.0),
-                //         borderSide: const BorderSide(
-                //           color: Colors.black,
-                //           width: 1.0,
-                //         ),
-                //       ),
-                //       errorBorder: OutlineInputBorder(
-                //         borderRadius:
-                //         BorderRadius.circular(8.0),
-                //         borderSide: const BorderSide(
-                //           color: Colors.red,
-                //           width: 1.0,
-                //         ),
-                //       ),
-                //       fillColor: Colors.white,
-                //       filled: true,
-                //       focusedBorder: OutlineInputBorder(
-                //         borderRadius:
-                //         BorderRadius.circular(10.0),
-                //         borderSide: const BorderSide(
-                //             color: Colors.black, width: 1.0),
-                //       ),
-                //       focusedErrorBorder: OutlineInputBorder(
-                //           borderRadius:
-                //           BorderRadius.circular(8.0),
-                //           borderSide: const BorderSide(
-                //             color: Colors.black,
-                //             width: 1.0,
-                //           )),
-                //       enabledBorder: OutlineInputBorder(
-                //         borderRadius:
-                //         BorderRadius.circular(8.0),
-                //         borderSide: const BorderSide(
-                //           color: Colors.black,
-                //           width: 1.0,
-                //         ),
-                //       ),
-                //       hintText: 'Amount',
-                //       contentPadding: const EdgeInsets.fromLTRB(
-                //           20.0, 20.0, 0.0, 0.0),
-                //       hintStyle: GoogleFonts.poppins(
-                //           color: Colors.grey,
-                //           fontSize: 12.0,
-                //           fontWeight: FontWeight.w500),
-                //     ),
-                //     onChanged: (val) {
-                //       setState(() {
-                //         if ( _formKey.currentState!.validate()) {}
-                //       });
-                //     },
-                //   ),
-                // ),
+                SizedBox(
+                  width:
+                  MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _gstController,
+                    keyboardType: TextInputType.number,
+                    // maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                            color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Add GST',
+                      contentPadding: const EdgeInsets.fromLTRB(
+                          20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if ( _formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
 
                 Padding(
                     padding:
@@ -763,7 +773,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                         print(itemNotAvailabeList);
                         _itemNameController.clear();
                         _rateController.clear();
-                        _amountController.clear();
+                        _gstController.clear();
                         _quantityController.clear();
                         Navigator.of(context).pop();
                         showCustomSnackBar(context,'Item Added Successfully',isError: false);
@@ -838,6 +848,16 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   if(state is CartListFail){
                     // _cartLoading = state.isLoading;
                   }
+                  if(state is SendQuotationSuccess){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BottomNavigation(
+                                  index: 0,
+                                  dropValue: 'Machine Maintenance',
+                                )));
+                    showCustomSnackBar(context,state.message,isError: false);
+                  }
                 },
                 child: ItemRequired(context,productDetail),
 
@@ -894,10 +914,11 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _rateController.clear();
-    _quantityController.clear();
-    _amountController.clear();
-    _itemNameController.clear();
+    _rateController.dispose();
+    _quantityController.dispose();
+    _amountController.dispose();
+    _itemNameController.dispose();
+    _gstController.dispose();
   }
 
   @override
@@ -948,13 +969,35 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BottomNavigation(
-                                        index: 0,
-                                        dropValue: 'Machine Maintenance',
-                                      )));
+
+                          // var socialMedia = [];
+                          //
+                          // for(int j = 0; j < cartList!.length; j++){
+                          //
+                          //   var innerObj ={};
+                          //
+                          //   innerObj["item_id"] = cartList![j].productId;
+                          //   innerObj["item_qty"] = cartList![j].qty;
+                          //   innerObj["rate"] = cartList![j].discountPrice;
+                          //   innerObj["gst"] = cartList![j].gst;
+                          //   innerObj["item_size"] = '';
+                          //   innerObj["amount"] = '';
+                          //   socialMedia.add(innerObj);
+                          // }
+                          _homeBloc!.add(SendQuotation(
+                            serviceUserId: Application.customerLogin!.id.toString(),
+                            workingTime: workingTimeController.text,
+                            dateOfJoining: dateofJoiningController.text,
+                            serviceCharge: serviceCallChargesController.text,
+                            handlingCharge: handlingChargesController.text,
+                            transportCharge: transportChargesController.text,
+                            itemList: cartList!,
+                            itemNotAvailableList: itemNotAvailabeList,
+                            commission: '10',
+                            // machineEnquiryDate: widget.serviceRequestData!.createdAt.toString(),
+                            machineEnquiryDate: DateTime.parse(widget.serviceRequestData!.createdAt.toString()).toString(),
+                            machineEnquiryId: widget.serviceRequestData!.machineEnquiryId!.toInt()
+                          ));
                         },
                         style: TextButton.styleFrom(
                             backgroundColor: ThemeColors.defaultbuttonColor),
