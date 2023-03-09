@@ -21,8 +21,7 @@ import '../../bottom_navbar.dart';
 
 
 class QuotationsReplyScreen extends StatefulWidget {
-  bool isSwitched;
-  QuotationsReplyScreen({Key? key,required this.isSwitched}) : super(key: key);
+  QuotationsReplyScreen({Key? key}) : super(key: key);
 
   @override
   _QuotationsReplyScreenState createState() => _QuotationsReplyScreenState();

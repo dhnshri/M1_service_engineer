@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../Utils/application.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 
 import '../../../Config/image.dart';
@@ -163,8 +164,15 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
             actions: [
               InkWell(
                   onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                    Application.preferences!.remove('user');
+                    // _RemoverUser();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+                          (Route<dynamic> route) => false,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

@@ -668,4 +668,4 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return request;
   }
 
-}
+
