@@ -2,6 +2,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
@@ -16,18 +17,13 @@ class AppBloc {
  static final authBloc = AuthBloc(userRepository: userRepository);
   static final loginBloc = LoginBloc(userRepository: userRepository);
   static final homeBloc = HomeBloc(userRepository: userRepository);
+  static final profileBloc = ProfileBloc(userRepository: userRepository);
 
 
 
 
 
   static final List<BlocProvider> providers = [
-    // BlocProvider<ApplicationBloc>(
-    //   create: (context) => applicationBloc,
-    // ),
-    // BlocProvider<LanguageBloc>(
-    //   create: (context) => languageBloc,
-    // ),
     BlocProvider<ThemeBloc>(
       create: (context) => themeBloc,
     ),
@@ -40,6 +36,9 @@ class AppBloc {
     BlocProvider<HomeBloc>(
       create: (context) => homeBloc,
     ),
+    BlocProvider<ProfileBloc>(
+      create: (context) => profileBloc,
+    ),
 
 
   ];
@@ -51,6 +50,7 @@ class AppBloc {
     authBloc.close();
     loginBloc.close();
     homeBloc.close();
+    profileBloc.close();
   }
 
   ///Singleton factory

@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'dart:io';
-
+import 'package:geolocator_android/geolocator_android.dart';
+import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,11 @@ Future<void> main() async {
 
   Bloc.observer = BlocObserver();
   final route = Routes();
-
+  if (Platform.isAndroid) {
+    GeolocatorAndroid.registerWith();
+  } else if (Platform.isIOS) {
+    GeolocatorApple.registerWith();
+  }
 
 
   runApp(App());

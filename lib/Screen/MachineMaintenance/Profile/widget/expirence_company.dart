@@ -53,6 +53,8 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
         if (selectedWorkFromDate != null) {
           widget._workFromYearsController.text =
               DateFormat.yMd('es').format(selectedWorkFromDate);
+          widget.expCompanyModel!.fromYear =
+              DateFormat.yMd('es').format(selectedWorkFromDate);
         }
       });
   }
@@ -70,6 +72,8 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
         selectedWorkTillDate = picked;
         if (selectedWorkTillDate != null) {
           widget._workTillYearsController.text =
+              DateFormat.yMd('es').format(selectedWorkTillDate);
+          widget.expCompanyModel!.tillYear =
               DateFormat.yMd('es').format(selectedWorkTillDate);
         }
       });
@@ -133,16 +137,11 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
                         color: ThemeColors.textFieldBackgroundColor)),
               ),
               validator: (value) {
-                // Pattern pattern =
-                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                // RegExp regex =
-                // new RegExp(pattern.toString());
+
                 if (value == null || value.isEmpty) {
                   return 'Please enter Company Name';
                 }
-                // else if(!regex.hasMatch(value)){
-                //   return 'Please enter valid name';
-                // }
+
                 return null;
               },
               onSaved: (value) => widget.expCompanyModel!.companyName = value!,
@@ -351,26 +350,20 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
                           color: ThemeColors.textFieldBackgroundColor)),
                 ),
                 validator: (value) {
-                  // profile.name = value!.trim();
-                  // Pattern pattern =
-                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  // RegExp regex =
-                  // new RegExp(pattern.toString());
+
                   if (value == null || value.isEmpty) {
                     return 'Please enter Years';
                   }
-                  // else if(!regex.hasMatch(value)){
-                  //   return 'Please enter valid name';
-                  // }
+
                   return null;
                 },
                 onSaved: (value) => widget.expCompanyModel!.fromYear = value!,
-
                 onChanged: (value) {
-                  widget.expCompanyModel!.fromYear=value;
                   setState(() {
                     // _nameController.text = value;
                     if (formKey.currentState!.validate()) {}
+                    widget.expCompanyModel!.fromYear=value;
+
                   });
                 },
               ),
@@ -572,17 +565,9 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
                           color: ThemeColors.textFieldBackgroundColor)),
                 ),
                 validator: (value) {
-                  // profile.name = value!.trim();
-                  // Pattern pattern =
-                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  // RegExp regex =
-                  // new RegExp(pattern.toString());
                   if (value == null || value.isEmpty) {
                     return 'Please enter Years';
                   }
-                  // else if(!regex.hasMatch(value)){
-                  //   return 'Please enter valid name';
-                  // }
                   return null;
                 },
                 onSaved: (value) => widget.expCompanyModel!.tillYear = value!,
