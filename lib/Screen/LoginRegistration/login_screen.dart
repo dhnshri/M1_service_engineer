@@ -33,7 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _textPasswordController = TextEditingController();
   //String dropdownValue = '+ 91';
   String dropdownValue = 'Machine Maintenance';
-  String? phoneNum;
+  String? _userName;
+  String? _pass;
   String? role;
   bool loading = true;
   final _formKey = GlobalKey<FormState>();
@@ -87,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // add your code here.
 
                 Timer.periodic(const Duration(seconds: 10), (timer) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 1,dropValue: 'Job Work Enquiry',)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 2,dropValue: 'Transportation',)));
                   showCustomSnackBar(context,'Login Successfully',isError: false);
                   timer.cancel();
                 });
@@ -197,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                       onChanged: (val) {
                                         setState(() {
-                                          phoneNum = val;
+                                          _userName = val;
                                           // _phoneNumberController.text = val;
                                         });
                                       },
@@ -265,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                       onChanged: (val) {
                                         setState(() {
-                                          phoneNum = val;
+                                          _pass = val;
                                           // _phoneNumberController.text = val;
                                         });
                                       },
@@ -280,15 +281,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: AppButton(
                                         onPressed: () async {
 
-                                          // Navigator.of(context).push(
-                                          //     MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
                                             isconnectedToInternet = await ConnectivityCheck
                                                 .checkInternetConnectivity();
                                             if (isconnectedToInternet == true) {
                                               if (_formKey.currentState!.validate()) {
-                                                // setState(() {
-                                                //   loading=true;
-                                                // });
+                                                setState(() {
+                                                  loading=true;
+                                                });
                                                 _userLoginBloc!.add(OnLogin(username: _textPhoneNumberController.text,password: _textPasswordController.text));
                                               }
                                             } else {

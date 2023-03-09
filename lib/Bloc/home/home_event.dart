@@ -31,6 +31,7 @@ class ProductList extends HomeEvent {
   ProductList({required this.prodId,required this.offSet,});
 
 }
+
 // Job Work Enquiry Home
 
 class OnServiceRequestJWEList extends HomeEvent {
@@ -44,4 +45,16 @@ class OnMyTaskJWEList extends HomeEvent {
   String userid;
   String offset;
   OnMyTaskJWEList({required this.userid, required this.offset });
+}
+
+// Transpotation
+class OnServiceRequestTranspotation extends HomeEvent {
+  String offSet;
+  OnServiceRequestTranspotation({required this.offSet});
+}
+
+class OnMyTaskTranspotationList extends HomeEvent {
+  String userid;
+  String offset;
+  OnMyTaskTranspotationList({required this.userid, required this.offset });
 }

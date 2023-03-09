@@ -7,15 +7,16 @@ import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
 import 'Bloc/theme/theme_bloc.dart';
 import 'Repository/UserRepository.dart';
+import 'Bloc/quotationReply/quotationReply_bloc.dart';
 
 
 class AppBloc {
   static final userRepository = UserRepository();
   static final themeBloc = ThemeBloc();
-
- static final authBloc = AuthBloc(userRepository: userRepository);
+  static final authBloc = AuthBloc(userRepository: userRepository);
   static final loginBloc = LoginBloc(userRepository: userRepository);
   static final homeBloc = HomeBloc(userRepository: userRepository);
+  static final quotationReplyBloc = QuotationReplyBloc(userRepository: userRepository);
 
 
 
@@ -40,6 +41,9 @@ class AppBloc {
     BlocProvider<HomeBloc>(
       create: (context) => homeBloc,
     ),
+    BlocProvider<QuotationReplyBloc>(
+      create: (context) => quotationReplyBloc,
+    ),
 
 
   ];
@@ -51,6 +55,7 @@ class AppBloc {
     authBloc.close();
     loginBloc.close();
     homeBloc.close();
+    quotationReplyBloc.close();
   }
 
   ///Singleton factory

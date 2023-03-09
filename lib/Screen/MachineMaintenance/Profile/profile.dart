@@ -7,10 +7,14 @@ import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expire
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 
+import '../../../Bloc/login/login_bloc.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Model/experience_company_model.dart';
+import '../../../Utils/application.dart';
+import '../../../Widget/app_button.dart';
 import '../../../image_file.dart';
+import '../../LoginRegistration/login_screen.dart';
 import '../../LoginRegistration/signUpAs.dart';
 
 
@@ -240,6 +244,45 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     });
   }
 
+  Widget _LogOutButton(BuildContext context) {
+    LoginBloc? _loginBloc;
+    return  Container(color: Colors.white,
+        child:Padding(
+            padding: EdgeInsets.all(20.0),
+            child:
+
+            //updated on 14/01/2022
+            AppButton(
+              onPressed: (){
+                Application.preferences!.remove('user');
+                // _RemoverUser();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen(dropValue: 'Machine Maintenance',)),
+                      (Route<dynamic> route) => false,
+                );
+              },
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50))),
+              text: 'Logout',
+              loading: true,
+              // disableTouchWhenLoading: true,
+            )
+        )
+    );
+    // )
+
+    //   InkWell(
+    //
+    //   onTap: () {
+    //     Navigator.pushReplacement(
+    //         context, MaterialPageRoute(builder: (context) => SignInPage()));
+    //   },
+    //   child: AppButton(
+    //     text: "Log Out",
+    //   ),
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -249,8 +292,15 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
             actions: [
               InkWell(
                 onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                  Application.preferences!.remove('username');
+                  // _RemoverUser();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen(dropValue: 'Machine Maintenance',)),
+                        (Route<dynamic> route) => false,
+                  );
                 },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

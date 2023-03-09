@@ -10,6 +10,9 @@ import 'package:service_engineer/Repository/UserRepository.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
+import '../../Model/MachineMaintance/quotationReply.dart';
+import '../../Model/Transpotation/myTaskListModel.dart';
+import '../../Model/Transpotation/serviceRequestListModel.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
@@ -180,7 +183,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-
     // *******  Job Work Enquiry ******* //
 
     //Event for Job Work Enquiry Service Request
@@ -255,6 +257,81 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ///Notify loading to UI
         yield MyTaskLoading(isLoading: false);
         yield MyTaskListLoadFail(msg: response.msg);
+      }
+    }
+
+    //Event for Service Request Transpotation
+    if (event is OnServiceRequestTranspotation) {
+      ///Notify loading to UI
+      yield ServiceRequestTranspotationLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestTranspotationRepo result = await userRepository!
+          .fetchServiceRequestTranspotationList(
+        offSet: event.offSet,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestList = result.data! ?? [];
+        final serviceRequestList = refactorServiceRequestList.map((item) {
+          return ServiceRequestTranspotationModel.fromJson(item);
+        }).toList();
+        print('Service Request List: $serviceRequestList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ServiceRequestTranspotationLoading(
+            isLoading: true,
+          );
+          yield ServiceRequestTranspotationSuccess(serviceListData: serviceRequestList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield ServiceRequestTranspotationFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield ServiceRequestTranspotationLoading(isLoading: false);
+        yield ServiceRequestTranspotationFail(msg: result.msg!);
+      }
+    }
+
+    //Event for My Task Transpotation
+    if (event is OnMyTaskTranspotationList) {
+      ///Notify loading to UI
+      yield MyTaskTranspotationLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final MyTaskRepo response = await userRepository!
+          .fetchTranspotationMyTaskList(
+          userId: event.userid,
+          offset:event.offset
+      );
+      print(response);
+
+      if(response.success == true){
+        final Iterable refactorMyTask = response.data ?? [];
+        final listMyTask = refactorMyTask.map((item) {
+          return MyTaskTransportationModel.fromJson(item);
+        }).toList();
+
+        print("Task List: $listMyTask");
+
+        try{
+          yield MyTaskTranspotationLoading(isLoading: true);
+          yield MyTaskTranspotationListSuccess(MyTaskList: listMyTask);
+        }catch(error){
+          yield MyTaskTranspotationLoading(isLoading: false);
+          yield MyTaskTranspotationListLoadFail(msg: response.msg);
+        }
+      }
+      else {
+        ///Notify loading to UI
+        yield MyTaskTranspotationLoading(isLoading: false);
+        yield MyTaskTranspotationListLoadFail(msg: response.msg);
       }
     }
 

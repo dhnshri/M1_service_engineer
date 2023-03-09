@@ -12,6 +12,7 @@ import 'Config/language.dart';
 import 'Config/theme.dart';
 import 'Repository/UserRepository.dart';
 import 'Screen/LoginRegistration/login_screen.dart';
+import 'Screen/MachineMaintenance/Quotations/quotations_reply.dart';
 import 'Utils/routes.dart';
 import 'Utils/translate.dart';
 import 'app_bloc.dart';
@@ -76,18 +77,19 @@ class _AppState extends State<App> {
 
           onGenerateRoute: route.generateRoute,
           home:
-          //UserRepository().getPhoneNo() != null? BottomNavigation(index:0,dropValue: role,): SplashScreen()
+          //BottomNavigation(index:0,dropValue: role,)
           BlocBuilder<AuthBloc, AuthenticationState>(
             builder: (context, app) {
 
               if (app is AuthenticationSuccess) {
-                return BottomNavigation(index: 0,dropValue: role);
+               return BottomNavigation(index:2,dropValue:"Transportation");
               }
               if (app is AuthenticationFail) {
-               return SignUpAsScreen();
-              //  return BottomNavigation(index: 0,);
+                return SignUpAsScreen();
+                //  return BottomNavigation(index: 0,);
               }
               return SplashScreen();
+
 
             },
           ),

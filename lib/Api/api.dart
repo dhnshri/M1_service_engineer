@@ -8,7 +8,12 @@ import 'package:service_engineer/Model/service_request_repo.dart';
 import 'dart:convert';
 
 import '../Model/JobWorkEnquiry/my_task_model.dart';
+import '../Model/JobWorkEnquiry/quotation_reply.dart';
 import '../Model/JobWorkEnquiry/service_request_model.dart';
+import '../Model/MachineMaintance/quotationReply.dart';
+import '../Model/Transpotation/myTaskListModel.dart';
+import '../Model/Transpotation/quotationReplyModel.dart';
+import '../Model/Transpotation/serviceRequestListModel.dart';
 import '../Model/customer_login.dart';
 
 
@@ -20,10 +25,15 @@ class Api {
   // static const String HOST_URL="http://unstoppabletrade.ezii.live/App_details/";
   static const String CUSTOMER_LOGIN="login";
   static const String SERVICE_REQUEST_LIST="machine_service_request_list";
+  static const String SERVICE_REQUEST_TRANSPOTATION_LIST="transport_service_request_list";
+  static const String QUOTATION_REPLY_LIST="get_machine_quotation_reply_list";
+  static const String QUOTATION_REPLY_TRANSPORT_LIST="get_transport_quotation_reply_list";
+  static const String QUOTATION_REPLY_LIST_JWE="get_job_work_quotation_reply_list";
   static const String SERVICE_REQUEST_LIST_JWE="job_work_enquiry_service_request_list";
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
   static const String CUSTOMER_REGISTER="register_service";
   static const String MY_TASK_LIST="machine_service_my_task_list";
+  static const String MY_TASK_TRANSPOTATION_LIST="transport_service_my_task_list";
   static const String JOB_WORK_ENQUIRY_MY_TASK_LIST="job_work_enquiry_service_my_task_list";
   static const String PRODUCT_LIST="get_product_list";
 
@@ -67,6 +77,18 @@ class Api {
     }
   }
 
+  static Future<dynamic> getServiceRequestTranspotationList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+SERVICE_REQUEST_TRANSPOTATION_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return ServiceRequestTranspotationRepo.fromJson(responseJson);
+    }
+  }
+
   static Future<dynamic> getServiceRequestJobWorkEnquiryList(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+SERVICE_REQUEST_LIST_JWE),
@@ -76,6 +98,42 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return JobWorkEnquiryServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getQuotaionReplyList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+QUOTATION_REPLY_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return QuotationReplyRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getQuotaionReplyTranspotationList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+QUOTATION_REPLY_TRANSPORT_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return QuotationReplyTransportRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getQuotaionReplyJWEList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+QUOTATION_REPLY_LIST_JWE),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return QuotationReplyJWERepo .fromJson(responseJson);
     }
   }
 
@@ -100,6 +158,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return MyTaskRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getMyTaskTranspotationList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+MY_TASK_TRANSPOTATION_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return MyTaskTransportationRepo.fromJson(responseJson);
     }
   }
 

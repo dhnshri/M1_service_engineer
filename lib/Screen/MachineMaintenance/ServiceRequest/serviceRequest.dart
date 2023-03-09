@@ -619,7 +619,4 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     );
   }
 
-
-
-
 }
