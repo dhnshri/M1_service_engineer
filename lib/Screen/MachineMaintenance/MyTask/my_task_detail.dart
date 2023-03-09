@@ -14,6 +14,7 @@ import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/process_detail.dart';
 import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/image_view_screen.dart';
@@ -42,8 +43,6 @@ class MyTaskDetailsScreen extends StatefulWidget {
 
 class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  String dropdownValue = '+ 91';
-  String? phoneNum;
   String? role;
   bool loading = true;
   bool _isLoading = false;
@@ -61,7 +60,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
   double? addressLong;
   Completer<GoogleMapController> controller1 = Completer();
   HomeBloc? _homeBloc;
-  List<MachineServiceDetailsModel>? serviceRequestData = [];
+  List<MachineServiceDetailsModel>? myTaskData = [];
+  List<TrackProcessModel>? trackProgressData = [];
 
   _onCameraMove(CameraPosition position) {
     _lastMapPosition = position.target;
@@ -84,6 +84,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
     _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
     // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.enquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
 
     _phoneNumberController.clear();
     addressLat = double.parse(21.1458.toString());
@@ -161,13 +162,22 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                 _isLoading = state.isLoading;
               }
               if(state is ServiceRequestDetailSuccess){
-                serviceRequestData = state.machineServiceDetail;
+                myTaskData = state.machineServiceDetail;
               }
               if(state is ServiceRequestFail){
                 // Fluttertoast.showToast(msg: state.msg.toString());
               }
+              if(state is TrackProcssListLoading){
+                // _isLoading = state.isLoading;
+              }
+              if(state is TrackProcssListSuccess){
+                trackProgressData = state.trackProgressList;
+              }
+              if(state is TrackProcssListFail){
+                // Fluttertoast.showToast(msg: state.msg.toString());
+              }
             },
-            child: _isLoading ? ListView(
+            child: _isLoading ?myTaskData!.length <=0 ? Center(child: CircularProgressIndicator(),): ListView(
               children: [
                 SizedBox(height: 7,),
                 //Basic Info
@@ -190,7 +200,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Company Name",style: ExpanstionTileLeftDataStyle,),
-                              Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
+                              Text(myTaskData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
                             ],
                           ),
                           SizedBox(height: 5,),
@@ -198,7 +208,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Enquiry ID:",style: ExpanstionTileLeftDataStyle,),
-                              Text(serviceRequestData![0].machineEnquiryId.toString(),style: ExpanstionTileRightDataStyle,),
+                              Text(myTaskData![0].machineEnquiryId.toString(),style: ExpanstionTileRightDataStyle,),
                             ],
                           ),
                           SizedBox(height: 5,),
@@ -207,7 +217,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Enquiry Date:",style: ExpanstionTileLeftDataStyle,),
-                              Text(DateFormat('MM-dd-yyyy').format(DateTime.parse(serviceRequestData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
+                              Text(DateFormat('MM-dd-yyyy').format(DateTime.parse(myTaskData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
                             ],
                           ),
                           SizedBox(height: 5,),
@@ -216,7 +226,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Date & Timing :",style: ExpanstionTileLeftDataStyle,),
-                              Text(DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceRequestData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
+                              Text(DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(myTaskData![0].createdAt.toString())).toString(),style: ExpanstionTileRightDataStyle,),
 
                             ],
                           ),
@@ -233,7 +243,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                   },
                                   child: Container(
                                     width: 140,
-                                    child: Text(serviceRequestData![0].location.toString(),
+                                    child: Text(myTaskData![0].location.toString(),
                                       maxLines: 5,
                                       overflow: TextOverflow.ellipsis,style:TextStyle(
                                         color: Colors.black,
@@ -300,7 +310,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             width: MediaQuery.of(context).size.width,
                             child: CachedNetworkImage(
                               filterQuality: FilterQuality.medium,
-                              imageUrl: serviceRequestData![0].machineImg.toString(),
+                              imageUrl: myTaskData![0].machineImg.toString(),
                               placeholder: (context, url) {
                                 return Shimmer.fromColors(
                                   baseColor: Theme.of(context).hoverColor,
@@ -360,7 +370,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                       Text("Category",style: ExpanstionTileLeftDataStyle,),
                                       Container(
                                         width: 150,
-                                        child: Text(serviceRequestData![0].serviceCategoryName.toString(),
+                                        child: Text(myTaskData![0].serviceCategoryName.toString(),
                                           maxLines: 5,
                                           overflow: TextOverflow.ellipsis,style:TextStyle(
                                             color: Colors.black,
@@ -376,7 +386,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Machine Name",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].machineName.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -384,7 +394,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Manufacturer (Brand)",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].brand.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].brand.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -392,7 +402,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Make",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].make.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].make.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -400,7 +410,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Machine No.",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineNumber.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].machineNumber.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -408,7 +418,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Controler",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                 ],
@@ -422,7 +432,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                       Text("Sub-Category",style: ExpanstionTileLeftDataStyle,),
                                       Container(
                                         width: 150,
-                                        child: Text(serviceRequestData![0].serviceSubCategoryName.toString(),
+                                        child: Text(myTaskData![0].serviceSubCategoryName.toString(),
                                           maxLines: 5,
                                           overflow: TextOverflow.ellipsis,style:TextStyle(
                                             color: Colors.black,
@@ -437,7 +447,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Machine Type",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineType.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].machineType.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -445,7 +455,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("System name",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].systemName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].systemName.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -453,7 +463,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Model no.",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].modelNumber.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].modelNumber.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -461,7 +471,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Machine Size",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineSize.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].machineSize.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                   SizedBox(height: 7,),
@@ -469,7 +479,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Manufacture Date",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].manufacturingDate.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Text(myTaskData![0].manufacturingDate.toString(),style: ExpanstionTileRightDataStyle,),
                                     ],
                                   ),
                                 ],
@@ -510,7 +520,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                               Text("Priority",style: TextStyle(fontFamily: 'Poppins-Medium',
                                 fontSize: 16,
                               )),
-                              Text(serviceRequestData![0].otherInfoName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
+                              Text(myTaskData![0].otherInfoName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                             ],
@@ -522,7 +532,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                               Text("Maintenance Type",style: TextStyle(fontFamily: 'Poppins-Medium',
                                 fontSize: 16,
                               )),
-                              Text(serviceRequestData![0].serviceCategoryName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
+                              Text(myTaskData![0].serviceCategoryName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                             ],
@@ -535,7 +545,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(serviceRequestData![0].machineProblem.toString(),
+                              child: Text(myTaskData![0].machineProblem.toString(),
                                 style:ExpanstionTileOtherInfoStyle ,),
                             ),
                           ),
@@ -545,7 +555,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
-                            itemCount: serviceRequestData![0].machineProblemImg!.length,
+                            itemCount: myTaskData![0].machineProblemImg!.length,
                             padding: EdgeInsets.only(top: 10, bottom: 15),
                             itemBuilder: (context, index) {
 
@@ -562,7 +572,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                       children: [
                                         Container(
                                           width:200,
-                                          child: Text(serviceRequestData![0].machineProblemImg![index].split('/').last.toString(),
+                                          child: Text(myTaskData![0].machineProblemImg![index].split('/').last.toString(),
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: ThemeColors.buttonColor,
@@ -574,7 +584,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                         InkWell(
                                           onTap: () async {
                                             Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                                ImageViewerScreen(url: serviceRequestData![0].machineProblemImg![index])));
+                                                ImageViewerScreen(url: myTaskData![0].machineProblemImg![index])));
                                           },
                                           child: Container(
                                             child: Text('View',
@@ -639,6 +649,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                 ),
 
                 ///Track PRocess
+                trackProgressData!.length <= 0 ? Container():
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text("Track Process",
@@ -649,11 +660,12 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                 ),
 
                 ///Track Process List
+                trackProgressData!.length <= 0 ? Container():
                 Column(
                   // height: MediaQuery.of(context).size.height,
                   children: [
                     ListView.builder(
-                        itemCount: 3,
+                        itemCount: trackProgressData!.length,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
@@ -664,7 +676,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(context,
-                                      MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
+                                      MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],)));
                                 },
                                 child: Container(
                                   // height: 60,
@@ -677,19 +689,18 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('Lorem ipsum',
+                                          Text(trackProgressData![index].heading.toString(),
                                               style: TextStyle(
-
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w400)),
-                                          Text("Process",
+                                          Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
                                             style: TextStyle(color: Colors.red),)
                                         ],
                                       ),
                                     ),
                                     subtitle: Padding(
                                       padding: const EdgeInsets.only(bottom: 8.0),
-                                      child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+                                      child: Text(trackProgressData![index].description.toString(),
                                           maxLines: 2, overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
@@ -708,7 +719,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                           );
                         })
                   ],
-                ),
+                ) ,
 
                 ///Add task Button
                 Padding(
@@ -729,7 +740,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                              Text("Daily Update Task",
+                              Text("Create Task",
                                 style: TextStyle(fontFamily: 'Poppins-Medium',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,

@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:service_engineer/Screen/LoginRegistration/signUpAs.dart';
 import 'package:service_engineer/Screen/SplashScreen/splash_screen.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
+import 'package:service_engineer/Utils/application.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/authentication/authentication_state.dart';
@@ -77,19 +78,18 @@ class _AppState extends State<App> {
 
           onGenerateRoute: route.generateRoute,
           home:
-          //BottomNavigation(index:0,dropValue: role,)
+          //UserRepository().getPhoneNo() != null? BottomNavigation(index:0,dropValue: role,): SplashScreen()
           BlocBuilder<AuthBloc, AuthenticationState>(
             builder: (context, app) {
 
               if (app is AuthenticationSuccess) {
-               return BottomNavigation(index:2,dropValue:"Transportation");
+                return BottomNavigation(index: 0,dropValue: Application.customerLogin!.role.toString());
               }
               if (app is AuthenticationFail) {
-                return SignUpAsScreen();
-                //  return BottomNavigation(index: 0,);
+               return SignUpAsScreen();
+              //  return BottomNavigation(index: 0,);
               }
               return SplashScreen();
-
 
             },
           ),

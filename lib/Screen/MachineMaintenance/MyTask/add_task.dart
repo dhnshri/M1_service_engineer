@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
 
+import '../../../Bloc/home/home_bloc.dart';
+import '../../../Bloc/home/home_state.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Widget/custom_snackbar.dart';
 
 
 
@@ -16,6 +21,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _headingController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
+  bool _isLoading = false;
+  HomeBloc? _homeBloc;
 
 
   @override
@@ -23,13 +30,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    _homeBloc = BlocProvider.of<HomeBloc>(this.context);
 
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    // getroleofstudent();
+    _headingController.dispose();
+    _descriptionController.dispose();
   }
 
 
@@ -48,7 +57,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         backgroundColor: ThemeColors.backGroundColor,
 
       ),
-      body:Container(
+      body: Container(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Form(
@@ -192,28 +201,55 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ),),
         ),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: InkWell(
-        onTap: (){
-          Navigator.of(context).pop();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            height: 50,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: ThemeColors.defaultbuttonColor,
-                borderRadius: BorderRadius.circular(30)),
-            child: Center(child: Text("Add",
-                style: TextStyle(fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                ))),
+      floatingActionButton: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+        return BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if(state is CreateTaskLoading){
+              _isLoading = state.isLoading;
+            }
+            if(state is CreateTaskSuccess){
+              Navigator.of(context).pop();
+              showCustomSnackBar(context,state.message.toString(),isError: false);
+            }
+            if(state is CreateTaskFail){
+              showCustomSnackBar(context,state.msg.toString());
+            }
+          },
+          child: InkWell(
+            onTap: (){
+              if(_formKey.currentState!.validate()){
+                _homeBloc!.add(CreateTask(userId: '1',machineEnquiryId: '1',transportEnquiryId: '0',jobWorkEnquiryId: '0', heading: _headingController.text,
+                    description: _descriptionController.text,status: 0));
+              }else{
+                showCustomSnackBar(context,'Fill the details.');
+              }
+
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: ThemeColors.defaultbuttonColor,
+                    borderRadius: BorderRadius.circular(30)),
+                child: Center(child: Text("Add",
+                    style: TextStyle(fontFamily: 'Poppins-Medium',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ))),
+              ),
+            ),
           ),
-        ),
-      ),
+
+        );
+
+
+      })
+
 
     );
   }

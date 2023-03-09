@@ -42,7 +42,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   }
   List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
-    if(widget.dropValue == "Machine Maintenance"){
+    if(widget.dropValue == "1"){
       return[
         BottomNavigationBarItem(
           backgroundColor: ThemeColors.bottomNavColor,
@@ -127,13 +127,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children:
         <Widget>[
           // bottomOptions(context)
-          widget.dropValue == "Machine Maintenance"? MachineMaintenanceHomeScreen():widget.dropValue == "Job Work Enquiry"?EnquiryHomeScreen(): widget.dropValue == "Transportation"? TransportationQuotationsHomeScreen():SizedBox(),
+          widget.dropValue == "1"? MachineMaintenanceHomeScreen():widget.dropValue == "2"?EnquiryHomeScreen(): widget.dropValue == "3"? TransportationQuotationsHomeScreen():SizedBox(),
           // widget.dropValue == "Machine Maintenance"?OrderScreen():SizedBox(),
-          if(widget.dropValue == "Machine Maintenance")
+          if(widget.dropValue == "1")
             OrderItemsScreen(),
-          widget.dropValue == "Machine Maintenance"? QuotationsReplyScreen(isSwitched:false,):widget.dropValue == "Job Work Enquiry"?EnquiryQuotationsReplyScreen(): widget.dropValue == "Transportation"? QuotationsReplyTransportationScreen():SizedBox(),
+          widget.dropValue == "1"? QuotationsReplyScreen():widget.dropValue == "2"?EnquiryQuotationsReplyScreen(): widget.dropValue == "3"? QuotationsReplyTransportationScreen():SizedBox(),
           DashboardScreen(),
-          widget.dropValue == "Machine Maintenance"? MachineProfileScreen():widget.dropValue == "Job Work Enquiry"?JobWorkProfileScreen(): widget.dropValue == "Transportation"? TransportationProfileScreen():SizedBox(),
+          widget.dropValue == "1"? MachineProfileScreen():widget.dropValue == "2"?JobWorkProfileScreen(): widget.dropValue == "3"? TransportationProfileScreen():SizedBox(),
         ],
       ),
       bottomNavigationBar:

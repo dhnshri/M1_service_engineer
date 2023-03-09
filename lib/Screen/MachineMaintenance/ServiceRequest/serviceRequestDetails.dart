@@ -152,14 +152,15 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             child: Icon(Icons.arrow_back_ios)),
         title: Text('${widget.serviceRequestData.machineName.toString()}'),
       ),
-      bottomNavigationBar:Padding(
+      bottomNavigationBar:
+      // serviceRequestData!.isEmpty ? Container():
+      Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
             AppSmallButton(
               onPressed: () async {
-
-
+                Navigator.of(context).pop();
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
@@ -173,8 +174,9 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             Expanded(
               child: AppSmallButton(
                 onPressed: () async {
+                  serviceRequestData!.isEmpty ? null:
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
+                      MaterialPageRoute(builder: (context) => MakeQuotationScreen (serviceRequestData: serviceRequestData![0],)));
 
                 },
                 shape: const RoundedRectangleBorder(
