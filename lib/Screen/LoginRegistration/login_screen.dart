@@ -13,6 +13,7 @@ import '../../Bloc/login/login_bloc.dart';
 import '../../Bloc/login/login_event.dart';
 import '../../Bloc/login/login_state.dart';
 import '../../Config/font.dart';
+import '../../Model/customer_login.dart';
 import '../../Utils/connectivity_check.dart';
 import '../../Widget/app_button.dart';
 import '../../Widget/app_dialogs.dart';
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool loading = true;
   final _formKey = GlobalKey<FormState>();
   bool isconnectedToInternet = false;
-
+  CustomerLogin? userModel;
 
 
 
@@ -80,12 +81,13 @@ class _LoginScreenState extends State<LoginScreen> {
             if(state is LoginSuccess)
             {
               loading = false;
+              // userModel = state.userModel;
               SchedulerBinding.instance.addPostFrameCallback((_) {
 
                 // add your code here.
 
                 Timer.periodic(const Duration(seconds: 10), (timer) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: 'Machine Maintenance',)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: state.userModel.role.toString(),)));
                   showCustomSnackBar(context,'Login Successfully',isError: false);
                   timer.cancel();
                 });
