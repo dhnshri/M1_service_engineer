@@ -817,54 +817,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             'Item Required',
             style: StepperHeadingStyle,
           ),
-          content: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-            return BlocListener<HomeBloc, HomeState>(
-                listener: (context, state) {
-                  if(state is ProductListLoading){
-                    _isLoading = state.isLoading;
-                  }
-                  if(state is ProductListSuccess){
-                    productDetail = state.productList;
-                  }
-                  if(state is ProductListFail){
-                    // Fluttertoast.showToast(msg: state.msg.toString());
-                  }
-                  if(state is AddToCartSuccess){
-                    showCustomSnackBar(context,state.message,isError: false);
-                  }
-                  if(state is AddToCartFail){
-                    showCustomSnackBar(context,state.msg.toString(),isError: true);
-                  }
-                  if(state is AddToCartLoading){
-                    _cartLoading = state.isLoading;
-                  }
-                  if(state is CartListLoading){
-                    // showCustomSnackBar(context,'',isError: false);
-                  }
-                  if(state is CartListSuccess){
-                    // showCustomSnackBar(context,state.message.toString(),isError: true);
-                    cartList = state.cartList;
-                  }
-                  if(state is CartListFail){
-                    // _cartLoading = state.isLoading;
-                  }
-                  if(state is SendQuotationSuccess){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BottomNavigation(
-                                  index: 0,
-                                  dropValue: 'Machine Maintenance',
-                                )));
-                    showCustomSnackBar(context,state.message,isError: false);
-                  }
-                },
-                child: ItemRequired(context,productDetail),
-
-            );
-
-
-          })
+          content: ItemRequired(context,productDetail),
           // ItemRequired(context),
         ),
         ///Preview
@@ -939,127 +892,175 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             style: appBarheadingStyle,
           ),
         ),
-        body: isCompleted
-            ? AlertDialog(
-                title:
-                    new Text("Are you sure, you want to send this quotation ?"),
-                // content: new Text(""),
-                actions: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          child: new Text(
-                            "No",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          style: TextButton.styleFrom(
-                              side: BorderSide(
-                                  color: ThemeColors.defaultbuttonColor,
-                                  width: 1.5))),
-                      SizedBox(
-                        width: 7,
-                      ),
-                      TextButton(
+        body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          return BlocListener<HomeBloc, HomeState>(
+            listener: (context, state) {
+              if(state is ProductListLoading){
+                _isLoading = state.isLoading;
+              }
+              if(state is ProductListSuccess){
+                productDetail = state.productList;
+              }
+              if(state is ProductListFail){
+                // Fluttertoast.showToast(msg: state.msg.toString());
+              }
+              if(state is AddToCartSuccess){
+                showCustomSnackBar(context,state.message,isError: false);
+              }
+              if(state is AddToCartFail){
+                showCustomSnackBar(context,state.msg.toString(),isError: true);
+              }
+              if(state is AddToCartLoading){
+                _cartLoading = state.isLoading;
+              }
+              if(state is CartListLoading){
+                // showCustomSnackBar(context,'',isError: false);
+              }
+              if(state is CartListSuccess){
+                // showCustomSnackBar(context,state.message.toString(),isError: true);
+                cartList = state.cartList;
+              }
+              if(state is CartListFail){
+                // _cartLoading = state.isLoading;
+              }
+              if(state is SendQuotationSuccess){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BottomNavigation(
+                          index: 0,
+                          dropValue: Application.customerLogin!.role.toString(),
+                        )));
+                showCustomSnackBar(context,state.message,isError: false);
+              }
+            },
+            child: isCompleted
+                ? AlertDialog(
+              title:
+              new Text("Are you sure, you want to send this quotation ?"),
+              // content: new Text(""),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
                         child: new Text(
-                          "Yes",
-                          style: TextStyle(color: Colors.white),
+                          "No",
+                          style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () {
-
-                          // var socialMedia = [];
-                          //
-                          // for(int j = 0; j < cartList!.length; j++){
-                          //
-                          //   var innerObj ={};
-                          //
-                          //   innerObj["item_id"] = cartList![j].productId;
-                          //   innerObj["item_qty"] = cartList![j].qty;
-                          //   innerObj["rate"] = cartList![j].discountPrice;
-                          //   innerObj["gst"] = cartList![j].gst;
-                          //   innerObj["item_size"] = '';
-                          //   innerObj["amount"] = '';
-                          //   socialMedia.add(innerObj);
-                          // }
-                          _homeBloc!.add(SendQuotation(
-                            serviceUserId: Application.customerLogin!.id.toString(),
-                            workingTime: workingTimeController.text,
-                            dateOfJoining: dateofJoiningController.text,
-                            serviceCharge: serviceCallChargesController.text,
-                            handlingCharge: handlingChargesController.text,
-                            transportCharge: transportChargesController.text,
-                            itemList: cartList!,
-                            itemNotAvailableList: itemNotAvailabeList,
-                            commission: '10',
-                            // machineEnquiryDate: widget.serviceRequestData!.createdAt.toString(),
-                            machineEnquiryDate: DateTime.parse(widget.serviceRequestData!.createdAt.toString()).toString(),
-                            machineEnquiryId: widget.serviceRequestData!.machineEnquiryId!.toInt()
-                          ));
+                          Navigator.of(context).pop();
                         },
                         style: TextButton.styleFrom(
-                            backgroundColor: ThemeColors.defaultbuttonColor),
+                            side: BorderSide(
+                                color: ThemeColors.defaultbuttonColor,
+                                width: 1.5))),
+                    SizedBox(
+                      width: 7,
+                    ),
+                    TextButton(
+                      child: new Text(
+                        "Yes",
+                        style: TextStyle(color: Colors.white),
                       ),
-                    ],
-                  ),
-                ],
-              )
-            : Stepper(
-                physics: ScrollPhysics(),
-                type: StepperType.horizontal,
-                currentStep: _currentStep,
-                steps: stepList(),
-                controlsBuilder:
-                    (BuildContext context, ControlsDetails controls) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        if (_currentStep != 0)
-                          StepperButton(
-                            onPressed: () async {
-                              if (_currentStep == 0) {
-                                return;
-                              }
-
-                              setState(() {
-                                _currentStep -= 1;
-                              });
-                            },
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50))),
-                            text: 'Back',
-                            loading: loading,
-                          ),
+                      onPressed: () {
+                        if(workingTimeController.text == ""){
+                          showCustomSnackBar(context,'Please add working time.',isError: true);
+                        }else {
+                          _homeBloc!.add(SendQuotation(
+                              serviceUserId: Application.customerLogin!.id
+                                  .toString(),
+                              workingTime: workingTimeController.text,
+                              dateOfJoining: dateofJoiningController.text,
+                              serviceCharge: serviceCallChargesController
+                                  .text,
+                              handlingCharge: handlingChargesController.text,
+                              transportCharge: transportChargesController
+                                  .text,
+                              itemList: cartList!,
+                              itemNotAvailableList: itemNotAvailabeList,
+                              commission: '10',
+                              // machineEnquiryDate: widget.serviceRequestData!.createdAt.toString(),
+                              machineEnquiryDate: DateTime.parse(
+                                  widget.serviceRequestData!.createdAt
+                                      .toString()).toString(),
+                              machineEnquiryId: widget.serviceRequestData!
+                                  .machineEnquiryId!.toInt()
+                          ));
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: ThemeColors.defaultbuttonColor),
+                    ),
+                  ],
+                ),
+              ],
+            )
+                : Stepper(
+              physics: ScrollPhysics(),
+              type: StepperType.horizontal,
+              currentStep: _currentStep,
+              steps: stepList(),
+              controlsBuilder:
+                  (BuildContext context, ControlsDetails controls) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      if (_currentStep != 0)
                         StepperButton(
                           onPressed: () async {
-                            final isLastStep =
-                                _currentStep == stepList().length - 1;
-                            if (isLastStep) {
-                              setState(() {
-                                isCompleted = true;
-                              });
-                            } else {
-                              setState(() {
-                                _currentStep += 1;
-                              });
+                            if (_currentStep == 0) {
+                              return;
                             }
+
+                            setState(() {
+                              _currentStep -= 1;
+                            });
                           },
                           shape: const RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          text: 'Next',
+                              BorderRadius.all(Radius.circular(50))),
+                          text: 'Back',
                           loading: loading,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      StepperButton(
+                        onPressed: () async {
+                          final isLastStep =
+                              _currentStep == stepList().length - 1;
+                          if(_currentStep == 0){
+                            if(workingTimeController.text == ""){
+                              showCustomSnackBar(context,'Please add working time.',isError: true);
+                            }
+                          }
+                          if (isLastStep) {
+                            setState(() {
+                              isCompleted = true;
+                            });
+                          } else {
+                            setState(() {
+                              _currentStep += 1;
+                            });
+                          }
+                        },
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(50))),
+                        text: 'Next',
+                        loading: loading,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+
+          );
+
+
+        })
+
       ),
     );
   }

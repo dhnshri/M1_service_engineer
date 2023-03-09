@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/education_form.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Model/education_model.dart';
 import '../../../Model/experience_company_model.dart';
+import '../../../Utils/application.dart';
 import '../../../image_file.dart';
 import '../../LoginRegistration/signUpAs.dart';
 
@@ -97,6 +100,10 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     imageFile = new ImageFile();
+    _iDController.text = Application.customerLogin!.email.toString();
+    _nameController.text = Application.customerLogin!.name.toString();
+    _emailController.text = Application.customerLogin!.email.toString();
+    _phoneController.text = Application.customerLogin!.mobile.toString();
   }
 
 
@@ -240,6 +247,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     });
   }
 
+  List<EducationFormWidget> educationForms = List.empty(growable: true);
+
+  educationOnAdd() {
+    setState(() {
+      EducationModel _educationModel = EducationModel();
+      educationForms.add(EducationFormWidget(
+        index: educationForms.length,
+        educationModel: _educationModel,
+        onRemove: () => educationOnRemove(_educationModel),
+      ));
+    });
+  }
+
+  educationOnRemove(EducationModel educationModel) {
+    setState(() {
+      int index = educationForms
+          .indexWhere((element) => element.educationModel!.id == educationModel.id);
+
+      if (educationForms != null) educationForms.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -349,7 +378,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   Text("Hello",
                                     style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
                                   Container(
-                                      child:Text("Mcxeeco Sanasam",
+                                      child:Text(Application.customerLogin!.name == ""? "": Application.customerLogin!.name.toString(),
                                         style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )
@@ -363,6 +392,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                     ),
                   ),
 
+                  ///User Data
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
@@ -809,7 +839,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 // initialValue: Application.customerLogin!.name.toString(),
                                 controller: _genderController,
                                 textAlign: TextAlign.start,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 style: TextStyle(
                                   fontSize: 18,
                                   height: 1.5,
@@ -914,7 +944,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               // initialValue: Application.customerLogin!.name.toString(),
                               controller: _yearsController,
                               textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                 fontSize: 18,
                                 height: 1.5,
@@ -1137,251 +1167,42 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 20),
+                    padding: EdgeInsets.only(left: 30,right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ///School/College Name
-                        TextFormField(
-                          // initialValue: Application.customerLogin!.name.toString(),
-                          controller: _schoolNameController,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(
-                            fontSize: 18,
-                            height: 1.5,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: ThemeColors.textFieldBackgroundColor,
-                            hintText: "School/College Name",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 15.0),
-                            hintStyle: TextStyle(fontSize: 15),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
-                                borderSide: BorderSide(
-                                    width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
-                          ),
-                          validator: (value) {
-                            // profile.name = value!.trim();
-                            // Pattern pattern =
-                            //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                            // RegExp regex =
-                            // new RegExp(pattern.toString());
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter School/College Name';
-                            }
-                            // else if(!regex.hasMatch(value)){
-                            //   return 'Please enter valid name';
-                            // }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            // profile.name = value;
-                            setState(() {
-                              // _nameController.text = value;
-                              if (_formKey.currentState!.validate()) {}
-                            });
-                          },
-                        ),
 
-                        SizedBox(height: 15,),
-
-                        ///Class/Course Name
-                        TextFormField(
-                          // initialValue: Application.customerLogin!.name.toString(),
-                          controller: _courseNameController,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(
-                            fontSize: 18,
-                            height: 1.5,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: ThemeColors.textFieldBackgroundColor,
-                            hintText: "Class/Course Name",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 15.0),
-                            hintStyle: TextStyle(fontSize: 15),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
-                                borderSide: BorderSide(
-                                    width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
-                          ),
-                          validator: (value) {
-                            // profile.name = value!.trim();
-                            // Pattern pattern =
-                            //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                            // RegExp regex =
-                            // new RegExp(pattern.toString());
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Class/Course Name';
-                            }
-                            // else if(!regex.hasMatch(value)){
-                            //   return 'Please enter valid name';
-                            // }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            // profile.name = value;
-                            setState(() {
-                              // _nameController.text = value;
-                              if (_formKey.currentState!.validate()) {}
-                            });
-                          },
-                        ),
-
-                        SizedBox(height: 15,),
-
-                        ///Passing Year
-                        TextFormField(
-                          // initialValue: Application.customerLogin!.name.toString(),
-                          controller: _passingYearController,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(
-                            fontSize: 18,
-                            height: 1.5,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: ThemeColors.textFieldBackgroundColor,
-                            hintText: "Passing Year",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 15.0),
-                            hintStyle: TextStyle(fontSize: 15),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
-                                borderSide: BorderSide(
-                                    width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
-                          ),
-                          validator: (value) {
-                            // profile.name = value!.trim();
-                            // Pattern pattern =
-                            //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                            // RegExp regex =
-                            // new RegExp(pattern.toString());
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Passing Year';
-                            }
-                            // else if(!regex.hasMatch(value)){
-                            //   return 'Please enter valid name';
-                            // }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            // profile.name = value;
-                            setState(() {
-                              // _nameController.text = value;
-                              if (_formKey.currentState!.validate()) {}
-                            });
-                          },
-                        ),
-
-                        SizedBox(height: 15,),
-
-                        SizedBox(height: 15,),
-
-                        ///Certificate
-                        Container(
-                          height: 50,
-                          color: ThemeColors.textFieldBackgroundColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Text("Certificate",
-                                    style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Container(
-                                  height: 30,
-                                  color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 4,right: 4),
-                                    child: Center(child: Text("+Add Image",
-                                      style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                    )),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: 15,),
-
+                        educationForms.isNotEmpty
+                            ? Column(
+                          children: [
+                            ListView.builder(
+                                itemCount: educationForms.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (_, index) {
+                                  return educationForms[index];
+                                }),
+                          ],
+                        )
+                            : SizedBox(),
 
                         ///Add More
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("Add More",
+                            Text(educationForms.isNotEmpty?"Add More":"Add",
                               style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
-                            CircleAvatar(
-                              backgroundColor: ThemeColors.redTextColor,
-                              child: Icon(Icons.add,color: Colors.white,),
+                            InkWell(
+                                onTap: (){
+                                  educationOnAdd();
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: ThemeColors.redTextColor,
+                                  child: Icon(Icons.add,color: Colors.white,),
+                                )
                             )
                           ],
                         )
@@ -1391,6 +1212,262 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       ],
                     ),
                   ),
+
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 30,right: 20),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       ///School/College Name
+                  //       TextFormField(
+                  //         // initialValue: Application.customerLogin!.name.toString(),
+                  //         controller: _schoolNameController,
+                  //         textAlign: TextAlign.start,
+                  //         keyboardType: TextInputType.text,
+                  //         style: TextStyle(
+                  //           fontSize: 18,
+                  //           height: 1.5,
+                  //         ),
+                  //         decoration: InputDecoration(
+                  //           filled: true,
+                  //           fillColor: ThemeColors.textFieldBackgroundColor,
+                  //           hintText: "School/College Name",
+                  //           contentPadding: EdgeInsets.symmetric(
+                  //               vertical: 10.0, horizontal: 15.0),
+                  //           hintStyle: TextStyle(fontSize: 15),
+                  //           enabledBorder: OutlineInputBorder(
+                  //             borderRadius:
+                  //             BorderRadius.all(Radius.circular(1.0)),
+                  //             borderSide: BorderSide(
+                  //                 width: 0.8,
+                  //                 color: ThemeColors.textFieldBackgroundColor
+                  //             ),
+                  //           ),
+                  //           focusedBorder: OutlineInputBorder(
+                  //             borderRadius:
+                  //             BorderRadius.all(Radius.circular(1.0)),
+                  //             borderSide: BorderSide(
+                  //                 width: 0.8,
+                  //                 color: ThemeColors.textFieldBackgroundColor),
+                  //           ),
+                  //           border: OutlineInputBorder(
+                  //               borderRadius:
+                  //               BorderRadius.all(Radius.circular(1.0)),
+                  //               borderSide: BorderSide(
+                  //                   width: 0.8,
+                  //                   color: ThemeColors.textFieldBackgroundColor)),
+                  //         ),
+                  //         validator: (value) {
+                  //           // profile.name = value!.trim();
+                  //           // Pattern pattern =
+                  //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                  //           // RegExp regex =
+                  //           // new RegExp(pattern.toString());
+                  //           if (value == null || value.isEmpty) {
+                  //             return 'Please enter School/College Name';
+                  //           }
+                  //           // else if(!regex.hasMatch(value)){
+                  //           //   return 'Please enter valid name';
+                  //           // }
+                  //           return null;
+                  //         },
+                  //         onChanged: (value) {
+                  //           // profile.name = value;
+                  //           setState(() {
+                  //             // _nameController.text = value;
+                  //             if (_formKey.currentState!.validate()) {}
+                  //           });
+                  //         },
+                  //       ),
+                  //
+                  //       SizedBox(height: 15,),
+                  //
+                  //       ///Class/Course Name
+                  //       TextFormField(
+                  //         // initialValue: Application.customerLogin!.name.toString(),
+                  //         controller: _courseNameController,
+                  //         textAlign: TextAlign.start,
+                  //         keyboardType: TextInputType.text,
+                  //         style: TextStyle(
+                  //           fontSize: 18,
+                  //           height: 1.5,
+                  //         ),
+                  //         decoration: InputDecoration(
+                  //           filled: true,
+                  //           fillColor: ThemeColors.textFieldBackgroundColor,
+                  //           hintText: "Class/Course Name",
+                  //           contentPadding: EdgeInsets.symmetric(
+                  //               vertical: 10.0, horizontal: 15.0),
+                  //           hintStyle: TextStyle(fontSize: 15),
+                  //           enabledBorder: OutlineInputBorder(
+                  //             borderRadius:
+                  //             BorderRadius.all(Radius.circular(1.0)),
+                  //             borderSide: BorderSide(
+                  //                 width: 0.8,
+                  //                 color: ThemeColors.textFieldBackgroundColor
+                  //             ),
+                  //           ),
+                  //           focusedBorder: OutlineInputBorder(
+                  //             borderRadius:
+                  //             BorderRadius.all(Radius.circular(1.0)),
+                  //             borderSide: BorderSide(
+                  //                 width: 0.8,
+                  //                 color: ThemeColors.textFieldBackgroundColor),
+                  //           ),
+                  //           border: OutlineInputBorder(
+                  //               borderRadius:
+                  //               BorderRadius.all(Radius.circular(1.0)),
+                  //               borderSide: BorderSide(
+                  //                   width: 0.8,
+                  //                   color: ThemeColors.textFieldBackgroundColor)),
+                  //         ),
+                  //         validator: (value) {
+                  //           // profile.name = value!.trim();
+                  //           // Pattern pattern =
+                  //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                  //           // RegExp regex =
+                  //           // new RegExp(pattern.toString());
+                  //           if (value == null || value.isEmpty) {
+                  //             return 'Please enter Class/Course Name';
+                  //           }
+                  //           // else if(!regex.hasMatch(value)){
+                  //           //   return 'Please enter valid name';
+                  //           // }
+                  //           return null;
+                  //         },
+                  //         onChanged: (value) {
+                  //           // profile.name = value;
+                  //           setState(() {
+                  //             // _nameController.text = value;
+                  //             if (_formKey.currentState!.validate()) {}
+                  //           });
+                  //         },
+                  //       ),
+                  //
+                  //       SizedBox(height: 15,),
+                  //
+                  //       ///Passing Year
+                  //       TextFormField(
+                  //         // initialValue: Application.customerLogin!.name.toString(),
+                  //         controller: _passingYearController,
+                  //         textAlign: TextAlign.start,
+                  //         keyboardType: TextInputType.text,
+                  //         style: TextStyle(
+                  //           fontSize: 18,
+                  //           height: 1.5,
+                  //         ),
+                  //         decoration: InputDecoration(
+                  //           filled: true,
+                  //           fillColor: ThemeColors.textFieldBackgroundColor,
+                  //           hintText: "Passing Year",
+                  //           contentPadding: EdgeInsets.symmetric(
+                  //               vertical: 10.0, horizontal: 15.0),
+                  //           hintStyle: TextStyle(fontSize: 15),
+                  //           enabledBorder: OutlineInputBorder(
+                  //             borderRadius:
+                  //             BorderRadius.all(Radius.circular(1.0)),
+                  //             borderSide: BorderSide(
+                  //                 width: 0.8,
+                  //                 color: ThemeColors.textFieldBackgroundColor
+                  //             ),
+                  //           ),
+                  //           focusedBorder: OutlineInputBorder(
+                  //             borderRadius:
+                  //             BorderRadius.all(Radius.circular(1.0)),
+                  //             borderSide: BorderSide(
+                  //                 width: 0.8,
+                  //                 color: ThemeColors.textFieldBackgroundColor),
+                  //           ),
+                  //           border: OutlineInputBorder(
+                  //               borderRadius:
+                  //               BorderRadius.all(Radius.circular(1.0)),
+                  //               borderSide: BorderSide(
+                  //                   width: 0.8,
+                  //                   color: ThemeColors.textFieldBackgroundColor)),
+                  //         ),
+                  //         validator: (value) {
+                  //           // profile.name = value!.trim();
+                  //           // Pattern pattern =
+                  //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                  //           // RegExp regex =
+                  //           // new RegExp(pattern.toString());
+                  //           if (value == null || value.isEmpty) {
+                  //             return 'Please enter Passing Year';
+                  //           }
+                  //           // else if(!regex.hasMatch(value)){
+                  //           //   return 'Please enter valid name';
+                  //           // }
+                  //           return null;
+                  //         },
+                  //         onChanged: (value) {
+                  //           // profile.name = value;
+                  //           setState(() {
+                  //             // _nameController.text = value;
+                  //             if (_formKey.currentState!.validate()) {}
+                  //           });
+                  //         },
+                  //       ),
+                  //
+                  //       SizedBox(height: 15,),
+                  //
+                  //       SizedBox(height: 15,),
+                  //
+                  //       ///Certificate
+                  //       Container(
+                  //         height: 50,
+                  //         color: ThemeColors.textFieldBackgroundColor,
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.all(8.0),
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               Padding(
+                  //                 padding: const EdgeInsets.only(left: 8),
+                  //                 child: Text("Certificate",
+                  //                   style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                  //                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                  //                 ),
+                  //               ),
+                  //               Container(
+                  //                 height: 30,
+                  //                 color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.only(left: 4,right: 4),
+                  //                   child: Center(child: Text("+Add Image",
+                  //                     style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                  //                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                  //                   )),
+                  //                 ),
+                  //               )
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //
+                  //       SizedBox(height: 15,),
+                  //
+                  //
+                  //       ///Add More
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.end,
+                  //         children: [
+                  //           Text("Add More",
+                  //             style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                  //             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                  //           ),
+                  //           SizedBox(width: 5,),
+                  //           CircleAvatar(
+                  //             backgroundColor: ThemeColors.redTextColor,
+                  //             child: Icon(Icons.add,color: Colors.white,),
+                  //           )
+                  //         ],
+                  //       )
+                  //
+                  //
+                  //
+                  //     ],
+                  //   ),
+                  // ),
 
                   Divider(
                     // height: 2,
