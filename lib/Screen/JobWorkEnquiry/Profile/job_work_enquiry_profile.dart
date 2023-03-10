@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 
@@ -59,6 +60,12 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     imageFile = new ImageFile();
+    if(Application.customerLogin!.email!.isNotEmpty){
+      _iDController.text = Application.customerLogin!.email.toString();
+      _nameController.text = Application.customerLogin!.name.toString();
+      _emailController.text = Application.customerLogin!.email.toString();
+      _phoneController.text = Application.customerLogin!.mobile.toString();
+    }
   }
 
 
@@ -263,7 +270,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Text("Hello",
                                     style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
-                                  Text("Mcxeeco Sanasam",
+                                  Text(Application.customerLogin!.name == ""? "": Application.customerLogin!.name.toString(),
                                     style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
                                     textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                   )
@@ -843,11 +850,9 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     ),
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.only(left: 30,right: 0),
-                    child: Form(
-                      // key: _formKey,
-                      child: Row(
+                  Column(
+                    children: [
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ///Machine Name
@@ -987,86 +992,90 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               onTap: (){
                                 addToMachineList();
                               },
-                              child: Icon(Icons.add,color: ThemeColors.defaultbuttonColor,),
+                              child: Icon(Icons.add,color: Colors.red,),
                             ),
                           ),
 
 
                         ],
                       ),
+                      machineName.length>0?
+                      Padding(
+                        padding: EdgeInsets.only(left: 30,right: 30),
+                        child: SizedBox(
+                            height: MediaQuery.of(context).size.height/4,
+                            child: ListView.builder(
+                                padding: const EdgeInsets.all(8),
+                                itemCount: machineName.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 20.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            height: 50,
+                                            width: MediaQuery.of(context).size.width/1.3,
+                                            margin: EdgeInsets.all(2),
+                                            // color: msgCount[index]>=10? Colors.blue[400]:
+                                            // msgCount[index]>3? Colors.blue[100]: Colors.grey,
+                                            child:Container(
+                                              height: 40,
+                                              color: ThemeColors.greyBackgrounColor,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 8),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width * 0.4,
+                                                        child: Text('${machineName[index]}',
+                                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 10),
+                                                      child: Text('${quantity[index]}',
+                                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
 
-                    ),
-                  ),
-
-                  machineName.length>0?
-                  SizedBox(
-                      height: MediaQuery.of(context).size.height/4,
-                      child: ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: machineName.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                      height: 50,
-                                      width: MediaQuery.of(context).size.width/1.3,
-                                      margin: EdgeInsets.all(2),
-                                      // color: msgCount[index]>=10? Colors.blue[400]:
-                                      // msgCount[index]>3? Colors.blue[100]: Colors.grey,
-                                      child:Container(
-                                        height: 40,
-                                        color: ThemeColors.greyBackgrounColor,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 8),
-                                                child: Container(
-                                                  child: Text('${machineName[index]}',
-                                                    style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
-                                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(right: 10),
-                                                child: Text('${quantity[index]}',
-                                                  style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
-                                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ),
+                                            )
 
-                                            ],
+                                        ),
+
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 6.0),
+                                          child: InkWell(
+                                            onTap: (){
+                                              setState(() {
+                                                machineName.removeAt(index);
+                                                quantity.removeAt(index);
+                                              });
+
+                                            },
+                                            child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
                                           ),
                                         ),
-                                      )
-
-                                  ),
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 6.0),
-                                    child: InkWell(
-                                      onTap: (){
-                                        setState(() {
-                                          machineName.removeAt(index);
-                                          quantity.removeAt(index);
-                                        });
-
-                                      },
-                                      child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                      )
-                  ):SizedBox(),
+                                  );
+                                }
+                            )
+                        ),
+                      ):SizedBox(),
+                    ],
+                  ),
+
+
 
 
                   SizedBox(height: 15,),

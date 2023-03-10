@@ -14,11 +14,12 @@ import '../../../../image_file.dart';
 
 class EducationFormWidget extends StatefulWidget {
   EducationFormWidget(
-      {Key? key, this.educationModel,required this.onRemove, this.index})
+      {Key? key, this.educationModel,required this.onRemove,required this.educationCertificateModel, this.index})
       : super(key: key);
 
   final index;
   EducationModel? educationModel;
+  EducationCertificateModel? educationCertificateModel;
   final Function onRemove;
   final state = _EducationFormWidgetState();
 
@@ -83,7 +84,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
         widget.imageFile!.imagePath = _image!.path;
         print(widget.imageFile!.imagePath);
         widget.educationModel!.certificateImg = widget.imageFile!.imagePath!;
-
+        widget.educationCertificateModel!.certificateImg = widget.imageFile!.imagePath!;
       });
       // Navigator.pop(context);
     }

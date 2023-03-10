@@ -119,7 +119,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final responseJson = json.decode(response.body);
       print(responseJson);
       ProfileRepo result =  ProfileRepo.fromJson(responseJson);
-      print(result.data);
+      print(result.msg);
 
       ///Case API fail but not have token
       if (result.success == true) {
@@ -129,18 +129,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           yield UpdateProfileLoading(
             isLoading: true,
           );
-          yield UpdateProfileSuccess(message: result.data!);
+          yield UpdateProfileSuccess(message: result.msg.toString());
         } catch (error) {
           ///Notify loading to UI
           yield UpdateProfileLoading(
                       isLoading: true,
                     );
-          yield UpdateProfileFail(msg: result.data!);
+          yield UpdateProfileFail(msg: result.msg.toString());
         }
       } else {
         ///Notify loading to UI
         yield UpdateProfileLoading(isLoading: true);
-        yield UpdateProfileFail(msg: result.data!);
+        yield UpdateProfileFail(msg: result.msg.toString());
       }
     }
 

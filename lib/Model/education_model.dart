@@ -35,3 +35,28 @@ class EducationModel {
   }
 
 }
+
+class EducationCertificateModel {
+  int? id;
+  String? certificateImg;
+
+
+  EducationCertificateModel({
+    this.id,
+    this.certificateImg
+  });
+
+  EducationCertificateModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    certificateImg = json['certificate'];
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['certificate'] = this.certificateImg;
+    return data;
+  }
+
+}

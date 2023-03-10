@@ -1,19 +1,19 @@
 class ProfileRepo {
   bool? success;
-  String? data;
+  String? msg;
 
-  ProfileRepo({this.success, this.data});
+  ProfileRepo({this.success, this.msg});
 
   factory ProfileRepo.fromJson(Map<dynamic, dynamic> json) {
     try {
       return ProfileRepo(
         success: json['success'],
-        data: json['data'],
+        msg: json['msg'],
       );
     } catch (error) {
       return ProfileRepo(
         success: json['success'],
-        data: json['data'],
+        msg: json['msg'],
       );
     }
   }

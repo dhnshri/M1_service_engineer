@@ -467,22 +467,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   educationOnAdd() {
     setState(() {
-      EducationModel _educationModel = EducationModel();
+      EducationModel _educationModel = EducationModel(id: educationForms.length);
+      EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length);
       educationForms.add(EducationFormWidget(
         index: educationForms.length,
         educationModel: _educationModel,
-        onRemove: () => educationOnRemove(_educationModel),
+        educationCertificateModel: _educationCertificateModel,
+        onRemove: () => educationOnRemove(_educationModel,_educationCertificateModel),
       ));
       // _educationModel.add();
     });
   }
 
-  educationOnRemove(EducationModel educationModel) {
+  educationOnRemove(EducationModel educationModel,EducationCertificateModel educationCertificateModel ) {
     setState(() {
       int index = educationForms
           .indexWhere((element) => element.educationModel!.id == educationModel.id);
 
+      int certificateIndex = educationForms
+          .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
+
       if (educationForms != null) educationForms.removeAt(index);
+      if (educationForms != null) educationForms.removeAt(certificateIndex);
     });
   }
 
@@ -616,6 +622,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       children: [
                         ///ID
                         TextFormField(
+                          enabled: false,
                           // initialValue: Application.customerLogin!.name.toString(),
                           controller: _iDController,
                           textAlign: TextAlign.start,
