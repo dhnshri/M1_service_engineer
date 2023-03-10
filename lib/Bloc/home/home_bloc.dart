@@ -12,6 +12,7 @@ import 'package:service_engineer/Repository/UserRepository.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
+import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/cart_list_repo.dart';
 import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
@@ -146,6 +147,50 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ServiceRequestDetailFail(msg: result.msg!);
       }
     }
+
+
+
+    //Event for Transpotation Service Request Detail
+    if (event is OnServiceRequestTranspotationDetail) {
+      ///Notify loading to UI
+      yield ServiceRequestTranspotationDetailLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final TranspotationServiceRequestDetailRepo result = await userRepository!
+          .fetchServiceRequestTransportationDetail(
+          userID: event.userID,
+          machineEnquiryId: event.machineServiceId,
+          jobWorkEnquiryId: event.jobWorkServiceId,
+          transportEnquiryId: event.transportServiceId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestDetail = result.transportDetails! ?? [];
+        final serviceRequestDetail = refactorServiceRequestDetail.map((item) {
+          return TransportDetailsModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $serviceRequestDetail');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ServiceRequestTranspotationDetailLoading(
+            isLoading: true,
+          );
+          yield ServiceRequestTranspotationDetailSuccess(transportServiceDetail: serviceRequestDetail, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield ServiceRequestTranspotationDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield ServiceRequestTranspotationDetailFail(msg: result.msg!);
+      }
+    }
+
 
     //Product List
     if (event is ProductList) {
@@ -627,7 +672,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield MyTaskTranspotationLoading(isLoading: false);
 
       ///Fetch API via repository
-      final MyTaskRepo response = await userRepository!
+      final MyTaskTransportationRepo response = await userRepository!
           .fetchTranspotationMyTaskList(
           userId: event.userid,
           offset:event.offset

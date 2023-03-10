@@ -100,6 +100,14 @@ class UserRepository {
     return await Api.getServiceRequestDetail(params);
   }
 
+  //Service Request Transportation Detail Api
+  Future<dynamic> fetchServiceRequestTransportationDetail({String? userID, String? machineEnquiryId,
+    String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
+    final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
+      'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getServiceRequestTranspotationDetail(params);
+  }
+
   //MachineMaintainceMyTaskList
   Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
     final params = {"user_id":userId,

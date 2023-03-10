@@ -27,6 +27,14 @@ class OnServiceRequestDetail extends HomeEvent {
 
 }
 
+class OnServiceRequestTranspotationDetail extends HomeEvent {
+
+  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+
+  OnServiceRequestTranspotationDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+
+}
+
 class ProductList extends HomeEvent {
 
   String prodId,offSet;

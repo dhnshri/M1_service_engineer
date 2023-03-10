@@ -62,7 +62,12 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  serviceRequestCardNew(context,serviceList[index]);
+        return  InkWell(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TransportationServiceRequestDetailsScreen(serviceRequestData: serviceList[index],)));
+            },
+            child: serviceRequestCardNew(context,serviceList[index]));
       },
       itemCount:serviceList.length,
     );

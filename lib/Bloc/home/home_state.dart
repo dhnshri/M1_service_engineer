@@ -10,6 +10,7 @@ import 'package:service_engineer/Model/track_process_repo.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
+import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestListModel.dart';
 import '../../Model/customer_login.dart';
 
@@ -150,6 +151,22 @@ class MyTaskTranspotationListSuccess extends HomeState {
 class MyTaskTranspotationListLoadFail extends HomeState {
   final String? msg;
   MyTaskTranspotationListLoadFail({this.msg});
+}
+
+class ServiceRequestTranspotationDetailLoading extends HomeState {
+  bool isLoading;
+  ServiceRequestTranspotationDetailLoading({required this.isLoading});
+}
+
+class ServiceRequestTranspotationDetailFail extends HomeState {
+  final String? msg;
+  ServiceRequestTranspotationDetailFail({this.msg});
+}
+
+class ServiceRequestTranspotationDetailSuccess extends HomeState {
+  List<TransportDetailsModel> transportServiceDetail;
+  String message;
+  ServiceRequestTranspotationDetailSuccess({required this.transportServiceDetail, required this.message});
 }
 
 
