@@ -13,6 +13,7 @@ import '../../../Bloc/quotationReply/quotationReply_event.dart';
 import '../../../Bloc/quotationReply/quotationReply_state.dart';
 import '../../../Config/font.dart';
 import '../../../Model/MachineMaintance/quotationReply.dart';
+import '../../../Utils/application.dart';
 import '../../../Widget/app_button.dart';
 import '../../../Widget/custom_snackbar.dart';
 import '../../../Widget/function_button.dart';
@@ -43,7 +44,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: '0'));
+    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: '0' , userId: Application.customerLogin!.id.toString()));
   }
 
   @override

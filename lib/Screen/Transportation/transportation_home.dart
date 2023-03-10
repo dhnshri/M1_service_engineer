@@ -20,7 +20,7 @@ class TransportationQuotationsHomeScreen extends StatefulWidget {
 
 class _TransportationQuotationsHomeScreenState extends State<TransportationQuotationsHomeScreen> {
   bool loading = true;
-  bool isSwitched = false;
+  bool isSwitched = true;
 
   final _formKey = GlobalKey<FormState>();
 

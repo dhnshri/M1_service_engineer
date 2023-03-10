@@ -5,6 +5,7 @@ import 'package:service_engineer/Bloc/home/home_bloc.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
+import 'Bloc/profile/profile_bloc.dart';
 import 'Bloc/theme/theme_bloc.dart';
 import 'Repository/UserRepository.dart';
 import 'Bloc/quotationReply/quotationReply_bloc.dart';

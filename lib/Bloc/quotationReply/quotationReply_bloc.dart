@@ -36,6 +36,8 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       final QuotationReplyRepo result = await userRepository!
           .fetchQuotationReplyList(
         offSet: event.offSet,
+        userId: event.userId
+
       );
       print(result);
 
@@ -75,6 +77,7 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       final QuotationReplyJWERepo result = await userRepository!
           .fetchQuotationReplyJWEList(
         offSet: event.offSet,
+        userId: event.userId
       );
       print(result);
 

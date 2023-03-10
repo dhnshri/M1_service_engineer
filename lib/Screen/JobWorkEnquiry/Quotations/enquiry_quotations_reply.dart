@@ -15,6 +15,7 @@ import '../../../Bloc/quotationReply/quotationReply_state.dart';
 import '../../../Config/font.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Model/JobWorkEnquiry/quotation_reply.dart';
+import '../../../Utils/application.dart';
 import '../../../Widget/app_button.dart';
 import '../../../Widget/custom_snackbar.dart';
 import '../../../Widget/function_button.dart';
@@ -45,7 +46,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
     super.initState();
     _progressValue = 0.5;
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyJWEList(offSet: '0'));
+    _quotationReplyBloc!.add(OnQuotationReplyJWEList(offSet: '0',userId: Application.customerLogin!.id.toString()));
 
   }
   @override

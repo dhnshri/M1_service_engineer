@@ -1777,20 +1777,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("Company Certificate",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _openGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1811,20 +1819,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("GST Certificate",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _gstCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1845,20 +1861,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("Upload Pan Card",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _panCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1879,20 +1903,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("SHOPACT License",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _shopActCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1913,24 +1945,31 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Container(
                                     width: MediaQuery.of(context).size.width*0.5,
-
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 8),
-                                      child: Text("MSME/Udhyog Aadhar License",
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
+                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                          maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _aadharCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],

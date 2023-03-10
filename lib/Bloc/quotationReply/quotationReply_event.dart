@@ -6,8 +6,9 @@ abstract class QuotationReplyEvent {}
 class OnQuotationReplyMachineMaintainceList extends QuotationReplyEvent {
 
   String offSet;
+  String userId;
 
-  OnQuotationReplyMachineMaintainceList({required this.offSet});
+  OnQuotationReplyMachineMaintainceList({required this.offSet,required this.userId});
 
 }
 // jOB wORK eNQUIRY QuotationReply
@@ -15,8 +16,9 @@ class OnQuotationReplyMachineMaintainceList extends QuotationReplyEvent {
 class OnQuotationReplyJWEList extends QuotationReplyEvent {
 
   String offSet;
+  String userId;
 
-  OnQuotationReplyJWEList({required this.offSet});
+  OnQuotationReplyJWEList({required this.offSet,required this.userId});
 
 }
 // jOB transpotation QuotationReply
