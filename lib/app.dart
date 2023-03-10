@@ -13,6 +13,7 @@ import 'Config/language.dart';
 import 'Config/theme.dart';
 import 'Repository/UserRepository.dart';
 import 'Screen/LoginRegistration/login_screen.dart';
+import 'Screen/MachineMaintenance/Quotations/quotations_reply.dart';
 import 'Utils/routes.dart';
 import 'Utils/translate.dart';
 import 'app_bloc.dart';

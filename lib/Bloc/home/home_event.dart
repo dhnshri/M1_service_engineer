@@ -4,7 +4,7 @@ import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/item_not_available_model.dart';
 
 abstract class HomeEvent {}
-
+// Machine Maintaince Home
 class OnServiceRequest extends HomeEvent {
 
   String userID,offSet;
@@ -77,7 +77,32 @@ class CreateTask extends HomeEvent {
     required this.transportEnquiryId,required this.heading, required this.description,required this.status});
 
 }
+// Job Work Enquiry Home
 
+class OnServiceRequestJWEList extends HomeEvent {
+
+  String offSet;
+
+  OnServiceRequestJWEList({required this.offSet});
+
+}
+class OnMyTaskJWEList extends HomeEvent {
+  String userid;
+  String offset;
+  OnMyTaskJWEList({required this.userid, required this.offset });
+}
+
+// Transpotation
+class OnServiceRequestTranspotation extends HomeEvent {
+  String offSet;
+  OnServiceRequestTranspotation({required this.offSet});
+}
+
+class OnMyTaskTranspotationList extends HomeEvent {
+  String userid;
+  String offset;
+  OnMyTaskTranspotationList({required this.userid, required this.offset });
+}
 class TaskComplete extends HomeEvent {
 
   String serviceUserId;

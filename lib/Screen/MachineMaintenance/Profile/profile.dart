@@ -10,6 +10,7 @@ import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/educat
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
+import '../../../../Utils/application.dart';
 
 import '../../../Bloc/profile/profile_event.dart';
 import '../../../Config/image.dart';
@@ -501,8 +502,15 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
             actions: [
               InkWell(
                 onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                  Application.preferences!.remove('user');
+                  // _RemoverUser();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+                        (Route<dynamic> route) => false,
+                  );
                 },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

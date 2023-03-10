@@ -2,12 +2,12 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
-import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
 import 'Bloc/theme/theme_bloc.dart';
 import 'Repository/UserRepository.dart';
+import 'Bloc/quotationReply/quotationReply_bloc.dart';
 
 
 class AppBloc {
@@ -17,6 +17,7 @@ class AppBloc {
  static final authBloc = AuthBloc(userRepository: userRepository);
   static final loginBloc = LoginBloc(userRepository: userRepository);
   static final homeBloc = HomeBloc(userRepository: userRepository);
+  static final quotationReplyBloc = QuotationReplyBloc(userRepository: userRepository);
   static final profileBloc = ProfileBloc(userRepository: userRepository);
 
 
@@ -24,6 +25,12 @@ class AppBloc {
 
 
   static final List<BlocProvider> providers = [
+    // BlocProvider<ApplicationBloc>(
+    //   create: (context) => applicationBloc,
+    // ),
+    // BlocProvider<LanguageBloc>(
+    //   create: (context) => languageBloc,
+    // ),
     BlocProvider<ThemeBloc>(
       create: (context) => themeBloc,
     ),
@@ -39,6 +46,9 @@ class AppBloc {
     BlocProvider<ProfileBloc>(
       create: (context) => profileBloc,
     ),
+    BlocProvider<QuotationReplyBloc>(
+      create: (context) => quotationReplyBloc,
+    ),
 
 
   ];
@@ -51,6 +61,7 @@ class AppBloc {
     loginBloc.close();
     homeBloc.close();
     profileBloc.close();
+    quotationReplyBloc.close();
   }
 
   ///Singleton factory

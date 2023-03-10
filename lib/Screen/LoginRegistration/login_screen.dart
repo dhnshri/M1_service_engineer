@@ -17,6 +17,7 @@ import '../../Model/customer_login.dart';
 import '../../Utils/connectivity_check.dart';
 import '../../Widget/app_button.dart';
 import '../../Widget/app_dialogs.dart';
+import '../JobWorkEnquiry/Home/home.dart';
 import '../bottom_navbar.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -81,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
             if(state is LoginSuccess)
             {
               loading = false;
-              // userModel = state.userModel;
               SchedulerBinding.instance.addPostFrameCallback((_) {
 
                 // add your code here.

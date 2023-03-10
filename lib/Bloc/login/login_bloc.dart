@@ -75,32 +75,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
 
 
-    //   ///Event for logout
-    //   if (event is OnLogout) {
-    //     yield LogoutLoading();
-    //
-    //
-    //           final deletePreferences = await userRepository!.deleteUser();
-    //
-    //           ///Clear user Storage user via repository
-    //           Application.preferences = null;
-    //           // Application.cartModel = null;
-    //
-    //           /////updated on 10/02/2021
-    //           if (deletePreferences) {
-    //             yield LogoutSuccess();
-    //           } else {
-    //             final String message = "Cannot delete user data to storage phone";
-    //             throw Exception(message);
-    //           }
-    //         }
-    //         else{
-    //           ///Notify loading to UI
-    //           yield LogoutFail("error");
-    //         }
-    //
-    //
-    //
+      ///Event for logout
+      if (event is OnLogout) {
+        yield LogoutLoading();
+
+
+              final deletePreferences = await userRepository!.deleteUser();
+
+              ///Clear user Storage user via repository
+              Application.preferences = null;
+              // Application.cartModel = null;
+
+              /////updated on 10/02/2021
+              if (deletePreferences) {
+                yield LogoutSuccess();
+              } else {
+                final String message = "Cannot delete user data to storage phone";
+                throw Exception(message);
+              }
+            }
+            else{
+              ///Notify loading to UI
+              yield LogoutFail("error");
+            }
+
+// On Registration
+
     if (event is OnRegistration) {
       yield CustomerRegistrationLoading();
 

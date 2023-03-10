@@ -397,8 +397,6 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
 
 
       })
-
-
     );
   }
 

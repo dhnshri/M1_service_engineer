@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../Utils/application.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -384,8 +385,15 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
             actions: [
               InkWell(
                   onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                    Application.preferences!.remove('user');
+                    // _RemoverUser();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+                          (Route<dynamic> route) => false,
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
