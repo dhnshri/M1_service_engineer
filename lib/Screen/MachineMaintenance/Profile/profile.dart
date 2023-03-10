@@ -1152,7 +1152,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
                       children: [
-
+                        /// GEt Current Location
                         InkWell(
                           onTap:(){
                             _getCurrentPosition();

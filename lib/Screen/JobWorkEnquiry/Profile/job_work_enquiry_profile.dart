@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
-
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../image_file.dart';
@@ -25,7 +27,14 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   ImageFile? imageFile;
   File? _image;
   final picker = ImagePicker();
-
+  File? _gstImage;
+  GstImageFile? gstImageFile;
+  File? _panImage;
+  PanImageFile? panImageFile;
+  File? _shopActImage;
+  ShopActImageFile? shopActImageFile;
+  File? _aadharImage;
+  AddharImageFile? aadharImageFile;
 
 
 
@@ -51,7 +60,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   final List<String> machineName = [];
   final List<String> quantity = [];
 
-
+  String? _currentAddress;
+  Position? _currentPosition;
 
 
   @override
@@ -60,6 +70,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     imageFile = new ImageFile();
+    gstImageFile = new GstImageFile();
+    panImageFile = new PanImageFile();
+    shopActImageFile = new ShopActImageFile();
+    aadharImageFile = new AddharImageFile();
     if(Application.customerLogin!.email!.isNotEmpty){
       _iDController.text = Application.customerLogin!.email.toString();
       _nameController.text = Application.customerLogin!.name.toString();
@@ -89,6 +103,64 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     _cityController.clear();
     _stateController.clear();
     _countryController.clear();
+  }
+
+
+  void addToMachineList(){
+    setState(() {
+      machineName.insert(0,_machineNameController.text);
+      quantity.insert(0, _quantityController.text);
+    });
+  }
+
+  List<String> dataString = [
+    "Pakistan",
+    "Saudi Arabia",
+    "UAE",
+    "USA",
+    "Turkey",
+    "Brazil",
+    "Tunisia",
+    'Canada'
+  ];
+  String? selectedString;
+  List<String>? selectedDataString;
+
+  void _onCountriesSelectionComplete(value) {
+    selectedDataString?.addAll(value);
+    setState(() {});
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission(context);
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        _addressController.text = _currentAddress.toString();
+        _pinCodeController.text = place.postalCode.toString();
+        _cityController.text = place.subAdministrativeArea.toString();
+        _stateController.text = place.administrativeArea.toString();
+        _countryController.text = place.country.toString();
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   ///Method to open gallery
@@ -136,31 +208,173 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     }
   }
 
-  void addToMachineList(){
-    setState(() {
-      machineName.insert(0,_machineNameController.text);
-      quantity.insert(0, _quantityController.text);
-    });
+  _gstCertificateOpenGallery(BuildContext context) async {
+    final gstImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    gstImageFile = new GstImageFile();
+    if (gstImage != null) {
+      _gstCertificateCropImage(gstImage);
+    }
+  }
+  // For crop image
+  Future<Null> _gstCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _gstImage = croppedFile;
+        gstImageFile!.imagePath = _gstImage!.path;
+      });
+      // Navigator.pop(context);
+    }
   }
 
-  List<String> dataString = [
-    "Pakistan",
-    "Saudi Arabia",
-    "UAE",
-    "USA",
-    "Turkey",
-    "Brazil",
-    "Tunisia",
-    'Canada'
-  ];
-  String? selectedString;
-  List<String>? selectedDataString;
-
-  void _onCountriesSelectionComplete(value) {
-    selectedDataString?.addAll(value);
-    setState(() {});
+  _panCertificateOpenGallery(BuildContext context) async {
+    final panImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    panImageFile = new PanImageFile();
+    if (panImage != null) {
+      _panCertificateCropImage(panImage);
+    }
+  }
+  // For crop image
+  Future<Null> _panCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _panImage = croppedFile;
+        panImageFile!.imagePath = _panImage!.path;
+      });
+      // Navigator.pop(context);
+    }
   }
 
+  _shopActCertificateOpenGallery(BuildContext context) async {
+    final shopActImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    shopActImageFile = new ShopActImageFile();
+    if (shopActImage != null) {
+      _shopActCertificateCropImage(shopActImage);
+    }
+  }
+  // For crop image
+  Future<Null> _shopActCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _shopActImage = croppedFile;
+        shopActImageFile!.imagePath = _shopActImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _aadharCertificateOpenGallery(BuildContext context) async {
+    final aadharImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    aadharImageFile = new AddharImageFile();
+    if (aadharImage != null) {
+      _aadharCertificateCropImage(aadharImage);
+    }
+  }
+  // For crop image
+  Future<Null> _aadharCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _aadharImage = croppedFile;
+        aadharImageFile!.imagePath = _aadharImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -850,9 +1064,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     ),
                   ),
 
-                  Column(
-                    children: [
-                      Row(
+                  Padding(
+                    padding: EdgeInsets.only(left: 30,right: 0),
+                    child: Form(
+                      // key: _formKey,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ///Machine Name
@@ -999,83 +1215,80 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         ],
                       ),
-                      machineName.length>0?
-                      Padding(
-                        padding: EdgeInsets.only(left: 30,right: 30),
-                        child: SizedBox(
-                            height: MediaQuery.of(context).size.height/4,
-                            child: ListView.builder(
-                                padding: const EdgeInsets.all(8),
-                                itemCount: machineName.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 20.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            height: 50,
-                                            width: MediaQuery.of(context).size.width/1.3,
-                                            margin: EdgeInsets.all(2),
-                                            // color: msgCount[index]>=10? Colors.blue[400]:
-                                            // msgCount[index]>3? Colors.blue[100]: Colors.grey,
-                                            child:Container(
-                                              height: 40,
-                                              color: ThemeColors.greyBackgrounColor,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 8),
-                                                      child: Container(
-                                                        width: MediaQuery.of(context).size.width * 0.4,
-                                                        child: Text('${machineName[index]}',
-                                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
-                                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 10),
-                                                      child: Text('${quantity[index]}',
-                                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
-                                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ),
 
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-
-                                        ),
-
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 6.0),
-                                          child: InkWell(
-                                            onTap: (){
-                                              setState(() {
-                                                machineName.removeAt(index);
-                                                quantity.removeAt(index);
-                                              });
-
-                                            },
-                                            child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                            )
-                        ),
-                      ):SizedBox(),
-                    ],
+                    ),
                   ),
 
+                  machineName.length>0?
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height/4,
+                      child: ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: machineName.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 20.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      height: 50,
+                                      width: MediaQuery.of(context).size.width/1.3,
+                                      margin: EdgeInsets.all(2),
+                                      // color: msgCount[index]>=10? Colors.blue[400]:
+                                      // msgCount[index]>3? Colors.blue[100]: Colors.grey,
+                                      child:Container(
+                                        height: 40,
+                                        color: ThemeColors.greyBackgrounColor,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 8),
+                                                child: Container(
+                                                  width: MediaQuery.of(context).size.width * 0.4,
+                                                  child: Text('${machineName[index]}',
+                                                    style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 10),
+                                                child: Text('${quantity[index]}',
+                                                  style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
 
+                                            ],
+                                          ),
+                                        ),
+                                      )
+
+                                  ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 6.0),
+                                    child: InkWell(
+                                      onTap: (){
+                                        setState(() {
+                                          machineName.removeAt(index);
+                                          quantity.removeAt(index);
+                                        });
+
+                                      },
+                                      child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                      )
+                  ):SizedBox(),
 
 
                   SizedBox(height: 15,),
@@ -1100,6 +1313,39 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                       key: _addressFormKey,
                       child: Column(
                         children: [
+                          /// GEt Current Location
+                          InkWell(
+                            onTap:(){
+                              _getCurrentPosition();
+                            },
+                            child: Container(
+                              height:50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.red,
+                                  // style: BorderStyle.solid,
+                                  width: 1.0,
+                                ),
+
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Location",
+                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Icon(Icons.my_location_rounded,color: Colors.red,)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
                           ///Address
                           TextFormField(
                             controller: _addressController,
@@ -1726,4 +1972,38 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       ),
     );
   }
+}
+Future<bool> _handleLocationPermission(context) async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    showCustomSnackBar(context,'Location services are disabled. Please enable the services',isError: false);
+
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text(
+    //         'Location services are disabled. Please enable the services')));
+    return false;
+  }
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      showCustomSnackBar(context,'Location permissions are denied',isError: true);
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('Location permissions are denied')));
+      return false;
+    }
+  }
+  if (permission == LocationPermission.deniedForever) {
+    showCustomSnackBar(context,'Location permissions are permanently denied, we cannot request permissions.',isError: true);
+
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text(
+    //         'Location permissions are permanently denied, we cannot request permissions.')));
+    return false;
+  }
+  return true;
 }

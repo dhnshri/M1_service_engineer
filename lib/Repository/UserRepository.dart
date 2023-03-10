@@ -72,7 +72,7 @@ class UserRepository {
 
   //MachineMaintainceMyTaskList
   Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
-    final params = {"user_id":userId,
+    final params = {"service_user_id":userId,
       "offset":offset};
     return await Api.getMyTaskList(params);
   }
