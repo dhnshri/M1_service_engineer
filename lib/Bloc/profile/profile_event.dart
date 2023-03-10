@@ -1,6 +1,7 @@
 
 import '../../Model/education_model.dart';
 import '../../Model/experience_company_model.dart';
+import '../../Model/machine_list_model.dart';
 import '../../Screen/MachineMaintenance/Profile/widget/education_form.dart';
 import '../../Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
 
@@ -37,8 +38,10 @@ class UpdateProfile extends ProfileEvent {
   String addharCardImg;
   List<ExpCompanyFormWidget> experienceCompanyList;
   List<EducationFormWidget> educationList;
+  EducationCertificateModel certificate;
 
   UpdateProfile({
+    required this.certificate,
     required this.fullName,
     required this.email,
     required this.mobile,
@@ -69,5 +72,59 @@ class UpdateProfile extends ProfileEvent {
     required this.experienceCompanyList,
     required this.educationList,
 });
+
+}
+
+class UpdateJobWorkProfile extends ProfileEvent {
+
+  String companyName;
+  String coOrdinateName;
+  String email;
+  String mobile;
+  String gstNo;
+  String catId;
+  String subCatId;
+  String location;
+  String currentAddress;
+  String pincode;
+  String city;
+  String state;
+  String country;
+  String companyProfilePic;
+  String userProfilePic;
+  // String companyName;
+  String serviceUserId;
+  String companyCertificateImg;
+  String gstCertificateImg;
+  String panCardImg;
+  String shopActLicenseImg;
+  String addharCardImg;
+  List<MachineList> machineList;
+
+  UpdateJobWorkProfile({
+    required this.companyName,
+    required this.coOrdinateName,
+    required this.email,
+    required this.mobile,
+    required this.gstNo,
+    required this.catId,
+    required this.subCatId,
+    required this.location,
+    required this.currentAddress,
+    required this.pincode,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.companyProfilePic,
+    required this.userProfilePic,
+    // required this.companyName,
+    required this.serviceUserId,
+    required this.companyCertificateImg,
+    required this.gstCertificateImg,
+    required this.panCardImg,
+    required this.shopActLicenseImg,
+    required this.addharCardImg,
+    required this.machineList,
+  });
 
 }

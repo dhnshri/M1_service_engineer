@@ -19,3 +19,18 @@ class UpdateProfileSuccess extends ProfileState {
   String message;
   UpdateProfileSuccess({ required this.message});
 }
+
+class UpdateJobWorkProfileLoading extends ProfileState {
+  bool isLoading;
+  UpdateJobWorkProfileLoading({required this.isLoading});
+}
+
+class UpdateJobWorkProfileFail extends ProfileState {
+  final String? msg;
+  UpdateJobWorkProfileFail({this.msg});
+}
+
+class UpdateJobWorkProfileSuccess extends ProfileState {
+  String message;
+  UpdateJobWorkProfileSuccess({ required this.message});
+}

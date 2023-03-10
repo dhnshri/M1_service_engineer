@@ -466,6 +466,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   List<EducationFormWidget> educationForms = List.empty(growable: true);
 
+  EducationCertificateModel _educationCertificateModel = EducationCertificateModel();
+
   educationOnAdd() {
     setState(() {
       EducationModel _educationModel = EducationModel(id: educationForms.length);
@@ -2730,6 +2732,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   _profileBloc!.add(UpdateProfile(
+                                    certificate: _educationCertificateModel,
                                     serviceUserId: Application.customerLogin!.id.toString(),
                                     fullName: _nameController.text,
                                     email: _emailController.text,

@@ -49,3 +49,13 @@ class AddharImageFile{
   AddharImageFile({this.id,this.image,this.imagePath,this.imageFileName,
     this.price});//added on 2/12/2020
 }
+
+class UploadCompanyProfileFile{
+  String? id;
+  String? imagePath;
+  String? imageFileName;
+  String? price;
+  File? image;
+  UploadCompanyProfileFile({this.id,this.image,this.imagePath,this.imageFileName,
+    this.price});//added on 2/12/2020
+}

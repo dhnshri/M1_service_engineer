@@ -127,7 +127,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.serviceRequestData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    _homeBloc!.add(OnServiceRequestDetail(userID: widget.serviceRequestData.userId.toString(), machineServiceId: widget.serviceRequestData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
 
   }
   @override
