@@ -420,22 +420,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Notify loading to UI
       yield SendQuotationLoading(isLoading: false);
 
-      ///Fetch API via repository
-      // final CreateTaskRepo result = await userRepository!
-      //     .SendQuotationPara(
-      //     serviceUserId: event.serviceUserId,
-      //     workingTime: event.workingTime,
-      //     dateOfJoining: event.dateOfJoining,
-      //     serviceCharge: event.serviceCharge,
-      //     handlingCharge: event.handlingCharge,
-      //     transportCharge: event.handlingCharge,
-      //     itemList: event.itemList,
-      //     itemNotAvailableList: event.itemNotAvailableList,
-      //     commission: event.commission,
-      //     machineEnqDate: event.machineEnquiryDate,
-      //     machineEnqId: event.machineEnquiryId,
-      //
-      // );
       var itemList = [];
       var itemNotAvalList = [];
 
@@ -484,60 +468,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // 'machine_enquiry_id': event.machineEnquiryId,
       };
 
-
-
-      // var response = await http.MultipartRequest(
-      //     'POST',Uri.parse('http://mone.ezii.live/service_engineer/machine_maintainence_quatation')
-      // );
-      // response.fields.addAll(params);
-      // var _response = await response.send();
-
-      // final response = await http.post(
-      //     Uri.parse('http://mone.ezii.live/service_engineer/machine_maintainence_quatation'),
-      //     body: jsonEncode(params)
-      // );
-
-
-
       http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/machine_maintainence_quatation'));
       // ..fields.addAll(params);
       _request = jsonToFormData(_request, params);
       print(jsonEncode(_request.fields));
-      // print(jsonDecode(_request.fields));
       var streamResponse = await _request.send();
       var response = await http.Response.fromStream(streamResponse);
-      // var responseData = json.decode(jsonEncode(response.body));
-      // print(responseData);
       final responseJson = json.decode(response.body);
       print(responseJson);
       CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
       print(res.msg);
-      // print(response);
-      // _request.fields['']
-      // _request.fields['machine_enquiry_id']= event.machineEnquiryId.toString();
-      // _request.fields["service_user_id"]=event.serviceUserId;
-      // _request.fields['working_time']=event.workingTime;
-      // _request.fields['date_of_joining']=event.dateOfJoining;
-      // _request.fields['service_charge']=event.serviceCharge == "" ? '0' : event.serviceCharge;
-      // _request.fields["handling_charge"]=event.handlingCharge == "" ? '0' : event.handlingCharge;
-      // _request.fields['transport_charge']= event.transportCharge == "" ? '0' : event.transportCharge;
-      // _request.fields['items_available']= itemList.toString();
-      // _request.fields['items_not_available']= itemNotAvalList.toString();
-      // _request.fields['commission']= event.commission;
-      // _request.fields['machine_enquiry_date']= event.machineEnquiryDate;
-      // var _response = await _request.send();
-      // print(_response.statusCode);
-      // var data= jsonEncode(_request.fields);
-      // print(jsonEncode(_request.fields));
-      // final response = await http.Response.fromStream(_response);
-      // var responseData = json.decode(jsonEncode(response.body));
-      // print(responseData);
-      // print(jsonEncode(params));
 
-      // if (response.statusCode == 200) {
-      //   print(response);
-      //
-      // }
 
       ///Case API fail but not have token
       if (res.success == true) {

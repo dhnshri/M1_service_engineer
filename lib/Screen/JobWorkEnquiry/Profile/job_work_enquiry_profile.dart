@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Utils/application.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
-
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../image_file.dart';
@@ -25,7 +28,14 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   ImageFile? imageFile;
   File? _image;
   final picker = ImagePicker();
-
+  File? _gstImage;
+  GstImageFile? gstImageFile;
+  File? _panImage;
+  PanImageFile? panImageFile;
+  File? _shopActImage;
+  ShopActImageFile? shopActImageFile;
+  File? _aadharImage;
+  AddharImageFile? aadharImageFile;
 
 
 
@@ -51,7 +61,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   final List<String> machineName = [];
   final List<String> quantity = [];
 
-
+  String? _currentAddress;
+  Position? _currentPosition;
 
 
   @override
@@ -60,6 +71,16 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     imageFile = new ImageFile();
+    gstImageFile = new GstImageFile();
+    panImageFile = new PanImageFile();
+    shopActImageFile = new ShopActImageFile();
+    aadharImageFile = new AddharImageFile();
+    if(Application.customerLogin!.email!.isNotEmpty){
+      _iDController.text = Application.customerLogin!.email.toString();
+      _nameController.text = Application.customerLogin!.name.toString();
+      _emailController.text = Application.customerLogin!.email.toString();
+      _phoneController.text = Application.customerLogin!.mobile.toString();
+    }
   }
 
 
@@ -83,6 +104,64 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     _cityController.clear();
     _stateController.clear();
     _countryController.clear();
+  }
+
+
+  void addToMachineList(){
+    setState(() {
+      machineName.insert(0,_machineNameController.text);
+      quantity.insert(0, _quantityController.text);
+    });
+  }
+
+  List<String> dataString = [
+    "Pakistan",
+    "Saudi Arabia",
+    "UAE",
+    "USA",
+    "Turkey",
+    "Brazil",
+    "Tunisia",
+    'Canada'
+  ];
+  String? selectedString;
+  List<String>? selectedDataString;
+
+  void _onCountriesSelectionComplete(value) {
+    selectedDataString?.addAll(value);
+    setState(() {});
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission(context);
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        _addressController.text = _currentAddress.toString();
+        _pinCodeController.text = place.postalCode.toString();
+        _cityController.text = place.subAdministrativeArea.toString();
+        _stateController.text = place.administrativeArea.toString();
+        _countryController.text = place.country.toString();
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   ///Method to open gallery
@@ -130,31 +209,173 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     }
   }
 
-  void addToMachineList(){
-    setState(() {
-      machineName.insert(0,_machineNameController.text);
-      quantity.insert(0, _quantityController.text);
-    });
+  _gstCertificateOpenGallery(BuildContext context) async {
+    final gstImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    gstImageFile = new GstImageFile();
+    if (gstImage != null) {
+      _gstCertificateCropImage(gstImage);
+    }
+  }
+  // For crop image
+  Future<Null> _gstCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _gstImage = croppedFile;
+        gstImageFile!.imagePath = _gstImage!.path;
+      });
+      // Navigator.pop(context);
+    }
   }
 
-  List<String> dataString = [
-    "Pakistan",
-    "Saudi Arabia",
-    "UAE",
-    "USA",
-    "Turkey",
-    "Brazil",
-    "Tunisia",
-    'Canada'
-  ];
-  String? selectedString;
-  List<String>? selectedDataString;
-
-  void _onCountriesSelectionComplete(value) {
-    selectedDataString?.addAll(value);
-    setState(() {});
+  _panCertificateOpenGallery(BuildContext context) async {
+    final panImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    panImageFile = new PanImageFile();
+    if (panImage != null) {
+      _panCertificateCropImage(panImage);
+    }
+  }
+  // For crop image
+  Future<Null> _panCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _panImage = croppedFile;
+        panImageFile!.imagePath = _panImage!.path;
+      });
+      // Navigator.pop(context);
+    }
   }
 
+  _shopActCertificateOpenGallery(BuildContext context) async {
+    final shopActImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    shopActImageFile = new ShopActImageFile();
+    if (shopActImage != null) {
+      _shopActCertificateCropImage(shopActImage);
+    }
+  }
+  // For crop image
+  Future<Null> _shopActCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _shopActImage = croppedFile;
+        shopActImageFile!.imagePath = _shopActImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _aadharCertificateOpenGallery(BuildContext context) async {
+    final aadharImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    aadharImageFile = new AddharImageFile();
+    if (aadharImage != null) {
+      _aadharCertificateCropImage(aadharImage);
+    }
+  }
+  // For crop image
+  Future<Null> _aadharCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _aadharImage = croppedFile;
+        aadharImageFile!.imagePath = _aadharImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -271,7 +492,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Text("Hello",
                                     style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
-                                  Text("Mcxeeco Sanasam",
+                                  Text(Application.customerLogin!.name == ""? "": Application.customerLogin!.name.toString(),
                                     style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
                                     textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                   )
@@ -995,7 +1216,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               onTap: (){
                                 addToMachineList();
                               },
-                              child: Icon(Icons.add,color: ThemeColors.defaultbuttonColor,),
+                              child: Icon(Icons.add,color: Colors.red,),
                             ),
                           ),
 
@@ -1035,6 +1256,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 8),
                                                 child: Container(
+                                                  width: MediaQuery.of(context).size.width * 0.4,
                                                   child: Text('${machineName[index]}',
                                                     style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
                                                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
@@ -1099,6 +1321,39 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                       key: _addressFormKey,
                       child: Column(
                         children: [
+                          /// GEt Current Location
+                          InkWell(
+                            onTap:(){
+                              _getCurrentPosition();
+                            },
+                            child: Container(
+                              height:50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.red,
+                                  // style: BorderStyle.solid,
+                                  width: 1.0,
+                                ),
+
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Location",
+                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Icon(Icons.my_location_rounded,color: Colors.red,)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
                           ///Address
                           TextFormField(
                             controller: _addressController,
@@ -1522,20 +1777,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("Company Certificate",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _openGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1556,20 +1819,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("GST Certificate",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _gstCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1590,20 +1861,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("Upload Pan Card",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _panCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1624,20 +1903,28 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("SHOPACT License",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _shopActCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1658,24 +1945,31 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 children: [
                                   Container(
                                     width: MediaQuery.of(context).size.width*0.5,
-
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 8),
-                                      child: Text("MSME/Udhyog Aadhar License",
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
+                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                          maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _aadharCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1725,4 +2019,38 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       ),
     );
   }
+}
+Future<bool> _handleLocationPermission(context) async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    showCustomSnackBar(context,'Location services are disabled. Please enable the services',isError: false);
+
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text(
+    //         'Location services are disabled. Please enable the services')));
+    return false;
+  }
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      showCustomSnackBar(context,'Location permissions are denied',isError: true);
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('Location permissions are denied')));
+      return false;
+    }
+  }
+  if (permission == LocationPermission.deniedForever) {
+    showCustomSnackBar(context,'Location permissions are permanently denied, we cannot request permissions.',isError: true);
+
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text(
+    //         'Location permissions are permanently denied, we cannot request permissions.')));
+    return false;
+  }
+  return true;
 }

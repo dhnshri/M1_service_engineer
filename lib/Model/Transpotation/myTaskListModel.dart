@@ -16,9 +16,9 @@ class MyTaskTransportationRepo {
       );
     } catch (error) {
       return MyTaskTransportationRepo(
-        success: false,
-        title: "",
-        msg: "",
+        success: json['success'],
+        title: json['title'],
+        msg: json['msg'],
         data: null,
       );
     }

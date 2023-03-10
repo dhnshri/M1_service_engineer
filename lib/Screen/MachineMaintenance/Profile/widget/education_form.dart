@@ -14,11 +14,12 @@ import '../../../../image_file.dart';
 
 class EducationFormWidget extends StatefulWidget {
   EducationFormWidget(
-      {Key? key, this.educationModel,required this.onRemove, this.index})
+      {Key? key, this.educationModel,required this.onRemove,required this.educationCertificateModel, this.index})
       : super(key: key);
 
   final index;
   EducationModel? educationModel;
+  EducationCertificateModel? educationCertificateModel;
   final Function onRemove;
   final state = _EducationFormWidgetState();
 
@@ -30,6 +31,7 @@ class EducationFormWidget extends StatefulWidget {
   TextEditingController _schoolNameController = TextEditingController();
   TextEditingController _courseNameController = TextEditingController();
   TextEditingController _passingYearController = TextEditingController();
+  ImageFile? imageFile;
 
 
   bool isValidated() => state.validate();
@@ -38,14 +40,13 @@ class EducationFormWidget extends StatefulWidget {
 class _EducationFormWidgetState extends State<EducationFormWidget> {
   final formKey = GlobalKey<FormState>();
   bool loading = true;
-  ImageFile? imageFile;
   File? _image;
   final picker = ImagePicker();
 
   _openGallery(BuildContext context) async {
     final image =
     await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
-    imageFile = new ImageFile();
+    widget.imageFile = new ImageFile();
     if (image != null) {
       _cropImage(image);
     }
@@ -80,7 +81,10 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
         // print(mImageFile.image.path);
         // state = AppState.cropped;
         _image = croppedFile;
-        imageFile!.imagePath = _image!.path;
+        widget.imageFile!.imagePath = _image!.path;
+        print(widget.imageFile!.imagePath);
+        widget.educationModel!.certificateImg = widget.imageFile!.imagePath!;
+        widget.educationCertificateModel!.certificateImg = widget.imageFile!.imagePath!;
       });
       // Navigator.pop(context);
     }
@@ -92,7 +96,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    imageFile = new ImageFile();
+    widget.imageFile = new ImageFile();
 
   }
 
@@ -154,21 +158,15 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
                         color: ThemeColors.textFieldBackgroundColor)),
               ),
               validator: (value) {
-                // profile.name = value!.trim();
-                // Pattern pattern =
-                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                // RegExp regex =
-                // new RegExp(pattern.toString());
                 if (value == null || value.isEmpty) {
                   return 'Please enter School/College Name';
                 }
-                // else if(!regex.hasMatch(value)){
-                //   return 'Please enter valid name';
-                // }
+
                 return null;
               },
+              onSaved: (value) => widget.educationModel!.schoolName = value!,
               onChanged: (value) {
-                // profile.name = value;
+                widget.educationModel!.schoolName=value;
                 setState(() {
                   // _nameController.text = value;
                   if (formKey.currentState!.validate()) {}
@@ -218,21 +216,14 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
                         color: ThemeColors.textFieldBackgroundColor)),
               ),
               validator: (value) {
-                // profile.name = value!.trim();
-                // Pattern pattern =
-                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                // RegExp regex =
-                // new RegExp(pattern.toString());
                 if (value == null || value.isEmpty) {
                   return 'Please enter Class/Course Name';
                 }
-                // else if(!regex.hasMatch(value)){
-                //   return 'Please enter valid name';
-                // }
                 return null;
               },
+              onSaved: (value) => widget.educationModel!.courseName = value!,
               onChanged: (value) {
-                // profile.name = value;
+                widget.educationModel!.courseName=value;
                 setState(() {
                   // _nameController.text = value;
                   if (formKey.currentState!.validate()) {}
@@ -247,7 +238,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
               // initialValue: Application.customerLogin!.name.toString(),
               controller: widget._passingYearController,
               textAlign: TextAlign.start,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               style: TextStyle(
                 fontSize: 18,
                 height: 1.5,
@@ -282,21 +273,15 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
                         color: ThemeColors.textFieldBackgroundColor)),
               ),
               validator: (value) {
-                // profile.name = value!.trim();
-                // Pattern pattern =
-                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                // RegExp regex =
-                // new RegExp(pattern.toString());
+
                 if (value == null || value.isEmpty) {
                   return 'Please enter Passing Year';
                 }
-                // else if(!regex.hasMatch(value)){
-                //   return 'Please enter valid name';
-                // }
                 return null;
               },
+              onSaved: (value) => widget.educationModel!.passYear = value!,
               onChanged: (value) {
-                // profile.name = value;
+                widget.educationModel!.passYear=value;
                 setState(() {
                   // _nameController.text = value;
                   if (formKey.currentState!.validate()) {}
@@ -319,9 +304,13 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
-                      child: Text(imageFile!.imagePath!.isEmpty ? "":imageFile!.imagePath.toString(),
-                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                      child: Container(
+                        // alignment: Alignment.bottomLeft,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Text(widget.imageFile!.imagePath == null ? "Add Certificate": widget.imageFile!.imagePath!.split('/').last.toString(),
+                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                           maxLines: 2, overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                     InkWell(

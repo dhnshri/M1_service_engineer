@@ -1,28 +1,29 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
+import 'package:service_engineer/Bloc/profile/profile_state.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/education_form.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 import '../../../../Utils/application.dart';
 
+import '../../../Bloc/profile/profile_event.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Model/education_model.dart';
 import '../../../Model/experience_company_model.dart';
 import '../../../Utils/application.dart';
+import '../../../Widget/custom_snackbar.dart';
 import '../../../image_file.dart';
 import '../../LoginRegistration/signUpAs.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
-
-// import '../../Config/font.dart';
-// import '../../Config/image.dart';
-// import '../../Constant/theme_colors.dart';
-// import '../../Widget/app_button.dart';
-// import '../../image_file.dart';
 
 class MachineProfileScreen extends StatefulWidget {
   const MachineProfileScreen({Key? key}) : super(key: key);
@@ -36,9 +37,14 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   ImageFile? imageFile;
   File? _image;
   final picker = ImagePicker();
-
-
-
+  File? _gstImage;
+  GstImageFile? gstImageFile;
+  File? _panImage;
+  PanImageFile? panImageFile;
+  File? _shopActImage;
+  ShopActImageFile? shopActImageFile;
+  File? _aadharImage;
+  AddharImageFile? aadharImageFile;
 
   final _formKey = GlobalKey<FormState>();
   final _addressFormKey = GlobalKey<FormState>();
@@ -85,6 +91,9 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   final _schoolNameController = TextEditingController();
   final _courseNameController = TextEditingController();
   final _passingYearController = TextEditingController();
+  final _locationController = TextEditingController();
+  String? _currentAddress;
+  Position? _currentPosition;
 
   List<ExpCompanyFormWidget> expCompanyForms = List.empty(growable: true);
 
@@ -92,7 +101,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   final List<String> machineName = [];
   final List<String> quantity = [];
 
-
+  ProfileBloc? _profileBloc;
 
 
   @override
@@ -101,10 +110,16 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     imageFile = new ImageFile();
+    gstImageFile = new GstImageFile();
+    panImageFile = new PanImageFile();
+    shopActImageFile = new ShopActImageFile();
+    aadharImageFile = new AddharImageFile();
     _iDController.text = Application.customerLogin!.email.toString();
     _nameController.text = Application.customerLogin!.name.toString();
     _emailController.text = Application.customerLogin!.email.toString();
     _phoneController.text = Application.customerLogin!.mobile.toString();
+    _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
+
   }
 
 
@@ -155,6 +170,39 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     _cityController.clear();
     _stateController.clear();
     _countryController.clear();
+    _locationController.clear();
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission(context);
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        _locationController.text = _currentAddress.toString();
+        _pinCodeController.text = place.postalCode.toString();
+        _cityController.text = place.subAdministrativeArea.toString();
+        _stateController.text = place.administrativeArea.toString();
+        _countryController.text = place.country.toString();
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   ///Method to open gallery
@@ -197,6 +245,174 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         // state = AppState.cropped;
         _image = croppedFile;
         imageFile!.imagePath = _image!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _gstCertificateOpenGallery(BuildContext context) async {
+    final gstImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    gstImageFile = new GstImageFile();
+    if (gstImage != null) {
+      _gstCertificateCropImage(gstImage);
+    }
+  }
+  // For crop image
+  Future<Null> _gstCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _gstImage = croppedFile;
+        gstImageFile!.imagePath = _gstImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _panCertificateOpenGallery(BuildContext context) async {
+    final panImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    panImageFile = new PanImageFile();
+    if (panImage != null) {
+      _panCertificateCropImage(panImage);
+    }
+  }
+  // For crop image
+  Future<Null> _panCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _panImage = croppedFile;
+        panImageFile!.imagePath = _panImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _shopActCertificateOpenGallery(BuildContext context) async {
+    final shopActImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    shopActImageFile = new ShopActImageFile();
+    if (shopActImage != null) {
+      _shopActCertificateCropImage(shopActImage);
+    }
+  }
+  // For crop image
+  Future<Null> _shopActCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _shopActImage = croppedFile;
+        shopActImageFile!.imagePath = _shopActImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _aadharCertificateOpenGallery(BuildContext context) async {
+    final aadharImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    aadharImageFile = new AddharImageFile();
+    if (aadharImage != null) {
+      _aadharCertificateCropImage(aadharImage);
+    }
+  }
+  // For crop image
+  Future<Null> _aadharCertificateCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _aadharImage = croppedFile;
+        aadharImageFile!.imagePath = _aadharImage!.path;
       });
       // Navigator.pop(context);
     }
@@ -252,21 +468,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   educationOnAdd() {
     setState(() {
-      EducationModel _educationModel = EducationModel();
+      EducationModel _educationModel = EducationModel(id: educationForms.length);
+      EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length);
       educationForms.add(EducationFormWidget(
         index: educationForms.length,
         educationModel: _educationModel,
-        onRemove: () => educationOnRemove(_educationModel),
+        educationCertificateModel: _educationCertificateModel,
+        onRemove: () => educationOnRemove(_educationModel,_educationCertificateModel),
       ));
+      // _educationModel.add();
     });
   }
 
-  educationOnRemove(EducationModel educationModel) {
+  educationOnRemove(EducationModel educationModel,EducationCertificateModel educationCertificateModel ) {
     setState(() {
       int index = educationForms
           .indexWhere((element) => element.educationModel!.id == educationModel.id);
 
+      int certificateIndex = educationForms
+          .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
+
       if (educationForms != null) educationForms.removeAt(index);
+      if (educationForms != null) educationForms.removeAt(certificateIndex);
     });
   }
 
@@ -407,6 +630,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       children: [
                         ///ID
                         TextFormField(
+                          enabled: false,
                           // initialValue: Application.customerLogin!.name.toString(),
                           controller: _iDController,
                           textAlign: TextAlign.start,
@@ -922,6 +1146,368 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                     // height: 2,
                     thickness: 2.0,
                   ),
+
+                  ///Address
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text("Address",
+                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.only(left: 30,right: 20),
+                    child: Column(
+                      children: [
+                        /// GEt Current Location
+                        InkWell(
+                          onTap:(){
+                            _getCurrentPosition();
+                          },
+                          child: Container(
+                            height:50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.red,
+                                // style: BorderStyle.solid,
+                                width: 1.0,
+                              ),
+
+                            ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Location",
+                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Icon(Icons.my_location_rounded,color: Colors.red,)
+                                  ],
+                                ),
+                              ),
+                          ),
+                        ),
+
+                        SizedBox(height: 15,),
+
+                        ///Current Address
+                        TextFormField(
+                          controller: _locationController,
+                          obscureText: false,
+                          textAlign: TextAlign.start,
+                          keyboardType:
+                          TextInputType.text,
+                          maxLines: 4,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 1.5,
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: ThemeColors.textFieldBackgroundColor,
+                            contentPadding:
+                            EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 15.0),
+                            hintStyle:
+                            TextStyle(fontSize: 15),
+                            enabledBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(
+                                  Radius.circular(
+                                      10.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors
+                                      .textFieldBackgroundColor),
+                            ),
+                            focusedBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(
+                                  Radius.circular(
+                                      10.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors
+                                      .textFieldBackgroundColor),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(
+                                    Radius.circular(
+                                        10.0)),
+                                borderSide: BorderSide(
+                                    width: 0.8,
+                                    color: ThemeColors
+                                        .textFieldBackgroundColor)),
+                            hintText: "Enter your current address...",
+                          ),
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty) {
+                              return 'Please enter your current address...';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              if (_formKey.currentState!
+                                  .validate()) {}
+                            });
+                          },
+                        ),
+
+                        SizedBox(height: 15,),
+
+                        ///Pin Code
+                        TextFormField(
+                          // initialValue: Application.customerLogin!.name.toString(),
+                          controller: _pinCodeController,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 1.5,
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: ThemeColors.textFieldBackgroundColor,
+                            hintText: "Pin Code",
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 15.0),
+                            hintStyle: TextStyle(fontSize: 15),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(1.0)),
+                                borderSide: BorderSide(
+                                    width: 0.8,
+                                    color: ThemeColors.textFieldBackgroundColor)),
+                          ),
+                          validator: (value) {
+                            // profile.name = value!.trim();
+                            // Pattern pattern =
+                            //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                            // RegExp regex =
+                            // new RegExp(pattern.toString());
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter pin code';
+                            }
+                            // else if(!regex.hasMatch(value)){
+                            //   return 'Please enter valid name';
+                            // }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            // profile.name = value;
+                            setState(() {
+                              // _nameController.text = value;
+                              if (_formKey.currentState!.validate()) {}
+                            });
+                          },
+                        ),
+
+                        SizedBox(height: 15,),
+
+                        ///City
+                        TextFormField(
+                          // initialValue: Application.customerLogin!.name.toString(),
+                          controller: _cityController,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 1.5,
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: ThemeColors.textFieldBackgroundColor,
+                            hintText: "City",
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 15.0),
+                            hintStyle: TextStyle(fontSize: 15),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(1.0)),
+                                borderSide: BorderSide(
+                                    width: 0.8,
+                                    color: ThemeColors.textFieldBackgroundColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter city';
+                            }
+                            // else if(!regex.hasMatch(value)){
+                            //   return 'Please enter valid name';
+                            // }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            // profile.name = value;
+                            setState(() {
+                              // _nameController.text = value;
+                              if (_formKey.currentState!.validate()) {}
+                            });
+                          },
+                        ),
+                        SizedBox(height: 15,),
+
+                        ///State
+                        TextFormField(
+                          // initialValue: Application.customerLogin!.name.toString(),
+                          controller: _stateController,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 1.5,
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: ThemeColors.textFieldBackgroundColor,
+                            hintText: "State",
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 15.0),
+                            hintStyle: TextStyle(fontSize: 15),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(1.0)),
+                                borderSide: BorderSide(
+                                    width: 0.8,
+                                    color: ThemeColors.textFieldBackgroundColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter state';
+                            }
+                            // else if(!regex.hasMatch(value)){
+                            //   return 'Please enter valid name';
+                            // }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            // profile.name = value;
+                            setState(() {
+                              // _nameController.text = value;
+                              if (_formKey.currentState!.validate()) {}
+                            });
+                          },
+                        ),
+                        SizedBox(height: 15,),
+
+                        ///Country
+                        TextFormField(
+                          // initialValue: Application.customerLogin!.name.toString(),
+                          controller: _countryController,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 1.5,
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: ThemeColors.textFieldBackgroundColor,
+                            hintText: "Country",
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 15.0),
+                            hintStyle: TextStyle(fontSize: 15),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(1.0)),
+                              borderSide: BorderSide(
+                                  width: 0.8,
+                                  color: ThemeColors.textFieldBackgroundColor),
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(1.0)),
+                                borderSide: BorderSide(
+                                    width: 0.8,
+                                    color: ThemeColors.textFieldBackgroundColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter country';
+                            }
+                            // else if(!regex.hasMatch(value)){
+                            //   return 'Please enter valid name';
+                            // }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            // profile.name = value;
+                            setState(() {
+                              // _nameController.text = value;
+                              if (_formKey.currentState!.validate()) {}
+                            });
+                          },
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
 
                   Divider(
                     // height: 2,
@@ -1571,7 +2157,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           // initialValue: Application.customerLogin!.name.toString(),
                           controller: _accountNumberController,
                           textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                           style: TextStyle(
                             fontSize: 18,
                             height: 1.5,
@@ -1909,20 +2495,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("Company Certificate",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                         maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _openGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1943,20 +2537,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("GST Certificate",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                         maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _gstCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -1977,20 +2579,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("Upload Pan Card",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _panCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -2011,20 +2621,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
-                                    child: Text("SHOPACT License",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
+                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _shopActCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -2047,21 +2665,29 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     width: MediaQuery.of(context).size.width*0.5,
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 8),
-                                      child: Text("MSME/Udhyog Aadhar License",
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
+                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                          maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )),
+                                  InkWell(
+                                    onTap: (){
+                                      _aadharCertificateOpenGallery(context);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 4,right: 4),
+                                        child: Center(child: Text("+Add Image",
+                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        )),
+                                      ),
                                     ),
                                   )
 
@@ -2084,26 +2710,77 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   ),
 
                   Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: ElevatedButton(
-                            onPressed: () async { },
-                            style: ElevatedButton.styleFrom(
-                              primary: ThemeColors.defaultbuttonColor,
-                              shape: StadiumBorder(),
-                            ),
-                            child: Text(
-                              "Update Changes",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button!
-                                  .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
-                            ),
+                    child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+                      return BlocListener<ProfileBloc, ProfileState>(
+                        listener: (context, state) {
+                          if(state is UpdateProfileLoading){
+                            loading = state.isLoading;
+                          }
+                          if(state is UpdateProfileSuccess){
+                            showCustomSnackBar(context,state.message,isError: false);
+                          }
+                          if(state is UpdateProfileFail){
+                            showCustomSnackBar(context,state.msg.toString(),isError: true);
+                          }
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  _profileBloc!.add(UpdateProfile(
+                                    serviceUserId: Application.customerLogin!.id.toString(),
+                                    fullName: _nameController.text,
+                                    email: _emailController.text,
+                                    mobile: _phoneController.text,
+                                    gstNo: _gstController.text,
+                                    catId: '1',
+                                    subCatId: '2',
+                                    age: _ageController.text,
+                                    gender: _genderController.text,
+                                    location: _locationController.text,
+                                    pincode: _pinCodeController.text,
+                                    city: _cityController.text,
+                                    state: _stateController.text,
+                                    yearOfExp: _yearsController.text,
+                                    monthOfExp: _monthsController.text,
+                                    experienceCompanyList: expCompanyForms,
+                                    educationList: educationForms,
+                                    bankName: _bankNameController.text,
+                                    accountNo: _accountNumberController.text,
+                                    ifscCode: _iFSCCodeController.text,
+                                    branchName: _branchNameController.text,
+                                    upiId: _upiIdController.text,
+                                    companyName: _companyNameController.text,
+                                    companyCertificateImg: imageFile!.imagePath.toString(),
+                                    gstCertificateImg: gstImageFile!.imagePath.toString(),
+                                    panCardImg: panImageFile!.imagePath.toString(),
+                                    shopActLicenseImg: shopActImageFile!.imagePath.toString(),
+                                    addharCardImg: aadharImageFile!.imagePath.toString(),
+                                    currentAddress: _locationController.text,
+                                  ));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: ThemeColors.defaultbuttonColor,
+                                  shape: StadiumBorder(),
+                                ),
+                                child: loading ? Text(
+                                  "Update Changes",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button!
+                                      .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                                ) : Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
 
-                          ),
-                        )),
+                              ),
+                            )),
+
+                      );
+
+
+                    })
+
                   )
                 ],
               ),
@@ -2112,4 +2789,38 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       ),
     );
   }
+}
+Future<bool> _handleLocationPermission(context) async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    showCustomSnackBar(context,'Location services are disabled. Please enable the services',isError: false);
+
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text(
+    //         'Location services are disabled. Please enable the services')));
+    return false;
+  }
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      showCustomSnackBar(context,'Location permissions are denied',isError: true);
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('Location permissions are denied')));
+      return false;
+    }
+  }
+  if (permission == LocationPermission.deniedForever) {
+    showCustomSnackBar(context,'Location permissions are permanently denied, we cannot request permissions.',isError: true);
+
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //     content: Text(
+    //         'Location permissions are permanently denied, we cannot request permissions.')));
+    return false;
+  }
+  return true;
 }

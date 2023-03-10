@@ -63,7 +63,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
         //return  quotationsReplyCardNew(quotationReplyList[index]);
-        return quotationsaReplyCard(quotationReplyList[index]);
+        return quotationsReplyCardNew(quotationReplyList[index]);
       },
       itemCount: quotationReplyList.length,
     );
@@ -339,7 +339,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
 
                   }
                 },
-                child: _isLoading ? quotationReplyList!.length <= 0 ? Center(child: Text('No Data'),):
+                child: _isLoading ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
            Container(
              child: Padding(
                padding: const EdgeInsets.all(10.0),

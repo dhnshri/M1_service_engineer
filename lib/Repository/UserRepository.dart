@@ -71,8 +71,8 @@ class UserRepository {
   }
 
   // Machine Maintaince Quotation Reply
-  Future<dynamic> fetchQuotationReplyList({String? offSet}) async {
-    final params = {"offset":offSet};
+  Future<dynamic> fetchQuotationReplyList({String? offSet,String? userId}) async {
+    final params = {"offset":offSet,'service_user_id':userId};
     return await Api.getQuotaionReplyList(params);
   }
 
@@ -83,8 +83,8 @@ class UserRepository {
   }
 
 // Job wprk enquiry Quotation Reply
-  Future<dynamic> fetchQuotationReplyJWEList({String? offSet}) async {
-    final params = {"offset":offSet};
+  Future<dynamic> fetchQuotationReplyJWEList({String? offSet,String? userId}) async {
+    final params = {"offset":offSet,'service_user_id':userId};
     return await Api.getQuotaionReplyJWEList(params);
   }
   //Job Work Enquiry Service Request Api
@@ -110,19 +110,19 @@ class UserRepository {
 
   //MachineMaintainceMyTaskList
   Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
-    final params = {"user_id":userId,
+    final params = {"service_user_id":userId,
       "offset":offset};
     return await Api.getMyTaskList(params);
   }
   //TranspotationMyTaskList
   Future<dynamic> fetchTranspotationMyTaskList({String? userId,String? offset}) async {
-    final params = {"user_id":userId,
+    final params = {"service_user_id":userId,
       "offset":offset};
     return await Api.getMyTaskTranspotationList(params);
   }
 
   Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset}) async {
-    final params = {"user_id":userId,
+    final params = {"service_user_id":userId,
       "offset":offset};
     return await Api.getMyTaskJWEList(params);
   }
