@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,8 +11,12 @@ import '../../../../Utils/application.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../../Bloc/profile/profile_bloc.dart';
+import '../../../Bloc/profile/profile_event.dart';
+import '../../../Bloc/profile/profile_state.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Model/machine_list_model.dart';
 import '../../../image_file.dart';
 import '../../LoginRegistration/signUpAs.dart';
 
@@ -36,8 +41,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   ShopActImageFile? shopActImageFile;
   File? _aadharImage;
   AddharImageFile? aadharImageFile;
-
-
+  File? _uploadCompanyProfileImage;
+  UploadCompanyProfileFile? uploadCompanyProfileImageFile;
+  File? _uploadUserProfileImage;
+  UserProfileImageFile? uploadUserProfileImageFile;
 
   final _formKey = GlobalKey<FormState>();
   final _addressFormKey = GlobalKey<FormState>();
@@ -58,12 +65,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   final _machineNameController = TextEditingController();
   final _quantityController = TextEditingController();
 
-  final List<String> machineName = [];
+  List<MachineList> machineName = [];
   final List<String> quantity = [];
 
   String? _currentAddress;
   Position? _currentPosition;
 
+  ProfileBloc? _profileBloc;
 
   @override
   void initState() {
@@ -75,6 +83,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     panImageFile = new PanImageFile();
     shopActImageFile = new ShopActImageFile();
     aadharImageFile = new AddharImageFile();
+    uploadCompanyProfileImageFile = new UploadCompanyProfileFile();
+    uploadUserProfileImageFile = new UserProfileImageFile();
+    _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
+
     if(Application.customerLogin!.email!.isNotEmpty){
       _iDController.text = Application.customerLogin!.email.toString();
       _nameController.text = Application.customerLogin!.name.toString();
@@ -109,8 +121,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
   void addToMachineList(){
     setState(() {
-      machineName.insert(0,_machineNameController.text);
-      quantity.insert(0, _quantityController.text);
+      int count = 0;
+      // machineName.insert(0,_machineNameController.text);
+      // quantity.insert(0, _quantityController.text);
+      machineName.add(MachineList(id:count++,machineName: _machineNameController.text.toString(),quantity: _quantityController.text.toString()));
+      print(machineName);
     });
   }
 
@@ -204,6 +219,50 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         // state = AppState.cropped;
         _image = croppedFile;
         imageFile!.imagePath = _image!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _openUserProfileGallery(BuildContext context) async {
+    final image =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    uploadUserProfileImageFile = new UserProfileImageFile();
+    if (image != null) {
+      _userProfilecropImage(image);
+    }
+  }
+
+  // For crop image
+
+  Future<Null> _userProfilecropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _uploadUserProfileImage = croppedFile;
+        uploadUserProfileImageFile!.imagePath = _uploadUserProfileImage!.path;
       });
       // Navigator.pop(context);
     }
@@ -376,6 +435,51 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       // Navigator.pop(context);
     }
   }
+
+
+  _uploadCompanyProfileOpenGallery(BuildContext context) async {
+    final uploadCompanyProfile =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    uploadCompanyProfileImageFile = new UploadCompanyProfileFile();
+    if (uploadCompanyProfile != null) {
+      _companyProfileCropImage(uploadCompanyProfile);
+    }
+  }
+  // For crop image
+  Future<Null> _companyProfileCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _uploadCompanyProfileImage = croppedFile;
+        uploadCompanyProfileImageFile!.imagePath = _uploadCompanyProfileImage!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -442,7 +546,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                           width: 150.0,
                                           height: 150.0,
                                           child:
-                                          // (profileData!.profile_img == null || profileData!.profile_img == "")?
+                                          (uploadUserProfileImageFile!.imagePath == null || uploadUserProfileImageFile!.imagePath == "")?
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Image.asset(
@@ -450,10 +554,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                        //     : Image.network(
-                                        //   profileData!.profile_img.toString(),
-                                        //   fit: BoxFit.fill,
-                                        // )
+                                            : Image.file(
+                                            _uploadUserProfileImage!,
+                                          fit: BoxFit.fill,
+                                        )
 
                                       ),
                                     ),
@@ -469,9 +573,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                         backgroundColor: ThemeColors.backGroundColor,
                                         child: IconButton(
                                           onPressed: () {
-                                            //image picker
-                                            // getImage();
-                                            // _openGallery(context);
+                                            _openUserProfileGallery(context);
                                           },
                                           icon: Icon(
                                             Icons.edit,
@@ -565,70 +667,6 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                             // new RegExp(pattern.toString());
                             if (value == null || value.isEmpty) {
                               return 'Please enter ID';
-                            }
-                            // else if(!regex.hasMatch(value)){
-                            //   return 'Please enter valid name';
-                            // }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            // profile.name = value;
-                            setState(() {
-                              // _nameController.text = value;
-                              if (_formKey.currentState!.validate()) {}
-                            });
-                          },
-                        ),
-
-                        SizedBox(height: 15,),
-
-                        ///Name
-                        TextFormField(
-                          // initialValue: Application.customerLogin!.name.toString(),
-                          controller: _nameController,
-                          textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(
-                            fontSize: 18,
-                            height: 1.5,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: ThemeColors.textFieldBackgroundColor,
-                            hintText: "Name",
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 15.0),
-                            hintStyle: TextStyle(fontSize: 15),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
-                              borderSide: BorderSide(
-                                  width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
-                                borderSide: BorderSide(
-                                    width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
-                          ),
-                          validator: (value) {
-                            // profile.name = value!.trim();
-                            // Pattern pattern =
-                            //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                            // RegExp regex =
-                            // new RegExp(pattern.toString());
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter name';
                             }
                             // else if(!regex.hasMatch(value)){
                             //   return 'Please enter valid name';
@@ -1011,7 +1049,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
-                        ///Company Profile
+                        ///Upload Company Profile
                         Container(
                           height: 50,
                           color: ThemeColors.textFieldBackgroundColor,
@@ -1022,21 +1060,24 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8),
-                                  child: Text("Upload Company Profile",
-                                    style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.4,
+                                    child: Text(uploadCompanyProfileImageFile!.imagePath == null ?"Upload Company Profile" : uploadCompanyProfileImageFile!.imagePath!.split('/').last.toString(),
+                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                      maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
                                 InkWell(
                                   onTap: (){
-                                    _openGallery(context);
+                                    _uploadCompanyProfileOpenGallery(context);
                                   },
                                   child: Container(
                                     height: 30,
                                     color: ThemeColors.textFieldHintColor.withOpacity(0.3),
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 4,right: 4),
-                                      child: Center(child: Text("+Add Document",
+                                      child: Center(child: Text("+Add Image",
                                         style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )),
@@ -1215,6 +1256,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                             child: InkWell(
                               onTap: (){
                                 addToMachineList();
+                                _machineNameController.clear();
+                                _quantityController.clear();
                               },
                               child: Icon(Icons.add,color: Colors.red,),
                             ),
@@ -1229,11 +1272,12 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                   machineName.length>0?
                   SizedBox(
-                      height: MediaQuery.of(context).size.height/4,
+                      // height: MediaQuery.of(context).size.height/4,
                       child: ListView.builder(
                           padding: const EdgeInsets.all(8),
+                          shrinkWrap: true,
                           itemCount: machineName.length,
-                          itemBuilder: (BuildContext context, int index) {
+                          itemBuilder: (BuildContext context,index) {
                             return Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Row(
@@ -1257,7 +1301,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                                 padding: const EdgeInsets.only(left: 8),
                                                 child: Container(
                                                   width: MediaQuery.of(context).size.width * 0.4,
-                                                  child: Text('${machineName[index]}',
+                                                  child: Text('${machineName[index].machineName}',
                                                     style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
                                                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                   ),
@@ -1265,7 +1309,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(right: 10),
-                                                child: Text('${quantity[index]}',
+                                                child: Text('${machineName[index].quantity}',
                                                   style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
                                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                 ),
@@ -1283,8 +1327,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                     child: InkWell(
                                       onTap: (){
                                         setState(() {
-                                          machineName.removeAt(index);
-                                          quantity.removeAt(index);
+                                          // int index1 = machineName
+                                          //     .indexWhere((element) => element.id! == machineName[index].id);
+
+                                         machineName.removeAt(index);
                                         });
 
                                       },
@@ -1353,6 +1399,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               ),
                             ),
                           ),
+
+                          SizedBox(height: 15,),
 
                           ///Address
                           TextFormField(
@@ -1991,26 +2039,86 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                   ),
 
                   Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: ElevatedButton(
-                            onPressed: () async { },
-                            style: ElevatedButton.styleFrom(
-                              primary: ThemeColors.defaultbuttonColor,
-                              shape: StadiumBorder(),
-                            ),
-                            child: Text(
-                              "Update Changes",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button!
-                                  .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
-                            ),
+                    child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+                      return BlocListener<ProfileBloc, ProfileState>(
+                        listener: (context, state) {
+                          if(state is UpdateJobWorkProfileLoading){
+                            loading = state.isLoading;
+                          }
+                          if(state is UpdateJobWorkProfileSuccess){
+                            showCustomSnackBar(context,state.message,isError: false);
+                          }
+                          if(state is UpdateJobWorkProfileFail){
+                            showCustomSnackBar(context,state.msg.toString(),isError: true);
+                          }
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if(_formKey.currentState!.validate()) {
+                                    _profileBloc!.add(UpdateJobWorkProfile(
+                                      serviceUserId: Application
+                                          .customerLogin!.id
+                                          .toString(),
+                                      companyName: _companyNameController.text,
+                                      coOrdinateName:
+                                          _coOrdinatorNameController.text,
+                                      email: _emailController.text,
+                                      mobile: _phoneController.text,
+                                      gstNo: _gstController.text,
+                                      catId: '1',
+                                      subCatId: '2',
+                                      userProfilePic:
+                                      uploadUserProfileImageFile!.imagePath
+                                              .toString(),
+                                      location: _addressController.text,
+                                      currentAddress: _addressController.text,
+                                      pincode: _pinCodeController.text,
+                                      city: _cityController.text,
+                                      state: _stateController.text,
+                                      country: _countryController.text,
+                                      // companyName: _companyNameController.text,
+                                      machineList: machineName,
+                                      companyProfilePic:
+                                          uploadCompanyProfileImageFile!
+                                              .imagePath
+                                              .toString(),
+                                      companyCertificateImg:
+                                          imageFile!.imagePath.toString(),
+                                      gstCertificateImg:
+                                          gstImageFile!.imagePath.toString(),
+                                      panCardImg:
+                                          panImageFile!.imagePath.toString(),
+                                      shopActLicenseImg: shopActImageFile!
+                                          .imagePath
+                                          .toString(),
+                                      addharCardImg:
+                                          aadharImageFile!.imagePath.toString(),
+                                    ));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: ThemeColors.defaultbuttonColor,
+                                  shape: StadiumBorder(),
+                                ),
+                                child: loading ? Text(
+                                  "Update Changes",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button!
+                                      .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                                ) : Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
 
-                          ),
-                        )),
+                              ),
+                            )),
+
+                      );
+
+
+                    }),
                   )
                 ],
               ),

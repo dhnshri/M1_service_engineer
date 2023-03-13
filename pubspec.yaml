@@ -88,6 +88,9 @@ dependencies:
   date_time_picker: ^2.1.0
   geocoding: ^2.0.5
   geolocator: ^9.0.2
+  mime: ^1.0.4
+  file_picker:
+
 
 dev_dependencies:
   flutter_test:
