@@ -43,7 +43,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   AddharImageFile? aadharImageFile;
   File? _uploadCompanyProfileImage;
   UploadCompanyProfileFile? uploadCompanyProfileImageFile;
-
+  File? _uploadUserProfileImage;
+  UserProfileImageFile? uploadUserProfileImageFile;
 
   final _formKey = GlobalKey<FormState>();
   final _addressFormKey = GlobalKey<FormState>();
@@ -83,6 +84,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     shopActImageFile = new ShopActImageFile();
     aadharImageFile = new AddharImageFile();
     uploadCompanyProfileImageFile = new UploadCompanyProfileFile();
+    uploadUserProfileImageFile = new UserProfileImageFile();
     _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
 
     if(Application.customerLogin!.email!.isNotEmpty){
@@ -217,6 +219,50 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         // state = AppState.cropped;
         _image = croppedFile;
         imageFile!.imagePath = _image!.path;
+      });
+      // Navigator.pop(context);
+    }
+  }
+
+  _openUserProfileGallery(BuildContext context) async {
+    final image =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    uploadUserProfileImageFile = new UserProfileImageFile();
+    if (image != null) {
+      _userProfilecropImage(image);
+    }
+  }
+
+  // For crop image
+
+  Future<Null> _userProfilecropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _uploadUserProfileImage = croppedFile;
+        uploadUserProfileImageFile!.imagePath = _uploadUserProfileImage!.path;
       });
       // Navigator.pop(context);
     }
@@ -500,7 +546,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                           width: 150.0,
                                           height: 150.0,
                                           child:
-                                          // (profileData!.profile_img == null || profileData!.profile_img == "")?
+                                          (uploadUserProfileImageFile!.imagePath == null || uploadUserProfileImageFile!.imagePath == "")?
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Image.asset(
@@ -508,10 +554,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                        //     : Image.network(
-                                        //   profileData!.profile_img.toString(),
-                                        //   fit: BoxFit.fill,
-                                        // )
+                                            : Image.file(
+                                            _uploadUserProfileImage!,
+                                          fit: BoxFit.fill,
+                                        )
 
                                       ),
                                     ),
@@ -527,9 +573,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                         backgroundColor: ThemeColors.backGroundColor,
                                         child: IconButton(
                                           onPressed: () {
-                                            //image picker
-                                            // getImage();
-                                            // _openGallery(context);
+                                            _openUserProfileGallery(context);
                                           },
                                           icon: Icon(
                                             Icons.edit,
@@ -2014,31 +2058,47 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  _profileBloc!.add(UpdateJobWorkProfile(
-                                    serviceUserId: Application.customerLogin!.id.toString(),
-                                    companyName: _companyNameController.text,
-                                    coOrdinateName: _coOrdinatorNameController.text,
-                                    email: _emailController.text,
-                                    mobile: _phoneController.text,
-                                    gstNo: _gstController.text,
-                                    catId: '1',
-                                    subCatId: '2',
-                                    userProfilePic: uploadCompanyProfileImageFile!.imagePath.toString(),
-                                    location: _addressController.text,
-                                    currentAddress: _addressController.text,
-                                    pincode: _pinCodeController.text,
-                                    city: _cityController.text,
-                                    state: _stateController.text,
-                                    country: _countryController.text,
-                                    // companyName: _companyNameController.text,
-                                    machineList: machineName,
-                                    companyProfilePic: uploadCompanyProfileImageFile!.imagePath.toString(),
-                                    companyCertificateImg: imageFile!.imagePath.toString(),
-                                    gstCertificateImg: gstImageFile!.imagePath.toString(),
-                                    panCardImg: panImageFile!.imagePath.toString(),
-                                    shopActLicenseImg: shopActImageFile!.imagePath.toString(),
-                                    addharCardImg: aadharImageFile!.imagePath.toString(),
-                                  ));
+                                  if(_formKey.currentState!.validate()) {
+                                    _profileBloc!.add(UpdateJobWorkProfile(
+                                      serviceUserId: Application
+                                          .customerLogin!.id
+                                          .toString(),
+                                      companyName: _companyNameController.text,
+                                      coOrdinateName:
+                                          _coOrdinatorNameController.text,
+                                      email: _emailController.text,
+                                      mobile: _phoneController.text,
+                                      gstNo: _gstController.text,
+                                      catId: '1',
+                                      subCatId: '2',
+                                      userProfilePic:
+                                      uploadUserProfileImageFile!.imagePath
+                                              .toString(),
+                                      location: _addressController.text,
+                                      currentAddress: _addressController.text,
+                                      pincode: _pinCodeController.text,
+                                      city: _cityController.text,
+                                      state: _stateController.text,
+                                      country: _countryController.text,
+                                      // companyName: _companyNameController.text,
+                                      machineList: machineName,
+                                      companyProfilePic:
+                                          uploadCompanyProfileImageFile!
+                                              .imagePath
+                                              .toString(),
+                                      companyCertificateImg:
+                                          imageFile!.imagePath.toString(),
+                                      gstCertificateImg:
+                                          gstImageFile!.imagePath.toString(),
+                                      panCardImg:
+                                          panImageFile!.imagePath.toString(),
+                                      shopActLicenseImg: shopActImageFile!
+                                          .imagePath
+                                          .toString(),
+                                      addharCardImg:
+                                          aadharImageFile!.imagePath.toString(),
+                                    ));
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: ThemeColors.defaultbuttonColor,

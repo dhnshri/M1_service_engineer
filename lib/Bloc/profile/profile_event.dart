@@ -1,4 +1,6 @@
 
+import 'package:service_engineer/Screen/Transportation/Profile/widget/vehicle_info_widget.dart';
+
 import '../../Model/education_model.dart';
 import '../../Model/experience_company_model.dart';
 import '../../Model/machine_list_model.dart';
@@ -125,6 +127,84 @@ class UpdateJobWorkProfile extends ProfileEvent {
     required this.shopActLicenseImg,
     required this.addharCardImg,
     required this.machineList,
+  });
+
+}
+
+
+class UpdateTransportProfile extends ProfileEvent {
+
+  String userProfileImg;
+  String ownerName;
+  String email;
+  String mobile;
+  String gstNo;
+  String driverProfileImg;
+  String driverName;
+  String driverNumber;
+  String driverLicenseValidity;
+  String driverLicenseNumber;
+  String driverLicenseImage;
+  String driverIdProofImage;
+  String location;
+  String currentLocation;
+  String pinCode;
+  String city;
+  String state;
+  String country;
+  String totalYears;
+  String totalMonths;
+  String companyName;
+  String serviceUserId;
+  String bankName;
+  String accountNumber;
+  String ifscCode;
+  String branchName;
+  String upiId;
+  String companyCertificateImg;
+  String gstCertificateImg;
+  String panCardImg;
+  String shopActLicenseImg;
+  String addharCardImg;
+  List<VehicleInfFormWidget> vehicleInfoList;
+  List<ExpCompanyFormWidget> experienceCompanyList;
+
+
+  UpdateTransportProfile({
+    required this.userProfileImg,
+    required this.ownerName,
+    required this.email,
+    required this.mobile,
+    required this.gstNo,
+    required this.driverProfileImg,
+    required this.driverName,
+    required this.driverNumber,
+    required this.driverLicenseValidity,
+    required this.driverLicenseNumber,
+    required this.driverLicenseImage,
+    required this.driverIdProofImage,
+    required this.location,
+    required this.currentLocation,
+    required this.pinCode,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.totalYears,
+    required this.totalMonths,
+    required this.companyName,
+    required this.serviceUserId,
+    required this.bankName,
+    required this.accountNumber,
+    required this.ifscCode,
+    required this.branchName,
+    required this.upiId,
+    required this.companyCertificateImg,
+    required this.gstCertificateImg,
+    required this.panCardImg,
+    required this.shopActLicenseImg,
+    required this.addharCardImg,
+    required this.vehicleInfoList,
+    required this.experienceCompanyList,
   });
 
 }

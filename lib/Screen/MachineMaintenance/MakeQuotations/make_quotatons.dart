@@ -374,9 +374,13 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                                     // }
                                                     // _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: '1'));
                                                     if(productList[index].cartQuantity! <= productList[index].productQty!){
-                                                      productList[index].cartQuantity = productList[index].cartQuantity! + 1;
-                                                      _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
-                                                      loadApi();
+                                                      if( productList[index].productQty! > 0){
+                                                        productList[index].cartQuantity = productList[index].cartQuantity! + 1;
+                                                        _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
+                                                        loadApi();
+                                                      }else{
+                                                        showCustomSnackBar(context,'Quantity is not available.',isError: true);
+                                                      }
 
                                                     }else{
                                                       showCustomSnackBar(context,'Quantity is not available.',isError: true);
@@ -932,6 +936,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           dropValue: Application.customerLogin!.role.toString(),
                         )));
                 showCustomSnackBar(context,state.message,isError: false);
+                for(int i = 0; i < cartList!.length ; i++){
+                  _homeBloc!.add(AddToCart(prodId: cartList![i].productId.toString(),userId: Application.customerLogin!.id.toString(),quantity: '0'));
+
+                }
               }
             },
             child: isCompleted
@@ -1593,11 +1601,4 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
 
 
-// class _Preview extends StatelessWidget {
-//   const _Preview({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return PreviewScreen();
-//   }
-// }
+

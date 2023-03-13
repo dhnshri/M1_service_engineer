@@ -49,14 +49,22 @@ class _PreviewScreenState extends State<PreviewScreen> {
   double? amount = 0;
   double? amountWithGST = 0;
   double? itemRequiredTotalAmount = 0;
-  int? oterItemsAmount = 0;
-  int? otherItemTotalAmount = 0;
+  double? oterItemsAmount = 0;
+  double? otherItemsAmountWithGST = 0;
+  double? otherItemTotalAmount = 0;
+  double? commission = 10;
+  double? totalAmount= 0;
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    // setState(() {
+    //   totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
+    //       int.parse(widget.transportChargesController.text.toString()) +
+    //        commission!;
+    // });
   }
 
   @override
@@ -156,77 +164,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
         DataCell(Text(itemNotAvailableData.itemName.toString())),
         DataCell(Text(itemNotAvailableData.quantity.toString())),
         DataCell(Text('₹${itemNotAvailableData.rate.toString()}')),
-        DataCell(Text('₹${oterItemsAmount.toString()}')),
+        DataCell(Text('₹${otherItemsAmountWithGST.toString()}')),
       ],
     );
   }
 
-  Widget buildOtherItemsList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemCount: widget.itemNotAvailableList.length,
-      itemBuilder: (context, index) {
-        oterItemsAmount = int.parse(
-                widget.itemNotAvailableList[index].rate.toString()) *
-            int.parse(widget.itemNotAvailableList[index].quantity.toString());
-        otherItemTotalAmount = widget.itemNotAvailableList
-            .map((item) =>
-                int.parse(item.rate.toString()) *
-                int.parse(item.quantity.toString()))
-            .reduce((value, current) => value + current);
-        return Padding(
-            padding: const EdgeInsets.only(bottom: 0.0),
-            child: Container(
-                // color: Color(0xffFFE4E5),
-                decoration: BoxDecoration(
-                  color: Color(0xffFFE4E5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              widget.itemNotAvailableList[index].id.toString()),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.itemNotAvailableList[index].itemName
-                              .toString())
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.itemNotAvailableList[index].quantity
-                              .toString())
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              "₹ ${widget.itemNotAvailableList[index].rate.toString()}")
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text("₹ $oterItemsAmount")],
-                      ),
-                    ],
-                  ),
-                )));
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -279,17 +221,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                   .toString()) * 100/100+int.parse(widget.cartList![index].gst.toString());
                           amountWithGST = amount! *
                               int.parse(widget.cartList![index].qty.toString());
-                          // itemRequiredTotalAmount = widget.cartList!
-                          //     .map((item) =>
-                          //         // int.parse(item.discountPrice.toString()) *
-                          //         // int.parse(item.qty.toString())
-                          //             int.parse(amountWithGST.toString())
-                          // )
-                          //     .reduce((value, current) => value + current);
                           itemRequiredTotalAmount = widget.cartList!
                               .map((item) =>
-                          // int.parse(item.discountPrice.toString()) *
-                          // int.parse(item.qty.toString())
                           double.parse(amountWithGST.toString())
                           )
                               .reduce((value, current) => value + current);
@@ -298,8 +231,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       ),
                     ],
                   ),
-                  // buildItemRequiredList(),
-                  // Divider(thickness: 1,color: Colors.grey,),
+
                   Container(
                     decoration: const BoxDecoration(
                       color: Color(0xffFFE4E5),
@@ -380,13 +312,16 @@ class _PreviewScreenState extends State<PreviewScreen> {
                             ),
                           ],
                           rows: List.generate(widget.itemNotAvailableList.length, (index) {
-                            oterItemsAmount = int.parse(
+                            oterItemsAmount = double.parse(
                                 widget.itemNotAvailableList[index].rate.toString()) *
-                                int.parse(widget.itemNotAvailableList[index].quantity.toString());
+                                100/100+int.parse(widget.itemNotAvailableList[index].gst.toString());
+
+                            otherItemsAmountWithGST = oterItemsAmount! * int.parse(widget.itemNotAvailableList[index].quantity.toString());
+
+
                             otherItemTotalAmount = widget.itemNotAvailableList
                                 .map((item) =>
-                            int.parse(item.rate.toString()) *
-                                int.parse(item.quantity.toString()))
+                                double.parse(otherItemsAmountWithGST.toString()))
                                 .reduce((value, current) => value + current);
                             return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index]);
                           }),),
@@ -500,7 +435,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("M1 Commission"),
-                      Text("₹ 550"),
+                      Text("₹ $commission"),
                     ],
                   ),
                   Row(
@@ -515,7 +450,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Amount"),
-                      Text("₹20000"),
+                      Text("₹$totalAmount"),
                     ],
                   ),
                 ],

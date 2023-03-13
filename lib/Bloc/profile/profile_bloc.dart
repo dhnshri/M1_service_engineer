@@ -203,7 +203,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           'company_certificate', event.companyCertificateImg.toString());
 
       var userProfileImg = await http.MultipartFile.fromPath(
-          'user_profile_pic', event.companyProfilePic.toString());
+          'user_profile_pic', event.userProfilePic.toString());
 
       Map<String, String> params = {
         "company_name": event.companyName.toString(),
@@ -266,8 +266,186 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
 
+    /// Update Profile for Transport
+    if (event is UpdateTransportProfile) {
+      ///Notify loading to UI
+      yield UpdateTransportProfileLoading(
+        isLoading: false,
+      );
+
+      var expCompanyList = [];
+
+      for(int j = 0; j < event.experienceCompanyList.length; j++){
+        var innerObj ={};
+        innerObj["company_name"] = event.experienceCompanyList[j].expCompanyModel!.companyName;
+        innerObj["description"] = event.experienceCompanyList[j].expCompanyModel!.desciption;
+        innerObj["work_from"] = event.experienceCompanyList[j].expCompanyModel!.fromYear;
+        innerObj["work_till"] = event.experienceCompanyList[j].expCompanyModel!.tillYear;
+        expCompanyList.add(innerObj);
+      }
+
+      var vehicleInfoList = [];
+
+      for(int j = 0; j < event.vehicleInfoList.length; j++){
+        var innerObj ={};
+        innerObj["vehicle_name"] = event.vehicleInfoList[j].vehicleInfoModel!.vehicleName;
+        innerObj["vehicle_type"] = event.vehicleInfoList[j].vehicleInfoModel!.vehicleType;
+        innerObj["chassis_number"] = event.vehicleInfoList[j].vehicleInfoModel!.chasisNumber;
+        innerObj["registration_upto"] = event.vehicleInfoList[j].vehicleInfoModel!.registrationUpto;
+        innerObj["vehicle_number"] = event.vehicleInfoList[j].vehicleInfoModel!.vehicleNumber;
+        vehicleInfoList.add(innerObj);
+      }
+
+      var userProfileImg = await http.MultipartFile.fromPath(
+          'user_profile_pic', event.userProfileImg.toString());
+
+      var gstCertFile = await http.MultipartFile.fromPath(
+          'gst_certificate', event.gstCertificateImg.toString());
+
+      var panCardFile = await http.MultipartFile.fromPath(
+          'pan_card', event.panCardImg.toString());
+
+      var shopActFile = await http.MultipartFile.fromPath(
+          'shop_act_licence', event.shopActLicenseImg.toString());
+
+      var aadharFile = await http.MultipartFile.fromPath(
+          'udhyog_adhar_licence', event.addharCardImg.toString());
+
+      var companyCertiFile = await http.MultipartFile.fromPath(
+          'company_certificate', event.companyCertificateImg.toString());
+
+      var driverPhoto = await http.MultipartFile.fromPath(
+          'driver_pic', event.driverProfileImg.toString());
+
+      var drivingLicensePhoto = await http.MultipartFile.fromPath(
+          'driving_licence', event.driverLicenseImage.toString());
+
+      var driverIdProofPhoto = await http.MultipartFile.fromPath(
+          'id_proof', event.driverIdProofImage.toString());
+
+      Map<String, String> params = {
+        "full_name": event.ownerName.toString(),
+        "email":event.email,
+        "mobile":event.mobile,
+        "gst_no":event.gstNo,
+        "location": event.location,
+        "current_address": event.location,
+        "pincode": event.pinCode,
+        "city_id": event.city,
+        "state_id": event.state,
+        "country": event.country,
+        "years": event.totalYears.toString(),
+        "months": event.totalMonths.toString(),
+        "bank_name": event.bankName,
+        "account_number": event.accountNumber,
+        "ifsc_code": event.ifscCode,
+        "upi_id": event.upiId,
+        "branch_name": event.bankName,
+        "company_name": event.companyName,
+        "full_name": event.driverName,
+        "mobile_no": event.driverNumber,
+        "driving_licence_validity": event.driverLicenseValidity,
+        "driving_licence_number": event.driverLicenseNumber,
+        "experience": jsonEncode(expCompanyList),
+        "VehicleInformation": jsonEncode(vehicleInfoList),
+        "service_user_id":event.serviceUserId,
+      };
 
 
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/add_transport_profile'));
+      // ..fields.addAll(params);
+      _request.files.add(companyCertiFile);
+      _request.files.add(gstCertFile);
+      _request.files.add(panCardFile);
+      _request.files.add(shopActFile);
+      _request.files.add(aadharFile);
+      _request.files.add(userProfileImg);
+      _request.files.add(driverPhoto);
+      _request.files.add(drivingLicensePhoto);
+      _request.files.add(driverIdProofPhoto);
+
+      /// Upload Multiple Vehicle Images
+      List<http.MultipartFile> vehicleImageList = <http.MultipartFile>[];
+      for(int j = 0; j < event.vehicleInfoList.length; j++) {
+        final mimeTypeDataProfile = lookupMimeType(
+            event.vehicleInfoList[j].vehicleImageModel!.vehicleImage
+                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+        //initialize multipart request
+        //attach the file in the request
+        final certi = await http.MultipartFile.fromPath(
+            'vehicle_images[]', event.vehicleInfoList[j].vehicleImageModel!.vehicleImage.toString(),
+            contentType: MediaType(
+                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+
+        vehicleImageList.add(certi);
+      }
+
+      /// Upload Multiple Vehicle RC Images
+      List<http.MultipartFile> vehicleRCImageList = <http.MultipartFile>[];
+      for(int j = 0; j < event.vehicleInfoList.length; j++) {
+        final mimeTypeDataProfile = lookupMimeType(
+            event.vehicleInfoList[j].vehicleRCImageModel!.vehicleRCImage
+                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+        //initialize multipart request
+        //attach the file in the request
+        final certi = await http.MultipartFile.fromPath(
+            'upload_rcs[]', event.vehicleInfoList[j].vehicleRCImageModel!.vehicleRCImage.toString(),
+            contentType: MediaType(
+                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+
+        vehicleRCImageList.add(certi);
+      }
+
+      /// Upload Multiple Vehicle PUC Images
+      List<http.MultipartFile> vehiclePUCImageList = <http.MultipartFile>[];
+      for(int j = 0; j < event.vehicleInfoList.length; j++) {
+        final mimeTypeDataProfile = lookupMimeType(
+            event.vehicleInfoList[j].vehiclePUCImageModel!.vehiclePUCImage
+                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+        //initialize multipart request
+        //attach the file in the request
+        final certi = await http.MultipartFile.fromPath(
+            'upload_pocs[]', event.vehicleInfoList[j].vehiclePUCImageModel!.vehiclePUCImage.toString(),
+            contentType: MediaType(
+                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+
+        vehiclePUCImageList.add(certi);
+      }
+
+      _request.files.addAll(vehicleImageList);
+      _request.files.addAll(vehicleRCImageList);
+      _request.files.addAll(vehiclePUCImageList);
+      _request = jsonToFormData(_request, params);
+      print(jsonEncode(_request.fields));
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      ProfileRepo result =  ProfileRepo.fromJson(responseJson);
+      print(result.msg);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield UpdateTransportProfileLoading(
+            isLoading: true,
+          );
+          yield UpdateTransportProfileSuccess(message: result.msg.toString());
+        } catch (error) {
+          ///Notify loading to UI
+          yield UpdateTransportProfileLoading(
+            isLoading: true,
+          );
+          yield UpdateTransportProfileFail(msg: result.msg.toString());
+        }
+      } else {
+        ///Notify loading to UI
+        yield UpdateTransportProfileLoading(isLoading: true);
+        yield UpdateTransportProfileFail(msg: result.msg.toString());
+      }
+    }
   }
   jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
     for (var key in data.keys) {

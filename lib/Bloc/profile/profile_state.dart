@@ -34,3 +34,18 @@ class UpdateJobWorkProfileSuccess extends ProfileState {
   String message;
   UpdateJobWorkProfileSuccess({ required this.message});
 }
+
+class UpdateTransportProfileLoading extends ProfileState {
+  bool isLoading;
+  UpdateTransportProfileLoading({required this.isLoading});
+}
+
+class UpdateTransportProfileFail extends ProfileState {
+  final String? msg;
+  UpdateTransportProfileFail({this.msg});
+}
+
+class UpdateTransportProfileSuccess extends ProfileState {
+  String message;
+  UpdateTransportProfileSuccess({ required this.message});
+}
