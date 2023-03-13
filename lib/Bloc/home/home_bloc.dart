@@ -10,8 +10,10 @@ import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
+import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/cart_list_repo.dart';
 import '../../Model/MachineMaintance/quotationReply.dart';
@@ -191,6 +193,87 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    //Event for Job Work Enquiry Service Request Detail
+    if (event is OnServiceRequestJobWorkEnquiryDetail) {
+      ///Notify loading to UI
+      yield ServiceRequestJobWorkEnquryDetailLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final JobWorkEnquiryServiceRequestDetailRepo result = await userRepository!
+          .fetchServiceRequestJobWorkEnquiryDetail(
+          userID: event.userID,
+          machineEnquiryId: event.machineServiceId,
+          jobWorkEnquiryId: event.jobWorkServiceId,
+          transportEnquiryId: event.transportServiceId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestDetail = result.enquiryDetails! ?? [];
+        final serviceRequestDetail = refactorServiceRequestDetail.map((item) {
+          return JobWorkEnquiryDetailsModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Service Request Data: $serviceRequestDetail');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ServiceRequestJobWorkEnquryDetailLoading(
+            isLoading: true,
+          );
+          yield ServiceRequestJobWorkEnquryDetailSuccess(jobWorkEnquryServiceDetail: serviceRequestDetail, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield ServiceRequestJobWorkEnquryDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield ServiceRequestJobWorkEnquryDetailFail(msg: result.msg!);
+      }
+    }
+
+    //Event for Transpotation My Task Detail
+    if (event is OnMyTaskTranspotationDetail) {
+      ///Notify loading to UI
+      yield MyTaskTranspotationDetailLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final MyTaskTransportDetailRepo result = await userRepository!
+          .fetchMyTaskTransportationDetail(
+          userID: event.userID,
+          machineEnquiryId: event.machineServiceId,
+          jobWorkEnquiryId: event.jobWorkServiceId,
+          transportEnquiryId: event.transportServiceId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestDetail = result.transportDetails! ?? [];
+        final myTaskDetail = refactorServiceRequestDetail.map((item) {
+          return TransportMyTaskDetailsModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('My Task Data: $myTaskDetail');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield MyTaskTranspotationDetailLoading(
+            isLoading: true,
+          );
+          yield MyTaskTranspotationDetailSuccess(transportMyTaskDetail: myTaskDetail, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield MyTaskTranspotationDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield MyTaskTranspotationDetailFail(msg: result.msg!);
+      }
+    }
 
     //Product List
     if (event is ProductList) {

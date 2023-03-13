@@ -172,7 +172,12 @@ class _EnquiryServiceRequestScreenState
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return serviceRequestCard(context, jobWorkEnquiryList[index]);
+        return InkWell(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EnquiryServiceRequestDetailsScreen(serviceRequestData:jobWorkEnquiryList[index],)));
+            },
+            child: serviceRequestCard(context, jobWorkEnquiryList[index]));
       },
       itemCount: jobWorkEnquiryList.length,
     );

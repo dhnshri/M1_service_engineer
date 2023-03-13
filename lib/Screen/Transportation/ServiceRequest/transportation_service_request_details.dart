@@ -138,7 +138,7 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestTranspotationDetail(userID: Application.customerLogin!.id.toString(), machineServiceId:'0',jobWorkServiceId: '0',transportServiceId:widget.serviceRequestData.enquiryId.toString()));
+    _homeBloc!.add(OnServiceRequestTranspotationDetail(userID:widget.serviceRequestData.userId.toString(), machineServiceId:'0',jobWorkServiceId: '0',transportServiceId:widget.serviceRequestData.enquiryId.toString()));
 
   }
   @override
@@ -296,26 +296,24 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
                                   Text(serviceRequestData![0].loadSize.toString(),style: ExpanstionTileRightDataStyle,),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              SizedBox(height: 5,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Pickup Location",style: ExpanstionTileLeftDataStyle,),
                                   Text(serviceRequestData![0].pickupLocation.toString(),style: ExpanstionTileRightDataStyle,),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              SizedBox(height: 5,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Drop Location",style: ExpanstionTileLeftDataStyle,),
                                   Text(serviceRequestData![0].dropLocation.toString(),style: ExpanstionTileRightDataStyle,),
                                 ],
                               ),
                               SizedBox(height: 10,),
-                              Text("Vestibulum blandit viverra convallis. Pellentesque ligula urna, "
-                                  "fermentum ut semper in, tincidunt nec dui. Morbi mauris lacus, "
-                                  "consequat eget justo in, semper gravida enim. Donec ultrices varius ligula."
-                                  " Ut non pretium augue. Etiam non rutrum metus. In varius sit amet lorem tempus sagittis."
-                                  " Cras sed maximus enim, vel ultricies tortor. Pellentesque consectetur tellus ornare felis",
+                              Text(serviceRequestData![0].about.toString(),
                                     style: ExpanstionTileLeftDataStyle,),
                             ],
                           ),
