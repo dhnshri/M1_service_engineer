@@ -318,8 +318,9 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
+                Navigator.pop(context);
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation Reply',),

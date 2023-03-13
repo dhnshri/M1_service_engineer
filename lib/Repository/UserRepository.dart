@@ -100,6 +100,29 @@ class UserRepository {
     return await Api.getServiceRequestDetail(params);
   }
 
+  //Service Request Transportation Detail Api
+  Future<dynamic> fetchServiceRequestTransportationDetail({String? userID, String? machineEnquiryId,
+    String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
+    final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
+      'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getServiceRequestTranspotationDetail(params);
+  }
+
+  //Service Request jOB wORK Enquiry Detail Api
+  Future<dynamic> fetchServiceRequestJobWorkEnquiryDetail({String? userID, String? machineEnquiryId,
+    String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
+    final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
+      'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getServiceRequestJobWorkEnquiryDetail(params);
+  }
+  //My Task Transportation Detail Api
+  Future<dynamic> fetchMyTaskTransportationDetail({String? userID, String? machineEnquiryId,
+    String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
+    final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
+      'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getMyTaskTranspotationDetail(params);
+  }
+
   //MachineMaintainceMyTaskList
   Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
     final params = {"service_user_id":userId,

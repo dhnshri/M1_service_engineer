@@ -60,8 +60,9 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
+              Navigator.pop(context);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),

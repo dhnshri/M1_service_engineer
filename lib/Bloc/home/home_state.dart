@@ -8,8 +8,11 @@ import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
+import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestListModel.dart';
 import '../../Model/customer_login.dart';
 
@@ -152,6 +155,53 @@ class MyTaskTranspotationListLoadFail extends HomeState {
   MyTaskTranspotationListLoadFail({this.msg});
 }
 
+class ServiceRequestTranspotationDetailLoading extends HomeState {
+  bool isLoading;
+  ServiceRequestTranspotationDetailLoading({required this.isLoading});
+}
+
+class ServiceRequestTranspotationDetailFail extends HomeState {
+  final String? msg;
+  ServiceRequestTranspotationDetailFail({this.msg});
+}
+
+class ServiceRequestTranspotationDetailSuccess extends HomeState {
+  List<TransportDetailsModel> transportServiceDetail;
+  String message;
+  ServiceRequestTranspotationDetailSuccess({required this.transportServiceDetail, required this.message});
+}
+
+class ServiceRequestJobWorkEnquryDetailLoading extends HomeState {
+  bool isLoading;
+  ServiceRequestJobWorkEnquryDetailLoading({required this.isLoading});
+}
+
+class ServiceRequestJobWorkEnquryDetailFail extends HomeState {
+  final String? msg;
+  ServiceRequestJobWorkEnquryDetailFail({this.msg});
+}
+
+class ServiceRequestJobWorkEnquryDetailSuccess extends HomeState {
+  List<JobWorkEnquiryDetailsModel> jobWorkEnquryServiceDetail;
+  String message;
+  ServiceRequestJobWorkEnquryDetailSuccess({required this.jobWorkEnquryServiceDetail, required this.message});
+}
+
+class MyTaskTranspotationDetailLoading extends HomeState {
+  bool isLoading;
+  MyTaskTranspotationDetailLoading({required this.isLoading});
+}
+
+class MyTaskTranspotationDetailFail extends HomeState {
+  final String? msg;
+  MyTaskTranspotationDetailFail({this.msg});
+}
+
+class MyTaskTranspotationDetailSuccess extends HomeState {
+  List<TransportMyTaskDetailsModel> transportMyTaskDetail;
+  String message;
+  MyTaskTranspotationDetailSuccess({required this.transportMyTaskDetail, required this.message});
+}
 
 class AddToCartLoading extends HomeState {
   bool isLoading;
