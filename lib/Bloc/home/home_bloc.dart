@@ -199,7 +199,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield ServiceRequestJobWorkEnquryDetailLoading(isLoading: false);
 
       ///Fetch API via repository
-      final JobWorkEnquiryServiceRequestDetailRepo result = await userRepository!
+      final ServiceRequestDetailRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryDetail(
           userID: event.userID,
           machineEnquiryId: event.machineServiceId,
