@@ -1,20 +1,28 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/quotationReply/quotationReply_bloc.dart';
+import 'package:service_engineer/Bloc/quotationReply/quotationReply_state.dart';
+import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../Bloc/quotationReply/quotationReply_event.dart';
 import '../../../Config/font.dart';
+import '../../../Model/quotation_reply_detail_repo.dart';
 import '../../../Widget/app_small_button.dart';
 import '../../bottom_navbar.dart';
 import '../MakeQuotations/make_quotatons.dart';
 
 
 class QuotationsReplyDetailsScreen extends StatefulWidget {
-  const QuotationsReplyDetailsScreen({Key? key}) : super(key: key);
-
+  QuotationsReplyDetailsScreen({Key? key,required this.quotationReplyList}) : super(key: key);
+  QuotationReplyModel quotationReplyList;
   @override
   _QuotationsReplyDetailsScreenState createState() => _QuotationsReplyDetailsScreenState();
 }
@@ -25,10 +33,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
   String? phoneNum;
   String? role;
   bool loading = true;
-
-  // String? smsCode;
-  // bool smsCodeSent = false;
-  // String? verificationId;
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequired = new GlobalKey();
@@ -37,7 +42,14 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
   final GlobalKey<ExpansionTileCardState> cardMessage = new GlobalKey();
 
   bool value = false;
-
+  QuotationReplyBloc? _quotationReplyBloc;
+  List<QuotationRequiredItems>? quotationRequiredItemList;
+  List<QuotationRequiredItems>? quotationOtherItemList;
+  List<QuotationCharges>? quotationChargesList;
+  List<CustomerReplyMsg>? quotationMsgList;
+  double itemRequiredTotal = 0.0;
+  double itemOthersTotal = 0.0;
+  double grandTotal = 0.0;
 
 
 
@@ -47,6 +59,11 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
     //saveDeviceTokenAndId();
     super.initState();
     _phoneNumberController.clear();
+    _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
+    _quotationReplyBloc!.add(JobWorkQuotationReplyDetail(machineEnquiryId: widget.quotationReplyList.enquiryId.toString(),
+        customerUserId: widget.quotationReplyList.userId.toString()));
+    // _quotationReplyBloc!.add(JobWorkQuotationReplyDetail(machineEnquiryId: '44',
+    //     customerUserId: '12'));
 
   }
   @override
@@ -56,374 +73,6 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
     // getroleofstudent();
   }
 
-  Widget buildItemRequiredList() {
-    // if (productList.length <= 0) {
-    //   return ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-    //     itemBuilder: (context, index) {
-    //       return Shimmer.fromColors(
-    //         baseColor: Theme.of(context).hoverColor,
-    //         highlightColor: Theme.of(context).highlightColor,
-    //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //     itemCount: List.generate(8, (index) => index).length,
-    //   );
-    // }
-
-    // return ListView.builder(
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  ItemRequiredCard();
-      },
-      itemCount: 3,
-    );
-  }
-
-  Widget ItemRequiredCard()
-  {
-    return Padding(
-        padding: const EdgeInsets.only(bottom:0.0),
-        child: Container(
-          // color: Color(0xffFFE4E5),
-            decoration: BoxDecoration(
-              color: Color(0xffFFE4E5),
-            ),
-            child:Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("1")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product Name or Any...")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("5")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 100")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 500")
-                    ],
-                  ),
-                ],
-              ),
-            )
-        )
-    );
-  }
-
-  Widget buildOtherItemsList() {
-    // if (productList.length <= 0) {
-    //   return ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-    //     itemBuilder: (context, index) {
-    //       return Shimmer.fromColors(
-    //         baseColor: Theme.of(context).hoverColor,
-    //         highlightColor: Theme.of(context).highlightColor,
-    //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //     itemCount: List.generate(8, (index) => index).length,
-    //   );
-    // }
-
-    // return ListView.builder(
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  otherItemsCard();
-      },
-      itemCount: 3,
-    );
-  }
-
-  Widget otherItemsCard()
-  {
-    return Padding(
-        padding: const EdgeInsets.only(bottom:0.0),
-        child: Container(
-          // color: Color(0xffFFE4E5),
-            decoration: BoxDecoration(
-              color: Color(0xffFFE4E5),
-            ),
-            child:Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("1")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product Name or Any...")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("5")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 100")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 500")
-                    ],
-                  ),
-                ],
-              ),
-            )
-        )
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -431,8 +80,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
+              Navigator.of(context).pop();
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
@@ -469,370 +117,440 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          SizedBox(height: 7,),
-          // Item Required
-          ExpansionTileCard(
-            key: cardItemRequired,
-            initiallyExpanded: true,
-            title: Text("Item Required",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
-                child: Column(
-                  children: [
-                    Container(
-                      color: Color(0xffE47273),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("S no.",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Item Name",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(width: 50,),
-                                    Text("QTY",style: TextStyle(color: Colors.white),),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Rate",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Amount",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    buildItemRequiredList(),
-                    Container(
-                      color: Color(0xffFFE4E5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(),
-                          Padding(
-                            padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
-                            child: Row(
-                              children: [
-                                Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                                SizedBox(width: 15,),
-                                Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          // Others Items
-          ExpansionTileCard(
-            key: cardOtherItemRequired,
-            initiallyExpanded: true,
-            title: Text("Other Items( item not available on app)",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
-                child: Column(
-                  children: [
-                    Container(
-                      color: Color(0xffE47273),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("S no.",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Item Name",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(width: 50,),
-                                    Text("QTY",style: TextStyle(color: Colors.white),),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Rate",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Amount",style: TextStyle(color: Colors.white),),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    buildOtherItemsList(),
-                    Container(
-                      color: Color(0xffFFE4E5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(),
-                          Padding(
-                            padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
-                            child: Row(
-                              children: [
-                                Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                                SizedBox(width: 15,),
-                                Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      body: BlocBuilder<QuotationReplyBloc, QuotationReplyState>(builder: (context, state) {
+        return BlocListener<QuotationReplyBloc, QuotationReplyState>(
+            listener: (context, state) {
+              if(state is MachineQuotationReplyDetailLoading){
+                isLoading = state.isLoading;
+              }
+              if(state is MachineQuotationReplyDetailSuccess){
+                quotationRequiredItemList = state.quotationRequiredItemList;
+                quotationOtherItemList = state.quotationOtherItemList;
+                quotationChargesList = state.quotationChargesList;
+                quotationMsgList = state.quotationMsgList;
 
-          Divider(
-            thickness: 2,
-          ),
+              }
+              if(state is MachineQuotationReplyDetailFail){
+                showCustomSnackBar(context,state.msg.toString());
 
-          // Date and Time
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 8.0,top: 8.0),
-            child: Container(
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Date & Time",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                    Container(
-                      child: Text("20 Nov, 2022 / 12PM - 4PM",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 15,
-                            color: Colors.black.withOpacity(0.5)
-                              )),
-                    ),
-                  ],
-                )
-            ),
-          ),
-          Divider(
-            thickness: 2,
-          ),
-          Divider(
-            thickness: 2,
-          ),
-
-          ///Quotation
-          ExpansionTileCard(
-            key: cardQuotations,
-            initiallyExpanded: true,
-            // finalPadding: const EdgeInsets.only(bottom: 0.0),
-            title: Text("Quotation",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 10.0,left: 10.0, bottom: 8.0),
-                child: Column(
-                  children: [
-                    Divider(thickness: 1,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Service charge"),
-                        Text("₹ 20,000"),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Total Items charges"),
-                        Text("₹ 1500"),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Transport charges"),
-                        Text("₹ 1500"),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Other charge"),
-                        Text("₹ 1500"),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("M1 Commission"),
-                        Text("₹ 550"),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("GST %"),
-                        Text("5%"),
-                      ],
-                    ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Amount",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                            )),
-                        Text("₹20000",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-
-
-            ],
-          ),
-
-          ///Terms and Conditions
-          ExpansionTileCard(
-            key: cardTermsConditions,
-            initiallyExpanded: true,
-            title:  Text("Terms and Conditions",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            children: <Widget>[
-              Row(
-                children: [
-                  Checkbox(
-                    value: this.value,
-                    activeColor: Colors.red,
-                    onChanged: (value) {
-                      setState(() {
-                        this.value = value!;
-                      });
-                    },
-                  ),
-                  const Text("I agree to the terms and conditions.",
+              }
+            },
+            child: isLoading ? quotationRequiredItemList!.length <= 0 ? Center(child: CircularProgressIndicator(),):
+            ListView(
+              children: [
+                SizedBox(height: 7,),
+                // Item Required
+                quotationRequiredItemList!.length <= 0 ? Container():
+                ExpansionTileCard(
+                  key: cardItemRequired,
+                  initiallyExpanded: true,
+                  title: Text("Item Required",
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins-Medium',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400))
-                ],
-              )
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
 
-            ],
-          ),
+                        children: [
+                          DataTable(
+                            headingRowHeight: 40,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                    (states) => Color(0xffE47273)),
+                            columnSpacing: 15.0,
+                            columns:const [
+                              DataColumn(
+                                label: Expanded(child: Text('S no')),
+                              ),
+                              DataColumn(
+                                label: Text('Item Name'),
+                              ),
+                              DataColumn(
+                                label: Text('QTY'),
+                              ),
+                              DataColumn(
+                                label: Text('Rate'),
+                              ),
+                              DataColumn(
+                                label: Text('Amount'),
+                              ),
+                            ],
+                            rows: List.generate(quotationRequiredItemList!.length, (index) {
+                              int itemNo = index+1;
+                              itemRequiredTotal = quotationRequiredItemList!
+                                  .map((item) => double.parse(item.amount.toString()))
+                                  .reduce((value, current) => value + current);
 
-          ///Message from Client
-          ExpansionTileCard(
-            key: cardMessage,
-            initiallyExpanded: true,
-            title:  Text("Message from Client",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
-                child: Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                    " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, "
-                    "when an unknown printer"),
-              ),
-            ],
-          ),
-        ],
-      ),
+                              grandTotal = itemRequiredTotal + itemOthersTotal + double.parse(quotationChargesList![0].serviceCharge.toString()) +
+                                  double.parse(quotationChargesList![0].transportCharge.toString()) + double.parse(quotationChargesList![0].commission.toString());
+
+                              return _getItemRequiredDataRow(quotationRequiredItemList![index],itemNo);
+                            }),),
+                        ],
+                      ),
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xffFFE4E5),
+                          border: Border(
+                            top: BorderSide(
+                              color: Colors.black,
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, right: 40.0, bottom: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Total",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text(
+                                    "₹ $itemRequiredTotal",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
+
+                // Others Items
+                quotationOtherItemList!.length <= 0 ? Container():
+                ExpansionTileCard(
+                  key: cardOtherItemRequired,
+                  initiallyExpanded: true,
+                  title: Text("Other Items( item not available on app)",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+
+                        children: [
+                          DataTable(
+                            headingRowHeight: 40,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                    (states) => Color(0xffE47273)),
+                            columnSpacing: 15.0,
+                            columns:const [
+                              DataColumn(
+                                label: Expanded(child: Text('S no')),
+                              ),
+                              DataColumn(
+                                label: Text('Item Name'),
+                              ),
+                              DataColumn(
+                                label: Text('QTY'),
+                              ),
+                              DataColumn(
+                                label: Text('Rate'),
+                              ),
+                              DataColumn(
+                                label: Text('Amount'),
+                              ),
+                            ],
+                            rows: List.generate(quotationOtherItemList!.length, (index) {
+                              int itemNo = index+1;
+                              itemOthersTotal = quotationOtherItemList!
+                                  .map((item) => double.parse(item.amount.toString()))
+                                  .reduce((value, current) => value + current);
+                              return _getOtherItemRequiredDataRow(quotationOtherItemList![index],itemNo);
+                            }),),
+                        ],
+                      ),
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xffFFE4E5),
+                          border: Border(
+                            top: BorderSide(
+                              color: Colors.black,
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, right: 40.0, bottom: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Total",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text(
+                                    "₹ $itemOthersTotal",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                Divider(
+                  thickness: 2,
+                ),
+
+                // Date and Time
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                  child: Container(
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Date & Time",
+                              style: TextStyle(fontFamily: 'Poppins-Medium',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                          Container(
+                            child: Text(DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(quotationRequiredItemList![0].dateAndTime!.toString())).toString(),
+                                style: TextStyle(fontFamily: 'Poppins-Medium',
+                                    fontSize: 15,
+                                    color: Colors.black.withOpacity(0.5)
+                                )),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+                Divider(
+                  thickness: 2,
+                ),
+                Divider(
+                  thickness: 2,
+                ),
+
+                ///Quotation
+                ExpansionTileCard(
+                  key: cardQuotations,
+                  initiallyExpanded: true,
+                  // finalPadding: const EdgeInsets.only(bottom: 0.0),
+                  title: Text("Quotation",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0,left: 10.0, bottom: 8.0),
+                      child: Column(
+                        children: [
+                          Divider(thickness: 1,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Total Items charges"),
+                              Text("₹ ${itemRequiredTotal + itemOthersTotal}"),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Service charge"),
+                              Text("₹ ${quotationChargesList![0].serviceCharge}"),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Transport charges"),
+                              Text("₹ ${quotationChargesList![0].transportCharge}"),
+                            ],
+                          ),
+
+                          SizedBox(height: 5,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("M1 Commission"),
+                              Text("₹ ${quotationChargesList![0].commission}"),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("GST %"),
+                              Text("${quotationChargesList![0].gst}%"),
+                            ],
+                          ),
+                          Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Amount",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Poppins-Medium',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500
+                                  )),
+                              Text("₹ $grandTotal",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Poppins-Medium',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+
+
+                  ],
+                ),
+
+                ///Terms and Conditions
+                ExpansionTileCard(
+                  key: cardTermsConditions,
+                  initiallyExpanded: true,
+                  title:  Text("Terms and Conditions",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: this.value,
+                          activeColor: Colors.red,
+                          onChanged: (value) {
+                            setState(() {
+                              this.value = value!;
+                            });
+                          },
+                        ),
+                        const Text("I agree to the terms and conditions.",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Poppins-Medium',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400))
+                      ],
+                    )
+
+                  ],
+                ),
+
+                ///Message from Client
+                quotationMsgList!.length <= 0 ? Container():
+                ExpansionTileCard(
+                  key: cardMessage,
+                  initiallyExpanded: true,
+                  title:  Text("Message from Client",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(quotationMsgList![0].message.toString(),textAlign: TextAlign.start,)),
+                    ),
+                  ],
+                ),
+              ],
+            ) : Center(child: CircularProgressIndicator(),),
+
+          // Center(
+          //   child: CircularProgressIndicator(),
+          // )
+
+        );
+      })
+
+
+    );
+  }
+
+  DataRow _getItemRequiredDataRow(QuotationRequiredItems? requiredItemData,index) {
+    return DataRow(
+      color: MaterialStateColor.resolveWith((states) {
+        return Color(0xffFFE4E5); //make tha magic!
+      }),
+      cells: <DataCell>[
+        DataCell(Text(index.toString())),
+        DataCell(Text(requiredItemData!.itemName.toString())),
+        DataCell(Text(requiredItemData.itemQty.toString())),
+        DataCell(Text('₹${requiredItemData.rate.toString()}')),
+        DataCell(Text('₹${requiredItemData.amount.toString()}')),
+      ],
+    );
+  }
+
+  DataRow _getOtherItemRequiredDataRow(QuotationRequiredItems? requiredOtherItemData,index) {
+    return DataRow(
+      color: MaterialStateColor.resolveWith((states) {
+        return Color(0xffFFE4E5); //make tha magic!
+      }),
+      cells: <DataCell>[
+        DataCell(Text(index.toString())),
+        DataCell(Text(requiredOtherItemData!.itemName.toString())),
+        DataCell(Text(requiredOtherItemData.itemQty.toString())),
+        DataCell(Text('₹${requiredOtherItemData.rate.toString()}')),
+        DataCell(Text('₹${requiredOtherItemData.amount.toString()}')),
+      ],
     );
   }
 }

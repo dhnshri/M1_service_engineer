@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 
@@ -31,6 +32,25 @@ class QuotationReplySuccess extends QuotationReplyState {
   List<QuotationReplyModel> quotationReplyListData;
   String message;
   QuotationReplySuccess({required this.quotationReplyListData, required this.message});
+}
+
+class MachineQuotationReplyDetailLoading extends QuotationReplyState {
+  bool isLoading;
+  MachineQuotationReplyDetailLoading({required this.isLoading});
+}
+class MachineQuotationReplyDetailFail extends QuotationReplyState {
+  final String? msg;
+  MachineQuotationReplyDetailFail({this.msg});
+}
+
+class MachineQuotationReplyDetailSuccess extends QuotationReplyState {
+  List<QuotationRequiredItems> quotationRequiredItemList;
+  List<QuotationRequiredItems> quotationOtherItemList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+
+  MachineQuotationReplyDetailSuccess({required this.quotationRequiredItemList, required this.quotationOtherItemList,
+  required this.quotationChargesList,required this.quotationMsgList});
 }
 
 // Job Work Enquiry Quotation Reply

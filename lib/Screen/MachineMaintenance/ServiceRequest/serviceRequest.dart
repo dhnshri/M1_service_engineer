@@ -245,7 +245,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
                             // serviceListData.dateAndTime!,
-                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceListData.dateAndTime!.toString())).toString()     ,
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceListData.dateAndTime!.toString())).toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins-Regular',
                               fontSize: 12,

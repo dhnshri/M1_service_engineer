@@ -87,6 +87,14 @@ class UserRepository {
     final params = {"offset":offSet,'service_user_id':userId};
     return await Api.getQuotaionReplyJWEList(params);
   }
+
+  ///Machine maintainance Quotation reply detail
+  Future<dynamic> fetchMachineQuotationReplyDetail({String? machineEnquiryId,String? customerUserId}) async {
+    final params = {"machine_enquiry_id":machineEnquiryId,'customer_user_id':customerUserId};
+    return await Api.getMachineQuotaionReplyDetail(params);
+  }
+
+
   //Job Work Enquiry Service Request Api
   Future<dynamic> fetchServiceRequestJobWorkEnquiryList({String? userID, String? offSet}) async {
     final params = {"offset":offSet};

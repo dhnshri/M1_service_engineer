@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Model/JobWorkEnquiry/service_request_detail_model.dart';
+import 'package:service_engineer/Model/product_model.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/ReviceQuotations/enquiry_previewQuotation.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MakeQuotations/preview.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MakeQuotations/service_charges.dart';
@@ -18,6 +19,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../Config/font.dart';
 import '../../../../Constant/theme_colors.dart';
 import '../../../../Widget/common.dart';
+import '../../../../Widget/custom_snackbar.dart';
 import '../../../../Widget/stepper_button.dart';
 import '../../../bottom_navbar.dart';
 
@@ -56,15 +58,16 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
   bool cgstValue = false;
   bool sgstValue = false;
   bool igstValue = false;
+  // ItemModel? itemData;
+  List<ItemModel> itemData = List.empty(growable: true);
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-
-
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -159,21 +162,14 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                                         color: ThemeColors.textFieldBackgroundColor)),
                               ),
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Item Name';
                                 }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
+
                                 return null;
                               },
                               onChanged: (value) {
-                                // profile.name = value;
+                                // itemData[index].name = value;
                                 setState(() {
                                   // _nameController.text = value;
                                   if (_formKey.currentState!.validate()) {}
@@ -189,11 +185,11 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               // controller: quantityController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 height: 1.5,
                               ),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 filled: true,
                                 fillColor: ThemeColors.textFieldBackgroundColor,
                                 hintText: "Quantity",
@@ -222,14 +218,11 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                                         width: 0.8,
                                         color: ThemeColors.textFieldBackgroundColor)),
                               ),
+
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
+
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter Item Name';
+                                  return 'Please enter Quantity';
                                 }
                                 // else if(!regex.hasMatch(value)){
                                 //   return 'Please enter valid name';
@@ -284,6 +277,10 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                                         width: 0.8,
                                         color: ThemeColors.textFieldBackgroundColor)),
                               ),
+                              onSaved: (val) => {
+                                itemData[index].rate = val
+                              },
+
                               validator: (value) {
 
                                 if (value == null || value.isEmpty) {
@@ -293,6 +290,11 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               },
                               onChanged: (value) {
                                 setState(() {
+                                  // itemData[index].rate = value;
+                                  itemData.add(ItemModel(
+                                    // rate: itemRateController[index].text,
+                                    rate: value,
+                                  ));
                                   if (_formKey.currentState!.validate()) {}
                                 });
                               },
@@ -304,11 +306,11 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               controller: volumeController[index],
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.number,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 height: 1.5,
                               ),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 filled: true,
                                 fillColor: ThemeColors.textFieldBackgroundColor,
                                 hintText: "Volume",
@@ -337,6 +339,8 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                                         width: 0.8,
                                         color: ThemeColors.textFieldBackgroundColor)),
                               ),
+                              onSaved: (val) => itemData[index].volume = val,
+
                               validator: (value) {
 
                                 if (value == null || value.isEmpty) {
@@ -346,6 +350,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               },
                               onChanged: (value) {
                                 setState(() {
+                                  // itemData[index].volume=value;
                                   if (_formKey.currentState!.validate()) {}
                                 });
                               },
@@ -1114,6 +1119,10 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                           child: ElevatedButton(
                             onPressed: () async {
 
+                              // if(itemData.length == widget.requestDetailList!.length){
+                              //   showCustomSnackBar(context,'Empty',isError: false);
+                              //
+                              // }
                               Navigator.push(context, MaterialPageRoute(builder: (contex)=>
                                   EnquiryQuotationsPreviewScreen(requestDetailList: widget.requestDetailList,itemRateController: itemRateController,
                                   cgstController: cgstController,igstController: igstController,packingController: packingController,

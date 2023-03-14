@@ -21,6 +21,16 @@ class OnQuotationReplyJWEList extends QuotationReplyEvent {
   OnQuotationReplyJWEList({required this.offSet,required this.userId});
 
 }
+
+class JobWorkQuotationReplyDetail extends QuotationReplyEvent {
+
+  String machineEnquiryId;
+  String customerUserId;
+
+  JobWorkQuotationReplyDetail({required this.machineEnquiryId,required this.customerUserId});
+
+}
+
 // jOB transpotation QuotationReply
 
 class OnQuotationReplyTranspotationList extends QuotationReplyEvent {
