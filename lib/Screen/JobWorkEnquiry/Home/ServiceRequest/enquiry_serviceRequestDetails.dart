@@ -314,7 +314,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
               child: AppSmallButton(
                 onPressed: () async {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen ()));
+                      MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen (requestDetailList: serviceRequestDetailData,)));
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius:

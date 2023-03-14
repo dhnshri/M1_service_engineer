@@ -294,3 +294,18 @@ class SendQuotationSuccess extends HomeState {
   String message;
   SendQuotationSuccess({required this.message});
 }
+
+class JobWorkSendQuotationLoading extends HomeState {
+  bool isLoading;
+  JobWorkSendQuotationLoading({required this.isLoading});
+}
+
+class JobWorkSendQuotationFail extends HomeState {
+  final String? msg;
+  JobWorkSendQuotationFail({this.msg});
+}
+
+class JobWorkSendQuotationSuccess extends HomeState {
+  String message;
+  JobWorkSendQuotationSuccess({required this.message});
+}

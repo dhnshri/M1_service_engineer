@@ -485,7 +485,7 @@ class _EnquiryReviceQuotationScreenState extends State<EnquiryReviceQuotationScr
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
                           onPressed: () async {
-                            Navigator.push(context, MaterialPageRoute(builder: (contex)=>EnquiryQuotationsPreviewScreen()));
+                            // Navigator.push(context, MaterialPageRoute(builder: (contex)=>EnquiryQuotationsPreviewScreen()));
                           },
                           style: ElevatedButton.styleFrom(
                             primary: ThemeColors.defaultbuttonColor,

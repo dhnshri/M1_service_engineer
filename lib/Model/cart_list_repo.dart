@@ -41,6 +41,7 @@ class CartListModel {
   String? discountPrice;
   String? price;
   String? gst;
+  String? volume;
 
   CartListModel(
       {this.categoryName,
@@ -53,7 +54,8 @@ class CartListModel {
         this.userId,
         this.discountPrice,
         this.price,
-        this.gst});
+        this.gst,
+        this.volume});
 
   CartListModel.fromJson(Map<String, dynamic> json) {
     categoryName = json['category_name'];
@@ -67,6 +69,7 @@ class CartListModel {
     discountPrice = json['discount_price'];
     price = json['price'];
     gst = json['gst'];
+    volume = json['volume'];
   }
 
   Map<String, dynamic> toJson() {
@@ -82,6 +85,7 @@ class CartListModel {
     data['discount_price'] = this.discountPrice;
     data['price'] = this.price;
     data['gst'] = this.gst;
+    data['volume'] = this.volume;
     return data;
   }
 }

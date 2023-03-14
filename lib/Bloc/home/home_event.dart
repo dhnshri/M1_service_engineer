@@ -1,5 +1,7 @@
 
 
+import 'package:flutter/cupertino.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/service_request_detail_model.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/item_not_available_model.dart';
 
@@ -157,5 +159,28 @@ class SendQuotation extends HomeEvent {
   SendQuotation({ required this.serviceUserId, required this.workingTime, required this.dateOfJoining,
     required this.serviceCharge,required this.handlingCharge,required this.transportCharge,required this.itemList,
     required this.itemNotAvailableList, required this.commission,required this.machineEnquiryDate, required this.machineEnquiryId});
+
+}
+
+class JobWorkSendQuotation extends HomeEvent {
+
+  String serviceUserId;
+  String jobWorkEnquiryId;
+  String jobWorkEnquirydate;
+  String packingCharge;
+  String testingCharge;
+  String transportCharge;
+  List<TextEditingController> itemRateController;
+  List<TextEditingController> volumeController;
+  List<JobWorkEnquiryDetailsModel> itemList;
+  String cgst;
+  String sgst;
+  String igst;
+  String commission;
+
+  JobWorkSendQuotation({ required this.serviceUserId, required this.jobWorkEnquiryId, required this.jobWorkEnquirydate,
+    required this.packingCharge,required this.testingCharge,required this.transportCharge,required this.itemList,
+    required this.commission,required this.cgst, required this.sgst,required this.igst,required this.itemRateController,
+    required this.volumeController});
 
 }
