@@ -125,6 +125,141 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
   //   return file;
   // }
 
+  Widget buildItemRequiredList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      padding: EdgeInsets.only(top: 10, bottom: 15),
+      itemBuilder: (context, index) {
+        return  ExpansionTileCard(
+          initiallyExpanded: true,
+          key: cardB,
+          title: Text("Item Required",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+              )),
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                      child: Text(index.toString())),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Item Name:",style: ExpanstionTileLeftDataStyle,),
+                      Text(serviceRequestDetailData![0].itemName.toString(),style: ExpanstionTileRightDataStyle,),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Quantity Required:",style: ExpanstionTileLeftDataStyle,),
+                      Text(serviceRequestDetailData![0].qty.toString(),style: ExpanstionTileRightDataStyle,),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Delivery Location:",style: ExpanstionTileLeftDataStyle,),
+                      Text(serviceRequestDetailData![0].cityName.toString(),style: ExpanstionTileRightDataStyle,),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Drawing Attachment:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500
+                        )),
+                  ),
+                  SizedBox(height: 5,),
+                  Padding(
+                    padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10,),
+
+                        Container(
+                          decoration: BoxDecoration(
+                              color: ThemeColors.imageContainerBG
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Text('Image-abc',
+                                      style: TextStyle(
+                                          color: ThemeColors.buttonColor,
+                                          fontFamily: 'Poppins-Regular',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400
+                                      )),
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    final file = await PDF().loadPdfFromNetwork(url.toString());
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            PDFScreen(file: file,url: url.toString(),),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    child: Text('View',
+                                        style: TextStyle(
+                                            color: ThemeColors.buttonColor,
+                                            fontFamily: 'Poppins-Regular',
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500
+                                        )),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black,width: 1),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(serviceRequestDetailData![0].about.toString(),
+                              style:ExpanstionTileOtherInfoStyle ,),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          ],
+        );
+      },
+      itemCount:serviceRequestDetailData!.length,
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -261,127 +396,8 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                     ],
                   ),
                   ///Item Required
-                  ExpansionTileCard(
-                    initiallyExpanded: true,
-                    key: cardB,
-                    title: Text("Item Required",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
-                        )),
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Item Name:",style: ExpanstionTileLeftDataStyle,),
-                                Text(serviceRequestDetailData![0].itemName.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Quantity Required:",style: ExpanstionTileLeftDataStyle,),
-                                Text(serviceRequestDetailData![0].qty.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Delivery Location:",style: ExpanstionTileLeftDataStyle,),
-                                Text(serviceRequestDetailData![0].cityName.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text("Drawing Attachment:",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  )),
-                            ),
-                            SizedBox(height: 5,),
-                            Padding(
-                              padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10,),
-
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: ThemeColors.imageContainerBG
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            child: Text('Image-abc',
-                                                style: TextStyle(
-                                                    color: ThemeColors.buttonColor,
-                                                    fontFamily: 'Poppins-Regular',
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400
-                                                )),
-                                          ),
-                                          InkWell(
-                                            onTap: () async {
-                                              final file = await PDF().loadPdfFromNetwork(url.toString());
-
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PDFScreen(file: file,url: url.toString(),),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              child: Text('View',
-                                                  style: TextStyle(
-                                                      color: ThemeColors.buttonColor,
-                                                      fontFamily: 'Poppins-Regular',
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w500
-                                                  )),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10,),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black,width: 1),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(serviceRequestDetailData![0].about.toString(),
-                                        style:ExpanstionTileOtherInfoStyle ,),
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                    ],
-                  ),
+                  buildItemRequiredList(),
                   // Other Info
-
                 ],
               )
                   : Center(

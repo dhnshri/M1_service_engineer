@@ -183,7 +183,7 @@ class Api {
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       print(responseJson);
-      return JobWorkEnquiryServiceRequestRepo.fromJson(responseJson);
+      return ServiceRequestDetailRepo.fromJson(responseJson);
     }
   }
 
