@@ -20,6 +20,7 @@ import '../Model/Transpotation/myTaskListModel.dart';
 import '../Model/Transpotation/quotationReplyModel.dart';
 import '../Model/Transpotation/serviceRequestListModel.dart';
 import '../Model/customer_login.dart';
+import '../Model/profile_repo.dart';
 import '../Model/quotation_reply_detail_repo.dart';
 
 
@@ -35,7 +36,9 @@ class Api {
   static const String QUOTATION_REPLY_LIST="get_machine_quotation_reply_list";
   static const String QUOTATION_REPLY_DETAIL="get_machine_quotation_reply_details_list";
   static const String QUOTATION_REPLY_TRANSPORT_LIST="get_transport_quotation_reply_list";
+  static const String TRANSPORT_QUOTATION_REPLY_DETAIL="get_transport_quotation_reply_details_list";
   static const String QUOTATION_REPLY_LIST_JWE="get_job_work_quotation_reply_list";
+  static const String jOBWORK_QUOTATION_REPLY_DETAIL="get_job_work_quotation_reply_details_list";
   static const String SERVICE_REQUEST_LIST_JWE="job_work_enquiry_service_request_list";
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
   static const String SERVICE_REQUEST_TRANSPORTATION_DETAIL="service_request_details";
@@ -52,6 +55,7 @@ class Api {
   static const String CREATE_TASK="add_daily_update_task";
   static const String COMPLETE_TASK="update_daily_my_task_list";
   static const String MACHINE_QUOTATION="machine_maintainence_quatation";
+  static const String JOBWORK_PROFILE="get_job_work_enquiry_profile";
 
 
 
@@ -138,6 +142,42 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return QuotaionReplyDetailRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getJobWorkQuotaionReplyDetail(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+jOBWORK_QUOTATION_REPLY_DETAIL),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkQuotaionReplyDetailRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getTransportQuotaionReplyDetail(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRANSPORT_QUOTATION_REPLY_DETAIL),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return TransportQuotaionReplyDetailRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getJobWorkProfileData(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOBWORK_PROFILE),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkProfileRepo.fromJson(responseJson);
     }
   }
 

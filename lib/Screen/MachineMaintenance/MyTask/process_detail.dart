@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
+import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/MyTask/my_task_detail.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/service_provider_list.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import '../../../Constant/theme_colors.dart';
@@ -12,8 +14,9 @@ import '../../../Constant/theme_colors.dart';
 
 class ProcessDetailScreen extends StatefulWidget {
   TrackProcessModel trackProgressData;
+  MyTaskModel myTaskData;
 
-  ProcessDetailScreen({Key? key,required this.trackProgressData}) : super(key: key);
+  ProcessDetailScreen({Key? key,required this.trackProgressData,required this.myTaskData}) : super(key: key);
 
   @override
   _ProcessDetailScreenState createState() => _ProcessDetailScreenState();
@@ -107,8 +110,9 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                   }
                   if(state is TaskCompleteSuccess){
                     showCustomSnackBar(context,state.message.toString(),isError: false);
-                    Navigator.of(context).pop();
-                    // Navigator.pushReplacement(context,newRoute)
+                    // Navigator.of(context).pop();
+                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>
+                    MyTaskDetailsScreen(myTaskData: widget.myTaskData,)));
 
                   }
                   if(state is TaskCompleteFail){

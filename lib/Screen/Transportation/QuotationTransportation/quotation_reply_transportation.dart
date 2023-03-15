@@ -46,6 +46,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
     super.initState();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
     _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
+    // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '5',offSet: '0'));
   }
 
   @override
@@ -63,7 +64,12 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
         //return  quotationsReplyCardNew(quotationReplyList[index]);
-        return quotationsReplyCardNew(quotationReplyList[index]);
+        return InkWell(
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => QuotationForTransportation(quotationReplyList: quotationReplyList[index],)));
+            },
+            child: quotationsReplyCardNew(quotationReplyList[index]));
       },
       itemCount: quotationReplyList.length,
     );
@@ -346,12 +352,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
                padding: const EdgeInsets.all(10.0),
                child: ListView(
                  children: [
-                   InkWell(
-                       onTap: (){
-                         Navigator.push(context,
-                             MaterialPageRoute(builder: (context) => QuotationForTransportation()));
-                       },
-                       child: buildQuotationsaReplyList(quotationReplyList)),
+                   buildQuotationsaReplyList(quotationReplyList),
                  ],
                ),
              ),

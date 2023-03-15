@@ -131,6 +131,15 @@ class UpdateJobWorkProfile extends ProfileEvent {
 
 }
 
+class GetJobWorkProfile extends ProfileEvent {
+  String serviceUserId;
+  String roleId;
+
+  GetJobWorkProfile({ required this.serviceUserId, required this.roleId,
+  });
+
+}
+
 
 class UpdateTransportProfile extends ProfileEvent {
 

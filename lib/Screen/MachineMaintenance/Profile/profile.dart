@@ -496,7 +496,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
           .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
 
       if (educationForms != null) educationForms.removeAt(index);
-      if (educationForms != null) educationForms.removeAt(certificateIndex);
+      if (educationCertificateModel.id != null) educationForms.removeAt(certificateIndex);
     });
   }
 

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
+import 'package:service_engineer/Bloc/profile/profile_event.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/home.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/enquiry_quotations_reply.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Order/order_items.dart';
 import 'package:service_engineer/Screen/Transportation/Profile/transportation_profile.dart';
+import 'package:service_engineer/Utils/application.dart';
 
 import '../Constant/theme_colors.dart';
 import 'Dashboard/dashboard_screen.dart';
@@ -103,11 +106,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   }
 
+  ProfileBloc? _profileBloc;
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
+    _profileBloc!.add(GetJobWorkProfile(serviceUserId: Application.customerLogin!.id.toString(),roleId: Application.customerLogin!.role.toString()));
     if(widget.index!=null){
       setState(() {
         _selectedIndex = widget.index;

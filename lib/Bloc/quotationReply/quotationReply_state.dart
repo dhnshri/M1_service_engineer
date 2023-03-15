@@ -53,6 +53,42 @@ class MachineQuotationReplyDetailSuccess extends QuotationReplyState {
   required this.quotationChargesList,required this.quotationMsgList});
 }
 
+class JobWorkQuotationReplyDetailLoading extends QuotationReplyState {
+  bool isLoading;
+  JobWorkQuotationReplyDetailLoading({required this.isLoading});
+}
+class JobWorkQuotationReplyDetailFail extends QuotationReplyState {
+  final String? msg;
+  JobWorkQuotationReplyDetailFail({this.msg});
+}
+
+class JobWorkQuotationReplyDetailSuccess extends QuotationReplyState {
+  List<QuotationRequiredItems> quotationRequiredItemList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+
+  JobWorkQuotationReplyDetailSuccess({required this.quotationRequiredItemList,
+    required this.quotationChargesList,required this.quotationMsgList});
+}
+
+class TransportQuotationReplyDetailLoading extends QuotationReplyState {
+  bool isLoading;
+  TransportQuotationReplyDetailLoading({required this.isLoading});
+}
+class TransportQuotationReplyDetailFail extends QuotationReplyState {
+  final String? msg;
+  TransportQuotationReplyDetailFail({this.msg});
+}
+
+class TransportQuotationReplyDetailSuccess extends QuotationReplyState {
+  List<VehicleDetails> vehicleDetailsList;
+  List<QuotationCharges> quotationDetailsList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+  TransportQuotationReplyDetailSuccess({required this.vehicleDetailsList,required this.quotationDetailsList,
+    required this.quotationChargesList,required this.quotationMsgList});
+}
+
 // Job Work Enquiry Quotation Reply
 class QuotationReplyJWELoading extends QuotationReplyState {
   bool isLoading;

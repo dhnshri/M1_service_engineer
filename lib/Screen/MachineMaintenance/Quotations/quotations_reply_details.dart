@@ -29,9 +29,6 @@ class QuotationsReplyDetailsScreen extends StatefulWidget {
 
 class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  String dropdownValue = '+ 91';
-  String? phoneNum;
-  String? role;
   bool loading = true;
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -60,7 +57,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
     super.initState();
     _phoneNumberController.clear();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(JobWorkQuotationReplyDetail(machineEnquiryId: widget.quotationReplyList.enquiryId.toString(),
+    _quotationReplyBloc!.add(MachineQuotationReplyDetail(machineEnquiryId: widget.quotationReplyList.enquiryId.toString(),
         customerUserId: widget.quotationReplyList.userId.toString()));
     // _quotationReplyBloc!.add(JobWorkQuotationReplyDetail(machineEnquiryId: '44',
     //     customerUserId: '12'));
@@ -83,7 +80,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
               Navigator.of(context).pop();
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('#102GRDSA36987',style:appBarheadingStyle ,),
+        title: Text(
+            '#${widget.quotationReplyList.enquiryId.toString()}',style:appBarheadingStyle ,),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
@@ -103,9 +101,17 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
             ),
             AppSmallButton(
               onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MakeQuotationScreen ()));
-              },
+                if(value==true) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MakeQuotationScreen()));
+                  }
+                else{
+                  showCustomSnackBar(context,'Please agree the terms and condition.');
+
+                }
+                },
               shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
@@ -454,6 +460,28 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   ],
                 ),
 
+                ///Message from Client
+                quotationMsgList!.length <= 0 ? Container():
+                ExpansionTileCard(
+                  key: cardMessage,
+                  initiallyExpanded: true,
+                  title:  Text("Message from Client",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins-Medium',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(quotationMsgList![0].message.toString(),textAlign: TextAlign.start,)),
+                    ),
+                  ],
+                ),
+
                 ///Terms and Conditions
                 ExpansionTileCard(
                   key: cardTermsConditions,
@@ -486,28 +514,6 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                       ],
                     )
 
-                  ],
-                ),
-
-                ///Message from Client
-                quotationMsgList!.length <= 0 ? Container():
-                ExpansionTileCard(
-                  key: cardMessage,
-                  initiallyExpanded: true,
-                  title:  Text("Message from Client",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500
-                      )),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(quotationMsgList![0].message.toString(),textAlign: TextAlign.start,)),
-                    ),
                   ],
                 ),
               ],

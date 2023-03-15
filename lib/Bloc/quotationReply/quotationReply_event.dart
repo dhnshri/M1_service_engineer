@@ -22,13 +22,28 @@ class OnQuotationReplyJWEList extends QuotationReplyEvent {
 
 }
 
-class JobWorkQuotationReplyDetail extends QuotationReplyEvent {
+class MachineQuotationReplyDetail extends QuotationReplyEvent {
 
   String machineEnquiryId;
   String customerUserId;
 
-  JobWorkQuotationReplyDetail({required this.machineEnquiryId,required this.customerUserId});
+  MachineQuotationReplyDetail({required this.machineEnquiryId,required this.customerUserId});
 
+}
+
+class JobWorkQuotationReplyDetail extends QuotationReplyEvent {
+
+  String jobWorkEnquiryId;
+  String customerUserId;
+
+  JobWorkQuotationReplyDetail({required this.jobWorkEnquiryId,required this.customerUserId});
+
+}
+
+class TransportQuotationReplyDetail extends QuotationReplyEvent {
+  String transportEnquiryId;
+  String customerUserId;
+  TransportQuotationReplyDetail({required this.transportEnquiryId,required this.customerUserId});
 }
 
 // jOB transpotation QuotationReply
