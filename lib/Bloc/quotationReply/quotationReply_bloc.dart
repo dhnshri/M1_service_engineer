@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
@@ -66,7 +67,71 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       }
     }
 
-// job work enquiry QuotationReply List
+    //Machine Maintainance Quotation reply detail
+    if (event is MachineQuotationReplyDetail) {
+      ///Notify loading to UI
+      yield MachineQuotationReplyDetailLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final QuotaionReplyDetailRepo result = await userRepository!
+          .fetchMachineQuotationReplyDetail(
+          machineEnquiryId: event.machineEnquiryId,
+          customerUserId: event.customerUserId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+        ///For Required Item List
+        final Iterable refactorRequiredItemList = result.quotationRequiredItems! ?? [];
+        final requiredItemList = refactorRequiredItemList.map((item) {
+          return QuotationRequiredItems.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $requiredItemList');
+
+        ///For other Item List
+        final Iterable refactorOtherItemList = result.quotationOtherItems! ?? [];
+        final otherItemList = refactorOtherItemList.map((item) {
+          return QuotationRequiredItems.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $otherItemList');
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
+        final quotationChargesList = refactorQuotationChargesList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationChargesList');
+
+        ///For Customer Message
+        final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
+        final msgsList = refactormMsgList.map((item) {
+          return CustomerReplyMsg.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $msgsList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield MachineQuotationReplyDetailLoading(
+            isLoading: true,
+          );
+          yield MachineQuotationReplyDetailSuccess(quotationRequiredItemList: requiredItemList,
+            quotationOtherItemList: otherItemList,quotationChargesList: quotationChargesList,quotationMsgList: msgsList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield MachineQuotationReplyDetailFail(msg: '');
+        }
+      } else {
+        ///Notify loading to UI
+        yield MachineQuotationReplyDetailLoading(isLoading: false);
+        yield MachineQuotationReplyDetailFail(msg: '');
+      }
+    }
+
+
+    // job work enquiry QuotationReply List
     if (event is OnQuotationReplyJWEList) {
       ///Notify loading to UI
       yield QuotationReplyJWELoading(
@@ -106,6 +171,66 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       }
     }
 
+
+    //Job Work Quotation reply detail
+    if (event is JobWorkQuotationReplyDetail) {
+      ///Notify loading to UI
+      yield JobWorkQuotationReplyDetailLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkQuotaionReplyDetailRepo result = await userRepository!
+          .fetchJobWorkQuotationReplyDetail(
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          customerUserId: event.customerUserId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+        ///For Required Item List
+        final Iterable refactorRequiredItemList = result.quotationRequiredItems! ?? [];
+        final requiredItemList = refactorRequiredItemList.map((item) {
+          return QuotationRequiredItems.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $requiredItemList');
+
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
+        final quotationChargesList = refactorQuotationChargesList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationChargesList');
+
+        ///For Customer Message
+        final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
+        final msgsList = refactormMsgList.map((item) {
+          return CustomerReplyMsg.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $msgsList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield JobWorkQuotationReplyDetailLoading(
+            isLoading: true,
+          );
+          yield JobWorkQuotationReplyDetailSuccess(quotationRequiredItemList: requiredItemList,
+              quotationChargesList: quotationChargesList,quotationMsgList: msgsList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield JobWorkQuotationReplyDetailFail(msg: '');
+        }
+      } else {
+        ///Notify loading to UI
+        yield JobWorkQuotationReplyDetailLoading(isLoading: false);
+        yield JobWorkQuotationReplyDetailFail(msg: '');
+      }
+    }
+
+
+
     // Transpotation QuotationReply List
     if (event is OnQuotationReplyTranspotationList) {
       ///Notify loading to UI
@@ -143,6 +268,70 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
         ///Notify loading to UI
         yield QuotationReplyTransportLoading(isLoading: false);
         yield QuotationReplyTransportFail(msg: result.msg!);
+      }
+    }
+
+    //Job Work Quotation reply detail
+    if (event is TransportQuotationReplyDetail) {
+      ///Notify loading to UI
+      yield TransportQuotationReplyDetailLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final TransportQuotaionReplyDetailRepo result = await userRepository!
+          .fetchTransportQuotationReplyDetail(
+          transportEnquiryId: event.transportEnquiryId,
+          customerUserId: event.customerUserId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+        ///For Required Item List
+        final Iterable refactorVehicleDetailsList = result.vehicleDetails! ?? [];
+        final vehicleDetailsList = refactorVehicleDetailsList.map((item) {
+          return VehicleDetails.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $vehicleDetailsList');
+
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationDetailsList = result.quotationDetails! ?? [];
+        final quotationDetailsList = refactorQuotationDetailsList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationDetailsList');
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
+        final quotationChargesList = refactorQuotationChargesList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationChargesList');
+
+        ///For Customer Message
+        final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
+        final msgsList = refactormMsgList.map((item) {
+          return CustomerReplyMsg.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $msgsList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TransportQuotationReplyDetailLoading(
+            isLoading: true,
+          );
+          yield TransportQuotationReplyDetailSuccess(vehicleDetailsList: vehicleDetailsList,
+              quotationChargesList: quotationChargesList,quotationMsgList: msgsList, quotationDetailsList: quotationDetailsList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield TransportQuotationReplyDetailFail(msg: '');
+        }
+      } else {
+        ///Notify loading to UI
+        yield TransportQuotationReplyDetailLoading(isLoading: false);
+        yield TransportQuotationReplyDetailFail(msg: '');
       }
     }
   }

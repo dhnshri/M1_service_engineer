@@ -13,6 +13,8 @@ import '../../Model/profile_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 
+import '../../Model/profile_repo.dart';
+
 
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
@@ -265,6 +267,71 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield UpdateJobWorkProfileFail(msg: result.msg.toString());
       }
     }
+
+    ///Get Jow Work Profile
+    if (event is GetJobWorkProfile) {
+      ///Notify loading to UI
+      yield GetJobWorkProfileLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkProfileRepo result = await userRepository!
+          .geJobWorkProfile(
+          serviceUserId: event.serviceUserId,
+          roleId: event.roleId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+        ///For Service User Data
+        // final Iterable refactorVehicleDetailsList = result.profileData! ?? [];
+        // final vehicleDetailsList = refactorVehicleDetailsList.map((item) {
+        //   return VehicleDetails.fromJson(item);
+        // }).toList();
+        // print('Quotation Reply List: $vehicleDetailsList');
+        //
+        //
+        // ///For Quotation Charges
+        // final Iterable refactorQuotationDetailsList = result.quotationDetails! ?? [];
+        // final quotationDetailsList = refactorQuotationDetailsList.map((item) {
+        //   return QuotationCharges.fromJson(item);
+        // }).toList();
+        // print('Quotation Reply List: $quotationDetailsList');
+        //
+        // ///For Quotation Charges
+        // final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
+        // final quotationChargesList = refactorQuotationChargesList.map((item) {
+        //   return QuotationCharges.fromJson(item);
+        // }).toList();
+        // print('Quotation Reply List: $quotationChargesList');
+        //
+        // ///For Customer Message
+        // final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
+        // final msgsList = refactormMsgList.map((item) {
+        //   return CustomerReplyMsg.fromJson(item);
+        // }).toList();
+        // print('Quotation Reply List: $msgsList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield GetJobWorkProfileLoading(
+            isLoading: true,
+          );
+          // yield GetJobWorkProfileSuccess(vehicleDetailsList: vehicleDetailsList,
+          //     quotationChargesList: quotationChargesList,quotationMsgList: msgsList, quotationDetailsList: quotationDetailsList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield GetJobWorkProfileFail(msg: '');
+        }
+      } else {
+        ///Notify loading to UI
+        yield GetJobWorkProfileLoading(isLoading: false);
+        yield GetJobWorkProfileSuccess(message: '');
+      }
+    }
+
 
     /// Update Profile for Transport
     if (event is UpdateTransportProfile) {

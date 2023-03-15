@@ -63,8 +63,8 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
       itemBuilder: (context, index) {
         return  InkWell(
             onTap: (){
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen(serviceRequestData: serviceList[index],)));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => QuotationsReplyDetailsScreen(quotationReplyList: quotationReplyList[index],)));
             },
             child: quotationsaReplyCard(context, quotationReplyList[index]));
       },
@@ -243,8 +243,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: (){
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
+              // Navigator.of(context).pop();
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation Reply',),
@@ -265,18 +264,13 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
                 }
               },
-              child: _isLoading ? quotationReplyList!.length <= 0 ? Center(child: Text('No Data'),):
+              child: _isLoading ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ListView(
                     children: [
-                      InkWell(
-                          onTap: (){
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => QuotationsReplyDetailsScreen()));
-                          },
-                          child: buildQuotationsaReplyList(context, quotationReplyList)),
+                      buildQuotationsaReplyList(context, quotationReplyList),
                     ],
                   ),
                 ),

@@ -85,7 +85,6 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
     _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
     // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
     _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.enquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-
     _phoneNumberController.clear();
     addressLat = double.parse(21.1458.toString());
     addressLong = double.parse(79.0882.toString());
@@ -676,7 +675,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(context,
-                                      MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],)));
+                                      MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
+                                      myTaskData: widget.myTaskData,)));
                                 },
                                 child: Container(
                                   // height: 60,

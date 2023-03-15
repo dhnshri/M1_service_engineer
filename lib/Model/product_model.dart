@@ -11,3 +11,14 @@ class AvailableProductModel{
      this.ShouldVisible
   });
 }
+
+class ItemModel{
+  String? rate;
+  String? volume;
+
+  ItemModel({
+    this.rate,
+    this.volume,
+  });
+}
+
