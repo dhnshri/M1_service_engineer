@@ -52,6 +52,14 @@ class OnMyTaskTranspotationDetail extends HomeEvent {
 
 }
 
+class OnMyTaskJobWorkEnquiryDetail extends HomeEvent {
+
+  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+
+  OnMyTaskJobWorkEnquiryDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+
+}
+
 class ProductList extends HomeEvent {
 
   String prodId,offSet;
@@ -88,6 +96,18 @@ class TrackProcessList extends HomeEvent {
 
 }
 
+class OnTrackProcessList extends HomeEvent {
+
+  String userId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+
+  OnTrackProcessList({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId});
+
+}
+
 class CreateTask extends HomeEvent {
 
   String userId;
@@ -99,6 +119,22 @@ class CreateTask extends HomeEvent {
   int status;
 
   CreateTask({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId,required this.heading, required this.description,required this.status});
+
+}
+
+// Job Work Enquiry
+class OnCreateTask extends HomeEvent {
+
+  String userId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+  String heading;
+  String description;
+  int status;
+
+  OnCreateTask({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
     required this.transportEnquiryId,required this.heading, required this.description,required this.status});
 
 }
@@ -138,6 +174,20 @@ class TaskComplete extends HomeEvent {
   int status;
 
   TaskComplete({ required this.serviceUserId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId,required this.dailyTaskId,required this.status});
+
+}
+
+class TaskCompleteJWE extends HomeEvent {
+
+  String serviceUserId;
+  String dailyTaskId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+  int status;
+
+  TaskCompleteJWE({ required this.serviceUserId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
     required this.transportEnquiryId,required this.dailyTaskId,required this.status});
 
 }
