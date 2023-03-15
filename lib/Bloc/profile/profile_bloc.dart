@@ -285,50 +285,46 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
 
       if (result.success == true) {
+
+        final profileData = result.profileData['ServiceUserData'];
+        print(profileData);
         ///For Service User Data
-        // final Iterable refactorVehicleDetailsList = result.profileData! ?? [];
-        // final vehicleDetailsList = refactorVehicleDetailsList.map((item) {
-        //   return VehicleDetails.fromJson(item);
-        // }).toList();
-        // print('Quotation Reply List: $vehicleDetailsList');
+        final Iterable refactorUserProfileDataList = result.profileData['ServiceUserData'] ?? [];
+        final userDetailsList = refactorUserProfileDataList.map((item) {
+          return ServiceUserData.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $userDetailsList');
+
         //
+        ///For Quotation Charges
+        final Iterable refactorProfileKYCDetailsList = result.profileData!['ProfileKYCDetails'] ?? [];
+        final profileKycDetailsList = refactorProfileKYCDetailsList.map((item) {
+          return ProfileKYCDetails.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileKycDetailsList');
         //
-        // ///For Quotation Charges
-        // final Iterable refactorQuotationDetailsList = result.quotationDetails! ?? [];
-        // final quotationDetailsList = refactorQuotationDetailsList.map((item) {
-        //   return QuotationCharges.fromJson(item);
-        // }).toList();
-        // print('Quotation Reply List: $quotationDetailsList');
-        //
-        // ///For Quotation Charges
-        // final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
-        // final quotationChargesList = refactorQuotationChargesList.map((item) {
-        //   return QuotationCharges.fromJson(item);
-        // }).toList();
-        // print('Quotation Reply List: $quotationChargesList');
-        //
-        // ///For Customer Message
-        // final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
-        // final msgsList = refactormMsgList.map((item) {
-        //   return CustomerReplyMsg.fromJson(item);
-        // }).toList();
-        // print('Quotation Reply List: $msgsList');
+        ///For Quotation Charges
+        final Iterable refactorProfileMachineList = result.profileData!['JobWorkMachineList'] ?? [];
+        final profileMachineList = refactorProfileMachineList.map((item) {
+          return JobWorkMachineList.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileMachineList');
+
 
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield GetJobWorkProfileLoading(
             isLoading: true,
           );
-          // yield GetJobWorkProfileSuccess(vehicleDetailsList: vehicleDetailsList,
-          //     quotationChargesList: quotationChargesList,quotationMsgList: msgsList, quotationDetailsList: quotationDetailsList);
+          yield GetJobWorkProfileSuccess(serviceUserdataList: userDetailsList,profileKycList: profileKycDetailsList,profileMachineList: profileMachineList);
         } catch (error) {
           ///Notify loading to UI
-          yield GetJobWorkProfileFail(msg: '');
+          yield GetJobWorkProfileFail(msg: result.msg.toString());
         }
       } else {
         ///Notify loading to UI
         yield GetJobWorkProfileLoading(isLoading: false);
-        yield GetJobWorkProfileSuccess(message: '');
+        yield GetJobWorkProfileFail(msg: result.msg.toString());
       }
     }
 

@@ -60,6 +60,9 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
   bool igstValue = false;
   // ItemModel? itemData;
   List<ItemModel> itemData = List.empty(growable: true);
+  List<String>? itemList=[];
+  List<String>? volumeList=[];
+
 
   @override
   void initState() {
@@ -282,7 +285,6 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               },
 
                               validator: (value) {
-
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter Item Rate / Piece';
                                 }
@@ -291,11 +293,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               onChanged: (value) {
                                 setState(() {
                                   // itemData[index].rate = value;
-                                  itemData.add(ItemModel(
-                                    // rate: itemRateController[index].text,
-                                    rate: value,
-                                  ));
-                                  if (_formKey.currentState!.validate()) {}
+                                  // if (_formKey.currentState!.validate()) {}
                                 });
                               },
                             ),
@@ -350,8 +348,6 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                               },
                               onChanged: (value) {
                                 setState(() {
-                                  // itemData[index].volume=value;
-                                  if (_formKey.currentState!.validate()) {}
                                 });
                               },
                             ),
@@ -817,7 +813,6 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                                     color: ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
-
                             if (value == null || value.isEmpty) {
                               return 'Please enter IGST Charges';
                             }
@@ -1118,16 +1113,37 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                           width: MediaQuery.of(context).size.width,
                           child: ElevatedButton(
                             onPressed: () async {
+                              for(int i = 0; i < itemRateController.length;i++) {
+                                if (itemRateController[i].text != "") {
+                                  itemList = itemRateController
+                                      .map((x) => x.text)
+                                      .toList();
+                                  volumeList = volumeController
+                                      .map((x) => x.text)
+                                      .toList();
 
-                              // if(itemData.length == widget.requestDetailList!.length){
-                              //   showCustomSnackBar(context,'Empty',isError: false);
-                              //
-                              // }
-                              Navigator.push(context, MaterialPageRoute(builder: (contex)=>
-                                  EnquiryQuotationsPreviewScreen(requestDetailList: widget.requestDetailList,itemRateController: itemRateController,
-                                  cgstController: cgstController,igstController: igstController,packingController: packingController,
-                                  sgstController: sgstController,testingChargesController: testingChargesController,transportController: transportController,
-                                  volumeController: volumeController,)));
+                                }
+                                itemList!.removeWhere((item) => ["", null, false, 0].contains(item));
+                                volumeList!.removeWhere((item) => ["", null, false, 0].contains(item));
+
+                              }
+                              print(itemList);
+                              print(volumeList);
+
+                              if(volumeList!.length != widget.requestDetailList!.length){
+                                showCustomSnackBar(context,'Please add volume for all.',isError: true);
+                              }
+                              else if(itemList!.length == widget.requestDetailList!.length){
+                                Navigator.push(context, MaterialPageRoute(builder: (contex)=>
+                                    EnquiryQuotationsPreviewScreen(requestDetailList: widget.requestDetailList,itemRateController: itemRateController,
+                                      cgstController: cgstController,igstController: igstController,packingController: packingController,
+                                      sgstController: sgstController,testingChargesController: testingChargesController,transportController: transportController,
+                                      volumeController: volumeController,)));
+                              }else{
+                                showCustomSnackBar(context,'Please add item rate for all.',isError: true);
+
+                              }
+
                             },
                             style: ElevatedButton.styleFrom(
                               primary: ThemeColors.defaultbuttonColor,

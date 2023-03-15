@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:service_engineer/Model/profile_repo.dart';
 
 @immutable
 abstract class ProfileState {}
@@ -61,6 +62,9 @@ class GetJobWorkProfileFail extends ProfileState {
 }
 
 class GetJobWorkProfileSuccess extends ProfileState {
-  String message;
-  GetJobWorkProfileSuccess({ required this.message});
+  List<ServiceUserData> serviceUserdataList;
+  List<ProfileKYCDetails> profileKycList;
+  List<JobWorkMachineList> profileMachineList;
+  GetJobWorkProfileSuccess({required this.serviceUserdataList,required this.profileKycList,
+    required this.profileMachineList,});
 }
