@@ -120,3 +120,18 @@ class QuotationReplyTransportSuccess extends QuotationReplyState {
   String message;
   QuotationReplyTransportSuccess({required this.quotationReplyTransportListData, required this.message});
 }
+
+class JobWorkSendRevisedQuotationLoading extends QuotationReplyState {
+  bool isLoading;
+  JobWorkSendRevisedQuotationLoading({required this.isLoading});
+}
+
+class JobWorkSendRevisedQuotationFail extends QuotationReplyState {
+  final String? msg;
+  JobWorkSendRevisedQuotationFail({this.msg});
+}
+
+class JobWorkSendRevisedQuotationSuccess extends QuotationReplyState {
+  String message;
+  JobWorkSendRevisedQuotationSuccess({required this.message});
+}

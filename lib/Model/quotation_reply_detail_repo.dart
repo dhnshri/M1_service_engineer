@@ -150,6 +150,7 @@ class QuotationRequiredItems {
   int? igst;
   int? sgst;
   String? dateAndTime;
+  int? volume;
 
   QuotationRequiredItems(
       {this.machineMaintenanceQuotationsId,
@@ -169,7 +170,8 @@ class QuotationRequiredItems {
         this.sgst,
         this.cgst,
         this.testingCharge,
-        this.packingCharge});
+        this.packingCharge,
+        this.volume});
 
   QuotationRequiredItems.fromJson(Map<String, dynamic> json) {
     machineMaintenanceQuotationsId = json['machine_maintenance_quotations_id'];
@@ -190,6 +192,7 @@ class QuotationRequiredItems {
     cgst = json['cgst'];
     packingCharge = json['packing_charge'];
     testingCharge = json['testing_charge'];
+    volume = json['volume'];
   }
 
   Map<String, dynamic> toJson() {
@@ -213,6 +216,7 @@ class QuotationRequiredItems {
     data['cgst'] = this.cgst;
     data['testing_charge'] = this.testingCharge;
     data['packing_charge'] = this.packingCharge;
+    data['volume'] = this.volume;
     return data;
   }
 }

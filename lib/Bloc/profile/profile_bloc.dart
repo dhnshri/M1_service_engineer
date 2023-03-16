@@ -168,6 +168,72 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
 
+    if (event is GetMachineProfile) {
+      ///Notify loading to UI
+      yield GetMachineProfileLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkProfileRepo result = await userRepository!
+          .geMachineProfile(
+          serviceUserId: event.serviceUserId,
+          roleId: event.roleId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+
+        final profileData = result.profileData['ServiceUserData'];
+        print(profileData);
+        ///For Service User Data
+        final Iterable refactorUserProfileDataList = result.profileData['ServiceUserData'] ?? [];
+        final userDetailsList = refactorUserProfileDataList.map((item) {
+          return ServiceUserData.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $userDetailsList');
+
+        //
+        ///For Kyc Details
+        final Iterable refactorProfileKYCDetailsList = result.profileData!['ProfileBankDetails'] ?? [];
+        final profileKycDetailsList = refactorProfileKYCDetailsList.map((item) {
+          return ProfileKYCDetails.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileKycDetailsList');
+        //
+        ///For Machine Maintainance Experience
+        final Iterable refactorProfileMachineEcperienceList = result.profileData!['MachineMaintenanceExperiences'] ?? [];
+        final profileMachineExperienceList = refactorProfileMachineEcperienceList.map((item) {
+          return MachineMaintenanceExperiences.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileMachineExperienceList');
+
+        ///Education Details
+        final Iterable refactorProfileMachineEducationList = result.profileData!['MachineMaintenanceEducations'] ?? [];
+        final profileMachineEducationList = refactorProfileMachineEducationList.map((item) {
+          return MachineMaintenanceEducations.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileMachineEducationList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield GetMachineProfileLoading(
+            isLoading: true,
+          );
+          yield GetMachineProfileSuccess(serviceUserdataList: userDetailsList,profileKycList: profileKycDetailsList,
+                  profileMachineEducationList: profileMachineEducationList,profileMachineExperienceList: profileMachineExperienceList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield GetMachineProfileFail(msg: result.msg.toString());
+        }
+      } else {
+        ///Notify loading to UI
+        yield GetMachineProfileLoading(isLoading: false);
+        yield GetMachineProfileFail(msg: result.msg.toString());
+      }
+    }
+
 
     /// Update Profile for Job Work Enquiry
     if (event is UpdateJobWorkProfile) {
@@ -509,6 +575,82 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield UpdateTransportProfileFail(msg: result.msg.toString());
       }
     }
+
+    /// Get Transport Profile
+    if (event is GetTransportProfile) {
+      ///Notify loading to UI
+      yield GetTransportProfileLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkProfileRepo result = await userRepository!
+          .geTransportProfile(
+          serviceUserId: event.serviceUserId,
+          roleId: event.roleId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+
+        final profileData = result.profileData['ServiceUserData'];
+        print(profileData);
+        ///For Service User Data
+        final Iterable refactorUserProfileDataList = result.profileData['ServiceUserData'] ?? [];
+        final userDetailsList = refactorUserProfileDataList.map((item) {
+          return ServiceUserData.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $userDetailsList');
+
+        //
+        ///For Bank Data
+        final Iterable refactorProfileKYCDetailsList = result.profileData!['ProfileBankDetails'] ?? [];
+        final profileKycDetailsList = refactorProfileKYCDetailsList.map((item) {
+          return ProfileKYCDetails.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileKycDetailsList');
+        //
+        ///For Driver Detail
+        final Iterable refactorProfileDriverDetailsList = result.profileData!['DriverProfileDetails'] ?? [];
+        final profileDriverDetailsList = refactorProfileDriverDetailsList.map((item) {
+          return DriverProfileDetails.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileDriverDetailsList');
+
+        ///For Vehicle Information
+        final Iterable refactorProfileVehicleInfoList = result.profileData!['ProfileVehicleInformation'] ?? [];
+        final profileVehicleInfoList = refactorProfileVehicleInfoList.map((item) {
+          return ProfileVehicleInformation.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileVehicleInfoList');
+
+        ///For Vehicle Information
+        final Iterable refactorProfileExperienceList = result.profileData!['TransportProfileExperience'] ?? [];
+        final profileExperienceList = refactorProfileExperienceList.map((item) {
+          return TransportProfileExperience.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $profileExperienceList');
+
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield GetTransportProfileLoading(
+            isLoading: true,
+          );
+          yield GetTransportProfileSuccess(serviceUserdataList: userDetailsList,profileKycList: profileKycDetailsList,
+                  profileDriverDetailsList: profileDriverDetailsList,profileVehicleInfoList: profileVehicleInfoList, profileExperienceList: profileExperienceList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield GetTransportProfileFail(msg: result.msg.toString());
+        }
+      } else {
+        ///Notify loading to UI
+        yield GetTransportProfileLoading(isLoading: false);
+        yield GetTransportProfileFail(msg: result.msg.toString());
+      }
+    }
+
   }
   jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
     for (var key in data.keys) {

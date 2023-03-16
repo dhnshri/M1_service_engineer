@@ -115,9 +115,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
 
       for(int i=0; i < widget.profileMachineList!.length;i++){
-
         machineList.add(MachineList(id:i,machineName: widget.profileMachineList![i].machineName.toString(),quantity: widget.profileMachineList![i].quantity.toString()));
-
       }
     }else{
       _iDController.text = "";

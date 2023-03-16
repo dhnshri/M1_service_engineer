@@ -114,17 +114,39 @@ class _BottomNavigationState extends State<BottomNavigation> {
   List<ServiceUserData>? serviceUserdataList;
   List<ProfileKYCDetails>? profileKycList;
   List<JobWorkMachineList>? profileMachineList;
+  List<DriverProfileDetails>? profileDriverDetailsList;
+  List<ProfileVehicleInformation>? profileVehicleInfoList;
+  List<TransportProfileExperience>? profileExperienceList;
+  List<MachineMaintenanceExperiences>? profileMachineExperienceList;
+  List<MachineMaintenanceEducations>? profileMachineEducationList;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
-    _profileBloc!.add(GetJobWorkProfile(serviceUserId: Application.customerLogin!.id.toString(),roleId: Application.customerLogin!.role.toString()));
+    getProfile();
     if(widget.index!=null){
       setState(() {
         _selectedIndex = widget.index;
       });
+    }
+  }
+
+  getProfile(){
+    if(widget.dropValue == '1'){
+      _profileBloc!.add(GetMachineProfile(
+          serviceUserId: Application.customerLogin!.id.toString(),
+          roleId: Application.customerLogin!.role.toString()));
+    }else
+      if(widget.dropValue == "2") {
+      _profileBloc!.add(GetJobWorkProfile(
+          serviceUserId: Application.customerLogin!.id.toString(),
+          roleId: Application.customerLogin!.role.toString()));
+    }else if(widget.dropValue == "3"){
+      _profileBloc!.add(GetTransportProfile(
+          serviceUserId: Application.customerLogin!.id.toString(),
+          roleId: Application.customerLogin!.role.toString()));
     }
   }
 
@@ -145,6 +167,31 @@ class _BottomNavigationState extends State<BottomNavigation> {
             if(state is GetJobWorkProfileFail){
               showCustomSnackBar(context,state.msg.toString(),isError: true);
             }
+            if(state is GetTransportProfileLoading){
+              _isLoading = state.isLoading;
+            }
+            if(state is GetTransportProfileSuccess){
+              serviceUserdataList = state.serviceUserdataList;
+              profileKycList = state.profileKycList;
+              profileDriverDetailsList = state.profileDriverDetailsList;
+              profileVehicleInfoList = state.profileVehicleInfoList;
+              profileExperienceList = state.profileExperienceList;
+            }
+            if(state is GetTransportProfileFail){
+              showCustomSnackBar(context,state.msg.toString(),isError: true);
+            }
+            if(state is GetMachineProfileLoading){
+              _isLoading = state.isLoading;
+            }
+            if(state is GetMachineProfileSuccess){
+              serviceUserdataList = state.serviceUserdataList;
+              profileKycList = state.profileKycList;
+              profileMachineExperienceList = state.profileMachineExperienceList;
+              profileMachineEducationList = state.profileMachineEducationList;
+            }
+            if(state is GetMachineProfileFail){
+              showCustomSnackBar(context,state.msg.toString(),isError: true);
+            }
           },
           child: _isLoading ? serviceUserdataList!.length <= 0 ? Center(child: CircularProgressIndicator(),):IndexedStack(
             index: _selectedIndex,
@@ -157,9 +204,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 OrderItemsScreen(),
               widget.dropValue == "1"? QuotationsReplyScreen():widget.dropValue == "2"?EnquiryQuotationsReplyScreen(): widget.dropValue == "3"? QuotationsReplyTransportationScreen():SizedBox(),
               DashboardScreen(),
-              widget.dropValue == "1"? MachineProfileScreen():widget.dropValue == "2"?JobWorkProfileScreen(
+              widget.dropValue == "1"? MachineProfileScreen(serviceUserdataList: serviceUserdataList,profileKycList: profileKycList,
+                  profileMachineExperienceList: profileMachineExperienceList,profileMachineEducationList: profileMachineEducationList,):widget.dropValue == "2"?JobWorkProfileScreen(
                       serviceUserdataList: serviceUserdataList,profileKycList: profileKycList,profileMachineList: profileMachineList,)
-                  : widget.dropValue == "3"? TransportationProfileScreen():SizedBox(),
+                  : widget.dropValue == "3"? TransportationProfileScreen(serviceUserdataList: serviceUserdataList,profileDriverDetailsList: profileDriverDetailsList,
+                    profileExperienceList: profileExperienceList,profileKycList: profileKycList,profileVehicleInfoList: profileVehicleInfoList,):SizedBox(),
             ],
           ): Center(child: CircularProgressIndicator(),),
 
