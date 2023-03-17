@@ -162,14 +162,14 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       _yearsController.text = widget.profileMachineExperienceList![0].yearOfExperience.toString();
       _monthsController.text = widget.profileMachineExperienceList![0].monthOfExperience.toString();
 
-      for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
-        ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName);
-        expCompanyForms.add(ExpCompanyFormWidget(
-          index: expCompanyForms.length,
-          expCompanyModel: _expData,
-          onRemove: () => onRemove(_expData),
-        ));
-      }
+      // for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
+      //   ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName);
+      //   expCompanyForms.add(ExpCompanyFormWidget(
+      //     index: expCompanyForms.length,
+      //     expCompanyModel: _expData,
+      //     onRemove: () => onRemove(_expData),
+      //   ));
+      // }
     }else{
       _iDController.text = "";
       _companyNameController.text = "";
