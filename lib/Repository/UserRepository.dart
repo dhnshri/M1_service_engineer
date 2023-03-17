@@ -155,6 +155,15 @@ class UserRepository {
       'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
     return await Api.getServiceRequestJobWorkEnquiryDetail(params);
   }
+
+  //My Task jOB wORK Enquiry Detail Api
+  Future<dynamic> fetchMyTaskJobWorkEnquiryDetail({String? userID, String? machineEnquiryId,
+    String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
+    final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
+      'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getMyTaskJobWorkEnquiryDetail(params);
+  }
+
   //My Task Transportation Detail Api
   Future<dynamic> fetchMyTaskTransportationDetail({String? userID, String? machineEnquiryId,
     String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
@@ -207,6 +216,12 @@ class UserRepository {
     return await Api.getTrackProgressList(params);
   }
 
+  //Fetch jOB work enquiry Track Progress List
+  Future<dynamic> fetchTrackProgressJWEList({String? userId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId}) async {
+    final params = {"service_user_id":userId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId};
+    return await Api.getTrackProgressJWEList(params);
+  }
+
   //Create Task
   Future<dynamic> createTask({String? userId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? heading,String? description,int? status}) async {
     final params = {"service_user_id":userId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
@@ -214,11 +229,25 @@ class UserRepository {
     return await Api.createTask(params);
   }
 
+  //Create Task
+  Future<dynamic> createTaskJWE({String? userId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? heading,String? description,int? status}) async {
+    final params = {"service_user_id":userId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
+      "heading":heading,"description":description,'status': status.toString()};
+    return await Api.createTaskJWE(params);
+  }
+
   //Complete Task
   Future<dynamic> completeTask({String? serviceUserId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? dailyTaskId,int? status}) async {
     final params = {"service_user_id":serviceUserId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
       "daily_my_task_id":dailyTaskId,'status': status.toString()};
     return await Api.completeTask(params);
+  }
+
+  //Complete Task JWE
+  Future<dynamic> completeTaskJWE({String? serviceUserId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? dailyTaskId,int? status}) async {
+    final params = {"service_user_id":serviceUserId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
+      "daily_my_task_id":dailyTaskId,'status': status.toString()};
+    return await Api.completeTaskJWE(params);
   }
 
   Future<dynamic> SendQuotationPara({String? serviceUserId,String? workingTime,String? dateOfJoining,String? serviceCharge,String? handlingCharge,String? transportCharge,

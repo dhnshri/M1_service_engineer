@@ -9,9 +9,12 @@ import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
+import '../../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
+import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
 import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
@@ -234,6 +237,47 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    //Event for Job Work Enquiry My Task Detail
+    if (event is OnMyTaskJobWorkEnquiryDetail) {
+      ///Notify loading to UI
+      yield MyTaskJobWorkEnquiryDetailLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final JobWorkEnquiryMyTaskDetailRepo result = await userRepository!
+          .fetchMyTaskJobWorkEnquiryDetail(
+          userID: event.userID,
+          machineEnquiryId: event.machineServiceId,
+          jobWorkEnquiryId: event.jobWorkServiceId,
+          transportEnquiryId: event.transportServiceId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestDetail = result.enquiryDetails! ?? [];
+        final myTaskDetail = refactorServiceRequestDetail.map((item) {
+          return MyTaskEnquiryDetails.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('My Task Data: $myTaskDetail');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield MyTaskJobWorkEnquiryDetailLoading(
+            isLoading: true,
+          );
+          yield MyTaskJobWorkEnquiryDetailSuccess(MyTaskDetail: myTaskDetail, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield MyTaskJobWorkEnquiryDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield MyTaskJobWorkEnquiryDetailFail(msg: result.msg!);
+      }
+    }
+
     //Event for Transpotation My Task Detail
     if (event is OnMyTaskTranspotationDetail) {
       ///Notify loading to UI
@@ -427,6 +471,48 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    //My Task Job Work Enquiry Track Process
+    if (event is OnTrackProcessList) {
+      ///Notify loading to UI
+      yield TrackProcssJWEListLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final TrackProgressListJobWorkRepo result = await userRepository!
+          .fetchTrackProgressJWEList(
+          userId: event.userId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        final Iterable refactorTrackProgrssList = result.data! ?? [];
+        final trackProgressList = refactorTrackProgrssList.map((item) {
+          return TrackProcessJobWorkEnquiryModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Track Process Data: $trackProgressList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TrackProcssJWEListLoading(
+            isLoading: true,
+          );
+          yield TrackProcssJWEListSuccess(trackProgressList: trackProgressList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield TrackProcssJWEListFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield TrackProcssJWEListFail(msg: result.msg);
+      }
+    }
+
+
     //Create Task
     if (event is CreateTask) {
       ///Notify loading to UI
@@ -463,6 +549,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+
+    //Job Work Enquiry Create Task
+    if (event is OnCreateTask) {
+      ///Notify loading to UI
+      yield CreateTaskJWELoading(isLoading: false);
+
+      ///Fetch API via repository
+      final CreateTaskJWERepo result = await userRepository!
+          .createTaskJWE(
+          userId: event.userId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId,
+          heading: event.heading,
+          description: event.description,
+          status: event.status
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield CreateTaskJWELoading(
+            isLoading: true,
+          );
+          yield CreateTaskJWESuccess( message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield CreateTaskJWEFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield CreateTaskJWEFail(msg: result.msg);
+      }
+    }
+
+
     //Mark Task Complete
     if (event is TaskComplete) {
       ///Notify loading to UI
@@ -495,6 +619,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } else {
         ///Notify loading to UI
         yield TaskCompleteFail(msg: result.msg);
+      }
+    }
+
+    //Mark Task Complete JWE
+    if (event is TaskCompleteJWE) {
+      ///Notify loading to UI
+      yield TaskCompleteJWELoading(isLoading: false);
+
+      ///Fetch API via repository
+      final CreateTaskJWERepo result = await userRepository!
+          .completeTaskJWE(
+          serviceUserId: event.serviceUserId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId,
+          dailyTaskId: event.dailyTaskId,
+          status: event.status
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TaskCompleteJWELoading(
+            isLoading: true,
+          );
+          yield TaskCompleteJWESuccess( message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield TaskCompleteJWEFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield TaskCompleteJWEFail(msg: result.msg);
       }
     }
 
@@ -729,64 +888,64 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     //Event for Job Work Enquiry send quotation
-    if (event is JobWorkSendQuotation) {
-      ///Notify loading to UI
-      yield JobWorkSendQuotationLoading(isLoading: false);
-
-      var itemList = [];
-
-      for(int j = 0; j < event.itemList.length; j++){
-        var innerObj ={};
-        double amount = double.parse(event.itemList[j].qty
-            .toString()) * int.parse(event.itemRateController[j].text);
-
-        innerObj["item_name"] = event.itemList[j].itemName;
-        innerObj["item_qty"] = event.itemList[j].qty;
-        innerObj["volume"] = event.volumeController[j].text;
-        innerObj["rate"] = event.itemRateController[j].text;
-        innerObj["amount"] = amount;
-        itemList.add(innerObj);
-      }
-
-
-      Map<String, String> params = {
-        "job_work_enquiry_id": event.jobWorkEnquiryId.toString(),
-        "service_user_id":event.serviceUserId,
-        "job_work_enquiry_date":event.jobWorkEnquirydate,
-        "transport_charge":event.transportCharge,
-        "packing_charge":event.packingCharge,
-        "testing_charge":event.testingCharge,
-        "cgst": event.cgst,
-        "sgst": event.sgst,
-        "igst": event.igst,
-        "commission": event.commission,
-        "itemslist": jsonEncode(itemList),
-        // 'machine_enquiry_id': event.machineEnquiryId,
-      };
-
-      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/job_work_enquiry_quatation'));
-      // ..fields.addAll(params);
-      _request = jsonToFormData(_request, params);
-      print(jsonEncode(_request.fields));
-      var streamResponse = await _request.send();
-      var response = await http.Response.fromStream(streamResponse);
-      final responseJson = json.decode(response.body);
-      print(responseJson);
-      CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
-      print(res.msg);
-
-
-      ///Case API fail but not have token
-      if (res.success == true) {
-        print(response.body);
-        yield JobWorkSendQuotationSuccess(message: res.msg.toString());
-
-      } else {
-        ///Notify loading to UI
-        yield JobWorkSendQuotationFail(msg: res.msg.toString());
-        print(response.body);
-      }
-    }
+    // if (event is JobWorkSendQuotation) {
+    //   ///Notify loading to UI
+    //   yield JobWorkSendQuotationLoading(isLoading: false);
+    //
+    //   var itemList = [];
+    //
+    //   for(int j = 0; j < event.itemList.length; j++){
+    //     var innerObj ={};
+    //     double amount = double.parse(event.itemList[j].qty
+    //         .toString()) * int.parse(event.itemRateController[j].text);
+    //
+    //     innerObj["item_name"] = event.itemList[j].itemName;
+    //     innerObj["item_qty"] = event.itemList[j].qty;
+    //     innerObj["volume"] = event.volumeController[j].text;
+    //     innerObj["rate"] = event.itemRateController[j].text;
+    //     innerObj["amount"] = amount;
+    //     itemList.add(innerObj);
+    //   }
+    //
+    //
+    //   Map<String, String> params = {
+    //     "job_work_enquiry_id": event.jobWorkEnquiryId.toString(),
+    //     "service_user_id":event.serviceUserId,
+    //     "job_work_enquiry_date":event.jobWorkEnquirydate,
+    //     "transport_charge":event.transportCharge,
+    //     "packing_charge":event.packingCharge,
+    //     "testing_charge":event.testingCharge,
+    //     "cgst": event.cgst,
+    //     "sgst": event.sgst,
+    //     "igst": event.igst,
+    //     "commission": event.commission,
+    //     "itemslist": jsonEncode(itemList),
+    //     // 'machine_enquiry_id': event.machineEnquiryId,
+    //   };
+    //
+    //   http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/job_work_enquiry_quatation'));
+    //   // ..fields.addAll(params);
+    //   _request = jsonToFormData(_request, params);
+    //   print(jsonEncode(_request.fields));
+    //   var streamResponse = await _request.send();
+    //   var response = await http.Response.fromStream(streamResponse);
+    //   final responseJson = json.decode(response.body);
+    //   print(responseJson);
+    //   CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
+    //   print(res.msg);
+    //
+    //
+    //   ///Case API fail but not have token
+    //   if (res.success == true) {
+    //     print(response.body);
+    //     yield JobWorkSendQuotationSuccess(message: res.msg.toString());
+    //
+    //   } else {
+    //     ///Notify loading to UI
+    //     yield JobWorkSendQuotationFail(msg: res.msg.toString());
+    //     print(response.body);
+    //   }
+    // }
 
   }
 

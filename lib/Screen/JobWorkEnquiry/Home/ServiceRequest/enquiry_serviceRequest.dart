@@ -36,7 +36,7 @@ class _EnquiryServiceRequestScreenState
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequestJWEList(offSet: '0'));
+    _homeBloc!.add(OnServiceRequestJWEList(offSet:'0'));
   }
 
   @override
@@ -47,125 +47,6 @@ class _EnquiryServiceRequestScreenState
   }
 
   Widget buildJobWorkEnquiriesList(List<JobWorkEnquiryServiceRequestModel> jobWorkEnquiryList) {
-    if (jobWorkEnquiryList.length <= 0) {
-      return ListView.builder(
-        scrollDirection: Axis.vertical,
-        // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: Theme.of(context).hoverColor,
-            highlightColor: Theme.of(context).highlightColor,
-            enabled: true,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                  // leading: nameIcon(),
-                  leading: CachedNetworkImage(
-                    filterQuality: FilterQuality.medium,
-                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                    imageUrl: "https://picsum.photos/250?image=9",
-                    // imageUrl: model.cart[index].productImg == null
-                    //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-                    //     : model.cart[index].productImg,
-                    placeholder: (context, url) {
-                      return Shimmer.fromColors(
-                        baseColor: Theme.of(context).hoverColor,
-                        highlightColor: Theme.of(context).highlightColor,
-                        enabled: true,
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      );
-                    },
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return Shimmer.fromColors(
-                        baseColor: Theme.of(context).hoverColor,
-                        highlightColor: Theme.of(context).highlightColor,
-                        enabled: true,
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(Icons.error),
-                        ),
-                      );
-                    },
-                  ),
-                  title: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Loading...",
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                            //color: Theme.of(context).accentColor
-                          ),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                ".......",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black87,
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Colors.white),
-              ),
-            ),
-          );
-        },
-        itemCount: List.generate(8, (index) => index).length,
-      );
-    }
-
-    // return ListView.builder(
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -389,8 +270,7 @@ class _EnquiryServiceRequestScreenState
                 }
               },
               child: _isLoading ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
-              Container(
-                child: ListView(
+              ListView(
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -487,125 +367,12 @@ class _EnquiryServiceRequestScreenState
                     ),
                     SingleChildScrollView(child: Container(child: buildJobWorkEnquiriesList(serviceJobWorkEnquiryList!))),
                   ],
-                ),
-              ) : ShimmerCard()
-
-            // Center(
-            //   child: CircularProgressIndicator(),
-            // )
-
+                )
+              : ShimmerCard()
           );
 
 
         })
-    //   body: Container(
-    //     child: ListView(
-    //       children: [
-    //         Container(
-    //           decoration: BoxDecoration(
-    //               border: Border(
-    //                 bottom: BorderSide(width: 0.2,),
-    //               )
-    //           ),
-    //           child: Padding(
-    //             padding: const EdgeInsets.only(
-    //                 top: 15.0, left: 10, right: 10, bottom: 5),
-    //             child: Row(
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               children: [
-    //
-    //                 Expanded(
-    //                   child: TextFormField(
-    //                     // initialValue: Application.customerLogin!.name.toString(),
-    //                     controller: _searchController,
-    //                     textAlign: TextAlign.start,
-    //                     keyboardType: TextInputType.text,
-    //                     style: TextStyle(
-    //                       fontSize: 18,
-    //                       height: 1.5,
-    //                     ),
-    //                     decoration: InputDecoration(
-    //                       filled: true,
-    //                       fillColor: ThemeColors.bottomNavColor,
-    //                       prefixIcon: Icon(Icons.search,color: ThemeColors.textFieldHintColor,),
-    //                       hintText: "Search all Orders",
-    //                       contentPadding: EdgeInsets.symmetric(
-    //                           vertical: 10.0, horizontal: 15.0),
-    //                       hintStyle: TextStyle(fontSize: 15),
-    //                       enabledBorder: OutlineInputBorder(
-    //                         borderRadius:
-    //                         BorderRadius.all(Radius.circular(1.0)),
-    //                         borderSide: BorderSide(
-    //                             width: 0.8,
-    //                             color: ThemeColors.bottomNavColor
-    //                         ),
-    //                       ),
-    //                       focusedBorder: OutlineInputBorder(
-    //                         borderRadius:
-    //                         BorderRadius.all(Radius.circular(1.0)),
-    //                         borderSide: BorderSide(
-    //                             width: 0.8,
-    //                             color: ThemeColors.bottomNavColor),
-    //                       ),
-    //                       border: OutlineInputBorder(
-    //                           borderRadius:
-    //                           BorderRadius.all(Radius.circular(1.0)),
-    //                           borderSide: BorderSide(
-    //                               width: 0.8,
-    //                               color: ThemeColors.bottomNavColor)),
-    //                     ),
-    //                     validator: (value) {
-    //                       Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-    //                       RegExp regex = new RegExp(pattern.toString());
-    //                       if (value == null || value.isEmpty) {
-    //                         return 'Please Enter GST Number';
-    //                       }else if(!regex.hasMatch(value)){
-    //                         return 'Please enter valid GST Number';
-    //                       }
-    //                       return null;
-    //                     },
-    //                     onChanged: (value) {
-    //                       // profile.name = value;
-    //                       setState(() {
-    //                         // _nameController.text = value;
-    //                         if (_formKey.currentState!.validate()) {}
-    //                       });
-    //                     },
-    //                   ),
-    //                 ),
-    //                 InkWell(
-    //                   onTap: () {
-    //                     Navigator.push(
-    //                         context,
-    //                         MaterialPageRoute(
-    //                             builder: (context) =>
-    //                                 EnquiryServiceRequestFilterScreen()));
-    //                   },
-    //                   child: Row(
-    //                     children: [
-    //                       Icon(Icons.filter_list),
-    //                       SizedBox(
-    //                         width: 5,
-    //                       ),
-    //                       Text("Filter")
-    //                     ],
-    //                   ),
-    //                 )
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //         InkWell(
-    //             onTap: () {
-    //               Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                       builder: (context) => EnquiryServiceRequestDetailsScreen()));
-    //             },
-    //             child: buildJobWorkEnquiriesList(serviceJobWorkEnquiryList!)),
-    //       ],
-    //     ),
-    //   ),
     );
 
 

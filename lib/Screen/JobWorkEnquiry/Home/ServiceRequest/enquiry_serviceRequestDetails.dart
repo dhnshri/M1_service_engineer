@@ -26,6 +26,7 @@ import '../../../../Constant/theme_colors.dart';
 import '../../../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../../../Model/service_request_repo.dart';
+import '../../../../Widget/image_view_screen.dart';
 
 
 
@@ -125,6 +126,8 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
   //   return file;
   // }
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -178,8 +181,8 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
             Flexible(
               child: AppSmallButton(
                 onPressed: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen (requestDetailList: serviceRequestDetailData,)));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen (requestDetailList: serviceRequestDetailData,)));
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius:
@@ -261,61 +264,69 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                     ],
                   ),
                   ///Item Required
-                  ExpansionTileCard(
-                    initiallyExpanded: true,
-                    key: cardB,
-                    title: Text("Item Required",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500
-                        )),
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Item Name:",style: ExpanstionTileLeftDataStyle,),
-                                Text(serviceRequestDetailData![0].itemName.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Quantity Required:",style: ExpanstionTileLeftDataStyle,),
-                                Text(serviceRequestDetailData![0].qty.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Delivery Location:",style: ExpanstionTileLeftDataStyle,),
-                                Text(serviceRequestDetailData![0].cityName.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text("Drawing Attachment:",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  )),
-                            ),
-                            SizedBox(height: 5,),
-                            Padding(
-                              padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10,),
-
-                                  Container(
+                      ExpansionTileCard(
+                        initiallyExpanded: true,
+                        key: cardB,
+                        title: Text("Item Required",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Poppins-Medium',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500
+                            )),
+                        children: <Widget>[
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: serviceRequestDetailData!.length,
+                            // padding: EdgeInsets.only(top: 10, bottom: 15),
+                            itemBuilder: (context, index) {
+                              int itemIndex = index +1;
+                              return Padding(
+                                padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
+                                child: Column(
+                                  children: [
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(itemIndex.toString())),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Item Name:",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestDetailData![index].itemName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Quantity Required:",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestDetailData![index].qty.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Delivery Location:",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestDetailData![index].cityName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text("Drawing Attachment:",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Poppins-Medium',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500
+                                          )),
+                                    ),
+                                    SizedBox(height: 5,),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
                                     decoration: BoxDecoration(
                                         color: ThemeColors.imageContainerBG
                                     ),
@@ -325,7 +336,9 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
-                                            child: Text('Image-abc',
+                                            width:200,
+                                            child: Text(serviceRequestDetailData![0].drawingAttachment.toString(),
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: ThemeColors.buttonColor,
                                                     fontFamily: 'Poppins-Regular',
@@ -335,15 +348,8 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                           ),
                                           InkWell(
                                             onTap: () async {
-                                              final file = await PDF().loadPdfFromNetwork(url.toString());
-
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PDFScreen(file: file,url: url.toString(),),
-                                                ),
-                                              );
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                                  ImageViewerScreen(url: serviceRequestDetailData![index].drawingAttachment.toString())));
                                             },
                                             child: Container(
                                               child: Text('View',
@@ -359,29 +365,18 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 10,),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black,width: 1),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(serviceRequestDetailData![0].about.toString(),
-                                        style:ExpanstionTileOtherInfoStyle ,),
-                                    ),
-                                  ),
+                                ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
 
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
 
-                    ],
-                  ),
-                  // Other Info
 
+                  // Other Info
                 ],
               )
                   : Center(

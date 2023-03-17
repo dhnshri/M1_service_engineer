@@ -9,6 +9,9 @@ import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'dart:convert';
 
+import '../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
+import '../Model/JobWorkEnquiry/my_task_detail_model.dart';
+import '../Model/JobWorkEnquiry/track_process_report_model.dart';
 import '../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../Model/cart_list_repo.dart';
@@ -43,6 +46,7 @@ class Api {
   static const String SERVICE_REQUEST_DETAIL="service_request_details";
   static const String SERVICE_REQUEST_TRANSPORTATION_DETAIL="service_request_details";
   static const String SERVICE_REQUEST_JOB_WORK_ENQUIRY_DETAIL="service_request_details";
+  static const String MY_TASK_JOB_WORK_ENQUIRY_DETAIL="service_request_details";
   static const String MY_TASK_TRANSPORTATION_DETAIL="service_request_details";
   static const String CUSTOMER_REGISTER="register_service";
   static const String MY_TASK_LIST="machine_service_my_task_list";
@@ -52,7 +56,9 @@ class Api {
   static const String CART_API="add_to_cart_list";
   static const String CART_LIST="get_cart_list";
   static const String TRACK_PROGRESS_LIST="get_daily_update_task";
+  static const String TRACK_PROGRESS_JWE_LIST="get_daily_update_task";
   static const String CREATE_TASK="add_daily_update_task";
+  static const String CREATE_TASK_JWE="add_daily_update_task";
   static const String COMPLETE_TASK="update_daily_my_task_list";
   static const String MACHINE_QUOTATION="machine_maintainence_quatation";
   static const String JOBWORK_PROFILE="get_job_work_enquiry_profile";
@@ -267,6 +273,18 @@ class Api {
     }
   }
 
+  static Future<dynamic> getMyTaskJobWorkEnquiryDetail(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+MY_TASK_JOB_WORK_ENQUIRY_DETAIL),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkEnquiryMyTaskDetailRepo.fromJson(responseJson);
+    }
+  }
+
   static Future<dynamic> getMyTaskTranspotationDetail(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+MY_TASK_TRANSPORTATION_DETAIL),
@@ -364,6 +382,19 @@ class Api {
     }
   }
 
+  //Track jOB wORK eNQUIRY Progress List
+  static Future<dynamic> getTrackProgressJWEList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRACK_PROGRESS_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return TrackProgressListJobWorkRepo.fromJson(responseJson);
+    }
+  }
+
   //Create Task
   static Future<dynamic> createTask(params) async {
     final response = await http.post(
@@ -377,6 +408,19 @@ class Api {
     }
   }
 
+  //Create Task
+  static Future<dynamic> createTaskJWE(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CREATE_TASK_JWE),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CreateTaskJWERepo.fromJson(responseJson);
+    }
+  }
+
   //Complete task
   static Future<dynamic> completeTask(params) async {
     final response = await http.post(
@@ -387,6 +431,19 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return CreateTaskRepo.fromJson(responseJson);
+    }
+  }
+
+  //Complete task JWE
+  static Future<dynamic> completeTaskJWE(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+COMPLETE_TASK),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CreateTaskJWERepo.fromJson(responseJson);
     }
   }
 

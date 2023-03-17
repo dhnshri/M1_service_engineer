@@ -7,9 +7,11 @@ import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 
+import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
 import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
@@ -203,6 +205,24 @@ class MyTaskTranspotationDetailSuccess extends HomeState {
   MyTaskTranspotationDetailSuccess({required this.transportMyTaskDetail, required this.message});
 }
 
+class MyTaskJobWorkEnquiryDetailLoading extends HomeState {
+  bool isLoading;
+  MyTaskJobWorkEnquiryDetailLoading({required this.isLoading});
+}
+
+class MyTaskJobWorkEnquiryDetailFail extends HomeState {
+  final String? msg;
+  MyTaskJobWorkEnquiryDetailFail({this.msg});
+}
+
+class MyTaskJobWorkEnquiryDetailSuccess extends HomeState {
+  List<MyTaskEnquiryDetails> MyTaskDetail;
+  String message;
+  MyTaskJobWorkEnquiryDetailSuccess({required this.MyTaskDetail, required this.message});
+}
+
+
+
 class AddToCartLoading extends HomeState {
   bool isLoading;
   AddToCartLoading({required this.isLoading});
@@ -233,7 +253,7 @@ class CartListSuccess extends HomeState {
   String message;
   CartListSuccess({required this.cartList,required this.message});
 }
-
+// For Machine Maintaince
 class TrackProcssListLoading extends HomeState {
   bool isLoading;
   TrackProcssListLoading({required this.isLoading});
@@ -248,6 +268,23 @@ class TrackProcssListSuccess extends HomeState {
   List<TrackProcessModel> trackProgressList;
   String message;
   TrackProcssListSuccess({required this.trackProgressList,required this.message});
+}
+
+//For Job Work Enquiry
+class TrackProcssJWEListLoading extends HomeState {
+  bool isLoading;
+  TrackProcssJWEListLoading({required this.isLoading});
+}
+
+class TrackProcssJWEListFail extends HomeState {
+  final String? msg;
+  TrackProcssJWEListFail({this.msg});
+}
+
+class TrackProcssJWEListSuccess extends HomeState {
+  List<TrackProcessJobWorkEnquiryModel> trackProgressList;
+  String message;
+  TrackProcssJWEListSuccess({required this.trackProgressList,required this.message});
 }
 
 class CreateTaskLoading extends HomeState {
@@ -265,6 +302,23 @@ class CreateTaskSuccess extends HomeState {
   CreateTaskSuccess({required this.message});
 }
 
+// Job Work Enquiry Create Task
+
+class CreateTaskJWELoading extends HomeState {
+  bool isLoading;
+  CreateTaskJWELoading({required this.isLoading});
+}
+
+class CreateTaskJWEFail extends HomeState {
+  final String? msg;
+  CreateTaskJWEFail({this.msg});
+}
+
+class CreateTaskJWESuccess extends HomeState {
+  String message;
+  CreateTaskJWESuccess({required this.message});
+}
+
 class TaskCompleteLoading extends HomeState {
   bool isLoading;
   TaskCompleteLoading({required this.isLoading});
@@ -280,6 +334,20 @@ class TaskCompleteSuccess extends HomeState {
   TaskCompleteSuccess({required this.message});
 }
 
+class TaskCompleteJWELoading extends HomeState {
+  bool isLoading;
+  TaskCompleteJWELoading({required this.isLoading});
+}
+
+class TaskCompleteJWEFail extends HomeState {
+  final String? msg;
+  TaskCompleteJWEFail({this.msg});
+}
+
+class TaskCompleteJWESuccess extends HomeState {
+  String message;
+  TaskCompleteJWESuccess({required this.message});
+}
 class SendQuotationLoading extends HomeState {
   bool isLoading;
   SendQuotationLoading({required this.isLoading});

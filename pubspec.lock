@@ -514,7 +514,7 @@ packages:
       name: flutter_pdfview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.5"
+    version: "1.2.6"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1110,14 +1110,14 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.6"
   sqflite_common:
     dependency: transitive
     description:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.2+2"
+    version: "2.4.3"
   stack_trace:
     dependency: transitive
     description:
@@ -1159,7 +1159,7 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.4.53"
+    version: "20.4.54"
   syncfusion_flutter_pdf:
     dependency: "direct main"
     description:
@@ -1243,7 +1243,7 @@ packages:
       name: video_player_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.2"
   video_player_avfoundation:
     dependency: transitive
     description:
