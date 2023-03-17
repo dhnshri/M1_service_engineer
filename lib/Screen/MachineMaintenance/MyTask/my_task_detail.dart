@@ -734,7 +734,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
 
                           ),
                           onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen(myTaskData: widget.myTaskData,)));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

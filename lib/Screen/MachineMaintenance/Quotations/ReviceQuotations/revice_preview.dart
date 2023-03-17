@@ -3,42 +3,71 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Model/cart_list_repo.dart';
+import 'package:service_engineer/Model/item_not_available_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 
-class RevicePreviewScreen extends StatefulWidget {
-  const RevicePreviewScreen({Key? key}) : super(key: key);
+class RevisedQuotationPreviewScreen extends StatefulWidget {
+  List<ItemNotAvailableModel>? cartList = [];
+  List<ItemNotAvailableModel> itemNotAvailableList = [];
+  TextEditingController workingTimeController = TextEditingController();
+  TextEditingController dateofJoiningController = TextEditingController();
+  TextEditingController serviceCallChargesController = TextEditingController();
+  TextEditingController handlingChargesController = TextEditingController();
+  TextEditingController otherChargesController = TextEditingController();
+  TextEditingController transportChargesController = TextEditingController();
+  RevisedQuotationPreviewScreen(
+      {Key? key,
+        required this.cartList,
+        required this.itemNotAvailableList,
+        required this.workingTimeController,
+        required this.dateofJoiningController,
+        required this.serviceCallChargesController,
+        required this.handlingChargesController,
+        required this.transportChargesController,
+        required this.otherChargesController})
+      : super(key: key);
 
   @override
-  _RevicePreviewScreenState createState() => _RevicePreviewScreenState();
+  _RevisedQuotationPreviewScreenState createState() => _RevisedQuotationPreviewScreenState();
 }
 
-class _RevicePreviewScreenState extends State<RevicePreviewScreen> {
-  final TextEditingController _phoneNumberController = TextEditingController();
-  String dropdownValue = '+ 91';
-  String? phoneNum;
-  String? role;
-  bool loading = true;
+class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewScreen> {
 
-  // String? smsCode;
-  // bool smsCodeSent = false;
-  // String? verificationId;
-  final _formKey = GlobalKey<FormState>();
+  bool loading = true;
+  bool value = false;
+
+
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardOtherItemRequired = new GlobalKey();
+  final GlobalKey<ExpansionTileCardState> cardOtherItemRequired =
+  new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardQuotations = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardmessage = new GlobalKey();
+
+  double? amount = 0;
+  double? amountWithGST = 0;
+  double? itemRequiredTotalAmount = 0;
+  double? oterItemsAmount = 0;
+  double? otherItemsAmountWithGST = 0;
+  double? otherItemTotalAmount = 0;
+  double? commission = 10;
+  double? totalAmount= 0;
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _phoneNumberController.clear();
-
+    itemRequiredTotalAmount;
+    // setState(() {
+    //   totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
+    //       int.parse(widget.transportChargesController.text.toString()) +
+    //        commission!;
+    // });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -46,328 +75,136 @@ class _RevicePreviewScreenState extends State<RevicePreviewScreen> {
     // getroleofstudent();
   }
 
-  Widget buildItemRequiredList() {
-    // if (productList.length <= 0) {
-    //   return ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-    //     itemBuilder: (context, index) {
-    //       return Shimmer.fromColors(
-    //         baseColor: Theme.of(context).hoverColor,
-    //         highlightColor: Theme.of(context).highlightColor,
-    //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //     itemCount: List.generate(8, (index) => index).length,
-    //   );
-    // }
 
-    // return ListView.builder(
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  ItemRequiredCard();
-      },
-      itemCount: 3,
+  DataRow _getItemRequiredDataRow(ItemNotAvailableModel? cartData,index) {
+    return DataRow(
+      color: MaterialStateColor.resolveWith((states) {
+        return Color(0xffFFE4E5); //make tha magic!
+      }),
+      cells: <DataCell>[
+        DataCell(Text(index.toString())),
+        DataCell(Text(cartData!.itemName.toString())),
+        DataCell(Text(cartData.quantity.toString())),
+        DataCell(Text('₹${cartData.rate.toString()}')),
+        DataCell(Text('₹${amountWithGST.toString()}')),
+      ],
     );
   }
 
-  Widget ItemRequiredCard()
-  {
-    return Padding(
-        padding: const EdgeInsets.only(bottom:0.0),
-        child: Container(
-          // color: Color(0xffFFE4E5),
-            decoration: BoxDecoration(
-              color: Color(0xffFFE4E5),
-            ),
-            child:Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("1")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product Name or Any...")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("5")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 100")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 500")
-                    ],
-                  ),
-                ],
-              ),
-            )
-        )
+  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData) {
+    return DataRow(
+      color: MaterialStateColor.resolveWith((states) {
+        return Color(0xffFFE4E5); //make tha magic!
+      }),
+      cells: <DataCell>[
+        DataCell(Text(itemNotAvailableData!.id.toString())),
+        DataCell(Text(itemNotAvailableData.itemName.toString())),
+        DataCell(Text(itemNotAvailableData.quantity.toString())),
+        DataCell(Text('₹${itemNotAvailableData.rate.toString()}')),
+        DataCell(Text('₹${otherItemsAmountWithGST.toString()}')),
+      ],
     );
   }
 
-  Widget buildOtherItemsList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  otherItemsCard();
-      },
-      itemCount: 3,
-    );
-  }
-
-  Widget otherItemsCard()
-  {
-    return Padding(
-        padding: const EdgeInsets.only(bottom:0.0),
-        child: Container(
-          // color: Color(0xffFFE4E5),
-            decoration: BoxDecoration(
-              color: Color(0xffFFE4E5),
-            ),
-            child:Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("1")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product Name or Any...")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("5")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 100")
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 500")
-                    ],
-                  ),
-                ],
-              ),
-            )
-        )
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 7,),
+        SizedBox(
+          height: 7,
+        ),
         // Item Required
-        ExpansionTileCard(
+        widget.cartList!.isEmpty
+            ? Container()
+            : ExpansionTileCard(
           key: cardItemRequired,
-          leading: Text("Item Required"),
-
-          title: SizedBox(),
-          subtitle:SizedBox(),
+          initiallyExpanded: true,
+          title: Text("Item Required",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500)),
           children: <Widget>[
-            Container(
-              color: Color(0xffE47273),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("S no.",style: TextStyle(color: Colors.white),),
-                      ],
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                DataTable(
+                  headingRowHeight: 40,
+                  headingRowColor: MaterialStateColor.resolveWith(
+                          (states) => Color(0xffE47273)),
+                  columnSpacing: 15.0,
+                  columns: const [
+                    DataColumn(
+                      label: Expanded(child: Text('S no')),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Item Name",style: TextStyle(color: Colors.white),),
-                      ],
+                    DataColumn(
+                      label: Text('Item Name'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(width: 50,),
-                            Text("QTY",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                      ],
+                    DataColumn(
+                      label: Text('QTY'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Rate",style: TextStyle(color: Colors.white),),
-                      ],
+                    DataColumn(
+                      label: Text('Rate'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Amount",style: TextStyle(color: Colors.white),),
-                      ],
+                    DataColumn(
+                      label: Text('Amount'),
                     ),
                   ],
+                  rows: List.generate(widget.cartList!.length, (index) {
+
+                    amount = int.parse(widget.cartList![index].rate
+                        .toString()) * 100/100+int.parse(widget.cartList![index].gst.toString());
+                    amountWithGST = amount! *
+                        int.parse(widget.cartList![index].quantity.toString());
+                    setState((){
+                      itemRequiredTotalAmount = widget.cartList!
+                          .map((item) =>
+                          double.parse(amountWithGST.toString())
+                      ).reduce((value, current) => value + current);
+                    });
+                    print(itemRequiredTotalAmount);
+                    totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
+                          int.parse(widget.transportChargesController.text.toString()) +
+                           commission! + int.parse(widget.handlingChargesController.text.toString()) + 18;
+                    return _getItemRequiredDataRow(widget.cartList![index],index);
+                  }),
+                ),
+              ],
+            ),
+
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xffFFE4E5),
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.black,
+                    width: 1.0,
+                  ),
                 ),
               ),
-            ),
-            buildItemRequiredList(),
-            Container(
-              color: Color(0xffFFE4E5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(),
                   Padding(
-                    padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                    padding: const EdgeInsets.only(
+                        top: 8.0, right: 30.0, bottom: 8.0),
                     child: Row(
                       children: [
-                        Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                        SizedBox(width: 15,),
-                        Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                        Text(
+                          "Total",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "₹ ${itemRequiredTotalAmount}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
                   ),
@@ -376,74 +213,94 @@ class _RevicePreviewScreenState extends State<RevicePreviewScreen> {
             ),
           ],
         ),
+        SizedBox(height: 5,),
         // Others Items
-        ExpansionTileCard(
+        widget.itemNotAvailableList.isEmpty
+            ? Container()
+            : ExpansionTileCard(
           key: cardOtherItemRequired,
-          leading: Text("Other Items( item not available on app)"),
-
-          title: SizedBox(),
-          subtitle:SizedBox(),
+          initiallyExpanded: true,
+          title: Text("Other Items( item not available on app)",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500)),
           children: <Widget>[
-            Container(
-              color: Color(0xffE47273),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("S no.",style: TextStyle(color: Colors.white),),
-                      ],
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+
+              children: [
+                DataTable(
+                  headingRowHeight: 40,
+                  headingRowColor: MaterialStateColor.resolveWith(
+                          (states) => Color(0xffE47273)),
+                  columnSpacing: 15.0,
+                  columns:const [
+                    DataColumn(
+                      label: Expanded(child: Text('S no')),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Item Name",style: TextStyle(color: Colors.white),),
-                      ],
+                    DataColumn(
+                      label: Text('Item Name'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(width: 50,),
-                            Text("QTY",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                      ],
+                    DataColumn(
+                      label: Text('QTY'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Rate",style: TextStyle(color: Colors.white),),
-                      ],
+                    DataColumn(
+                      label: Text('Rate'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Amount",style: TextStyle(color: Colors.white),),
-                      ],
+                    DataColumn(
+                      label: Text('Amount'),
                     ),
                   ],
+                  rows: List.generate(widget.itemNotAvailableList.length, (index) {
+                    oterItemsAmount = double.parse(
+                        widget.itemNotAvailableList[index].rate.toString()) *
+                        100/100+int.parse(widget.itemNotAvailableList[index].gst.toString());
+
+                    otherItemsAmountWithGST = oterItemsAmount! * int.parse(widget.itemNotAvailableList[index].quantity.toString());
+
+
+                    otherItemTotalAmount = widget.itemNotAvailableList
+                        .map((item) =>
+                        double.parse(otherItemsAmountWithGST.toString()))
+                        .reduce((value, current) => value + current);
+                    return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index]);
+                  }),),
+              ],
+            ),
+            // buildOtherItemsList(),
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xffFFE4E5),
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.black,
+                    width: 1.0,
+                  ),
                 ),
               ),
-            ),
-            buildOtherItemsList(),
-            Container(
-              color: Color(0xffFFE4E5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(),
                   Padding(
-                    padding: const EdgeInsets.only(top:8.0,right: 8.0,bottom: 8.0),
+                    padding: const EdgeInsets.only(
+                        top: 8.0, right: 40.0, bottom: 8.0),
                     child: Row(
                       children: [
-                        Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
-                        SizedBox(width: 15,),
-                        Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                        Text(
+                          "Total",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "₹ $otherItemTotalAmount",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
                   ),
@@ -453,67 +310,91 @@ class _RevicePreviewScreenState extends State<RevicePreviewScreen> {
           ],
         ),
         // Date and Time
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 8.0,top: 8.0),
-          child: Container(
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Date & Time"),
-                  Text("20 Nov, 2022 / 12PM - 4PM"),
-                ],
-              )
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(
+        //       right: 16.0, left: 16.0, bottom: 8.0, top: 8.0),
+        //   child: Container(
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Text("Date & Time"),
+        //           Text("20 Nov, 2022 / 12PM - 4PM"),
+        //         ],
+        //       )),
+        // ),
+
+        //Quotation Charges
         ExpansionTileCard(
           key: cardQuotations,
-          leading: Text("Quotation"),
-          title: SizedBox(),
-          subtitle:SizedBox(),
+          initiallyExpanded: true,
+          title: Text("Quotation",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500)),
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 8.0,left: 8.0, bottom: 8.0),
+              padding:
+              const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 8.0),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Service charge"),
-                      Text("₹ 20,000"),
+                      Text("Total Items charges"),
+                      Text(
+                          "₹ ${itemRequiredTotalAmount! + otherItemTotalAmount!}"),
                     ],
                   ),
+                  SizedBox(height: 3,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total Items charges"),
-                      Text("₹ 1500"),
+                      Text("Service charge"),
+                      Text(widget.serviceCallChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.serviceCallChargesController.text}"),
                     ],
                   ),
+                  SizedBox(height: 3,),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Transport charges"),
-                      Text("₹ 1500"),
+                      Text(widget.transportChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.transportChargesController.text}"),
                     ],
                   ),
+                  SizedBox(height: 3,),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Other charge"),
-                      Text("₹ 1500"),
+                      Text("Handling charge"),
+                      Text(widget.handlingChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.handlingChargesController.text}"),
                     ],
                   ),
+                  SizedBox(height: 3,),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("M1 Commission"),
-                      Text("₹ 550"),
+                      Text("₹ $commission"),
                     ],
                   ),
+                  SizedBox(height: 3,),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("GST %"),
-                      Text("5%"),
+                      Text("GST "),
+                      Text("18"),
                     ],
                   ),
                   Divider(),
@@ -521,37 +402,45 @@ class _RevicePreviewScreenState extends State<RevicePreviewScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Amount"),
-                      Text("₹20000"),
+                      Text("₹$totalAmount"),
                     ],
                   ),
                 ],
               ),
             )
-
-
           ],
         ),
+
+        //Terms And Condition
         ExpansionTileCard(
           key: cardTermsConditions,
-          leading: Text("Terms and Conditions"),
-          title: SizedBox(),
-          subtitle:SizedBox(),
+          initiallyExpanded: true,
+          title: Text("Terms and Conditions",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500)),
           children: <Widget>[
-
-          ],
-        ),
-        ExpansionTileCard(
-          key: cardmessage,
-          leading: Text("Message for Client"),
-          title: SizedBox(),
-          subtitle:SizedBox(),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
-              child: Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-                  " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, "
-                  "when an unknown printer"),
-            ),
+            Row(
+              children: [
+                Checkbox(
+                  value: this.value,
+                  activeColor: Colors.red,
+                  onChanged: (value) {
+                    setState(() {
+                      this.value = value!;
+                    });
+                  },
+                ),
+                const Text("I agree to the terms and conditions.",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins-Medium',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400))
+              ],
+            )
           ],
         ),
       ],

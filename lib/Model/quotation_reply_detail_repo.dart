@@ -141,6 +141,7 @@ class QuotationRequiredItems {
   int? packingCharge;
   int? testingCharge;
   String? itemName;
+  String? prodImg;
   int? itemQty;
   int? rate;
   int? amount;
@@ -151,6 +152,9 @@ class QuotationRequiredItems {
   int? sgst;
   String? dateAndTime;
   int? volume;
+  int? id;
+  int? productQty;
+  String? workingTime;
 
   QuotationRequiredItems(
       {this.machineMaintenanceQuotationsId,
@@ -171,7 +175,11 @@ class QuotationRequiredItems {
         this.cgst,
         this.testingCharge,
         this.packingCharge,
-        this.volume});
+        this.volume,
+        this.workingTime,
+        this.prodImg,
+        this.id,
+        this.productQty});
 
   QuotationRequiredItems.fromJson(Map<String, dynamic> json) {
     machineMaintenanceQuotationsId = json['machine_maintenance_quotations_id'];
@@ -193,6 +201,10 @@ class QuotationRequiredItems {
     packingCharge = json['packing_charge'];
     testingCharge = json['testing_charge'];
     volume = json['volume'];
+    workingTime = json['working_time'];
+    prodImg = json['product_image'];
+    id = json['item_id'];
+    productQty = json['product_qty'];
   }
 
   Map<String, dynamic> toJson() {
@@ -217,6 +229,10 @@ class QuotationRequiredItems {
     data['testing_charge'] = this.testingCharge;
     data['packing_charge'] = this.packingCharge;
     data['volume'] = this.volume;
+    data['working_time'] = this.workingTime;
+    data['product_image'] = this.prodImg;
+    data['product_qty'] = this.productQty;
+    data['item_id'] = this.id;
     return data;
   }
 }

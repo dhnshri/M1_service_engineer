@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_bloc.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_state.dart';
 import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_quotations.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -59,7 +60,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
     _quotationReplyBloc!.add(MachineQuotationReplyDetail(machineEnquiryId: widget.quotationReplyList.enquiryId.toString(),
         customerUserId: widget.quotationReplyList.userId.toString()));
-    // _quotationReplyBloc!.add(JobWorkQuotationReplyDetail(machineEnquiryId: '44',
+    // _quotationReplyBloc!.add(MachineQuotationReplyDetail(machineEnquiryId: '44',
     //     customerUserId: '12'));
 
   }
@@ -105,7 +106,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MakeQuotationScreen()));
+                            builder: (context) => MachineRevisedQuotationScreen(quotationRequiredItemList: quotationRequiredItemList,quotationOtherItemList: quotationOtherItemList,
+                                quotationChargesList: quotationChargesList,)));
                   }
                 else{
                   showCustomSnackBar(context,'Please agree the terms and condition.');

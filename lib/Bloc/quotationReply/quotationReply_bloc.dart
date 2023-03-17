@@ -6,6 +6,7 @@ import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
@@ -14,7 +15,7 @@ import '../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
 import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/quotationReplyModel.dart';
-import '../../Model/track_process_repo.dart';
+import '../home/home_bloc.dart';
 import 'quotationReply_event.dart';
 import 'quotationReply_state.dart';
 
@@ -128,6 +129,83 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
         ///Notify loading to UI
         yield MachineQuotationReplyDetailLoading(isLoading: false);
         yield MachineQuotationReplyDetailFail(msg: '');
+      }
+    }
+
+    //Machine Maintainance send Quotation for quoation detail
+    if (event is MachineSendQuotationReply) {
+      ///Notify loading to UI
+      yield MachineSendQuotationReplyLoading(isLoading: false);
+
+      var itemList = [];
+      var itemNotAvalList = [];
+
+      for(int j = 0; j < event.itemList.length; j++){
+
+        var innerObj ={};
+        double amount = int.parse(event.itemList[j].rate.toString()) * 100/100+int.parse(event.itemList[j].gst.toString());
+
+        double amountWithGST = amount *
+            int.parse(event.itemList[j].quantity.toString());
+
+        innerObj["item_id"] = event.itemList[j].itemName;
+        innerObj["item_qty"] = event.itemList[j].quantity;
+        innerObj["item_size"] = '';
+        innerObj["rate"] = event.itemList[j].rate;
+        innerObj["amount"] = amountWithGST;
+        innerObj["gst"] = event.itemList[j].gst;
+        itemList.add(innerObj);
+      }
+
+      for(int j = 0; j < event.itemNotAvailableList.length; j++){
+
+        var innerObj ={};
+
+        innerObj["item_id"] = event.itemNotAvailableList[j].id;
+        innerObj["item_qty"] = event.itemNotAvailableList[j].quantity;
+        innerObj["item_size"] = '';
+        innerObj["rate"] = event.itemNotAvailableList[j].rate;
+        innerObj["amount"] = event.itemNotAvailableList[j].amount;
+        innerObj["gst"] = event.itemNotAvailableList[j].gst;
+        itemNotAvalList.add(innerObj);
+      }
+
+      Map<String, String> params = {
+        "machine_enquiry_id": event.machineEnquiryId.toString(),
+        "service_user_id":event.serviceUserId,
+        "working_time":event.workingTime,
+        "date_of_joining":event.dateOfJoining,
+        "service_charge":event.serviceCharge == "" ? '0' : event.serviceCharge,
+        "handling_charge":event.handlingCharge == "" ? '0' : event.handlingCharge,
+        "transport_charge": event.transportCharge == "" ? '0' : event.transportCharge,
+        "items_available": jsonEncode(itemList),
+        "items_not_available": jsonEncode(itemNotAvalList),
+        "commission": event.commission,
+        "machine_enquiry_date": event.machineEnquiryDate,
+        // 'machine_enquiry_id': event.machineEnquiryId,
+      };
+
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/machine_maintainence_quatation'));
+      // ..fields.addAll(params);
+      _request = jsonToFormData(_request, params);
+      print(jsonEncode(_request.fields));
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
+      print(res.msg);
+
+
+      ///Case API fail but not have token
+      if (res.success == true) {
+        print(response.body);
+        yield MacineSendQuotationReplySuccess(message: res.msg.toString());
+
+      } else {
+        ///Notify loading to UI
+        yield MachineSendQuotationReplyFail(msg: res.msg.toString());
+        print(response.body);
       }
     }
 
@@ -396,10 +474,4 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
   }
 
 
-}
-jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
-  for (var key in data.keys) {
-    request.fields[key] = data[key].toString();
-  }
-  return request;
 }

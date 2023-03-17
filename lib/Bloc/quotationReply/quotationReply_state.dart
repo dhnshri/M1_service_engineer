@@ -135,3 +135,18 @@ class JobWorkSendRevisedQuotationSuccess extends QuotationReplyState {
   String message;
   JobWorkSendRevisedQuotationSuccess({required this.message});
 }
+
+class MachineSendQuotationReplyLoading extends QuotationReplyState {
+  bool isLoading;
+  MachineSendQuotationReplyLoading({required this.isLoading});
+}
+
+class MachineSendQuotationReplyFail extends QuotationReplyState {
+  final String? msg;
+  MachineSendQuotationReplyFail({this.msg});
+}
+
+class MacineSendQuotationReplySuccess extends QuotationReplyState {
+  String message;
+  MacineSendQuotationReplySuccess({required this.message});
+}
