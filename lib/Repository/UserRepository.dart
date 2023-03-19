@@ -114,6 +114,18 @@ class UserRepository {
     return await Api.getJobWorkProfileData(params);
   }
 
+  ///Get Job Work Profile Data
+  Future<dynamic> geMachineProfile({String? serviceUserId,String? roleId}) async {
+    final params = {"service_user_id":serviceUserId,'role_id':roleId};
+    return await Api.getMachineProfileData(params);
+  }
+
+  ///Get Transport Profile Data
+  Future<dynamic> geTransportProfile({String? serviceUserId,String? roleId}) async {
+    final params = {"service_user_id":serviceUserId,'role_id':roleId};
+    return await Api.getTransportProfileData(params);
+  }
+
 
   //Job Work Enquiry Service Request Api
   Future<dynamic> fetchServiceRequestJobWorkEnquiryList({String? userID, String? offSet}) async {

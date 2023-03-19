@@ -93,6 +93,9 @@ class ServiceUserData {
   String? userProfilePic;
   String? username;
   int? role;
+  String? name;
+  int? age;
+  String? gender;
 
   ServiceUserData(
       {this.serviceUserId,
@@ -112,7 +115,10 @@ class ServiceUserData {
         this.companyProfilePic,
         this.userProfilePic,
         this.username,
-        this.role});
+        this.role,
+        this.name,
+        this.age,
+        this.gender});
 
   ServiceUserData.fromJson(Map<String, dynamic> json) {
     serviceUserId = json['service_user_id'];
@@ -133,6 +139,9 @@ class ServiceUserData {
     userProfilePic = json['user_profile_pic'];
     username = json['username'];
     role = json['role'];
+    name = json['name'];
+    age = json['age'];
+    gender = json['gender'];
   }
 
   Map<String, dynamic> toJson() {
@@ -155,6 +164,8 @@ class ServiceUserData {
     data['user_profile_pic'] = this.userProfilePic;
     data['username'] = this.username;
     data['role'] = this.role;
+    data['name'] = this.name;
+    data['age'] = this.gender;
     return data;
   }
 }
@@ -162,6 +173,11 @@ class ServiceUserData {
 class ProfileKYCDetails {
   int? id;
   int? serviceUserId;
+  String? bankName;
+  String? accountNumber;
+  String? ifscCode;
+  String? upiId;
+  String? branchName;
   String? companyName;
   String? companyCertificate;
   String? gstCertificate;
@@ -177,7 +193,12 @@ class ProfileKYCDetails {
         this.gstCertificate,
         this.panCard,
         this.shopActLicence,
-        this.udhyogAdharLicence});
+        this.udhyogAdharLicence,
+        this.bankName,
+        this.accountNumber,
+        this.ifscCode,
+        this.upiId,
+        this.branchName});
 
   ProfileKYCDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -188,6 +209,11 @@ class ProfileKYCDetails {
     panCard = json['pan_card'];
     shopActLicence = json['shop_act_licence'];
     udhyogAdharLicence = json['udhyog_adhar_licence'];
+    bankName = json['bank_name'];
+    accountNumber = json['account_number'];
+    ifscCode = json['ifsc_code'];
+    upiId = json['upi_id'];
+    branchName = json['branch_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -200,6 +226,59 @@ class ProfileKYCDetails {
     data['pan_card'] = this.panCard;
     data['shop_act_licence'] = this.shopActLicence;
     data['udhyog_adhar_licence'] = this.udhyogAdharLicence;
+    data['bank_name'] = this.bankName;
+    data['account_number'] = this.accountNumber;
+    data['upi_id'] = this.upiId;
+    data['branch_name'] = this.branchName;
+    return data;
+  }
+}
+
+class DriverProfileDetails {
+  int? id;
+  int? serviceUserId;
+  String? fullName;
+  String? mobile;
+  String? drivingLicenceValidity;
+  String? drivingLicenceNumber;
+  String? drivingLicence;
+  String? idProof;
+  String? driverPic;
+
+  DriverProfileDetails(
+      {this.id,
+        this.serviceUserId,
+        this.fullName,
+        this.mobile,
+        this.drivingLicenceValidity,
+        this.drivingLicenceNumber,
+        this.drivingLicence,
+        this.idProof,
+        this.driverPic});
+
+  DriverProfileDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceUserId = json['service_user_id'];
+    fullName = json['full_name'];
+    mobile = json['mobile'];
+    drivingLicenceValidity = json['driving_licence_validity'];
+    drivingLicenceNumber = json['driving_licence_number'];
+    drivingLicence = json['driving_licence'];
+    idProof = json['id_proof'];
+    driverPic = json['driver_pic'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['service_user_id'] = this.serviceUserId;
+    data['full_name'] = this.fullName;
+    data['mobile'] = this.mobile;
+    data['driving_licence_validity'] = this.drivingLicenceValidity;
+    data['driving_licence_number'] = this.drivingLicenceNumber;
+    data['driving_licence'] = this.drivingLicence;
+    data['id_proof'] = this.idProof;
+    data['driver_pic'] = this.driverPic;
     return data;
   }
 }
@@ -226,6 +305,186 @@ class JobWorkMachineList {
     data['service_user_id'] = this.serviceUserId;
     data['machine_name'] = this.machineName;
     data['quantity'] = this.quantity;
+    return data;
+  }
+}
+
+class ProfileVehicleInformation {
+  int? id;
+  int? serviceUserId;
+  String? vehicleName;
+  String? vehicleType;
+  String? chassisNumber;
+  String? registrationUpto;
+  String? vehicleNumber;
+  String? vehicleImg;
+  String? uploadRC;
+  String? uploadPOC;
+
+  ProfileVehicleInformation(
+      {this.id,
+        this.serviceUserId,
+        this.vehicleName,
+        this.vehicleType,
+        this.chassisNumber,
+        this.registrationUpto,
+        this.vehicleNumber,
+        this.vehicleImg,
+        this.uploadRC,
+        this.uploadPOC});
+
+  ProfileVehicleInformation.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceUserId = json['service_user_id'];
+    vehicleName = json['vehicle_name'];
+    vehicleType = json['vehicle_type'];
+    chassisNumber = json['chassis_number'];
+    registrationUpto = json['registration_upto'];
+    vehicleNumber = json['vehicle_number'];
+    vehicleImg = json['vehicle_img'];
+    uploadRC = json['upload_RC'];
+    uploadPOC = json['upload_POC'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['service_user_id'] = this.serviceUserId;
+    data['vehicle_name'] = this.vehicleName;
+    data['vehicle_type'] = this.vehicleType;
+    data['chassis_number'] = this.chassisNumber;
+    data['registration_upto'] = this.registrationUpto;
+    data['vehicle_number'] = this.vehicleNumber;
+    data['vehicle_img'] = this.vehicleImg;
+    data['upload_RC'] = this.uploadRC;
+    data['upload_POC'] = this.uploadPOC;
+    return data;
+  }
+}
+
+class TransportProfileExperience {
+  int? serviceUserId;
+  int? years;
+  int? months;
+  String? companyName;
+  String? description;
+  String? workFrom;
+  String? workTill;
+
+  TransportProfileExperience(
+      {this.serviceUserId,
+        this.years,
+        this.months,
+        this.companyName,
+        this.description,
+        this.workFrom,
+        this.workTill});
+
+  TransportProfileExperience.fromJson(Map<String, dynamic> json) {
+    serviceUserId = json['service_user_id'];
+    years = json['years'];
+    months = json['months'];
+    companyName = json['company_name'];
+    description = json['description'];
+    workFrom = json['work_from'];
+    workTill = json['work_till'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['service_user_id'] = this.serviceUserId;
+    data['years'] = this.years;
+    data['months'] = this.months;
+    data['company_name'] = this.companyName;
+    data['description'] = this.description;
+    data['work_from'] = this.workFrom;
+    data['work_till'] = this.workTill;
+    return data;
+  }
+}
+
+class MachineMaintenanceExperiences {
+  int? id;
+  int? serviceUserId;
+  int? yearOfExperience;
+  int? monthOfExperience;
+  String? companyName;
+  String? jobPost;
+  String? description;
+  String? workFrom;
+  String? workTill;
+
+  MachineMaintenanceExperiences(
+      {this.id,
+        this.serviceUserId,
+        this.yearOfExperience,
+        this.monthOfExperience,
+        this.companyName,
+        this.jobPost,
+        this.description,
+        this.workFrom,
+        this.workTill});
+
+  MachineMaintenanceExperiences.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceUserId = json['service_user_id'];
+    yearOfExperience = json['year_of_experience'];
+    monthOfExperience = json['month_of_experience'];
+    companyName = json['company_name'];
+    jobPost = json['job_post'];
+    description = json['description'];
+    workFrom = json['work_from'];
+    workTill = json['work_till'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['service_user_id'] = this.serviceUserId;
+    data['year_of_experience'] = this.yearOfExperience;
+    data['month_of_experience'] = this.monthOfExperience;
+    data['company_name'] = this.companyName;
+    data['job_post'] = this.jobPost;
+    data['description'] = this.description;
+    data['work_from'] = this.workFrom;
+    data['work_till'] = this.workTill;
+    return data;
+  }
+}
+
+class MachineMaintenanceEducations {
+  int? id;
+  int? serviceUserId;
+  String? schoolName;
+  String? courseName;
+  String? passingYear;
+  String? certificate;
+
+  MachineMaintenanceEducations(
+      {this.id,
+        this.serviceUserId,
+        this.schoolName,
+        this.courseName,
+        this.passingYear,
+        this.certificate});
+
+  MachineMaintenanceEducations.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceUserId = json['service_user_id'];
+    schoolName = json['school_name'];
+    courseName = json['course_name'];
+    passingYear = json['passing_year'];
+    certificate = json['certificate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['service_user_id'] = this.serviceUserId;
+    data['school_name'] = this.schoolName;
+    data['course_name'] = this.courseName;
+    data['passing_year'] = this.passingYear;
+    data['certificate'] = this.certificate;
     return data;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/MyTask/my_task_detail.dart';
 
 import '../../../Bloc/home/home_bloc.dart';
 import '../../../Bloc/home/home_state.dart';
@@ -10,7 +12,8 @@ import '../../../Widget/custom_snackbar.dart';
 
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+  AddTaskScreen({Key? key,required this.myTaskData}) : super(key: key);
+  MyTaskModel myTaskData;
 
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
@@ -210,8 +213,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               _isLoading = state.isLoading;
             }
             if(state is CreateTaskSuccess){
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
               showCustomSnackBar(context,state.message.toString(),isError: false);
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyTaskDetailsScreen(myTaskData: widget.myTaskData,)));
             }
             if(state is CreateTaskFail){
               showCustomSnackBar(context,state.msg.toString());

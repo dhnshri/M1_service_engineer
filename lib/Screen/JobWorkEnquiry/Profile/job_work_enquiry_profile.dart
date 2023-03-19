@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_engineer/Model/profile_repo.dart';
 import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,8 +23,10 @@ import '../../LoginRegistration/signUpAs.dart';
 
 
 class JobWorkProfileScreen extends StatefulWidget {
-  const JobWorkProfileScreen({Key? key}) : super(key: key);
-
+  JobWorkProfileScreen({Key? key,required this.serviceUserdataList,required this.profileKycList,required this.profileMachineList}) : super(key: key);
+  List<ServiceUserData>? serviceUserdataList;
+  List<ProfileKYCDetails>? profileKycList;
+  List<JobWorkMachineList>? profileMachineList;
   @override
   _JobWorkProfileScreenState createState() => _JobWorkProfileScreenState();
 }
@@ -46,6 +49,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   File? _uploadUserProfileImage;
   UserProfileImageFile? uploadUserProfileImageFile;
 
+
   final _formKey = GlobalKey<FormState>();
   final _addressFormKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -65,7 +69,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   final _machineNameController = TextEditingController();
   final _quantityController = TextEditingController();
 
-  List<MachineList> machineName = [];
+  List<MachineList> machineList = [];
   final List<String> quantity = [];
 
   String? _currentAddress;
@@ -86,15 +90,54 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     uploadCompanyProfileImageFile = new UploadCompanyProfileFile();
     uploadUserProfileImageFile = new UserProfileImageFile();
     _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
-
-    if(Application.customerLogin!.email!.isNotEmpty){
-      _iDController.text = Application.customerLogin!.email.toString();
-      _nameController.text = Application.customerLogin!.name.toString();
-      _emailController.text = Application.customerLogin!.email.toString();
-      _phoneController.text = Application.customerLogin!.mobile.toString();
-    }
+    getData();
   }
 
+  getData(){
+    if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileMachineList!.isNotEmpty){
+      _iDController.text = widget.serviceUserdataList![0].email.toString();
+      _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
+      _coOrdinatorNameController.text = widget.serviceUserdataList![0].coordinateName.toString();
+      _emailController.text = widget.serviceUserdataList![0].email.toString();
+      _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
+      _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
+      uploadCompanyProfileImageFile!.imagePath = widget.serviceUserdataList![0].companyProfilePic.toString();
+      uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
+      _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
+      _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
+      _cityController.text = widget.serviceUserdataList![0].city.toString();
+      _stateController.text = widget.serviceUserdataList![0].state.toString();
+      _countryController.text = widget.serviceUserdataList![0].country.toString();
+      imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
+      gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
+      panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
+      shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
+      aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
+
+      for(int i=0; i < widget.profileMachineList!.length;i++){
+        machineList.add(MachineList(id:i,machineName: widget.profileMachineList![i].machineName.toString(),quantity: widget.profileMachineList![i].quantity.toString()));
+      }
+    }else{
+      _iDController.text = "";
+      _companyNameController.text = "";
+      _coOrdinatorNameController.text = "";
+      _emailController.text = "";
+      _phoneController.text = "";
+      _gstController.text = "";
+      uploadCompanyProfileImageFile!.imagePath = "";
+      uploadUserProfileImageFile!.imagePath = "";
+      _addressController.text = "";
+      _pinCodeController.text = "";
+      _cityController.text = "";
+      _stateController.text = "";
+      _countryController.text = "";
+      imageFile!.imagePath = "";
+      gstImageFile!.imagePath = "";
+      panImageFile!.imagePath = "";
+      shopActImageFile!.imagePath = "";
+      aadharImageFile!.imagePath = "";
+    }
+  }
 
   @override
   void dispose() {
@@ -124,8 +167,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       int count = 0;
       // machineName.insert(0,_machineNameController.text);
       // quantity.insert(0, _quantityController.text);
-      machineName.add(MachineList(id:count++,machineName: _machineNameController.text.toString(),quantity: _quantityController.text.toString()));
-      print(machineName);
+      machineList.add(MachineList(id:count++,machineName: _machineNameController.text.toString(),quantity: _quantityController.text.toString()));
+      print(machineList);
     });
   }
 
@@ -554,8 +597,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                            : Image.file(
-                                            _uploadUserProfileImage!,
+                                            : Image.network(
+                                            uploadUserProfileImageFile!.imagePath!,
                                           fit: BoxFit.fill,
                                         )
 
@@ -622,7 +665,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                       children: [
                         ///ID
                         TextFormField(
-                          // initialValue: Application.customerLogin!.name.toString(),
+                          enabled: false,
                           controller: _iDController,
                           textAlign: TextAlign.start,
                           keyboardType: TextInputType.emailAddress,
@@ -1270,13 +1313,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     ),
                   ),
 
-                  machineName.length>0?
+                  machineList.length>0?
                   SizedBox(
                       // height: MediaQuery.of(context).size.height/4,
                       child: ListView.builder(
                           padding: const EdgeInsets.all(8),
                           shrinkWrap: true,
-                          itemCount: machineName.length,
+                          itemCount: machineList.length,
                           itemBuilder: (BuildContext context,index) {
                             return Padding(
                               padding: const EdgeInsets.only(left: 20.0),
@@ -1301,7 +1344,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                                 padding: const EdgeInsets.only(left: 8),
                                                 child: Container(
                                                   width: MediaQuery.of(context).size.width * 0.4,
-                                                  child: Text('${machineName[index].machineName}',
+                                                  child: Text('${machineList[index].machineName}',
                                                     style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
                                                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                   ),
@@ -1309,7 +1352,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(right: 10),
-                                                child: Text('${machineName[index].quantity}',
+                                                child: Text('${machineList[index].quantity}',
                                                   style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
                                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                 ),
@@ -1330,7 +1373,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                           // int index1 = machineName
                                           //     .indexWhere((element) => element.id! == machineName[index].id);
 
-                                         machineName.removeAt(index);
+                                          machineList.removeAt(index);
                                         });
 
                                       },
@@ -2081,7 +2124,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       state: _stateController.text,
                                       country: _countryController.text,
                                       // companyName: _companyNameController.text,
-                                      machineList: machineName,
+                                      machineList: machineList,
                                       companyProfilePic:
                                           uploadCompanyProfileImageFile!
                                               .imagePath

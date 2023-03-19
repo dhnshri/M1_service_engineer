@@ -6,6 +6,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
 import 'package:service_engineer/Bloc/profile/profile_state.dart';
+import 'package:service_engineer/Model/profile_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/education_form.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,8 +27,12 @@ import 'package:geolocator/geolocator.dart';
 
 
 class MachineProfileScreen extends StatefulWidget {
-  const MachineProfileScreen({Key? key}) : super(key: key);
-
+  MachineProfileScreen({Key? key,required this.serviceUserdataList,required this.profileKycList,
+    required this.profileMachineEducationList,required this.profileMachineExperienceList}) : super(key: key);
+  List<ServiceUserData>? serviceUserdataList;
+  List<ProfileKYCDetails>? profileKycList;
+  List<MachineMaintenanceExperiences>? profileMachineExperienceList;
+  List<MachineMaintenanceEducations>? profileMachineEducationList;
   @override
   _MachineProfileScreenState createState() => _MachineProfileScreenState();
 }
@@ -118,12 +123,73 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     shopActImageFile = new ShopActImageFile();
     aadharImageFile = new AddharImageFile();
     uploadUserProfileImageFile = new UserProfileImageFile();
-    _iDController.text = Application.customerLogin!.email.toString();
-    _nameController.text = Application.customerLogin!.name.toString();
-    _emailController.text = Application.customerLogin!.email.toString();
-    _phoneController.text = Application.customerLogin!.mobile.toString();
+    // _iDController.text = Application.customerLogin!.email.toString();
+    // _nameController.text = Application.customerLogin!.name.toString();
+    // _emailController.text = Application.customerLogin!.email.toString();
+    // _phoneController.text = Application.customerLogin!.mobile.toString();
     _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
+    getData();
+  }
 
+  getData(){
+    if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
+      _iDController.text = widget.serviceUserdataList![0].email.toString();
+      _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
+      _nameController.text = widget.serviceUserdataList![0].name.toString();
+      _emailController.text = widget.serviceUserdataList![0].email.toString();
+      _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
+      _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
+      _ageController.text = widget.serviceUserdataList![0].age.toString();
+      _genderController.text = widget.serviceUserdataList![0].gender.toString();
+      // uploadCompanyProfileImageFile!.imagePath = widget.serviceUserdataList![0].companyProfilePic.toString();
+      uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
+      _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
+      _locationController.text = widget.serviceUserdataList![0].currentAddress.toString();
+      _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
+      _cityController.text = widget.serviceUserdataList![0].city.toString();
+      _stateController.text = widget.serviceUserdataList![0].state.toString();
+      _countryController.text = widget.serviceUserdataList![0].country.toString();
+      imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
+      gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
+      panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
+      shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
+      aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
+      _bankNameController.text = widget.profileKycList![0].bankName.toString();
+      _accountNumberController.text = widget.profileKycList![0].accountNumber.toString();
+      _iFSCCodeController.text = widget.profileKycList![0].ifscCode.toString();
+      _branchNameController.text = widget.profileKycList![0].branchName.toString();
+      _upiIdController.text = widget.profileKycList![0].upiId.toString();
+      _yearsController.text = widget.profileMachineExperienceList![0].yearOfExperience.toString();
+      _monthsController.text = widget.profileMachineExperienceList![0].monthOfExperience.toString();
+
+      // for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
+      //   ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName);
+      //   expCompanyForms.add(ExpCompanyFormWidget(
+      //     index: expCompanyForms.length,
+      //     expCompanyModel: _expData,
+      //     onRemove: () => onRemove(_expData),
+      //   ));
+      // }
+    }else{
+      _iDController.text = "";
+      _companyNameController.text = "";
+      _coOrdinatorNameController.text = "";
+      _emailController.text = "";
+      _phoneController.text = "";
+      _gstController.text = "";
+      // uploadCompanyProfileImageFile!.imagePath = "";
+      uploadUserProfileImageFile!.imagePath = "";
+      _addressController.text = "";
+      _pinCodeController.text = "";
+      _cityController.text = "";
+      _stateController.text = "";
+      _countryController.text = "";
+      imageFile!.imagePath = "";
+      gstImageFile!.imagePath = "";
+      panImageFile!.imagePath = "";
+      shopActImageFile!.imagePath = "";
+      aadharImageFile!.imagePath = "";
+    }
   }
 
 
@@ -423,12 +489,6 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     }
   }
 
-  void addToMachineList(){
-    setState(() {
-      machineName.insert(0,_machineNameController.text);
-      quantity.insert(0, _quantityController.text);
-    });
-  }
 
   List<String> dataString = [
     "Pakistan",
@@ -617,8 +677,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                              : Image.file(
-                                            _uploadUserProfileImage!,
+                                              : Image.network(
+                                            uploadUserProfileImageFile!.imagePath.toString(),
                                             fit: BoxFit.fill,
                                           )
 

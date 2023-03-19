@@ -97,9 +97,21 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
             Flexible(
               child: AppSmallButton(
                 onPressed: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EnquiryReviceQuotationScreen()));
-                },
+                  if(value == true) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EnquiryReviseQuotationScreen(
+                                    quotationRequiredItemList:
+                                        quotationRequiredItemList,
+                                    quotationChargesList: quotationChargesList,
+                                    quotationReplyJobWorkEnquiryList: widget.quotationReplyJobWorkEnquiryList,
+                                  )));
+                    }else{
+                    showCustomSnackBar(context,'Please Agree the terms and conditions.'.toString());
+                  }
+                  },
                 shape: const RoundedRectangleBorder(
                     borderRadius:
                     BorderRadius.all(Radius.circular(50))),

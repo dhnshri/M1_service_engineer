@@ -8,6 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
 import 'package:service_engineer/Bloc/profile/profile_state.dart';
+import 'package:service_engineer/Model/profile_repo.dart';
 import 'package:service_engineer/Model/vehicle_info_model.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/education_form.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Profile/widget/expirence_company.dart';
@@ -32,8 +33,13 @@ import '../../LoginRegistration/signUpAs.dart';
 // import '../../image_file.dart';
 
 class TransportationProfileScreen extends StatefulWidget {
-  const TransportationProfileScreen({Key? key}) : super(key: key);
-
+  TransportationProfileScreen({Key? key,required this.serviceUserdataList,required this.profileKycList,required this.profileDriverDetailsList,
+    required this.profileVehicleInfoList,required this.profileExperienceList}) : super(key: key);
+  List<ServiceUserData>? serviceUserdataList;
+  List<ProfileKYCDetails>? profileKycList;
+  List<DriverProfileDetails>? profileDriverDetailsList;
+  List<ProfileVehicleInformation>? profileVehicleInfoList;
+  List<TransportProfileExperience>? profileExperienceList;
   @override
   _TransportationProfileScreenState createState() => _TransportationProfileScreenState();
 }
@@ -119,11 +125,101 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
     panImageFile = new PanImageFile();
     shopActImageFile = new ShopActImageFile();
     aadharImageFile = new AddharImageFile();
-    _nameController.text = Application.customerLogin!.name.toString();
-    _emailController.text = Application.customerLogin!.email.toString();
-    _phoneController.text = Application.customerLogin!.mobile.toString();
+    getData();
   }
 
+  getData(){
+    if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileVehicleInfoList!.isNotEmpty || widget.profileExperienceList!.isNotEmpty ||
+      widget.profileDriverDetailsList!.isNotEmpty){
+      imageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
+      _nameController.text = widget.serviceUserdataList![0].name.toString();
+      _emailController.text = widget.serviceUserdataList![0].email.toString();
+      _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
+      _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
+      _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
+      _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
+      _cityController.text = widget.serviceUserdataList![0].city.toString();
+      _stateController.text = widget.serviceUserdataList![0].state.toString();
+      _countryController.text = widget.serviceUserdataList![0].country.toString();
+      _bankNameController.text = widget.profileKycList![0].bankName.toString();
+      _accountNumberController.text = widget.profileKycList![0].accountNumber.toString();
+      _iFSCCodeController.text = widget.profileKycList![0].ifscCode.toString();
+      _branchNameController.text = widget.profileKycList![0].branchName.toString();
+      _upiIdController.text = widget.profileKycList![0].upiId.toString();
+      _companyNameController.text = widget.profileKycList![0].companyName.toString();
+      _companyNameController.text = widget.profileKycList![0].companyName.toString();
+      companyCertificateImageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
+      gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
+      panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
+      shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
+      aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
+      driverImageFile!.imagePath = widget.profileDriverDetailsList![0].driverPic.toString();
+      drivingLicenseImageFile!.imagePath = widget.profileDriverDetailsList![0].drivingLicence.toString();
+      driverIdProofImageFile!.imagePath = widget.profileDriverDetailsList![0].idProof.toString();
+      _driverNameController.text = widget.profileDriverDetailsList![0].fullName.toString();
+      _driverPhoneController.text = widget.profileDriverDetailsList![0].mobile.toString();
+      _driverLicenseValidityController.text = widget.profileDriverDetailsList![0].drivingLicenceValidity.toString();
+      _driverLicenseNumberController.text = widget.profileDriverDetailsList![0].drivingLicenceNumber.toString();
+      _yearsController.text = widget.profileExperienceList![0].years.toString();
+      _monthsController.text = widget.profileExperienceList![0].months.toString();
+      // for(int i=0; i < widget.profileExperienceList!.length;i++){
+      //   ExpCompanyModel _contactModel = ExpCompanyModel(id: widget.profileExperienceList!.length,companyName: widget.profileExperienceList![i].companyName,
+      //     desciption: widget.profileExperienceList![i].description,fromYear: widget.profileExperienceList![i].workFrom,tillYear: widget.profileExperienceList![i].workTill);
+      //   expCompanyForms.add(ExpCompanyFormWidget(
+      //     index: widget.profileExperienceList!.length,
+      //     expCompanyModel: _contactModel,
+      //     onRemove: () => onRemove(_contactModel),
+      //   ));
+      // }
+      // for(int i=0; i < widget.profileVehicleInfoList!.length;i++){
+      //   VehicleImageModel _vehicleImageModel = VehicleImageModel();
+      //   VehicleRCImageModel _vehicleRCImageModel = VehicleRCImageModel();
+      //   VehiclePUCImageModel _vehiclePUCImageModel = VehiclePUCImageModel();
+      //   VehicleInfoModel _vehicleInfoModel = VehicleInfoModel(id: vehicleInfoForms.length);
+      //   // EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: vehicleInfoForms.length);
+      //   vehicleInfoForms.add(VehicleInfFormWidget(
+      //     index: vehicleInfoForms.length,
+      //     vehicleInfoModel: _vehicleInfoModel,
+      //     vehicleImageModel: _vehicleImageModel,
+      //     vehicleRCImageModel: _vehicleRCImageModel,
+      //     vehiclePUCImageModel: _vehiclePUCImageModel,
+      //     onRemove: () => vehicleInfoOnRemove(_vehicleInfoModel,_vehicleImageModel,_vehicleRCImageModel,_vehiclePUCImageModel),
+      //   ));
+      // }
+    }else{
+      imageFile!.imagePath = "";
+      _nameController.text = "";
+      _emailController.text = "";
+      _phoneController.text = "";
+      _gstController.text = "";
+      _addressController.text = "";
+      _pinCodeController.text = "";
+      _cityController.text = "";
+      _stateController.text = "";
+      _countryController.text = "";
+      _bankNameController.text = "";
+      _accountNumberController.text = "";
+      _iFSCCodeController.text = "";
+      _branchNameController.text = "";
+      _upiIdController.text = "";
+      _companyNameController.text = "";
+      _companyNameController.text = "";
+      companyCertificateImageFile!.imagePath = "";
+      gstImageFile!.imagePath = "";
+      panImageFile!.imagePath = "";
+      shopActImageFile!.imagePath = "";
+      aadharImageFile!.imagePath = "";
+      driverImageFile!.imagePath = "";
+      drivingLicenseImageFile!.imagePath = "";
+      driverIdProofImageFile!.imagePath = "";
+      _driverNameController.text = "";
+      _driverPhoneController.text = "";
+      _driverLicenseValidityController.text = "";
+      _driverLicenseNumberController.text = "";
+      _yearsController.text = "";
+      _monthsController.text = "";
+    }
+  }
 
   @override
   void dispose() {
@@ -727,8 +823,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                            : Image.file(
-                                            _image!,
+                                            : Image.network(
+                                            imageFile!.imagePath.toString(),
                                           fit: BoxFit.fill,
                                         )
 

@@ -38,6 +38,24 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
   DateTime selectedWorkFromDate = DateTime.now();
   DateTime selectedWorkTillDate = DateTime.now();
 
+  void initState(){
+    // getData();
+  }
+
+  getData(){
+    if(widget.expCompanyModel!.companyName != null || widget.expCompanyModel!.desciption != null || widget.expCompanyModel!.fromYear != null
+        || widget.expCompanyModel!.tillYear != null){
+      widget._companyNameController.text = widget.expCompanyModel!.companyName.toString();
+      widget._descriptionController.text = widget.expCompanyModel!.desciption.toString();
+      widget._workFromYearsController.text = DateFormat.yMd().format(DateTime.parse(widget.expCompanyModel!.fromYear.toString())).toString();
+      widget._workTillYearsController.text = DateFormat.yMd().format(DateTime.parse(widget.expCompanyModel!.tillYear.toString())).toString();
+    }else{
+      widget._companyNameController.text = "";
+      widget._descriptionController.text = "";
+      widget._workFromYearsController.text = "";
+      widget._workTillYearsController.text = "";
+    }
+  }
 
   Future<Null> _selectWorkFromDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(

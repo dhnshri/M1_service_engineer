@@ -65,6 +65,8 @@ class Api {
   static const String VEHICLE_NAME=HOST_URL+"transport_vehicle_name_list";
   static const String VEHICLE_TYPE=HOST_URL+"transport_vehicle_type_list";
   static const String VEHICLE_NUMBER=HOST_URL+"transport_vehicle_number_list";
+  static const String TRANSPORT_PROFILE="get_transport_profile";
+  static const String MACHINE_PROFILE="get_machine_maintainence_profile";
 
 
 
@@ -181,6 +183,30 @@ class Api {
   static Future<dynamic> getJobWorkProfileData(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+JOBWORK_PROFILE),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkProfileRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getMachineProfileData(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+MACHINE_PROFILE),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkProfileRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getTransportProfileData(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRANSPORT_PROFILE),
       body: params,
     );
     if (response.statusCode == 200) {

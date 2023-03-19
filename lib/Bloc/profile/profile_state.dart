@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:service_engineer/Model/profile_repo.dart';
 
 @immutable
 abstract class ProfileState {}
@@ -61,6 +62,49 @@ class GetJobWorkProfileFail extends ProfileState {
 }
 
 class GetJobWorkProfileSuccess extends ProfileState {
-  String message;
-  GetJobWorkProfileSuccess({ required this.message});
+  List<ServiceUserData> serviceUserdataList;
+  List<ProfileKYCDetails> profileKycList;
+  List<JobWorkMachineList> profileMachineList;
+  GetJobWorkProfileSuccess({required this.serviceUserdataList,required this.profileKycList,
+    required this.profileMachineList,});
+}
+
+class GetMachineProfileLoading extends ProfileState {
+  bool isLoading;
+  GetMachineProfileLoading({required this.isLoading});
+}
+
+class GetMachineProfileFail extends ProfileState {
+  final String? msg;
+  GetMachineProfileFail({this.msg});
+}
+
+class GetMachineProfileSuccess extends ProfileState {
+  List<ServiceUserData> serviceUserdataList;
+  List<ProfileKYCDetails> profileKycList;
+  List<MachineMaintenanceExperiences> profileMachineExperienceList;
+  List<MachineMaintenanceEducations> profileMachineEducationList;
+  GetMachineProfileSuccess({required this.serviceUserdataList,required this.profileKycList,
+    required this.profileMachineEducationList, required this.profileMachineExperienceList});
+}
+
+
+class GetTransportProfileLoading extends ProfileState {
+  bool isLoading;
+  GetTransportProfileLoading({required this.isLoading});
+}
+
+class GetTransportProfileFail extends ProfileState {
+  final String? msg;
+  GetTransportProfileFail({this.msg});
+}
+
+class GetTransportProfileSuccess extends ProfileState {
+  List<ServiceUserData> serviceUserdataList;
+  List<ProfileKYCDetails> profileKycList;
+  List<DriverProfileDetails> profileDriverDetailsList;
+  List<ProfileVehicleInformation> profileVehicleInfoList;
+  List<TransportProfileExperience> profileExperienceList;
+  GetTransportProfileSuccess({required this.serviceUserdataList,required this.profileKycList,
+    required this.profileDriverDetailsList,required this.profileVehicleInfoList,required this.profileExperienceList});
 }
