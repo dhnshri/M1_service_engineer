@@ -270,6 +270,24 @@ class TrackProcssListSuccess extends HomeState {
   TrackProcssListSuccess({required this.trackProgressList,required this.message});
 }
 
+// For Transpotation
+class TrackProcssListTransportLoading extends HomeState {
+  bool isLoading;
+  TrackProcssListTransportLoading({required this.isLoading});
+}
+
+class TrackProcssListTransportFail extends HomeState {
+  final String? msg;
+  TrackProcssListTransportFail({this.msg});
+}
+
+class TrackProcssListTransportSuccess extends HomeState {
+  List<TrackProcessModel> trackProgressList;
+  String message;
+  TrackProcssListTransportSuccess({required this.trackProgressList,required this.message});
+}
+
+
 //For Job Work Enquiry
 class TrackProcssJWEListLoading extends HomeState {
   bool isLoading;
@@ -286,7 +304,7 @@ class TrackProcssJWEListSuccess extends HomeState {
   String message;
   TrackProcssJWEListSuccess({required this.trackProgressList,required this.message});
 }
-
+// Machine Maintaince
 class CreateTaskLoading extends HomeState {
   bool isLoading;
   CreateTaskLoading({required this.isLoading});
@@ -300,6 +318,21 @@ class CreateTaskFail extends HomeState {
 class CreateTaskSuccess extends HomeState {
   String message;
   CreateTaskSuccess({required this.message});
+}
+// Transportation
+class CreateTaskTransportLoading extends HomeState {
+  bool isLoading;
+  CreateTaskTransportLoading({required this.isLoading});
+}
+
+class CreateTaskTransportFail extends HomeState {
+  final String? msg;
+  CreateTaskTransportFail({this.msg});
+}
+
+class CreateTaskTransportSuccess extends HomeState {
+  String message;
+  CreateTaskTransportSuccess({required this.message});
 }
 
 // Job Work Enquiry Create Task
@@ -362,6 +395,7 @@ class SendQuotationSuccess extends HomeState {
   String message;
   SendQuotationSuccess({required this.message});
 }
+// 
 
 class JobWorkSendQuotationLoading extends HomeState {
   bool isLoading;

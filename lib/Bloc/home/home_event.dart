@@ -96,6 +96,18 @@ class TrackProcessList extends HomeEvent {
 
 }
 
+class TrackProcessTransportList extends HomeEvent {
+
+  String userId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+
+  TrackProcessTransportList({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId});
+
+}
+
 class OnTrackProcessList extends HomeEvent {
 
   String userId;
@@ -119,6 +131,21 @@ class CreateTask extends HomeEvent {
   int status;
 
   CreateTask({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId,required this.heading, required this.description,required this.status});
+
+}
+// Transport Create Task
+class CreateTransportTask extends HomeEvent {
+
+  String userId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+  String heading;
+  String description;
+  int status;
+
+  CreateTransportTask({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
     required this.transportEnquiryId,required this.heading, required this.description,required this.status});
 
 }

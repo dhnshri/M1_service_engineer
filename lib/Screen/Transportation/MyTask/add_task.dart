@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+
+import '../../../Bloc/home/home_bloc.dart';
+import '../../../Bloc/home/home_state.dart';
+import '../../../Constant/theme_colors.dart';
+import '../../../Widget/custom_snackbar.dart';
 
 
-class AddTask extends StatefulWidget {
-  const AddTask({Key? key}) : super(key: key);
+
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen({Key? key}) : super(key: key);
 
   @override
-  _AddTaskState createState() => _AddTaskState();
+  _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
-class _AddTaskState extends State<AddTask> {
+class _AddTaskScreenState extends State<AddTaskScreen> {
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController _headingController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
+  bool _isLoading = false;
+  HomeBloc? _homeBloc;
 
 
   @override
@@ -21,13 +30,15 @@ class _AddTaskState extends State<AddTask> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    _homeBloc = BlocProvider.of<HomeBloc>(this.context);
 
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    // getroleofstudent();
+    _headingController.dispose();
+    _descriptionController.dispose();
   }
 
 
@@ -35,133 +46,112 @@ class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell(
-            onTap: (){
-              Navigator.of(context).pop();
-            },
-            child: Icon(Icons.arrow_back_ios,)),
-        title: Text("Adding Task"
+        appBar: AppBar(
+          leading: InkWell(
+              onTap: (){
+                Navigator.of(context).pop();
+              },
+              child: Icon(Icons.arrow_back_ios,)),
+          title: Text("Adding Task"
+          ),
+          backgroundColor: ThemeColors.backGroundColor,
+
         ),
-        backgroundColor: ThemeColors.backGroundColor,
+        body: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
 
-      ),
-      body:Container(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-
-                ///Heading
-                TextFormField(
-                  // initialValue: Application.customerLogin!.name.toString(),
-                  controller: _headingController,
-                  textAlign: TextAlign.start,
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(
-                    fontSize: 18,
-                    height: 1.5,
-                  ),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: ThemeColors.textFieldBackgroundColor,
-                    hintText: "Heading",
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 15.0),
-                    hintStyle: TextStyle(fontSize: 15),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(1.0)),
-                      borderSide: BorderSide(
-                          width: 0.8,
-                          color: ThemeColors.textFieldBackgroundColor
-                      ),
+                  ///Heading
+                  TextFormField(
+                    // initialValue: Application.customerLogin!.name.toString(),
+                    controller: _headingController,
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(
+                      fontSize: 18,
+                      height: 1.5,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(1.0)),
-                      borderSide: BorderSide(
-                          width: 0.8,
-                          color: ThemeColors.textFieldBackgroundColor),
-                    ),
-                    border: OutlineInputBorder(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ThemeColors.textFieldBackgroundColor,
+                      hintText: "Heading",
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 15.0),
+                      hintStyle: TextStyle(fontSize: 15),
+                      enabledBorder: OutlineInputBorder(
                         borderRadius:
                         BorderRadius.all(Radius.circular(1.0)),
                         borderSide: BorderSide(
                             width: 0.8,
-                            color: ThemeColors.textFieldBackgroundColor)),
-                  ),
-                  validator: (value) {
-                    // profile.name = value!.trim();
-                    // Pattern pattern =
-                    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                    // RegExp regex =
-                    // new RegExp(pattern.toString());
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter Heading';
-                    }
-                    // else if(!regex.hasMatch(value)){
-                    //   return 'Please enter valid name';
-                    // }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      // _nameController.text = value;
-                      if (_formKey.currentState!.validate()) {}
-                    });
-                  },
-                ),
-
-                SizedBox(height: 15,),
-
-
-                ///Description
-                TextFormField(
-                  controller: _descriptionController,
-                  obscureText: false,
-                  textAlign: TextAlign.start,
-                  keyboardType:
-                  TextInputType.text,
-                  maxLines: 4,
-                  style: TextStyle(
-                    fontSize: 18,
-                    height: 1.5,
-                  ),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: ThemeColors.textFieldBackgroundColor,
-                    contentPadding:
-                    EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 15.0),
-                    hintStyle:
-                    TextStyle(fontSize: 15),
-                    enabledBorder:
-                    OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(
-                          Radius.circular(
-                              10.0)),
-                      borderSide: BorderSide(
-                          width: 0.8,
-                          color: ThemeColors
-                              .textFieldBackgroundColor),
+                            color: ThemeColors.textFieldBackgroundColor
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(1.0)),
+                        borderSide: BorderSide(
+                            width: 0.8,
+                            color: ThemeColors.textFieldBackgroundColor),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor)),
                     ),
-                    focusedBorder:
-                    OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(
-                          Radius.circular(
-                              10.0)),
-                      borderSide: BorderSide(
-                          width: 0.8,
-                          color: ThemeColors
-                              .textFieldBackgroundColor),
+                    validator: (value) {
+                      // profile.name = value!.trim();
+                      // Pattern pattern =
+                      //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                      // RegExp regex =
+                      // new RegExp(pattern.toString());
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Heading';
+                      }
+                      // else if(!regex.hasMatch(value)){
+                      //   return 'Please enter valid name';
+                      // }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        // _nameController.text = value;
+                        if (_formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+
+                  SizedBox(height: 15,),
+
+
+                  ///Description
+                  TextFormField(
+                    controller: _descriptionController,
+                    obscureText: false,
+                    textAlign: TextAlign.start,
+                    keyboardType:
+                    TextInputType.text,
+                    maxLines: 4,
+                    style: TextStyle(
+                      fontSize: 18,
+                      height: 1.5,
                     ),
-                    border: OutlineInputBorder(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ThemeColors.textFieldBackgroundColor,
+                      contentPadding:
+                      EdgeInsets.symmetric(
+                          vertical: 10.0,
+                          horizontal: 15.0),
+                      hintStyle:
+                      TextStyle(fontSize: 15),
+                      enabledBorder:
+                      OutlineInputBorder(
                         borderRadius:
                         BorderRadius.all(
                             Radius.circular(
@@ -169,49 +159,97 @@ class _AddTaskState extends State<AddTask> {
                         borderSide: BorderSide(
                             width: 0.8,
                             color: ThemeColors
-                                .textFieldBackgroundColor)),
-                    hintText: "Description",
+                                .textFieldBackgroundColor),
+                      ),
+                      focusedBorder:
+                      OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.all(
+                            Radius.circular(
+                                10.0)),
+                        borderSide: BorderSide(
+                            width: 0.8,
+                            color: ThemeColors
+                                .textFieldBackgroundColor),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(
+                              Radius.circular(
+                                  10.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors
+                                  .textFieldBackgroundColor)),
+                      hintText: "Description",
+                    ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty) {
+                        return 'Please enter description';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        if (_formKey.currentState!
+                            .validate()) {}
+                      });
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty) {
-                      return 'Please enter description';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      if (_formKey.currentState!
-                          .validate()) {}
-                    });
-                  },
-                ),
-              ],
-            ),),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: InkWell(
-        onTap: (){
-          Navigator.of(context).pop();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            height: 50,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: ThemeColors.defaultbuttonColor,
-                borderRadius: BorderRadius.circular(30)),
-            child: Center(child: Text("Add",
-                style: TextStyle(fontFamily: 'Poppins-Medium',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ))),
+                ],
+              ),),
           ),
         ),
-      ),
+
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          return BlocListener<HomeBloc, HomeState>(
+            listener: (context, state) {
+              if(state is CreateTaskTransportLoading){
+                _isLoading = state.isLoading;
+              }
+              if(state is CreateTaskTransportSuccess){
+                Navigator.of(context).pop();
+                showCustomSnackBar(context,state.message.toString(),isError: false);
+              }
+              if(state is CreateTaskTransportFail){
+                showCustomSnackBar(context,state.msg.toString());
+              }
+            },
+            child: InkWell(
+              onTap: (){
+                if(_formKey.currentState!.validate()){
+                  _homeBloc!.add(CreateTransportTask(userId: '1',machineEnquiryId: '0',transportEnquiryId: '1',jobWorkEnquiryId: '0', heading: _headingController.text,
+                      description: _descriptionController.text,status: 0));
+                }else{
+                  showCustomSnackBar(context,'Fill the details.');
+                }
+
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: ThemeColors.defaultbuttonColor,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Center(child: Text("Add",
+                      style: TextStyle(fontFamily: 'Poppins-Medium',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ))),
+                ),
+              ),
+            ),
+
+          );
+
+
+        })
+
 
     );
   }

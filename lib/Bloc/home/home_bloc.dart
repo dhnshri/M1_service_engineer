@@ -471,6 +471,47 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    //My Task Track Process Transport
+    if (event is TrackProcessTransportList) {
+      ///Notify loading to UI
+      yield TrackProcssListTransportLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final TrackProcessRepo result = await userRepository!
+          .fetchTrackProgressList(
+          userId: event.userId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        final Iterable refactorTrackProgrssList = result.data! ?? [];
+        final trackProgressList = refactorTrackProgrssList.map((item) {
+          return TrackProcessModel.fromJson(item);
+        }).toList();
+        // MachineServiceDetailsModel data = MachineServiceDetailsModel();
+        // data = refactorServiceRequestList as MachineServiceDetailsModel;
+        print('Track Process Data: $trackProgressList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TrackProcssListTransportLoading(
+            isLoading: true,
+          );
+          yield TrackProcssListTransportSuccess(trackProgressList: trackProgressList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield TrackProcssListTransportFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield TrackProcssListTransportFail(msg: result.msg);
+      }
+    }
+
     //My Task Job Work Enquiry Track Process
     if (event is OnTrackProcessList) {
       ///Notify loading to UI
@@ -549,7 +590,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    //Create Task Transport
+    if (event is CreateTransportTask) {
+      ///Notify loading to UI
+      yield CreateTaskTransportLoading(isLoading: false);
 
+      ///Fetch API via repository
+      final CreateTaskRepo result = await userRepository!
+          .createTask(
+          userId: event.userId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId,
+          heading: event.heading,
+          description: event.description,
+          status: event.status
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield CreateTaskTransportLoading(
+            isLoading: true,
+          );
+          yield CreateTaskTransportSuccess( message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield CreateTaskTransportFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield CreateTaskTransportFail(msg: result.msg);
+      }
+    }
     //Job Work Enquiry Create Task
     if (event is OnCreateTask) {
       ///Notify loading to UI

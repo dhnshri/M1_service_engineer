@@ -62,6 +62,9 @@ class Api {
   static const String COMPLETE_TASK="update_daily_my_task_list";
   static const String MACHINE_QUOTATION="machine_maintainence_quatation";
   static const String JOBWORK_PROFILE="get_job_work_enquiry_profile";
+  static const String VEHICLE_NAME=HOST_URL+"transport_vehicle_name_list";
+  static const String VEHICLE_TYPE=HOST_URL+"transport_vehicle_type_list";
+  static const String VEHICLE_NUMBER=HOST_URL+"transport_vehicle_number_list";
 
 
 

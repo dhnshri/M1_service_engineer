@@ -8,6 +8,9 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../Config/font.dart';
 import '../../../../Constant/theme_colors.dart';
+import '../../../../Model/Transpotation/vehicle_name_model.dart';
+import '../../../../Model/Transpotation/vehicle_number_model.dart';
+import '../../../../Model/Transpotation/vehicle_type_model.dart';
 import '../../../../Widget/common.dart';
 import '../../../../Widget/function_button.dart';
 import '../../../MachineMaintenance/MakeQuotations/item_required_filter.dart';
@@ -15,7 +18,15 @@ import '../../../bottom_navbar.dart';
 
 
 class QuotationFor extends StatefulWidget {
-  const QuotationFor({Key? key}) : super(key: key);
+  VehicleNameModel? vehicleNameselected;
+  VehicleTypeModel? vehicleTypeselected;
+  VehicleNumberModel? vehicleNumberselected;
+  String dropdownValue4;
+  TextEditingController ServiceCallChargesController = TextEditingController();
+  TextEditingController HandlingChargesController = TextEditingController();
+  QuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
+    required this.vehicleNumberselected,required this.HandlingChargesController,
+    required this.ServiceCallChargesController,required this.dropdownValue4}) : super(key: key,);
 
   @override
   State<QuotationFor> createState() => QuotationForState();
@@ -46,137 +57,8 @@ class QuotationForState extends State<QuotationFor> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Widget buildVehicleDetailsList() {
-    // if (productList.length <= 0) {
-    //   return ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-    //     itemBuilder: (context, index) {
-    //       return Shimmer.fromColors(
-    //         baseColor: Theme.of(context).hoverColor,
-    //         highlightColor: Theme.of(context).highlightColor,
-    //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //     itemCount: List.generate(8, (index) => index).length,
-    //   );
-    // }
 
-    // return ListView.builder(
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  VehicleDetailsCard();
-      },
-      itemCount: 3,
-    );
-  }
+
 
   Widget VehicleDetailsCard()
   {
@@ -189,20 +71,29 @@ class QuotationForState extends State<QuotationFor> {
             ),
             child:Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("1")
+                      Text("Vehicle Name",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(widget.vehicleNameselected!.vehicleName.toString()),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Vehicle Name")
+                      Text("Vehicle Type",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(widget.vehicleTypeselected!.vehicleType.toString()),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Vehicle Number",style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(widget.vehicleNumberselected!.vehicleNumber.toString()),
                     ],
                   ),
                 ],
@@ -212,137 +103,7 @@ class QuotationForState extends State<QuotationFor> {
     );
   }
 
-  Widget buildQuotationList() {
-    // if (productList.length <= 0) {
-    //   return ListView.builder(
-    //     scrollDirection: Axis.vertical,
-    //     // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
-    //     itemBuilder: (context, index) {
-    //       return Shimmer.fromColors(
-    //         baseColor: Theme.of(context).hoverColor,
-    //         highlightColor: Theme.of(context).highlightColor,
-    //         enabled: true,
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Container(
-    //             width: MediaQuery.of(context).size.width,
-    //             child: ListTile(
-    //               contentPadding: EdgeInsets.zero,
-    //               //visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-    //               // leading: nameIcon(),
-    //               leading: CachedNetworkImage(
-    //                 filterQuality: FilterQuality.medium,
-    //                 // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-    //                 imageUrl: "https://picsum.photos/250?image=9",
-    //                 // imageUrl: model.cart[index].productImg == null
-    //                 //     ? "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-    //                 //     : model.cart[index].productImg,
-    //                 placeholder: (context, url) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                     ),
-    //                   );
-    //                 },
-    //                 imageBuilder: (context, imageProvider) {
-    //                   return Container(
-    //                     height: 80,
-    //                     width: 80,
-    //                     decoration: BoxDecoration(
-    //                       image: DecorationImage(
-    //                         image: imageProvider,
-    //                         fit: BoxFit.cover,
-    //                       ),
-    //                       borderRadius: BorderRadius.circular(8),
-    //                     ),
-    //                   );
-    //                 },
-    //                 errorWidget: (context, url, error) {
-    //                   return Shimmer.fromColors(
-    //                     baseColor: Theme.of(context).hoverColor,
-    //                     highlightColor: Theme.of(context).highlightColor,
-    //                     enabled: true,
-    //                     child: Container(
-    //                       height: 80,
-    //                       width: 80,
-    //                       decoration: BoxDecoration(
-    //                         color: Colors.white,
-    //                         borderRadius: BorderRadius.circular(8),
-    //                       ),
-    //                       child: Icon(Icons.error),
-    //                     ),
-    //                   );
-    //                 },
-    //               ),
-    //               title: Column(
-    //                 children: [
-    //                   Align(
-    //                     alignment: Alignment.centerLeft,
-    //                     child: Text(
-    //                       "Loading...",
-    //                       overflow: TextOverflow.clip,
-    //                       style: TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 15.0,
-    //                         //color: Theme.of(context).accentColor
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //                     children: [
-    //                       Row(
-    //                         children: [
-    //                           Text(
-    //                             ".......",
-    //                             style: TextStyle(
-    //                               fontWeight: FontWeight.normal,
-    //                               color: Colors.black87,
-    //                               fontSize: 14.0,
-    //                             ),
-    //                           ),
-    //                           SizedBox(
-    //                             width: 20,
-    //                           )
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20)),
-    //                 color: Colors.white),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //     itemCount: List.generate(8, (index) => index).length,
-    //   );
-    // }
 
-    // return ListView.builder(
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      padding: EdgeInsets.only(top: 0, bottom: 1),
-      itemBuilder: (context, index) {
-        return  QuotationCard();
-      },
-      itemCount: 3,
-    );
-  }
 
   Widget QuotationCard()
   {
@@ -355,27 +116,21 @@ class QuotationForState extends State<QuotationFor> {
             ),
             child:Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("1")
+                      Text("Service/call Charges"),
+                      Text('₹${widget.ServiceCallChargesController.text}'),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Service name")
-                    ],
-                  ),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("₹ 500")
+                      Text("Handling Charges"),
+                      Text('₹${widget.HandlingChargesController.text}'),
                     ],
                   ),
                 ],
@@ -388,6 +143,8 @@ class QuotationForState extends State<QuotationFor> {
 
   @override
   Widget build(BuildContext context) {
+    int sum = int.parse(widget.ServiceCallChargesController.text) +
+        int.parse(widget.HandlingChargesController.text);
 
     return Scaffold(
       appBar: AppBar(
@@ -515,20 +272,20 @@ class QuotationForState extends State<QuotationFor> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("S no.",style: TextStyle(color: Colors.white),),
+                                  Text("Content",style: TextStyle(color: Colors.white),),
                                 ],
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Item Name",style: TextStyle(color: Colors.white),),
+                                  Text("Vehicle Detail",style: TextStyle(color: Colors.white),),
                                 ],
                               ),
                             ],
                           ),
                         ),
                       ),
-                      buildVehicleDetailsList(),
+                      VehicleDetailsCard(),
                     ],
                   ),
                 )
@@ -561,13 +318,7 @@ class QuotationForState extends State<QuotationFor> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("S no.",style: TextStyle(color: Colors.white),),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Service Name",style: TextStyle(color: Colors.white),),
+                                  Text("Charges",style: TextStyle(color: Colors.white),),
                                 ],
                               ),
                               Column(
@@ -580,7 +331,7 @@ class QuotationForState extends State<QuotationFor> {
                           ),
                         ),
                       ),
-                      buildQuotationList(),
+                      QuotationCard(),
                       Container(
                         color: Color(0xffFFE4E5),
                         child: Row(
@@ -593,7 +344,7 @@ class QuotationForState extends State<QuotationFor> {
                                 children: [
                                   Text("Total",style: TextStyle(fontWeight: FontWeight.bold),),
                                   SizedBox(width: 15,),
-                                  Text("₹ 1500",style: TextStyle(fontWeight: FontWeight.bold),)
+                                  Text('₹${sum.toString()}',style: TextStyle(fontWeight: FontWeight.bold),)
                                 ],
                               ),
                             ),

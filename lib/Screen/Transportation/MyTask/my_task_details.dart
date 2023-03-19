@@ -10,6 +10,7 @@ import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/Transpotation/myTaskListModel.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
+import 'package:service_engineer/Screen/Transportation/MyTask/process_detail_transport_screen.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -142,7 +143,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
     _homeBloc!.add(OnMyTaskTranspotationDetail(userID:'4', machineServiceId:'0',jobWorkServiceId: '0',transportServiceId:'31'));
     // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
    // _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.transportEnquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-
+    _homeBloc!.add(TrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '1',jobWorkEnquiryId: '0'));
     _phoneNumberController.clear();
     addressLat = double.parse(21.1458.toString());
     addressLong = double.parse(79.0882.toString());
@@ -226,15 +227,15 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                 if(state is MyTaskTranspotationDetailFail){
                   // Fluttertoast.showToast(msg: state.msg.toString());
                 }
-                // if(state is TrackProcssListLoading){
-                //   // _isLoading = state.isLoading;
-                // }
-                // if(state is TrackProcssListSuccess){
-                //   trackProgressData = state.trackProgressList;
-                // }
-                // if(state is TrackProcssListFail){
-                //   // Fluttertoast.showToast(msg: state.msg.toString());
-                // }
+                if(state is TrackProcssListTransportLoading){
+                  // _isLoading = state.isLoading;
+                }
+                if(state is TrackProcssListTransportSuccess){
+                  trackProgressData = state.trackProgressList;
+                }
+                if(state is TrackProcssListTransportFail){
+                  // Fluttertoast.showToast(msg: state.msg.toString());
+                }
               },
               child: _isLoading ?myTaskData!.length <=0 ? Center(child: CircularProgressIndicator(),):
               ListView(
@@ -405,69 +406,79 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   ),
 
                   ///Track PRocess
-                  ExpansionTileCard(
-                    key: cardC,
-                    initiallyExpanded: true,
-                    title: Text("Track Process",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                  ///Track PRocess
+                  trackProgressData!.length <= 0 ? Container():
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text("Track Process",
+                        style: TextStyle(fontFamily: 'Poppins-Medium',
                             fontSize: 16,
-                            fontWeight: FontWeight.w500
-                        )),
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0),
-                        child: Column(
-                          children: [
-                            Theme(
-                              data: ThemeData(
-                                colorScheme: Theme.of(context).colorScheme.copyWith(
-                                  primary: Colors.red,
-                                ),
-                              ),
-                              child: Stepper(
-                                type: stepperType,
-                                physics: ScrollPhysics(),
-                                currentStep: _currentStep,
-                                onStepTapped: (step) => tapped(step),
-                                // onStepContinue:  continued,
-                                // onStepCancel: cancel,
-                                steps: getSteps(),
-                                controlsBuilder: (context,_){
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      // _currentStep == 3 ? SizedBox():
-                                      TextButton(
-                                        onPressed: () {
-                                          // continued;
-                                          setState(() {
-                                            if(_currentStep<3) {
-                                              _currentStep++;
-                                            }
-                                          });
-                                        },
-                                        child: const Text(
-                                            'Update',style: TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: 'Poppins-Medium',
-                                            fontWeight: FontWeight.bold
-                                        )
+                            fontWeight: FontWeight.w500)
+                    ),
+                  ),
+
+                  ///Track Process List
+                  trackProgressData!.length <= 0 ? Container():
+                  Column(
+                    // height: MediaQuery.of(context).size.height,
+                    children: [
+                      ListView.builder(
+                          itemCount: trackProgressData!.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (_, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
+                              child: Material(
+                                elevation: 5,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context)=> ProcessDetailTransportScreen(trackProgressData: trackProgressData![index],
+                                          myTaskData: widget.myTaskData,)));
+                                  },
+                                  child: Container(
+                                    // height: 60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: ListTile(
+                                      title: Padding(
+                                        padding: const EdgeInsets.only(bottom: 8,top: 5),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(trackProgressData![index].heading.toString(),
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w400)),
+                                            Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
+                                              style: TextStyle(color: Colors.red),)
+                                          ],
                                         ),
                                       ),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.only(bottom: 8.0),
+                                        child: Text(trackProgressData![index].description.toString(),
+                                            maxLines: 2, overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                            )),
+                                      ),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios,),
+                                      ),
+                                    ),
+                                  ),
 
-                                    ],
-                                  );
-                                },
+                                ),
                               ),
-                            )
-
-                          ],
-                        ),
-                      ),
+                            );
+                          })
                     ],
-                  ),
+                  ) ,
                   // Padding(
                   //   padding: const EdgeInsets.all(15.0),
                   //   child: Text("Track Process",
@@ -584,35 +595,35 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   //   ],
                   // ),
 
-                  // ///Add task Button
-                  // Padding(
-                  //   padding: EdgeInsets.all(15.0),
-                  //   child: Material(
-                  //     elevation: 5,
-                  //     child: Container(
-                  //       height: 60,
-                  //       child: ElevatedButton(
-                  //           style: ButtonStyle(
-                  //             backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
-                  //
-                  //           ),
-                  //           onPressed: (){
-                  //             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTask ()));
-                  //           },
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                  //               Text("Daily Update Task",
-                  //                 style: TextStyle(fontFamily: 'Poppins-Medium',
-                  //                     fontSize: 16,
-                  //                     fontWeight: FontWeight.w500,
-                  //                     color: Colors.black.withOpacity(0.55)
-                  //                 ),)
-                  //             ],
-                  //           )),
-                  //     ),
-                  //   ),),
+                  ///Add task Button
+                  Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Material(
+                      elevation: 5,
+                      child: Container(
+                        height: 60,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+
+                            ),
+                            onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen ()));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
+                                Text("Daily Update Task",
+                                  style: TextStyle(fontFamily: 'Poppins-Medium',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black.withOpacity(0.55)
+                                  ),)
+                              ],
+                            )),
+                      ),
+                    ),),
 
                   SizedBox(
                     height: 20,
