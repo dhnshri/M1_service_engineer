@@ -411,3 +411,18 @@ class JobWorkSendQuotationSuccess extends HomeState {
   String message;
   JobWorkSendQuotationSuccess({required this.message});
 }
+// Transpotation
+class TranspotationSendQuotationLoading extends HomeState {
+  bool isLoading;
+  TranspotationSendQuotationLoading({required this.isLoading});
+}
+
+class TranspotationSendQuotationFail extends HomeState {
+  final String? msg;
+  TranspotationSendQuotationFail({this.msg});
+}
+
+class TranspotationSendQuotationSuccess extends HomeState {
+  String message;
+  TranspotationSendQuotationSuccess({required this.message});
+}

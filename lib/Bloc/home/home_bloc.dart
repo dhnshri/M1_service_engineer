@@ -962,65 +962,109 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    //Event for Job Work Enquiry send quotation
-    // if (event is JobWorkSendQuotation) {
-    //   ///Notify loading to UI
-    //   yield JobWorkSendQuotationLoading(isLoading: false);
-    //
-    //   var itemList = [];
-    //
-    //   for(int j = 0; j < event.itemList.length; j++){
-    //     var innerObj ={};
-    //     double amount = double.parse(event.itemList[j].qty
-    //         .toString()) * int.parse(event.itemRateController[j].text);
-    //
-    //     innerObj["item_name"] = event.itemList[j].itemName;
-    //     innerObj["item_qty"] = event.itemList[j].qty;
-    //     innerObj["volume"] = event.volumeController[j].text;
-    //     innerObj["rate"] = event.itemRateController[j].text;
-    //     innerObj["amount"] = amount;
-    //     itemList.add(innerObj);
-    //   }
-    //
-    //
-    //   Map<String, String> params = {
-    //     "job_work_enquiry_id": event.jobWorkEnquiryId.toString(),
-    //     "service_user_id":event.serviceUserId,
-    //     "job_work_enquiry_date":event.jobWorkEnquirydate,
-    //     "transport_charge":event.transportCharge,
-    //     "packing_charge":event.packingCharge,
-    //     "testing_charge":event.testingCharge,
-    //     "cgst": event.cgst,
-    //     "sgst": event.sgst,
-    //     "igst": event.igst,
-    //     "commission": event.commission,
-    //     "itemslist": jsonEncode(itemList),
-    //     // 'machine_enquiry_id': event.machineEnquiryId,
-    //   };
-    //
-    //   http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/job_work_enquiry_quatation'));
-    //   // ..fields.addAll(params);
-    //   _request = jsonToFormData(_request, params);
-    //   print(jsonEncode(_request.fields));
-    //   var streamResponse = await _request.send();
-    //   var response = await http.Response.fromStream(streamResponse);
-    //   final responseJson = json.decode(response.body);
-    //   print(responseJson);
-    //   CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
-    //   print(res.msg);
-    //
-    //
-    //   ///Case API fail but not have token
-    //   if (res.success == true) {
-    //     print(response.body);
-    //     yield JobWorkSendQuotationSuccess(message: res.msg.toString());
-    //
-    //   } else {
-    //     ///Notify loading to UI
-    //     yield JobWorkSendQuotationFail(msg: res.msg.toString());
-    //     print(response.body);
-    //   }
-    // }
+    //Send Quotation for Transpotation
+    if (event is TranspotationSendQuotation) {
+      ///Notify loading to UI
+      yield TranspotationSendQuotationLoading(isLoading: false);
+
+      Map<String, String> params = {
+        "vehicle_number": event.vehicleNumber,
+        "vehicle_name":event.vehicleName,
+        "vehicle_type":event.vehicleType,
+        "gst":event.gst,
+        "service_charge":event.serviceCharges == "" ? '0' : event.serviceCharges,
+        "handling_charge":event.handlingCharges == "" ? '0' : event.handlingCharges,
+        "commission": event.commision == "" ? '0' : event.commision,
+        "gst_no":event.gst_no,
+        "transport_enquiry_date": event.transport_enquiry_date,
+        "transport_enquiry_id": event.transport_enquiry_id.toString(),
+        "service_user_id": event.service_user_id,
+        "total_amount": event.total_amount,
+      };
+
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/transport_quatation'));
+      // ..fields.addAll(params);
+      _request = jsonToFormData(_request, params);
+      print(jsonEncode(_request.fields));
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
+      print(res.msg);
+
+
+      ///Case API fail but not have token
+      if (res.success == true) {
+        print(response.body);
+        yield TranspotationSendQuotationSuccess(message: res.msg.toString());
+
+      } else {
+        ///Notify loading to UI
+        yield TranspotationSendQuotationFail(msg: res.msg.toString());
+        print(response.body);
+      }
+    }
+
+   // Event for Job Work Enquiry send quotation
+    if (event is JobWorkSendQuotation) {
+      ///Notify loading to UI
+      yield JobWorkSendQuotationLoading(isLoading: false);
+
+      var itemList = [];
+
+      for(int j = 0; j < event.itemList.length; j++){
+        var innerObj ={};
+        double amount = double.parse(event.itemList[j].qty
+            .toString()) * int.parse(event.itemRateController[j].text);
+
+        innerObj["item_name"] = event.itemList[j].itemName;
+        innerObj["item_qty"] = event.itemList[j].qty;
+        innerObj["volume"] = event.volumeController[j].text;
+        innerObj["rate"] = event.itemRateController[j].text;
+        innerObj["amount"] = amount;
+        itemList.add(innerObj);
+      }
+
+
+      Map<String, String> params = {
+        "job_work_enquiry_id": event.jobWorkEnquiryId.toString(),
+        "service_user_id":event.serviceUserId,
+        "job_work_enquiry_date":event.jobWorkEnquirydate,
+        "transport_charge":event.transportCharge,
+        "packing_charge":event.packingCharge,
+        "testing_charge":event.testingCharge,
+        "cgst": event.cgst,
+        "sgst": event.sgst,
+        "igst": event.igst,
+        "commission": event.commission,
+        "itemslist": jsonEncode(itemList),
+        // 'machine_enquiry_id': event.machineEnquiryId,
+      };
+
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/job_work_enquiry_quatation'));
+      // ..fields.addAll(params);
+      _request = jsonToFormData(_request, params);
+      print(jsonEncode(_request.fields));
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
+      print(res.msg);
+
+
+      ///Case API fail but not have token
+      if (res.success == true) {
+        print(response.body);
+        yield JobWorkSendQuotationSuccess(message: res.msg.toString());
+
+      } else {
+        ///Notify loading to UI
+        yield JobWorkSendQuotationFail(msg: res.msg.toString());
+        print(response.body);
+      }
+    }
 
   }
 

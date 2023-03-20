@@ -2,16 +2,23 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../Bloc/home/home_bloc.dart';
+import '../../../../Bloc/home/home_event.dart';
+import '../../../../Bloc/home/home_state.dart';
 import '../../../../Config/font.dart';
 import '../../../../Constant/theme_colors.dart';
+import '../../../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../../../Model/Transpotation/vehicle_name_model.dart';
 import '../../../../Model/Transpotation/vehicle_number_model.dart';
 import '../../../../Model/Transpotation/vehicle_type_model.dart';
+import '../../../../Utils/application.dart';
 import '../../../../Widget/common.dart';
+import '../../../../Widget/custom_snackbar.dart';
 import '../../../../Widget/function_button.dart';
 import '../../../MachineMaintenance/MakeQuotations/item_required_filter.dart';
 import '../../../bottom_navbar.dart';
@@ -27,6 +34,9 @@ class QuotationFor extends StatefulWidget {
   QuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
     required this.vehicleNumberselected,required this.HandlingChargesController,
     required this.ServiceCallChargesController,required this.dropdownValue4}) : super(key: key,);
+
+  List<TransportDetailsModel>? requestDetailList = [];
+
 
   @override
   State<QuotationFor> createState() => QuotationForState();
@@ -48,6 +58,8 @@ class QuotationForState extends State<QuotationFor> {
   int prodValue = 15000;
   bool value = false;
 
+  HomeBloc? _homeBloc;
+
   final GlobalKey<ExpansionTileCardState> cardVehicleDetailsTransposation = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequiredTransposation = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardQuotationsTransposation = new GlobalKey();
@@ -58,7 +70,22 @@ class QuotationForState extends State<QuotationFor> {
   final _formKey = GlobalKey<FormState>();
 
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    //saveDeviceTokenAndId();
+    super.initState();
+   // _phoneNumberController.clear();
+    _homeBloc = BlocProvider.of<HomeBloc>(this.context);
 
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // getroleofstudent();
+  }
 
   Widget VehicleDetailsCard()
   {
@@ -76,24 +103,45 @@ class QuotationForState extends State<QuotationFor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Vehicle Name",style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text(widget.vehicleNameselected!.vehicleName.toString()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("1",),
+                          SizedBox(width: 55,),
+                          Text("Vehicle Name",),
+                        ],
+                      ),
+                      Text(widget.vehicleNameselected!.vehicleName.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
                     ],
                   ),
                   SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Vehicle Type",style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text(widget.vehicleTypeselected!.vehicleType.toString()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("2"),
+                          SizedBox(width: 55,),
+                          Text("Vehicle Type",),
+                        ],
+                      ),
+                      Text(widget.vehicleTypeselected!.vehicleType.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
                     ],
                   ),
                   SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Vehicle Number",style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text(widget.vehicleNumberselected!.vehicleNumber.toString()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("3"),
+                          SizedBox(width: 55,),
+                          Text("Vehicle Number",),
+                        ],
+                      ),
+                      Text(widget.vehicleNumberselected!.vehicleNumber.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
                     ],
                   ),
                 ],
@@ -121,7 +169,14 @@ class QuotationForState extends State<QuotationFor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Service/call Charges"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("1",),
+                          SizedBox(width: 55,),
+                          Text("Service/Call Charges"),
+                        ],
+                      ),
                       Text('₹${widget.ServiceCallChargesController.text}'),
                     ],
                   ),
@@ -129,7 +184,14 @@ class QuotationForState extends State<QuotationFor> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Handling Charges"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("2",),
+                          SizedBox(width: 55,),
+                          Text("Handling Charges"),
+                        ],
+                      ),
                       Text('₹${widget.HandlingChargesController.text}'),
                     ],
                   ),
@@ -145,6 +207,11 @@ class QuotationForState extends State<QuotationFor> {
   Widget build(BuildContext context) {
     int sum = int.parse(widget.ServiceCallChargesController.text) +
         int.parse(widget.HandlingChargesController.text);
+    int commission = 150;
+
+    double totalQuotation = 100/100+(int.parse(widget.dropdownValue4))+sum+commission;
+
+    String gstNumber = '07AAGFF2194N1Z1';
 
     return Scaffold(
       appBar: AppBar(
@@ -198,35 +265,88 @@ class QuotationForState extends State<QuotationFor> {
                         SizedBox(
                           width: 7,
                         ),
-                        TextButton(
-                          child: new Text(
-                            "Yes",
-                            style:
-                            TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        BottomNavigation(
+                        // TextButton(
+                        //   child: new Text(
+                        //     "Yes",
+                        //     style:
+                        //     TextStyle(color: Colors.white),
+                        //   ),
+                        //   onPressed: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) =>
+                        //                 BottomNavigation(
+                        //                   index: 0,
+                        //                   dropValue:
+                        //                   'Transportation',
+                        //                 )));
+                        //   },
+                        //   style: TextButton.styleFrom(
+                        //     fixedSize: const Size(120, 30),
+                        //     backgroundColor: ThemeColors
+                        //         .defaultbuttonColor,
+                        //     shape:
+                        //     const RoundedRectangleBorder(
+                        //         borderRadius:
+                        //         BorderRadius.all(
+                        //             Radius.circular(
+                        //                 25))),),
+                        //
+                        // ),
+                        BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+                          return BlocListener<HomeBloc, HomeState>(
+                            listener: (context, state) {
+                              if(state is TranspotationSendQuotationSuccess){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BottomNavigation(
                                           index: 0,
-                                          dropValue:
-                                          'Transportation',
+                                          dropValue: Application.customerLogin!.role.toString(),
                                         )));
-                          },
-                          style: TextButton.styleFrom(
-                            fixedSize: const Size(120, 30),
-                            backgroundColor: ThemeColors
-                                .defaultbuttonColor,
-                            shape:
-                            const RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.all(
-                                    Radius.circular(
-                                        25))),),
+                                showCustomSnackBar(context,state.message,isError: false);
+                              }
+                            },
+                            child: TextButton(
+                              child: new Text(
+                                "Yes",
+                                style:
+                                TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                _homeBloc!.add(TranspotationSendQuotation(
+                                  service_user_id: Application.customerLogin!.id.toString(),
+                                  transport_enquiry_date: widget.requestDetailList![0].createdAt.toString(),
+                                  transport_enquiry_id: widget.requestDetailList![0].transportEnquiryId.toString(),
+                                  handlingCharges: widget.HandlingChargesController.text == "" ? '0':widget.HandlingChargesController.text,
+                                  serviceCharges: widget.ServiceCallChargesController.text == "" ? '0':widget.ServiceCallChargesController.text,
+                                  vehicleType: widget.vehicleTypeselected.toString(),
+                                  vehicleNumber: widget.vehicleNumberselected.toString(),
+                                  vehicleName: widget.vehicleNameselected.toString(),
+                                  gst_no:gstNumber.toString(),
+                                  commision: commission.toString(),
+                                  total_amount:totalQuotation.toString(),
+                                  gst:widget.dropdownValue4.toString(),
+                                ));
+                              },
+                              style: TextButton.styleFrom(
+                                fixedSize: const Size(120, 30),
+                                backgroundColor: ThemeColors
+                                    .defaultbuttonColor,
+                                shape:
+                                const RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.all(
+                                        Radius.circular(
+                                            25))),),
 
-                        ),
+                            ),
+
+                          );
+
+
+                        })
                       ],
                     ),
                   ],
@@ -272,7 +392,14 @@ class QuotationForState extends State<QuotationFor> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Content",style: TextStyle(color: Colors.white),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Sr.no",style: TextStyle(color: Colors.white),),
+                                      SizedBox(width: 30,),
+                                      Text("Content",style: TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
                                 ],
                               ),
                               Column(
@@ -318,7 +445,14 @@ class QuotationForState extends State<QuotationFor> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Charges",style: TextStyle(color: Colors.white),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Sr.no",style: TextStyle(color: Colors.white),),
+                                      SizedBox(width: 30,),
+                                      Text("Charges",style: TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
                                 ],
                               ),
                               Column(
@@ -370,7 +504,7 @@ class QuotationForState extends State<QuotationFor> {
                           style: TextStyle(fontFamily: 'Poppins-Medium',
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
-                      Text("07AAGFF2194N1Z1",
+                      Text(gstNumber.toString(),
                           style: TextStyle(fontFamily: 'Poppins-Medium',
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
@@ -400,43 +534,16 @@ class QuotationForState extends State<QuotationFor> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Service Charge"),
-                          Text("₹ 20"),
+                          Text("Quotation Charges"),
+                          Text('₹${sum.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
                       SizedBox(height: 5,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Total Items Charges"),
-                          Text("₹ 15000"),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Transport charges"),
-                          Text("₹ 1500"),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Other Charges"),
-                          Text("₹ 550"),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("M1 Commission"),
-                          Text("₹ 28"),
+                          Text('₹${commission.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
                       SizedBox(height: 5,),
@@ -445,7 +552,7 @@ class QuotationForState extends State<QuotationFor> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("GST %"),
-                          Text("28%"),
+                          Text('${widget.dropdownValue4.toString()} %',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
 
@@ -462,7 +569,7 @@ class QuotationForState extends State<QuotationFor> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500
                               )),
-                          Text("₹20000",
+                          Text(totalQuotation.toString(),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'Poppins-Medium',
