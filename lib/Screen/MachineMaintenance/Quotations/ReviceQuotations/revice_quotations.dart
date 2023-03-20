@@ -78,7 +78,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
   var quantity = 0;
   var totalValue = 0;
   int prodValue = 15000;
-
+  double totalAmount = 0.0;
   bool _cartLoading = true;
   bool _isLoading = false;
 
@@ -980,7 +980,8 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                                     widget.quotationRequiredItemList![0].dateAndTime
                                         .toString()).toString(),
                                 machineEnquiryId: widget.quotationRequiredItemList![0].machineEnquiryId!
-                                    .toInt()
+                                    .toInt(),
+                                totalAmount: totalAmount.toString(),
                             ));
                           }
                         },

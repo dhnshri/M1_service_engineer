@@ -101,7 +101,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       _emailController.text = widget.serviceUserdataList![0].email.toString();
       _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
       _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
-      uploadCompanyProfileImageFile!.imagePath = widget.serviceUserdataList![0].companyProfilePic.toString();
+      uploadCompanyProfileImageFile!.imagePath = widget.serviceUserdataList![0].companyProfilePic!.split('/').last.toString();
+      // _uploadCompanyProfileImage = File(widget.serviceUserdataList![0].companyProfilePic!.split('/').last.toString());
       uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
       _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
       _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
@@ -115,6 +116,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
       aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
 
       for(int i=0; i < widget.profileMachineList!.length;i++){
+
         machineList.add(MachineList(id:i,machineName: widget.profileMachineList![i].machineName.toString(),quantity: widget.profileMachineList![i].quantity.toString()));
       }
     }else{
@@ -2127,8 +2129,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       machineList: machineList,
                                       companyProfilePic:
                                           uploadCompanyProfileImageFile!
-                                              .imagePath
-                                              .toString(),
+                                              .imagePath.toString(),
                                       companyCertificateImg:
                                           imageFile!.imagePath.toString(),
                                       gstCertificateImg:

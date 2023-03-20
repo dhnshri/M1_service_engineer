@@ -9,6 +9,8 @@ import 'package:service_engineer/Bloc/quotationReply/quotationReply_bloc.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_state.dart';
 import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_quotations.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -32,6 +34,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
   final TextEditingController _phoneNumberController = TextEditingController();
   bool loading = true;
   bool isLoading = false;
+  bool isRejectLoading = true;
+  bool isRevisedLoading = true;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequired = new GlobalKey();
@@ -91,23 +95,22 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           children: [
             AppSmallButton(
               onPressed: () async {
+                _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Reject',
-              loading: loading,
+              loading: isRejectLoading,
 
 
             ),
             AppSmallButton(
               onPressed: () async {
                 if(value==true) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MachineRevisedQuotationScreen(quotationRequiredItemList: quotationRequiredItemList,quotationOtherItemList: quotationOtherItemList,
-                                quotationChargesList: quotationChargesList,)));
+                  _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
                   }
                 else{
                   showCustomSnackBar(context,'Please agree the terms and condition.');
@@ -118,7 +121,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Revise Quotation',
-              loading: loading,
+              loading: isRevisedLoading,
 
 
             ),
@@ -141,6 +144,29 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
               if(state is MachineQuotationReplyDetailFail){
                 showCustomSnackBar(context,state.msg.toString());
 
+              }
+              if(state is QuotationRejectLoading){
+                isRejectLoading = state.isLoading;
+              }
+              if(state is QuotationRejectSuccess){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>QuotationsReplyScreen()));
+                showCustomSnackBar(context,state.msg.toString(),isError: false);
+              }
+              if(state is QuotationRejectFail){
+                showCustomSnackBar(context,state.msg.toString());
+              }
+              if(state is QuotationRevisedLoading){
+                isRevisedLoading = state.isLoading;
+              }
+              if(state is QuotationRevisedSuccess){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MachineRevisedQuotationScreen(quotationRequiredItemList: quotationRequiredItemList,quotationOtherItemList: quotationOtherItemList,
+                          quotationChargesList: quotationChargesList,)));
+              }
+              if(state is QuotationRevisedFail){
+                showCustomSnackBar(context,state.msg.toString());
               }
             },
             child: isLoading ? quotationRequiredItemList!.length <= 0 ? Center(child: CircularProgressIndicator(),):

@@ -53,6 +53,40 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
   final picker = ImagePicker();
   DateTime selectedRegistrationUptoDate = DateTime.now();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    //saveDeviceTokenAndId();
+    super.initState();
+    widget.vehicleImageFile = new VehicleImage();
+    widget.vehicleRCImageFile = new VehicleRCImage();
+    widget.vehiclePUCImageFile = new VehiclePUCImage();
+    getData();
+  }
+
+  getData(){
+    if(widget.vehicleInfoModel!.vehicleName != null || widget.vehicleInfoModel!.vehicleType != null || widget.vehicleInfoModel!.chasisNumber != null
+        || widget.vehicleInfoModel!.registrationUpto != null || widget.vehicleInfoModel!.vehicleNumber != null || widget.vehicleInfoModel!.vehicleImg != null
+        || widget.vehicleInfoModel!.vehicleRcImage != null || widget.vehicleInfoModel!.vehiclePucImg != null){
+      widget._vehicleNameController.text = widget.vehicleInfoModel!.vehicleName.toString();
+      widget._vehicleTypeController.text = widget.vehicleInfoModel!.vehicleType.toString();
+      widget._chassisNumberController.text = widget.vehicleInfoModel!.chasisNumber.toString();
+      widget._registrationUptoController.text = DateFormat.yMd().format(DateTime.parse(widget.vehicleInfoModel!.registrationUpto.toString())).toString();
+      widget._vehicleNumberController.text = widget.vehicleInfoModel!.vehicleNumber.toString();
+      widget.vehicleImageFile!.imagePath = widget.vehicleInfoModel!.vehicleImg.toString();
+      widget.vehicleRCImageFile!.imagePath = widget.vehicleInfoModel!.vehicleRcImage.toString();
+      widget.vehiclePUCImageFile!.imagePath = widget.vehicleInfoModel!.vehiclePucImg.toString();
+    }else{
+      widget._vehicleNameController.text = "";
+      widget._vehicleTypeController.text = "";
+      widget._chassisNumberController.text = "";
+      widget._registrationUptoController.text = "";
+      widget._vehicleNumberController.text = "";
+      widget.vehicleImageFile!.imagePath = "";
+      widget.vehicleRCImageFile!.imagePath = "";
+      widget.vehiclePUCImageFile!.imagePath = "";
+    }
+  }
 
   Future<Null> _selectWorkFromDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -213,15 +247,6 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
     }
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    //saveDeviceTokenAndId();
-    super.initState();
-    widget.vehicleImageFile = new VehicleImage();
-    widget.vehicleRCImageFile = new VehicleRCImage();
-    widget.vehiclePUCImageFile = new VehiclePUCImage();
-  }
 
   @override
   Widget build(BuildContext context) {

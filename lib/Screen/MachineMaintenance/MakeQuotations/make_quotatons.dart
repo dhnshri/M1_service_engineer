@@ -75,6 +75,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   var quantity = 0;
   var totalValue = 0;
   int prodValue = 15000;
+  double totalAmount =0.0;
 
   bool _cartLoading = true;
   bool _isLoading = false;
@@ -993,7 +994,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                   widget.serviceRequestData!.createdAt
                                       .toString()).toString(),
                               machineEnquiryId: widget.serviceRequestData!
-                                  .machineEnquiryId!.toInt()
+                                  .machineEnquiryId!.toInt(),
+                              totalAmount: totalAmount.toString()
                           ));
                         }
                       },

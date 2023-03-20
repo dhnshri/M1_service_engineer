@@ -55,6 +55,7 @@ class _EnquiryQuotationsPreviewScreenState
   double? itemRequiredTotalAmount = 0;
   double? commission = 10;
   HomeBloc? _homeBloc;
+  double? grandTotal = 0.0;
 
 
   @override
@@ -457,7 +458,7 @@ class _EnquiryQuotationsPreviewScreenState
                                                   itemList: widget.requestDetailList!,
                                                   itemRateController: widget.itemRateController,
                                                   volumeController: widget.volumeController,
-
+                                                  totalAmount: grandTotal.toString(),
                                                 ));
                                               },
                                               style: TextButton.styleFrom(

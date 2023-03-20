@@ -94,6 +94,13 @@ class UserRepository {
     return await Api.getMachineQuotaionReplyDetail(params);
   }
 
+  ///Reject and Revised Quotation
+  Future<dynamic> fetchRejectRevised({String? machineEnquiryId,String? serviceUserId,String? jobWorkEnquiryId,String? transportEnquiryId,String? status}) async {
+    final params = {"machine_enquiry_id":machineEnquiryId,'service_user_id':serviceUserId,'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId,
+      'status':status};
+    return await Api.getRejectRevised(params);
+  }
+
 
   ///Job Work Quotation reply detail
   Future<dynamic> fetchJobWorkQuotationReplyDetail({String? jobWorkEnquiryId,String? customerUserId}) async {

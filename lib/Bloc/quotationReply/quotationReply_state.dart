@@ -150,3 +150,35 @@ class MacineSendQuotationReplySuccess extends QuotationReplyState {
   String message;
   MacineSendQuotationReplySuccess({required this.message});
 }
+
+class QuotationRejectLoading extends QuotationReplyState {
+  bool isLoading;
+  QuotationRejectLoading({required this.isLoading});
+}
+class QuotationRejectFail extends QuotationReplyState {
+  final String? msg;
+  bool? success;
+  QuotationRejectFail({this.msg,this.success});
+}
+
+class QuotationRejectSuccess extends QuotationReplyState {
+  bool? success;
+  final String? msg;
+  QuotationRejectSuccess({this.success,required this.msg});
+}
+
+class QuotationRevisedLoading extends QuotationReplyState {
+  bool isLoading;
+  QuotationRevisedLoading({required this.isLoading});
+}
+class QuotationRevisedFail extends QuotationReplyState {
+  final String? msg;
+  bool? success;
+  QuotationRevisedFail({this.msg,this.success});
+}
+
+class QuotationRevisedSuccess extends QuotationReplyState {
+  bool? success;
+  final String? msg;
+  QuotationRevisedSuccess({this.success,required this.msg});
+}

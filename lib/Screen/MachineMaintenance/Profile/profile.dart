@@ -162,14 +162,29 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       _yearsController.text = widget.profileMachineExperienceList![0].yearOfExperience.toString();
       _monthsController.text = widget.profileMachineExperienceList![0].monthOfExperience.toString();
 
-      // for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
-      //   ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName);
-      //   expCompanyForms.add(ExpCompanyFormWidget(
-      //     index: expCompanyForms.length,
-      //     expCompanyModel: _expData,
-      //     onRemove: () => onRemove(_expData),
-      //   ));
-      // }
+      for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
+        ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName,
+          desciption: widget.profileMachineExperienceList![i].description,fromYear: widget.profileMachineExperienceList![i].workFrom,
+          tillYear: widget.profileMachineExperienceList![i].workTill);
+        expCompanyForms.add(ExpCompanyFormWidget(
+          index: expCompanyForms.length,
+          expCompanyModel: _expData,
+          onRemove: () => onRemove(_expData),
+        ));
+      }
+
+      for(int i=0; i < widget.profileMachineEducationList!.length;i++){
+        EducationModel _eduData = EducationModel(id: widget.profileMachineEducationList!.length,schoolName: widget.profileMachineEducationList![i].schoolName,
+            courseName: widget.profileMachineEducationList![i].courseName,passYear: widget.profileMachineEducationList![i].passingYear,
+            certificateImg: widget.profileMachineEducationList![i].certificate);
+        EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length,certificateImg: widget.profileMachineEducationList![i].certificate);
+        educationForms.add(EducationFormWidget(
+          index: educationForms.length,
+          educationModel: _eduData,
+          educationCertificateModel: _educationCertificateModel,
+          onRemove: () => educationOnRemove(_eduData,_educationCertificateModel),
+        ));
+      }
     }else{
       _iDController.text = "";
       _companyNameController.text = "";
@@ -552,11 +567,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       int index = educationForms
           .indexWhere((element) => element.educationModel!.id == educationModel.id);
 
-      int certificateIndex = educationForms
-          .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
+      // int certificateIndex = educationForms
+      //     .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
 
       if (educationForms != null) educationForms.removeAt(index);
-      if (educationCertificateModel.id != null) educationForms.removeAt(certificateIndex);
+      // if (educationCertificateModel.id != null) educationForms.removeAt(certificateIndex);
     });
   }
 
@@ -2589,7 +2604,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   }
                                   else if(_formKey.currentState!.validate()) {
                                   _profileBloc!.add(UpdateProfile(
-                                    certificate: _educationCertificateModel,
+                                    certificate: educationForms,
                                     serviceUserId: Application.customerLogin!.id
                                         .toString(),
                                     fullName: _nameController.text,

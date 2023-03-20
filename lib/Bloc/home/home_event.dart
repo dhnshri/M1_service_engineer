@@ -205,10 +205,11 @@ class SendQuotation extends HomeEvent {
   String commission;
   String machineEnquiryDate;
   int machineEnquiryId;
+  String totalAmount;
 
   SendQuotation({ required this.serviceUserId, required this.workingTime, required this.dateOfJoining,
     required this.serviceCharge,required this.handlingCharge,required this.transportCharge,required this.itemList,
-    required this.itemNotAvailableList, required this.commission,required this.machineEnquiryDate, required this.machineEnquiryId});
+    required this.itemNotAvailableList, required this.commission,required this.machineEnquiryDate, required this.machineEnquiryId,required this.totalAmount});
 
 }
 
@@ -227,10 +228,11 @@ class JobWorkSendQuotation extends HomeEvent {
   String sgst;
   String igst;
   String commission;
+  String totalAmount;
 
   JobWorkSendQuotation({ required this.serviceUserId, required this.jobWorkEnquiryId, required this.jobWorkEnquirydate,
     required this.packingCharge,required this.testingCharge,required this.transportCharge,required this.itemList,
     required this.commission,required this.cgst, required this.sgst,required this.igst,required this.itemRateController,
-    required this.volumeController});
+    required this.volumeController,required this.totalAmount});
 
 }

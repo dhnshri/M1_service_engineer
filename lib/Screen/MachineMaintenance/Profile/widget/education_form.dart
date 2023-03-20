@@ -43,6 +43,33 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
   File? _image;
   final picker = ImagePicker();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    //saveDeviceTokenAndId();
+    super.initState();
+    widget.imageFile = new ImageFile();
+    getData();
+  }
+
+  getData(){
+    if(widget.educationModel!.schoolName != null || widget.educationModel!.courseName != null || widget.educationModel!.passYear != null
+        || widget.educationModel!.certificateImg != null){
+      widget._schoolNameController.text = widget.educationModel!.schoolName.toString();
+      widget._courseNameController.text = widget.educationModel!.courseName.toString();
+      widget._passingYearController.text = widget.educationModel!.passYear.toString();
+      widget.educationCertificateModel!.certificateImg = widget.educationModel!.certificateImg.toString();
+      widget.imageFile!.imagePath = widget.educationModel!.certificateImg.toString();
+    }else{
+      widget._schoolNameController.text = "";
+      widget._courseNameController.text = "";
+      widget._passingYearController.text = "";
+      widget.imageFile!.imagePath = "";
+      widget.educationCertificateModel!.certificateImg = "";
+    }
+  }
+
+
   _openGallery(BuildContext context) async {
     final image =
     await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
@@ -91,14 +118,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
   }
 
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    //saveDeviceTokenAndId();
-    super.initState();
-    widget.imageFile = new ImageFile();
 
-  }
 
   @override
   Widget build(BuildContext context) {

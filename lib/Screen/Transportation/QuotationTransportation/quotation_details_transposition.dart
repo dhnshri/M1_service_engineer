@@ -5,6 +5,8 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Screen/Transportation/QuotationTransportation/quotation_reply_transportation.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -52,6 +54,8 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
   double itemOthersTotal = 0.0;
   double grandTotal = 0.0;
   bool isLoading = false;
+  bool isRejectLoading = true;
+  bool isRevisedLoading = true;
 
   @override
   void initState() {
@@ -89,30 +93,35 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
           children: [
             AppSmallButton(
               onPressed: () async {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => BottomNavigation(
-                      index: 0, dropValue: "Transportation",)));
-
+                _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Reject',
-              loading: loading,
+              loading: isRejectLoading,
 
 
             ),
             SizedBox(width:8),
             AppSmallButton(
               onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReviceQuotationTransposationScreen ()));
+                if(value==true) {
+                  _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
+                }
+                else{
+                  showCustomSnackBar(context,'Please agree the terms and condition.');
+
+                }
+
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Revise Quotation',
-              loading: loading,
+              loading: isRevisedLoading,
 
 
             ),
@@ -136,6 +145,26 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
               if(state is TransportQuotationReplyDetailFail){
                 showCustomSnackBar(context,state.msg.toString());
 
+              }
+              if(state is QuotationRejectLoading){
+                isRejectLoading = state.isLoading;
+              }
+              if(state is QuotationRejectSuccess){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>QuotationsReplyTransportationScreen()));
+                showCustomSnackBar(context,state.msg.toString(),isError: false);
+              }
+              if(state is QuotationRejectFail){
+                showCustomSnackBar(context,state.msg.toString());
+              }
+              if(state is QuotationRevisedLoading){
+                isRevisedLoading = state.isLoading;
+              }
+              if(state is QuotationRevisedSuccess){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReviceQuotationTransposationScreen ()));
+              }
+              if(state is QuotationRevisedFail){
+                showCustomSnackBar(context,state.msg.toString());
               }
             },
             child: isLoading ? vehicleList!.length <= 0 ? Center(child: CircularProgressIndicator(),):

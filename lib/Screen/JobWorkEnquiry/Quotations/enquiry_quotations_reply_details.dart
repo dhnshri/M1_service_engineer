@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/ReviceQuotations/enquiry_revice_quotations.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/enquiry_quotations_reply.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import '../../../Bloc/quotationReply/quotationReply_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_event.dart';
@@ -40,7 +42,8 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
   bool value = false;
   double itemRequiredTotal = 0.0;
   double grandTotal = 0.0;
-
+  bool isRejectLoading = true;
+  bool isRevisedLoading = true;
 
   @override
   void initState() {
@@ -85,12 +88,14 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
           children: [
             AppSmallButton(
               onPressed: () async {
+                _jobworkQuotationBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId!.toInt(),
+                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Reject',
-              loading: loading,
+              loading: isRejectLoading,
 
 
             ),
@@ -98,16 +103,9 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
               child: AppSmallButton(
                 onPressed: () async {
                   if(value == true) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  EnquiryReviseQuotationScreen(
-                                    quotationRequiredItemList:
-                                        quotationRequiredItemList,
-                                    quotationChargesList: quotationChargesList,
-                                    quotationReplyJobWorkEnquiryList: widget.quotationReplyJobWorkEnquiryList,
-                                  )));
+                    _jobworkQuotationBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId!.toInt(),
+                        serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
+
                     }else{
                     showCustomSnackBar(context,'Please Agree the terms and conditions.'.toString());
                   }
@@ -116,7 +114,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                     borderRadius:
                     BorderRadius.all(Radius.circular(50))),
                 text: 'Revise Quotation',
-                loading: loading,
+                loading: isRevisedLoading,
 
 
               ),
@@ -139,6 +137,34 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
             if(state is JobWorkQuotationReplyDetailFail){
               showCustomSnackBar(context,state.msg.toString());
 
+            }
+            if(state is QuotationRejectLoading){
+              isRejectLoading = state.isLoading;
+            }
+            if(state is QuotationRejectSuccess){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>EnquiryQuotationsReplyScreen()));
+              showCustomSnackBar(context,state.msg.toString(),isError: false);
+            }
+            if(state is QuotationRejectFail){
+              showCustomSnackBar(context,state.msg.toString());
+            }
+            if(state is QuotationRevisedLoading){
+              isRevisedLoading = state.isLoading;
+            }
+            if(state is QuotationRevisedSuccess){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          EnquiryReviseQuotationScreen(
+                            quotationRequiredItemList:
+                            quotationRequiredItemList,
+                            quotationChargesList: quotationChargesList,
+                            quotationReplyJobWorkEnquiryList: widget.quotationReplyJobWorkEnquiryList,
+                          )));
+            }
+            if(state is QuotationRevisedFail){
+              showCustomSnackBar(context,state.msg.toString());
             }
           },
           child: isLoading ? quotationRequiredItemList!.length <= 0 ? Center(child: CircularProgressIndicator(),):

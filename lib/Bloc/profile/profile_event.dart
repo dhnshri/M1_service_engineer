@@ -1,6 +1,4 @@
-
 import 'package:service_engineer/Screen/Transportation/Profile/widget/vehicle_info_widget.dart';
-
 import '../../Model/education_model.dart';
 import '../../Model/experience_company_model.dart';
 import '../../Model/machine_list_model.dart';
@@ -40,7 +38,8 @@ class UpdateProfile extends ProfileEvent {
   String addharCardImg;
   List<ExpCompanyFormWidget> experienceCompanyList;
   List<EducationFormWidget> educationList;
-  EducationCertificateModel certificate;
+  List<EducationFormWidget> certificate;
+  // EducationCertificateModel certificate;
 
   UpdateProfile({
     required this.certificate,
@@ -155,18 +154,18 @@ class GetMachineProfile extends ProfileEvent {
 
 class UpdateTransportProfile extends ProfileEvent {
 
-  String userProfileImg;
+  dynamic userProfileImg;
   String ownerName;
   String email;
   String mobile;
   String gstNo;
-  String driverProfileImg;
+  dynamic driverProfileImg;
   String driverName;
   String driverNumber;
   String driverLicenseValidity;
   String driverLicenseNumber;
-  String driverLicenseImage;
-  String driverIdProofImage;
+  dynamic driverLicenseImage;
+  dynamic driverIdProofImage;
   String location;
   String currentLocation;
   String pinCode;
@@ -182,11 +181,11 @@ class UpdateTransportProfile extends ProfileEvent {
   String ifscCode;
   String branchName;
   String upiId;
-  String companyCertificateImg;
-  String gstCertificateImg;
-  String panCardImg;
-  String shopActLicenseImg;
-  String addharCardImg;
+  dynamic companyCertificateImg;
+  dynamic gstCertificateImg;
+  dynamic panCardImg;
+  dynamic shopActLicenseImg;
+  dynamic addharCardImg;
   List<VehicleInfFormWidget> vehicleInfoList;
   List<ExpCompanyFormWidget> experienceCompanyList;
 

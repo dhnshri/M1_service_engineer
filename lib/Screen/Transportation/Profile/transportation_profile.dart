@@ -132,6 +132,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileVehicleInfoList!.isNotEmpty || widget.profileExperienceList!.isNotEmpty ||
       widget.profileDriverDetailsList!.isNotEmpty){
       imageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
+      // _image!.path = widget.serviceUserdataList![0].userProfilePic.toString();
       _nameController.text = widget.serviceUserdataList![0].name.toString();
       _emailController.text = widget.serviceUserdataList![0].email.toString();
       _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
@@ -162,30 +163,34 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
       _driverLicenseNumberController.text = widget.profileDriverDetailsList![0].drivingLicenceNumber.toString();
       _yearsController.text = widget.profileExperienceList![0].years.toString();
       _monthsController.text = widget.profileExperienceList![0].months.toString();
-      // for(int i=0; i < widget.profileExperienceList!.length;i++){
-      //   ExpCompanyModel _contactModel = ExpCompanyModel(id: widget.profileExperienceList!.length,companyName: widget.profileExperienceList![i].companyName,
-      //     desciption: widget.profileExperienceList![i].description,fromYear: widget.profileExperienceList![i].workFrom,tillYear: widget.profileExperienceList![i].workTill);
-      //   expCompanyForms.add(ExpCompanyFormWidget(
-      //     index: widget.profileExperienceList!.length,
-      //     expCompanyModel: _contactModel,
-      //     onRemove: () => onRemove(_contactModel),
-      //   ));
-      // }
-      // for(int i=0; i < widget.profileVehicleInfoList!.length;i++){
-      //   VehicleImageModel _vehicleImageModel = VehicleImageModel();
-      //   VehicleRCImageModel _vehicleRCImageModel = VehicleRCImageModel();
-      //   VehiclePUCImageModel _vehiclePUCImageModel = VehiclePUCImageModel();
-      //   VehicleInfoModel _vehicleInfoModel = VehicleInfoModel(id: vehicleInfoForms.length);
-      //   // EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: vehicleInfoForms.length);
-      //   vehicleInfoForms.add(VehicleInfFormWidget(
-      //     index: vehicleInfoForms.length,
-      //     vehicleInfoModel: _vehicleInfoModel,
-      //     vehicleImageModel: _vehicleImageModel,
-      //     vehicleRCImageModel: _vehicleRCImageModel,
-      //     vehiclePUCImageModel: _vehiclePUCImageModel,
-      //     onRemove: () => vehicleInfoOnRemove(_vehicleInfoModel,_vehicleImageModel,_vehicleRCImageModel,_vehiclePUCImageModel),
-      //   ));
-      // }
+      for(int i=0; i < widget.profileExperienceList!.length;i++){
+        ExpCompanyModel _contactModel = ExpCompanyModel(id: widget.profileExperienceList!.length,companyName: widget.profileExperienceList![i].companyName,
+          desciption: widget.profileExperienceList![i].description,fromYear: widget.profileExperienceList![i].workFrom,tillYear: widget.profileExperienceList![i].workTill);
+        expCompanyForms.add(ExpCompanyFormWidget(
+          index: widget.profileExperienceList!.length,
+          expCompanyModel: _contactModel,
+          onRemove: () => onRemove(_contactModel),
+        ));
+      }
+      for(int i=0; i < widget.profileVehicleInfoList!.length;i++){
+        VehicleImageModel _vehicleImageModel = VehicleImageModel();
+        VehicleRCImageModel _vehicleRCImageModel = VehicleRCImageModel();
+        VehiclePUCImageModel _vehiclePUCImageModel = VehiclePUCImageModel();
+        VehicleInfoModel _vehicleInfoModel = VehicleInfoModel(id: vehicleInfoForms.length,vehicleName: widget.profileVehicleInfoList![i].vehicleName,
+          vehicleType: widget.profileVehicleInfoList![i].vehicleType,chasisNumber: widget.profileVehicleInfoList![i].chassisNumber,
+          registrationUpto: widget.profileVehicleInfoList![i].registrationUpto,vehicleNumber: widget.profileVehicleInfoList![i].vehicleNumber,
+          vehicleImg: widget.profileVehicleInfoList![i].vehicleImg,vehiclePucImg: widget.profileVehicleInfoList![i].uploadPOC,
+          vehicleRcImage: widget.profileVehicleInfoList![i].uploadRC);
+        // EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: vehicleInfoForms.length);
+        vehicleInfoForms.add(VehicleInfFormWidget(
+          index: vehicleInfoForms.length,
+          vehicleInfoModel: _vehicleInfoModel,
+          vehicleImageModel: _vehicleImageModel,
+          vehicleRCImageModel: _vehicleRCImageModel,
+          vehiclePUCImageModel: _vehiclePUCImageModel,
+          onRemove: () => vehicleInfoOnRemove(_vehicleInfoModel,_vehicleImageModel,_vehicleRCImageModel,_vehiclePUCImageModel),
+        ));
+      }
     }else{
       imageFile!.imagePath = "";
       _nameController.text = "";
@@ -3388,18 +3393,18 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       _profileBloc!.add(UpdateTransportProfile(
                                         serviceUserId: Application.customerLogin!.id
                                             .toString(),
-                                        userProfileImg: imageFile!.imagePath.toString(),
+                                        userProfileImg: File(imageFile!.imagePath.toString()),
                                         ownerName: _nameController.text,
                                         email: _emailController.text,
                                         mobile: _phoneController.text,
                                         gstNo: _gstController.text,
-                                        driverProfileImg: driverImageFile!.imagePath.toString(),
+                                        driverProfileImg: File(driverImageFile!.imagePath.toString()),
                                         driverName: _driverNameController.text,
                                         driverNumber: _driverPhoneController.text,
                                         driverLicenseValidity: _driverLicenseValidityController.text,
                                         driverLicenseNumber: _driverLicenseNumberController.text,
-                                        driverLicenseImage: drivingLicenseImageFile!.imagePath.toString(),
-                                        driverIdProofImage: driverIdProofImageFile!.imagePath.toString(),
+                                        driverLicenseImage: File(drivingLicenseImageFile!.imagePath.toString()),
+                                        driverIdProofImage: File(driverIdProofImageFile!.imagePath.toString()),
                                         location: _addressController.text,
                                         currentLocation: _addressController.text,
                                         pinCode: _pinCodeController.text,
@@ -3415,15 +3420,15 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                         branchName: _branchNameController.text,
                                         upiId: _upiIdController.text,
                                         companyCertificateImg:
-                                        imageFile!.imagePath.toString(),
+                                        File(imageFile!.imagePath.toString()),
                                         gstCertificateImg:
-                                        gstImageFile!.imagePath.toString(),
+                                        File(gstImageFile!.imagePath.toString()),
                                         panCardImg:
-                                        panImageFile!.imagePath.toString(),
+                                        File(panImageFile!.imagePath.toString()),
                                         shopActLicenseImg:
-                                        shopActImageFile!.imagePath.toString(),
+                                        File(shopActImageFile!.imagePath.toString()),
                                         addharCardImg:
-                                        aadharImageFile!.imagePath.toString(),
+                                        File(aadharImageFile!.imagePath.toString()),
                                         vehicleInfoList: vehicleInfoForms,
                                         experienceCompanyList: expCompanyForms,
 

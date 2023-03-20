@@ -39,7 +39,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
   DateTime selectedWorkTillDate = DateTime.now();
 
   void initState(){
-    // getData();
+    getData();
   }
 
   getData(){
