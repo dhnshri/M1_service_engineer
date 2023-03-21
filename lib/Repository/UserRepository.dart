@@ -61,12 +61,12 @@ class UserRepository {
   }
 
   //Service Request Api
-  Future<dynamic> fetchServiceRequestList({String? userID, String? offSet}) async {
-    final params = {"offset":offSet};
+  Future<dynamic> fetchServiceRequestList({String? timeId, String? offSet}) async {
+    final params = {"offset":offSet,"time_id":timeId};
     return await Api.getServiceRequestList(params);
   }
-  Future<dynamic> fetchServiceRequestTranspotationList({String? offSet}) async {
-    final params = {"offset":offSet};
+  Future<dynamic> fetchServiceRequestTranspotationList({String? offSet,String? timeId}) async {
+    final params = {"offset":offSet,'time_id':timeId};
     return await Api.getServiceRequestTranspotationList(params);
   }
 
@@ -135,8 +135,8 @@ class UserRepository {
 
 
   //Job Work Enquiry Service Request Api
-  Future<dynamic> fetchServiceRequestJobWorkEnquiryList({String? userID, String? offSet}) async {
-    final params = {"offset":offSet};
+  Future<dynamic> fetchServiceRequestJobWorkEnquiryList({String? timeId, String? offSet}) async {
+    final params = {"offset":offSet,'time_id ':timeId};
     return await Api.getServiceRequestJobWorkEnquiryList(params);
   }
   //Service Request Detail Api
@@ -180,21 +180,21 @@ class UserRepository {
   }
 
   //MachineMaintainceMyTaskList
-  Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset}) async {
+  Future<dynamic> fetchMachineMaintainceMyTaskList({String? userId,String? offset, String? timePeriod}) async {
     final params = {"service_user_id":userId,
-      "offset":offset};
+      "offset":offset,"time_id ": timePeriod};
     return await Api.getMyTaskList(params);
   }
   //TranspotationMyTaskList
-  Future<dynamic> fetchTranspotationMyTaskList({String? userId,String? offset}) async {
+  Future<dynamic> fetchTranspotationMyTaskList({String? userId,String? offset,String? timeId}) async {
     final params = {"service_user_id":userId,
-      "offset":offset};
+      "offset":offset,'time_id':timeId};
     return await Api.getMyTaskTranspotationList(params);
   }
 
-  Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset}) async {
+  Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset,String? timeId}) async {
     final params = {"service_user_id":userId,
-      "offset":offset};
+      "offset":offset,'time_id':timeId};
     return await Api.getMyTaskJWEList(params);
   }
   //Fetch Product List

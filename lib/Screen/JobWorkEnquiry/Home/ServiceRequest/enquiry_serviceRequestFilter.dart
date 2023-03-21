@@ -1,8 +1,16 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Bloc/home/home_state.dart';
 import 'package:service_engineer/Config/font.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/service_request_model.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
+import 'package:service_engineer/Widget/app_button.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:service_engineer/Widget/function_button.dart';
 
 
@@ -19,28 +27,17 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
   final _formKey = GlobalKey<FormState>();
   String radioBtnType = "Heavy";
   int machineCategoryId = 1;
-  String  locationradioBtnType = "Location";
-  int locationId = 1;
-
-  String  productMainCategoryradioBtnType = 'Category 1';
-  int productMainCategoryId = 1;
-
-  String productSubCategoryradioBtnType = 'Category 1';
-  int productSubCategoryId = 1;
-
-  String statusradioBtnType = 'All';
-  int statusId = 1;
 
   bool loading = true;
-
+  HomeBloc? _homeBloc;
+  List<JobWorkEnquiryServiceRequestModel>? serviceList = [];
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-
-
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
   }
   @override
   void dispose() {
@@ -65,16 +62,40 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
         ),
         bottomNavigationBar:Padding(
           padding: const EdgeInsets.all(10.0),
-          child: FunctionButton(
-            onPressed: () async {},
-            shape: const RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.all(Radius.circular(50))),
-            text: 'Apply',
-            loading: loading,
+          child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+            return BlocListener<HomeBloc, HomeState>(
+              listener: (context, state) {
+                if(state is ServiceRequestJWELoading){
+                  loading = state.isLoading;
+                }
+                if(state is ServiceRequestJWESuccess){
+                  serviceList = state.serviceListData;
+                  Navigator.pop(context,{"serviceList": serviceList});
+                }
+                if(state is ServiceRequestJWEFail){
+                  showCustomSnackBar(context,state.msg.toString());
+                }
+              },
+              child:  AppButton(
+                onPressed: () async {
+                  _homeBloc!.add(OnServiceRequestJWEList(offSet:'0',timePeriod: machineCategoryId.toString()));
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Apply',
+                loading: loading,
+                color: ThemeColors.defaultbuttonColor,
+              ),
+
+              // Center(
+              //   child: CircularProgressIndicator(),
+              // )
+
+            );
 
 
-          ),
+          })
         ),
         body: ListView(
           children: [
@@ -89,16 +110,16 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                         padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
                         child: Container(
                           //decoration: BoxDecoration(
-                           // border: Border.all(color: Colors.black12),
-                           // borderRadius: BorderRadius.circular(12),
-                         // ),
+                          // border: Border.all(color: Colors.black12),
+                          // borderRadius: BorderRadius.circular(12),
+                          // ),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Column(
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Machine Category',style:filterHeadingRadiobtnStyle,)),
+                                    child: Text('Time Period',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -108,13 +129,13 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                                     groupValue: machineCategoryId,
                                     onChanged: (val) {
                                       setState(() {
-                                        radioBtnType = 'Heavy';
+                                        radioBtnType = 'for week';
                                         machineCategoryId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    'Heavy',
+                                    'for week',
                                     style:filterRadiobtnStyle,
                                   ),
                                 ],),
@@ -126,13 +147,13 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                                       onChanged: (val) {
                                         setState(() {
                                           radioBtnType =
-                                          'Light';
+                                          'for 30 days';
                                           machineCategoryId = 2;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Light',
+                                      'for 30 days',
                                       style: filterRadiobtnStyle,
                                     ),
                                   ],
@@ -144,91 +165,13 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                                       groupValue: machineCategoryId,
                                       onChanged: (val) {
                                         setState(() {
-                                          radioBtnType = 'Compact';
+                                          radioBtnType = 'for 6 month';
                                           machineCategoryId = 3;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Compact',
-                                      style:filterRadiobtnStyle,
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Location',style:filterHeadingRadiobtnStyle,)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: locationId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        locationradioBtnType = 'With in 120 miles';
-                                        locationId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'With in 120 miles',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: locationId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType =
-                                          'With in 200 miles';
-                                          locationId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'With in 200 miles',
-                                      style: filterRadiobtnStyle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: locationId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'With in 250 miles';
-                                          locationId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'With in 250 miles',
+                                      'for 6 month',
                                       style:filterRadiobtnStyle,
                                     ),
 
@@ -238,16 +181,16 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                                   children: [
                                     Radio(
                                       value: 4,
-                                      groupValue: locationId,
+                                      groupValue: machineCategoryId,
                                       onChanged: (val) {
                                         setState(() {
-                                          radioBtnType = 'With in 300 miles';
-                                          locationId = 4;
+                                          radioBtnType = 'for last year';
+                                          machineCategoryId = 4;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'With in 300 miles',
+                                      'for last year',
                                       style:filterRadiobtnStyle,
                                     ),
 
@@ -259,278 +202,7 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                         ),
                       ),
                     ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Product Main Category',style:filterHeadingRadiobtnStyle,)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: productMainCategoryId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        productMainCategoryradioBtnType = 'Category 1';
-                                        productMainCategoryId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Category 1',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: productMainCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType =
-                                          'Category 2';
-                                          productMainCategoryId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 2',
-                                      style: filterRadiobtnStyle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: productMainCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Category 3';
-                                          productMainCategoryId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 3',
-                                      style:filterRadiobtnStyle,
-                                    ),
 
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 4,
-                                      groupValue: productMainCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Category 4';
-                                          productMainCategoryId = 4;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 4',
-                                      style:filterRadiobtnStyle,
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Product Sub Category',style:filterHeadingRadiobtnStyle,)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: productSubCategoryId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        productSubCategoryradioBtnType = 'Category 1';
-                                        productSubCategoryId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Category 1',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: productSubCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType =
-                                          'Category 2';
-                                          productSubCategoryId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 2',
-                                      style: filterRadiobtnStyle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: productSubCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Category 3';
-                                          productSubCategoryId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 3',
-                                      style:filterRadiobtnStyle,
-                                    ),
-
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 4,
-                                      groupValue: productSubCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Category 4';
-                                          productSubCategoryId = 4;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Category 4',
-                                      style:filterRadiobtnStyle,
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Status',style:filterHeadingRadiobtnStyle,)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: statusId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        statusradioBtnType = 'All';
-                                        statusId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'All',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: statusId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType =
-                                          'Live';
-                                          statusId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Live',
-                                      style: filterRadiobtnStyle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: statusId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Closed';
-                                          statusId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Closed',
-                                      style:filterRadiobtnStyle,
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,6 +43,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
   bool loading = true;
   File? _image;
   final picker = ImagePicker();
+  int length = 0;
 
   @override
   void initState() {
@@ -49,17 +51,23 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
     //saveDeviceTokenAndId();
     super.initState();
     widget.imageFile = new ImageFile();
+    length = widget.educationModel!.id! + 1;
     getData();
   }
 
-  getData(){
+  getData()async{
     if(widget.educationModel!.schoolName != null || widget.educationModel!.courseName != null || widget.educationModel!.passYear != null
         || widget.educationModel!.certificateImg != null){
       widget._schoolNameController.text = widget.educationModel!.schoolName.toString();
       widget._courseNameController.text = widget.educationModel!.courseName.toString();
       widget._passingYearController.text = widget.educationModel!.passYear.toString();
-      widget.educationCertificateModel!.certificateImg = widget.educationModel!.certificateImg.toString();
-      widget.imageFile!.imagePath = widget.educationModel!.certificateImg.toString();
+      // widget.educationCertificateModel!.certificateImg = widget.educationModel!.certificateImg.toString();
+      // widget.imageFile!.imagePath = widget.educationModel!.certificateImg.toString();
+      var educationCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.educationModel!.certificateImg.toString());
+      print(educationCertificateImgFile);
+      widget.educationCertificateModel!.certificateImg = educationCertificateImgFile.path;
+      widget.imageFile!.imagePath = educationCertificateImgFile.path;
+      setState(() { });
     }else{
       widget._schoolNameController.text = "";
       widget._courseNameController.text = "";
@@ -128,15 +136,32 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                    onTap: (){
-                      widget.onRemove();
-                    },
-                    child: Icon(Icons.clear, color: ThemeColors.buttonColor,))
-              ],
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     InkWell(
+            //         onTap: (){
+            //           widget.onRemove();
+            //         },
+            //         child: Icon(Icons.clear, color: ThemeColors.buttonColor,))
+            //   ],
+            // ),
+            const SizedBox(height: 10,),
+
+            Text('${length.toString()}',style: const TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 10,),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("School/Company Name",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
             ),
             ///School/College Name
             TextFormField(
@@ -197,6 +222,13 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             SizedBox(height: 15,),
 
             ///Class/Course Name
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Class/Course Name",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
               controller: widget._courseNameController,
@@ -254,6 +286,13 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             SizedBox(height: 15,),
 
             ///Passing Year
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Passing Year",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
               controller: widget._passingYearController,
@@ -314,6 +353,13 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             SizedBox(height: 15,),
 
             ///Certificate
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Education Certificate",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             Container(
               height: 50,
               color: ThemeColors.textFieldBackgroundColor,
@@ -354,7 +400,8 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
               ),
             ),
 
-            SizedBox(height: 15,),
+            const SizedBox(height: 10,),
+            const Divider(thickness: 2,)
 
 
 

@@ -154,18 +154,18 @@ class GetMachineProfile extends ProfileEvent {
 
 class UpdateTransportProfile extends ProfileEvent {
 
-  dynamic userProfileImg;
+  String userProfileImg;
   String ownerName;
   String email;
   String mobile;
   String gstNo;
-  dynamic driverProfileImg;
+  String driverProfileImg;
   String driverName;
   String driverNumber;
   String driverLicenseValidity;
   String driverLicenseNumber;
-  dynamic driverLicenseImage;
-  dynamic driverIdProofImage;
+  String driverLicenseImage;
+  String driverIdProofImage;
   String location;
   String currentLocation;
   String pinCode;
@@ -181,11 +181,11 @@ class UpdateTransportProfile extends ProfileEvent {
   String ifscCode;
   String branchName;
   String upiId;
-  dynamic companyCertificateImg;
-  dynamic gstCertificateImg;
-  dynamic panCardImg;
-  dynamic shopActLicenseImg;
-  dynamic addharCardImg;
+  String companyCertificateImg;
+  String gstCertificateImg;
+  String panCardImg;
+  String shopActLicenseImg;
+  String addharCardImg;
   List<VehicleInfFormWidget> vehicleInfoList;
   List<ExpCompanyFormWidget> experienceCompanyList;
 

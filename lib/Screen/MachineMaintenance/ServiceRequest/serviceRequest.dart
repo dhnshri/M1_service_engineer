@@ -32,10 +32,13 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool _isLoading = false;
+  bool flagSearchResult=false;
+  bool _isSearching=false;
 
   HomeBloc? _homeBloc;
   List<ServiceRequestModel>? serviceList = [];
   final ScrollController _scrollController = ScrollController();
+  List<ServiceRequestModel> searchResult=[];
 
 
   @override
@@ -44,7 +47,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequest(userID: Application.customerLogin!.id.toString(),offSet: '0'));
+    _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: '0'));
     print(Application.customerLogin!.id.toString());
   }
   @override
@@ -53,6 +56,40 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     super.dispose();
     // getroleofstudent();
   }
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < serviceList!.length; i++) {
+        ServiceRequestModel serviceListData = new ServiceRequestModel();
+        serviceListData.machineImg = serviceList![i].machineProblemImg.toString();
+        serviceListData.machineName = serviceList![i].machineName.toString();
+        serviceListData.enquiryId = serviceList![i].enquiryId;
+        serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
+
+
+
+        if (serviceListData.machineImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.machineName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
+          flagSearchResult=false;
+          searchResult.add(serviceListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
+  }
+
 
   Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
     return ListView.builder(
@@ -197,34 +234,34 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     ),
                     SizedBox(height: 3,),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Working Timing:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/6.3,
-                        // ),
-                        Container(
-                          // width: MediaQuery.of(context).size.width*0.2,
-                          child: Text(
-                            "10 AM - 6 PM",
-                            style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
-                              fontSize: 12,
-                              // fontWeight: FontWeight.bold
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(
+                    //       "Working Timing:",
+                    //       style: TextStyle(
+                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.bold
+                    //       ),
+                    //     ),
+                    //     // SizedBox(
+                    //     //   width: MediaQuery.of(context).size.width/6.3,
+                    //     // ),
+                    //     Container(
+                    //       // width: MediaQuery.of(context).size.width*0.2,
+                    //       child: Text(
+                    //         "10 AM - 6 PM",
+                    //         style: TextStyle(
+                    //           fontFamily: 'Poppins-Regular',
+                    //           fontSize: 12,
+                    //           // fontWeight: FontWeight.bold
+                    //         ),
+                    //         overflow: TextOverflow.ellipsis,
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(height: 3,),
 
                     Row(
@@ -313,9 +350,15 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: ThemeColors.bottomNavColor,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ThemeColors.textFieldHintColor,
+                                prefixIcon: IconButton(
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: 25.0,
+                                    color: ThemeColors.blackColor,
+                                  ),
+                                  onPressed: () {
+                                    _handleSearchStart();
+                                  },
                                 ),
                                 hintText: "Search all Orders",
                                 contentPadding: EdgeInsets.symmetric(
@@ -338,29 +381,23 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                         width: 0.8, color: ThemeColors.bottomNavColor)),
                               ),
                               validator: (value) {
-                                Pattern pattern =
-                                    r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                RegExp regex = new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter GST Number';
-                                } else if (!regex.hasMatch(value)) {
-                                  return 'Please enter valid GST Number';
-                                }
-                                return null;
+
                               },
                               onChanged: (value) {
                                 // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
+                                searchOperation(value);
                               },
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(context,
+                            onTap: () async {
+                              var filterResult = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
+
+                              if(filterResult != null){
+                                print(filterResult);
+                                serviceList = filterResult['serviceList'];
+                              }
                             },
                             child: Row(
                               children: [
@@ -377,7 +414,14 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     ),
                   ),
                   // _isLoading ?
+                  flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                  buildCustomerEnquiriesList(context, searchResult)
+                  :
                   buildCustomerEnquiriesList(context, serviceList!)
+                      : Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: const Center(child: Text("No Data"),),
+                      )
                       // : ShimmerCard()
                   // : CircularProgressIndicator()
                 ],

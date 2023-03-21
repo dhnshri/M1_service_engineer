@@ -131,7 +131,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         //initialize multipart request
         //attach the file in the request
         final certi = await http.MultipartFile.fromPath(
-            'certificate[]', event.educationList[j].educationModel!.certificateImg.toString(),
+            'certificate[]', event.educationList[j].imageFile!.imagePath.toString(),
             contentType: MediaType(
                 mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
 
@@ -432,40 +432,32 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         vehicleInfoList.add(innerObj);
       }
 
-      // var stream =
-      // http.ByteStream(DelegatingStream.typed(event.userProfileImg.openRead()));
-      // var length = await event.userProfileImg.length();
-      // print(length);
-      // var multipartFile = http.MultipartFile("user_profile_pic",stream, length, filename: basename(event.userProfileImg.path));
+      var userProfileImg = await http.MultipartFile.fromPath(
+          'user_profile_pic', event.userProfileImg.toString());
 
+      var gstCertFile = await http.MultipartFile.fromPath(
+          'gst_certificate', event.gstCertificateImg.toString());
 
+      var panCardFile = await http.MultipartFile.fromPath(
+          'pan_card', event.panCardImg.toString());
 
-      // var userProfileImg = await http.MultipartFile.fromPath(
-      //     'user_profile_pic', event.userProfileImg.toString());
+      var shopActFile = await http.MultipartFile.fromPath(
+          'shop_act_licence', event.shopActLicenseImg.toString());
 
-      // var gstCertFile = await http.MultipartFile.fromPath(
-      //     'gst_certificate', event.gstCertificateImg.toString());
-      //
-      // var panCardFile = await http.MultipartFile.fromPath(
-      //     'pan_card', event.panCardImg.toString());
-      //
-      // var shopActFile = await http.MultipartFile.fromPath(
-      //     'shop_act_licence', event.shopActLicenseImg.toString());
-      //
-      // var aadharFile = await http.MultipartFile.fromPath(
-      //     'udhyog_adhar_licence', event.addharCardImg.toString());
-      //
-      // var companyCertiFile = await http.MultipartFile.fromPath(
-      //     'company_certificate', event.companyCertificateImg.toString());
-      //
-      // var driverPhoto = await http.MultipartFile.fromPath(
-      //     'driver_pic', event.driverProfileImg.toString());
-      //
-      // var drivingLicensePhoto = await http.MultipartFile.fromPath(
-      //     'driving_licence', event.driverLicenseImage.toString());
-      //
-      // var driverIdProofPhoto = await http.MultipartFile.fromPath(
-      //     'id_proof', event.driverIdProofImage.toString());
+      var aadharFile = await http.MultipartFile.fromPath(
+          'udhyog_adhar_licence', event.addharCardImg.toString());
+
+      var companyCertiFile = await http.MultipartFile.fromPath(
+          'company_certificate', event.companyCertificateImg.toString());
+
+      var driverPhoto = await http.MultipartFile.fromPath(
+          'driver_pic', event.driverProfileImg.toString());
+
+      var drivingLicensePhoto = await http.MultipartFile.fromPath(
+          'driving_licence', event.driverLicenseImage.toString());
+
+      var driverIdProofPhoto = await http.MultipartFile.fromPath(
+          'id_proof', event.driverIdProofImage.toString());
 
       Map<String, String> params = {
         "full_name": event.ownerName.toString(),
@@ -498,97 +490,97 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/add_transport_profile'));
       // ..fields.addAll(params);
-      // _request.files.add(companyCertiFile);
-      // _request.files.add(gstCertFile);
-      // _request.files.add(panCardFile);
-      // _request.files.add(shopActFile);
-      // _request.files.add(aadharFile);
-      // // _request.files.add(multipartFile);
-      // _request.files.add(driverPhoto);
-      // _request.files.add(drivingLicensePhoto);
-      // _request.files.add(driverIdProofPhoto);
+      _request.files.add(companyCertiFile);
+      _request.files.add(gstCertFile);
+      _request.files.add(panCardFile);
+      _request.files.add(shopActFile);
+      _request.files.add(aadharFile);
+      _request.files.add(userProfileImg);
+      _request.files.add(driverPhoto);
+      _request.files.add(drivingLicensePhoto);
+      _request.files.add(driverIdProofPhoto);
 
-      for(MultipartBody multipart in event.userProfileImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "user_profile_pic", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.gstCertificateImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "gst_certificate", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.panCardImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "pan_card", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.shopActLicenseImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "shop_act_licence", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.addharCardImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "udhyog_adhar_licence", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.companyCertificateImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "company_certificate", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.driverProfileImg) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "driver_pic", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.driverLicenseImage) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "driving_licence", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
-      for(MultipartBody multipart in event.driverIdProofImage) {
-        if(multipart.file != null) {
-          Uint8List _list = await multipart.file.readAsBytes();
-          _request.files.add(http.MultipartFile(
-            "id_proof", multipart.file.readAsBytes().asStream(), _list.length,
-            filename: '${DateTime.now().toString()}.jpg',
-          ));
-        }
-      }
+      // for(MultipartBody multipart in event.userProfileImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "user_profile_pic", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.gstCertificateImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "gst_certificate", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.panCardImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "pan_card", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.shopActLicenseImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "shop_act_licence", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.addharCardImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "udhyog_adhar_licence", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.companyCertificateImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "company_certificate", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.driverProfileImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "driver_pic", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.driverLicenseImage) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "driving_licence", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.driverIdProofImage) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "id_proof", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
 
       /// Upload Multiple Vehicle Images
       List<http.MultipartFile> vehicleImageList = <http.MultipartFile>[];

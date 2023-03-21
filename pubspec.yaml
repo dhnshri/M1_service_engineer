@@ -90,7 +90,8 @@ dependencies:
   geolocator: ^9.0.2
   mime: ^1.0.4
   file_picker:
-
+  image_downloader: ^0.31.0
+  flutter_cache_manager: ^3.3.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,6 +53,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
   File? _vehiclePUCImage;
   final picker = ImagePicker();
   DateTime selectedRegistrationUptoDate = DateTime.now();
+  int length = 0;
 
   @override
   void initState() {
@@ -61,10 +63,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
     widget.vehicleImageFile = new VehicleImage();
     widget.vehicleRCImageFile = new VehicleRCImage();
     widget.vehiclePUCImageFile = new VehiclePUCImage();
+    length = widget.vehicleInfoModel!.id! + 1;
     getData();
   }
 
-  getData(){
+  getData()async{
     if(widget.vehicleInfoModel!.vehicleName != null || widget.vehicleInfoModel!.vehicleType != null || widget.vehicleInfoModel!.chasisNumber != null
         || widget.vehicleInfoModel!.registrationUpto != null || widget.vehicleInfoModel!.vehicleNumber != null || widget.vehicleInfoModel!.vehicleImg != null
         || widget.vehicleInfoModel!.vehicleRcImage != null || widget.vehicleInfoModel!.vehiclePucImg != null){
@@ -73,9 +76,21 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
       widget._chassisNumberController.text = widget.vehicleInfoModel!.chasisNumber.toString();
       widget._registrationUptoController.text = DateFormat.yMd().format(DateTime.parse(widget.vehicleInfoModel!.registrationUpto.toString())).toString();
       widget._vehicleNumberController.text = widget.vehicleInfoModel!.vehicleNumber.toString();
-      widget.vehicleImageFile!.imagePath = widget.vehicleInfoModel!.vehicleImg.toString();
-      widget.vehicleRCImageFile!.imagePath = widget.vehicleInfoModel!.vehicleRcImage.toString();
-      widget.vehiclePUCImageFile!.imagePath = widget.vehicleInfoModel!.vehiclePucImg.toString();
+      // widget.vehicleImageFile!.imagePath = widget.vehicleInfoModel!.vehicleImg.toString();
+      // widget.vehicleRCImageFile!.imagePath = widget.vehicleInfoModel!.vehicleRcImage.toString();
+      // widget.vehiclePUCImageFile!.imagePath = widget.vehicleInfoModel!.vehiclePucImg.toString();
+      var vehicleImgFile = await DefaultCacheManager().getSingleFile(widget.vehicleInfoModel!.vehicleImg.toString());
+      print(vehicleImgFile);
+      widget.vehicleImageFile!.imagePath = vehicleImgFile.path;
+      var vehicleRCImgFile = await DefaultCacheManager().getSingleFile(widget.vehicleInfoModel!.vehicleRcImage.toString());
+      print(vehicleRCImgFile);
+      widget.vehicleRCImageFile!.imagePath = vehicleRCImgFile.path;
+      var vehiclePUCImgFile = await DefaultCacheManager().getSingleFile(widget.vehicleInfoModel!.vehiclePucImg.toString());
+      print(vehiclePUCImgFile);
+      widget.vehiclePUCImageFile!.imagePath = vehiclePUCImgFile.path;
+      setState(() {
+
+      });
     }else{
       widget._vehicleNameController.text = "";
       widget._vehicleTypeController.text = "";
@@ -256,16 +271,33 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                    onTap: (){
-                      widget.onRemove();
-                    },
-                    child: Icon(Icons.clear, color: ThemeColors.buttonColor,))
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     InkWell(
+            //         onTap: (){
+            //           widget.onRemove();
+            //         },
+            //         child: Icon(Icons.clear, color: ThemeColors.buttonColor,))
+            //   ],
+            // ),
+            const SizedBox(height: 10,),
+
+            Text('${length.toString()}',style: const TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 10,),
+
+            const Text('Vehicle Name',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 5,),
             ///Vehicle Name
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -322,8 +354,15 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
               },
             ),
 
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
 
+            const Text('Vehicle Type',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 5,),
             ///Vehicle Type
             TextFormField(
               controller: widget._vehicleTypeController,
@@ -380,6 +419,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             SizedBox(height: 15,),
 
+            Text('Chasis Number',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            SizedBox(height: 5,),
             ///Chasis Number
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -438,6 +484,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             SizedBox(height: 15,),
 
+            Text('Registration number',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            SizedBox(height: 5,),
             ///Registration Upto
             InkWell(
               onTap: (){
@@ -502,6 +555,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             SizedBox(height: 15,),
 
+            const Text('Vehicle Number',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 5,),
             ///Vehicle Number
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -558,8 +618,15 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
               },
             ),
 
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
 
+            const Text('Vehicle Image',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 5,),
             ///Vehicle Image
             Container(
               height: 50,
@@ -601,8 +668,15 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
               ),
             ),
 
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
 
+            const Text('Vehicle RC Image',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 5,),
             ///Vehicle RC Image
             Container(
               height: 50,
@@ -644,6 +718,15 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
               ),
             ),
 
+            const SizedBox(height: 15,),
+
+            const Text('Vehicle PUC Image',style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 5,),
             ///Vehicle PUC Image
             Container(
               height: 50,
@@ -684,7 +767,8 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                 ),
               ),
             ),
-
+            const SizedBox(height: 10,),
+            const Divider(thickness: 2,)
           ],
         ),
       ),

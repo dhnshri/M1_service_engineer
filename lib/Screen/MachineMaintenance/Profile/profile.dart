@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -131,7 +132,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     getData();
   }
 
-  getData(){
+  getData()async{
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
@@ -141,19 +142,36 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
       _ageController.text = widget.serviceUserdataList![0].age.toString();
       _genderController.text = widget.serviceUserdataList![0].gender.toString();
-      // uploadCompanyProfileImageFile!.imagePath = widget.serviceUserdataList![0].companyProfilePic.toString();
-      uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
+      var userImgFile = await DefaultCacheManager().getSingleFile(widget.serviceUserdataList![0].userProfilePic.toString());
+      print(userImgFile);
+      uploadUserProfileImageFile!.imagePath = userImgFile.path;
+      // uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
       _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
       _locationController.text = widget.serviceUserdataList![0].currentAddress.toString();
       _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
       _cityController.text = widget.serviceUserdataList![0].city.toString();
       _stateController.text = widget.serviceUserdataList![0].state.toString();
       _countryController.text = widget.serviceUserdataList![0].country.toString();
-      imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
-      gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
-      panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
-      shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
-      aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
+      var companyCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].companyCertificate.toString());
+      print(companyCertificateImgFile);
+      imageFile!.imagePath = companyCertificateImgFile.path;
+      // imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
+      var gstCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].gstCertificate.toString());
+      print(gstCertificateImgFile);
+      gstImageFile!.imagePath = gstCertificateImgFile.path;
+      // gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
+      var panCardImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].panCard.toString());
+      print(panCardImgFile);
+      panImageFile!.imagePath = panCardImgFile.path;
+      // panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
+      var shopActImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].shopActLicence.toString());
+      print(shopActImgFile);
+      shopActImageFile!.imagePath = shopActImgFile.path;
+      // shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
+      var aadharCardImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].udhyogAdharLicence.toString());
+      print(aadharCardImgFile);
+      aadharImageFile!.imagePath = aadharCardImgFile.path;
+      // aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
       _bankNameController.text = widget.profileKycList![0].bankName.toString();
       _accountNumberController.text = widget.profileKycList![0].accountNumber.toString();
       _iFSCCodeController.text = widget.profileKycList![0].ifscCode.toString();
@@ -163,7 +181,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       _monthsController.text = widget.profileMachineExperienceList![0].monthOfExperience.toString();
 
       for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
-        ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName,
+        ExpCompanyModel _expData = ExpCompanyModel(id: expCompanyForms.length,companyName: widget.profileMachineExperienceList![i].companyName,
           desciption: widget.profileMachineExperienceList![i].description,fromYear: widget.profileMachineExperienceList![i].workFrom,
           tillYear: widget.profileMachineExperienceList![i].workTill);
         expCompanyForms.add(ExpCompanyFormWidget(
@@ -174,7 +192,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       }
 
       for(int i=0; i < widget.profileMachineEducationList!.length;i++){
-        EducationModel _eduData = EducationModel(id: widget.profileMachineEducationList!.length,schoolName: widget.profileMachineEducationList![i].schoolName,
+        EducationModel _eduData = EducationModel(id: educationForms.length,schoolName: widget.profileMachineEducationList![i].schoolName,
             courseName: widget.profileMachineEducationList![i].courseName,passYear: widget.profileMachineEducationList![i].passingYear,
             certificateImg: widget.profileMachineEducationList![i].certificate);
         EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length,certificateImg: widget.profileMachineEducationList![i].certificate);
@@ -185,6 +203,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
           onRemove: () => educationOnRemove(_eduData,_educationCertificateModel),
         ));
       }
+      setState(() { });
     }else{
       _iDController.text = "";
       _companyNameController.text = "";
@@ -631,6 +650,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                   Application.preferences!.remove('user');
+                  DefaultCacheManager().emptyCache();
                   // _RemoverUser();
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -692,8 +712,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                              : Image.network(
-                                            uploadUserProfileImageFile!.imagePath.toString(),
+                                              : Image.file(
+                                            File(uploadUserProfileImageFile!.imagePath.toString()),
                                             fit: BoxFit.fill,
                                           )
 

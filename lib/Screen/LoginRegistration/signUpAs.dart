@@ -45,21 +45,6 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
     super.dispose();
     // getroleofstudent();
   }
-  // void saveDeviceTokenAndId() async {
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   //for device Id
-  //   var deviceInfo = DeviceInfoPlugin();
-  //   if (Platform.isAndroid) {
-  //     // import 'dart:io'
-  //     var androidDeviceId = await deviceInfo.androidInfo;
-  //     // print("androiId" + androidDeviceId.androidId);
-  //     sharedPreferences.setString('deviceId', androidDeviceId.androidId);
-  //   } else {
-  //     var iosDeviceId = await deviceInfo.iosInfo;
-  //     sharedPreferences.setString('deviceId', iosDeviceId.identifierForVendor);
-  //     print("iosId" + iosDeviceId.identifierForVendor);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +81,7 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                 BorderRadius.all(Radius.circular(50))),
             text: 'Next',
             loading: loading,
+            color: ThemeColors.buttonColor,
 
 
           ),

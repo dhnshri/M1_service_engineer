@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Screen/LoginRegistration/registration.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -303,8 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             BorderRadius.all(Radius.circular(50))),
                                         text: 'Sign in',
                                         loading: loading,
-
-
+                                        color: ThemeColors.buttonColor,
                                       )
                                   ),
                                 ],

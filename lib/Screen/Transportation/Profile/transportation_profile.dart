@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_downloader/image_downloader.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
 import 'package:service_engineer/Bloc/profile/profile_state.dart';
 import 'package:service_engineer/Model/profile_repo.dart';
@@ -17,7 +22,6 @@ import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 import '../../../../Utils/application.dart';
-
 import '../../../Bloc/profile/profile_event.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
@@ -25,6 +29,7 @@ import '../../../Model/education_model.dart';
 import '../../../Model/experience_company_model.dart';
 import '../../../image_file.dart';
 import '../../LoginRegistration/signUpAs.dart';
+import 'package:http/http.dart' as http;
 
 // import '../../Config/font.dart';
 // import '../../Config/image.dart';
@@ -128,11 +133,30 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
     getData();
   }
 
-  getData(){
+  getData()async{
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileVehicleInfoList!.isNotEmpty || widget.profileExperienceList!.isNotEmpty ||
       widget.profileDriverDetailsList!.isNotEmpty){
-      imageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
-      // _image!.path = widget.serviceUserdataList![0].userProfilePic.toString();
+      // try {
+      //   // Saved with this method.
+      //   var imageId =
+      //       await ImageDownloader.downloadImage(widget.serviceUserdataList![0].userProfilePic.toString());
+      //   if (imageId == null) {
+      //     return;
+      //   }
+      //   // Below is a method of obtaining saved image information.
+      //   var fileName = await ImageDownloader.findName(imageId);
+      //   var path = await ImageDownloader.findPath(imageId);
+      //   var size = await ImageDownloader.findByteSize(imageId);
+      //   var mimeType = await ImageDownloader.findMimeType(imageId);
+      //   print('filename $fileName');
+      //   print('Path $path');
+      // } on PlatformException catch (error) {
+      //   print(error);
+      // }
+      var userProfileFile = await DefaultCacheManager().getSingleFile(widget.serviceUserdataList![0].userProfilePic.toString());
+      print(userProfileFile);
+      imageFile!.imagePath = userProfileFile.path;
+      // imageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
       _nameController.text = widget.serviceUserdataList![0].name.toString();
       _emailController.text = widget.serviceUserdataList![0].email.toString();
       _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
@@ -149,14 +173,38 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
       _upiIdController.text = widget.profileKycList![0].upiId.toString();
       _companyNameController.text = widget.profileKycList![0].companyName.toString();
       _companyNameController.text = widget.profileKycList![0].companyName.toString();
-      companyCertificateImageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
-      gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
-      panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
-      shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
-      aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
-      driverImageFile!.imagePath = widget.profileDriverDetailsList![0].driverPic.toString();
-      drivingLicenseImageFile!.imagePath = widget.profileDriverDetailsList![0].drivingLicence.toString();
-      driverIdProofImageFile!.imagePath = widget.profileDriverDetailsList![0].idProof.toString();
+      var companyImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].companyCertificate.toString());
+      print(companyImgFile);
+      companyCertificateImageFile!.imagePath = companyImgFile.path;
+      // companyCertificateImageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
+      var gstImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].gstCertificate.toString());
+      print(gstImgFile);
+      gstImageFile!.imagePath = gstImgFile.path;
+      // gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
+      var panImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].panCard.toString());
+      print(panImgFile);
+      panImageFile!.imagePath = panImgFile.path;
+      // panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
+      var shopActImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].shopActLicence.toString());
+      print(shopActImgFile);
+      shopActImageFile!.imagePath = shopActImgFile.path;
+      // shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
+      var aadharImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].udhyogAdharLicence.toString());
+      print(aadharImgFile);
+      aadharImageFile!.imagePath = aadharImgFile.path;
+      // aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
+      var driverImgFile = await DefaultCacheManager().getSingleFile(widget.profileDriverDetailsList![0].driverPic.toString());
+      print(driverImgFile);
+      driverImageFile!.imagePath = driverImgFile.path;
+      // driverImageFile!.imagePath = widget.profileDriverDetailsList![0].driverPic.toString();
+      var driverLicenseImgFile = await DefaultCacheManager().getSingleFile(widget.profileDriverDetailsList![0].drivingLicence.toString());
+      print(driverLicenseImgFile);
+      drivingLicenseImageFile!.imagePath = driverLicenseImgFile.path;
+      // drivingLicenseImageFile!.imagePath = widget.profileDriverDetailsList![0].drivingLicence.toString();
+      var driverIdProofImgFile = await DefaultCacheManager().getSingleFile(widget.profileDriverDetailsList![0].idProof.toString());
+      print(driverIdProofImgFile);
+      driverIdProofImageFile!.imagePath = driverIdProofImgFile.path;
+      // driverIdProofImageFile!.imagePath = widget.profileDriverDetailsList![0].idProof.toString();
       _driverNameController.text = widget.profileDriverDetailsList![0].fullName.toString();
       _driverPhoneController.text = widget.profileDriverDetailsList![0].mobile.toString();
       _driverLicenseValidityController.text = widget.profileDriverDetailsList![0].drivingLicenceValidity.toString();
@@ -164,7 +212,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
       _yearsController.text = widget.profileExperienceList![0].years.toString();
       _monthsController.text = widget.profileExperienceList![0].months.toString();
       for(int i=0; i < widget.profileExperienceList!.length;i++){
-        ExpCompanyModel _contactModel = ExpCompanyModel(id: widget.profileExperienceList!.length,companyName: widget.profileExperienceList![i].companyName,
+        ExpCompanyModel _contactModel =await ExpCompanyModel(id: expCompanyForms!.length,companyName: widget.profileExperienceList![i].companyName,
           desciption: widget.profileExperienceList![i].description,fromYear: widget.profileExperienceList![i].workFrom,tillYear: widget.profileExperienceList![i].workTill);
         expCompanyForms.add(ExpCompanyFormWidget(
           index: widget.profileExperienceList!.length,
@@ -176,7 +224,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         VehicleImageModel _vehicleImageModel = VehicleImageModel();
         VehicleRCImageModel _vehicleRCImageModel = VehicleRCImageModel();
         VehiclePUCImageModel _vehiclePUCImageModel = VehiclePUCImageModel();
-        VehicleInfoModel _vehicleInfoModel = VehicleInfoModel(id: vehicleInfoForms.length,vehicleName: widget.profileVehicleInfoList![i].vehicleName,
+        VehicleInfoModel _vehicleInfoModel =await VehicleInfoModel(id: vehicleInfoForms.length,vehicleName: widget.profileVehicleInfoList![i].vehicleName,
           vehicleType: widget.profileVehicleInfoList![i].vehicleType,chasisNumber: widget.profileVehicleInfoList![i].chassisNumber,
           registrationUpto: widget.profileVehicleInfoList![i].registrationUpto,vehicleNumber: widget.profileVehicleInfoList![i].vehicleNumber,
           vehicleImg: widget.profileVehicleInfoList![i].vehicleImg,vehiclePucImg: widget.profileVehicleInfoList![i].uploadPOC,
@@ -190,7 +238,9 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
           vehiclePUCImageModel: _vehiclePUCImageModel,
           onRemove: () => vehicleInfoOnRemove(_vehicleInfoModel,_vehicleImageModel,_vehicleRCImageModel,_vehiclePUCImageModel),
         ));
+
       }
+      setState(() { });
     }else{
       imageFile!.imagePath = "";
       _nameController.text = "";
@@ -766,7 +816,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                     Application.preferences!.remove('user');
-                    // _RemoverUser();
+                    DefaultCacheManager().emptyCache();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => SignUpAsScreen()),
@@ -828,8 +878,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                            : Image.network(
-                                            imageFile!.imagePath.toString(),
+                                            : Image.file(
+                                            File(imageFile!.imagePath.toString()),
                                           fit: BoxFit.fill,
                                         )
 
@@ -876,8 +926,16 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                     child: Form(
                       // key: _formKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ///Owner Profile
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Owner Profile",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           Container(
                             height: 50,
                             color: ThemeColors.textFieldBackgroundColor,
@@ -921,6 +979,14 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
 
                           ///Name
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Name",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
                             controller: _nameController,
@@ -985,6 +1051,14 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           SizedBox(height: 15,),
 
                           ///Email
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Email",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
                             controller: _emailController,
@@ -1048,6 +1122,14 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           SizedBox(height: 15,),
 
                           ///Phone Number
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Phone Number",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
                             controller: _phoneController,
@@ -1109,6 +1191,14 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           SizedBox(height: 15,),
 
                           ///GST Number
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("GST Number",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
                             controller: _gstController,
@@ -3393,18 +3483,22 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       _profileBloc!.add(UpdateTransportProfile(
                                         serviceUserId: Application.customerLogin!.id
                                             .toString(),
-                                        userProfileImg: File(imageFile!.imagePath.toString()),
+                                        // userProfileImg: File(imageFile!.imagePath.toString()),
+                                        userProfileImg: imageFile!.imagePath.toString(),
                                         ownerName: _nameController.text,
                                         email: _emailController.text,
                                         mobile: _phoneController.text,
                                         gstNo: _gstController.text,
-                                        driverProfileImg: File(driverImageFile!.imagePath.toString()),
+                                        // driverProfileImg: File(driverImageFile!.imagePath.toString()),
+                                        driverProfileImg: driverImageFile!.imagePath.toString(),
                                         driverName: _driverNameController.text,
                                         driverNumber: _driverPhoneController.text,
                                         driverLicenseValidity: _driverLicenseValidityController.text,
                                         driverLicenseNumber: _driverLicenseNumberController.text,
-                                        driverLicenseImage: File(drivingLicenseImageFile!.imagePath.toString()),
-                                        driverIdProofImage: File(driverIdProofImageFile!.imagePath.toString()),
+                                        // driverLicenseImage: File(drivingLicenseImageFile!.imagePath.toString()),
+                                        driverLicenseImage: drivingLicenseImageFile!.imagePath.toString(),
+                                        driverIdProofImage: driverIdProofImageFile!.imagePath.toString(),
+                                        // driverIdProofImage: File(driverIdProofImageFile!.imagePath.toString()),
                                         location: _addressController.text,
                                         currentLocation: _addressController.text,
                                         pinCode: _pinCodeController.text,
@@ -3419,16 +3513,16 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                         ifscCode: _iFSCCodeController.text,
                                         branchName: _branchNameController.text,
                                         upiId: _upiIdController.text,
-                                        companyCertificateImg:
-                                        File(imageFile!.imagePath.toString()),
-                                        gstCertificateImg:
-                                        File(gstImageFile!.imagePath.toString()),
-                                        panCardImg:
-                                        File(panImageFile!.imagePath.toString()),
-                                        shopActLicenseImg:
-                                        File(shopActImageFile!.imagePath.toString()),
-                                        addharCardImg:
-                                        File(aadharImageFile!.imagePath.toString()),
+                                        // companyCertificateImg: File(imageFile!.imagePath.toString()),
+                                        companyCertificateImg: imageFile!.imagePath.toString(),
+                                        gstCertificateImg: gstImageFile!.imagePath.toString(),
+                                        // gstCertificateImg: File(gstImageFile!.imagePath.toString()),
+                                        panCardImg: panImageFile!.imagePath.toString(),
+                                        // panCardImg: File(panImageFile!.imagePath.toString()),
+                                        shopActLicenseImg: shopActImageFile!.imagePath.toString(),
+                                        // shopActLicenseImg: File(shopActImageFile!.imagePath.toString()),
+                                        addharCardImg: aadharImageFile!.imagePath.toString(),
+                                        // addharCardImg: File(aadharImageFile!.imagePath.toString()),
                                         vehicleInfoList: vehicleInfoForms,
                                         experienceCompanyList: expCompanyForms,
 

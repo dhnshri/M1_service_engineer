@@ -1,7 +1,15 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Bloc/home/home_state.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/Transpotation/myTaskListModel.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -23,28 +31,19 @@ class MyTaskTransportationFilterScreen extends StatefulWidget {
 class _MyTaskTransportationFilterScreenState extends State<MyTaskTransportationFilterScreen> {
 
   final _formKey = GlobalKey<FormState>();
-
-
-  String pickuptimingBtnType = "8-9 AM";
-  int pickuptimingId = 1;
-
-  String pickandDropDistanceBtnType = "5-10 KM";
-  int pickandDropDistanceId = 1;
-
-  String  loadWeightBtnType = "10 - 20 tonne";
-  int loadWeightId = 1;
-
+  String radioBtnType = "for week";
+  int machineCategoryId = 1;
 
   bool loading = true;
-
+  HomeBloc? _homeBloc;
+  List<MyTaskTransportationModel> myTaskList=[];
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-
-
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
   }
   @override
   void dispose() {
@@ -62,27 +61,47 @@ class _MyTaskTransportationFilterScreenState extends State<MyTaskTransportationF
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: 'Transportation',)));
+                Navigator.of(context).pop();
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Filter for Service Requests',style:appBarheadingStyle ,),
         ),
         bottomNavigationBar:Padding(
           padding: const EdgeInsets.all(10.0),
-          child: FunctionButton(
-            onPressed: () async {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: 'Transportation',)));
-            },
-            shape: const RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.all(Radius.circular(50))),
-            text: 'Apply',
-            loading: loading,
+            child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+              return BlocListener<HomeBloc, HomeState>(
+                listener: (context, state) {
+                  if(state is MyTaskTranspotationLoading){
+                    loading = state.isLoading;
+                  }
+                  if(state is MyTaskTranspotationListSuccess){
+                    myTaskList = state.MyTaskList;
+                    Navigator.pop(context,{"taskList": myTaskList});
+                  }
+                  if(state is MyTaskTranspotationListLoadFail){
+                    showCustomSnackBar(context,state.msg.toString());
+                  }
+                },
+                child:  AppButton(
+                  onPressed: () async {
+                    _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: machineCategoryId.toString()));
+                  },
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(50))),
+                  text: 'Apply',
+                  loading: loading,
+                  color: ThemeColors.defaultbuttonColor,
+                ),
+
+                // Center(
+                //   child: CircularProgressIndicator(),
+                // )
+
+              );
 
 
-          ),
+            })
         ),
         body: ListView(
           children: [
@@ -106,256 +125,90 @@ class _MyTaskTransportationFilterScreenState extends State<MyTaskTransportationF
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Pickup timing',style:filterHeadingRadiobtnStyle,)),
+                                    child: Text('Time Period',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
                                   Radio(
                                     value: 1,
-                                    groupValue: pickuptimingId,
+                                    groupValue: machineCategoryId,
                                     onChanged: (val) {
                                       setState(() {
-                                        pickuptimingBtnType = '8-9 AM';
-                                        pickuptimingId = 1;
+                                        radioBtnType = 'for week';
+                                        machineCategoryId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    'Machine',
+                                    'for week',
                                     style:filterRadiobtnStyle,
                                   ),
                                 ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 2,
-                                    groupValue: pickuptimingId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickuptimingBtnType = '9-10 AM';
-                                        pickuptimingId = 2;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 3,
-                                    groupValue: pickuptimingId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickuptimingBtnType = '10-11 AM';
-                                        pickuptimingId = 3;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 4,
-                                    groupValue: pickuptimingId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickuptimingBtnType = '11-12 PM';
-                                        pickuptimingId = 4;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Pick and Drop Distance',style:filterHeadingRadiobtnStyle,)),
-                                SizedBox(
-                                  height: 10,
+                                Row(
+                                  children: [
+                                    Radio(
+                                      value: 2,
+                                      groupValue: machineCategoryId,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          radioBtnType =
+                                          'for 30 days';
+                                          machineCategoryId = 2;
+                                        });
+                                      },
+                                    ),
+                                    Text(
+                                      'for 30 days',
+                                      style: filterRadiobtnStyle,
+                                    ),
+                                  ],
                                 ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: pickandDropDistanceId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickandDropDistanceBtnType = '5-10 KM';
-                                        pickandDropDistanceId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 2,
-                                    groupValue: pickandDropDistanceId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickandDropDistanceBtnType = '10-20 KM';
-                                        pickandDropDistanceId = 2;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 3,
-                                    groupValue: pickandDropDistanceId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickandDropDistanceBtnType = '20-30 KM';
-                                        pickandDropDistanceId = 3;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 4,
-                                    groupValue: pickandDropDistanceId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        pickandDropDistanceBtnType = '30-40 KM';
-                                        pickandDropDistanceId = 4;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Machine',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Load Weight',style:filterHeadingRadiobtnStyle,)),
-                                SizedBox(
-                                  height: 10,
+                                Row(
+                                  children: [
+                                    Radio(
+                                      value: 3,
+                                      groupValue: machineCategoryId,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          radioBtnType = 'for 6 month';
+                                          machineCategoryId = 3;
+                                        });
+                                      },
+                                    ),
+                                    Text(
+                                      'for 6 month',
+                                      style:filterRadiobtnStyle,
+                                    ),
+
+                                  ],
                                 ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: loadWeightId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        loadWeightBtnType = '10 - 20 tonne';
-                                        loadWeightId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    '10 - 20 tonne',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 2,
-                                    groupValue: loadWeightId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        loadWeightBtnType = '20 - 30 tonne';
-                                        loadWeightId = 2;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    '20 - 30 tonne',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 3,
-                                    groupValue: loadWeightId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        loadWeightBtnType = '30- 40 tonne';
-                                        loadWeightId = 3;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    '30- 40 tonne',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
-                                Row(children: [
-                                  Radio(
-                                    value: 4,
-                                    groupValue: loadWeightId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        loadWeightBtnType = '40 - 50 tonne';
-                                        loadWeightId = 4;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    '40 - 50 tonne',
-                                    style:filterRadiobtnStyle,
-                                  ),
-                                ],),
+                                Row(
+                                  children: [
+                                    Radio(
+                                      value: 4,
+                                      groupValue: machineCategoryId,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          radioBtnType = 'for last year';
+                                          machineCategoryId = 4;
+                                        });
+                                      },
+                                    ),
+                                    Text(
+                                      'for last year',
+                                      style:filterRadiobtnStyle,
+                                    ),
+
+                                  ],
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
                     ),
+
 
                   ],
                 ),

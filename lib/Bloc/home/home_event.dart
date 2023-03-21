@@ -8,17 +8,17 @@ import 'package:service_engineer/Model/item_not_available_model.dart';
 abstract class HomeEvent {}
 // Machine Maintaince Home
 class OnServiceRequest extends HomeEvent {
+  String offSet,timeId;
 
-  String userID,offSet;
-
-  OnServiceRequest({required this.userID,required this.offSet});
+  OnServiceRequest({required this.offSet,required this.timeId});
 
 }
 
 class MyTaskList extends HomeEvent {
   String userid;
   String offset;
-  MyTaskList({required this.userid, required this.offset });
+  String timePeriod;
+  MyTaskList({required this.userid, required this.offset, required this.timePeriod});
 }
 
 class OnServiceRequestDetail extends HomeEvent {
@@ -141,28 +141,30 @@ class OnCreateTask extends HomeEvent {
 // Job Work Enquiry Home
 
 class OnServiceRequestJWEList extends HomeEvent {
-
+  String timePeriod;
   String offSet;
-
-  OnServiceRequestJWEList({required this.offSet});
+  OnServiceRequestJWEList({required this.offSet,required this.timePeriod});
 
 }
 class OnMyTaskJWEList extends HomeEvent {
   String userid;
   String offset;
-  OnMyTaskJWEList({required this.userid, required this.offset });
+  String timeId;
+  OnMyTaskJWEList({required this.userid, required this.offset,required this.timeId });
 }
 
 // Transpotation
 class OnServiceRequestTranspotation extends HomeEvent {
   String offSet;
-  OnServiceRequestTranspotation({required this.offSet});
+  String timeId;
+  OnServiceRequestTranspotation({required this.offSet,required this.timeId});
 }
 
 class OnMyTaskTranspotationList extends HomeEvent {
   String userid;
   String offset;
-  OnMyTaskTranspotationList({required this.userid, required this.offset });
+  String timeId;
+  OnMyTaskTranspotationList({required this.userid, required this.offset,required this.timeId });
 }
 class TaskComplete extends HomeEvent {
 

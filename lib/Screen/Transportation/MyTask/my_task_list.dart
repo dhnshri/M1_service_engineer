@@ -41,7 +41,9 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
   List<TransportMyTaskDetailsModel> myTaskDetail = [];
   bool _isLoading = false;
   double? _progressValue;
-
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<MyTaskTransportationModel> searchResult=[];
 
 
   @override
@@ -51,7 +53,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: '0'));
+    _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: '0'));
 
   }
   @override
@@ -59,6 +61,33 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
     // TODO: implement dispose
     super.dispose();
     // getroleofstudent();
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < myTaskList.length; i++) {
+        MyTaskTransportationModel myTaskListData = new MyTaskTransportationModel();
+        myTaskListData.enquiryId = myTaskList[i].enquiryId;
+        myTaskListData.dateAndTime = myTaskList[i].dateAndTime.toString();
+        if (myTaskListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            myTaskListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase())) {
+          flagSearchResult=false;
+          searchResult.add(myTaskListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
   }
 
   Widget buildTransportationMyTaskList(List<MyTaskTransportationModel> myTaskList,) {
@@ -346,7 +375,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? myTaskList!.length <= 0 ? Center(child: Text('No Data'),):
+              child: _isLoading ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
@@ -375,9 +404,15 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: ThemeColors.bottomNavColor,
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: ThemeColors.textFieldHintColor,
+                                  prefixIcon: IconButton(
+                                    icon: Icon(
+                                      Icons.search,
+                                      size: 25.0,
+                                      color: ThemeColors.blackColor,
+                                    ),
+                                    onPressed: () {
+                                      _handleSearchStart();
+                                    },
                                   ),
                                   hintText: "Search all Orders",
                                   contentPadding: EdgeInsets.symmetric(
@@ -403,31 +438,22 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                                           color: ThemeColors.bottomNavColor)),
                                 ),
                                 validator: (value) {
-                                  Pattern pattern =
-                                      r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                  RegExp regex = new RegExp(pattern.toString());
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please Enter GST Number';
-                                  } else if (!regex.hasMatch(value)) {
-                                    return 'Please enter valid GST Number';
-                                  }
                                   return null;
                                 },
                                 onChanged: (value) {
-                                  // profile.name = value;
-                                  setState(() {
-                                    // _nameController.text = value;
-                                    if (_formKey.currentState!.validate()) {}
-                                  });
+                                  searchOperation(value);
+
                                 },
                               ),
                             ),
                             InkWell(
-                              onTap: () {
-                                Navigator.push(context,
+                              onTap: () async {
+                               var filterResult = await Navigator.push(context,
                                     MaterialPageRoute(builder: (context) =>
                                         MyTaskTransportationFilterScreen()));
-
+                               if(filterResult != null){
+                                 myTaskList = filterResult['taskList'];
+                               }
                               },
                               child: Row(
                                 children: [
@@ -443,7 +469,15 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                         ),
                       ),
                     ),
-                    SingleChildScrollView(child: Container(child: buildTransportationMyTaskList(myTaskList))),
+                    SingleChildScrollView(
+                        child:
+                        Container(
+                          child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                          buildTransportationMyTaskList(searchResult):
+                          buildTransportationMyTaskList(myTaskList) : Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: const Center(child: Text("No Data"),),)
+                        )),
                   ],
                 ),
               ) : ShimmerCard()

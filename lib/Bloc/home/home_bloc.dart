@@ -46,7 +46,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestRepo result = await userRepository!
           .fetchServiceRequestList(
         offSet: event.offSet,
-        userID: event.userID,
+        timeId: event.timeId
       );
       print(result);
 
@@ -70,7 +70,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       } else {
         ///Notify loading to UI
-        yield MyTaskLoading(isLoading: false);
+        yield MyTaskLoading(isLoading: true);
         yield ServiceRequestFail(msg: result.msg!);
       }
     }
@@ -84,7 +84,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final MyTaskRepo response = await userRepository!
           .fetchMachineMaintainceMyTaskList(
           userId: event.userid,
-          offset:event.offset
+          offset:event.offset,
+          timePeriod: event.timePeriod,
       );
       print(response);
 
@@ -748,6 +749,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryServiceRequestRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryList(
         offSet: event.offSet,
+        timeId: event.timePeriod
       );
       print(result);
 
@@ -785,7 +787,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryMyTaskRepo response = await userRepository!
           .fetchJobWorkEnquiryMyTaskList(
           userId: event.userid,
-          offset:event.offset
+          offset:event.offset,
+          timeId: event.timeId
       );
       print(response);
 
@@ -823,6 +826,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestTranspotationRepo result = await userRepository!
           .fetchServiceRequestTranspotationList(
         offSet: event.offSet,
+        timeId: event.timeId
       );
       print(result);
 
@@ -860,7 +864,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final MyTaskTransportationRepo response = await userRepository!
           .fetchTranspotationMyTaskList(
           userId: event.userid,
-          offset:event.offset
+          offset:event.offset,
+          timeId: event.timeId,
       );
       print(response);
 

@@ -28,13 +28,15 @@ class MyTaskScreen extends StatefulWidget {
 class _MyTaskScreenState extends State<MyTaskScreen> {
   HomeBloc? _homeBloc;
   List<MyTaskModel> myTaskList=[];
+  List<MyTaskModel> searchResult=[];
 
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
 
   bool _isLoading = false;
   double? _progressValue;
-
+  bool flagSearchResult=false;
+  bool _isSearching=false;
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(MyTaskList(userid: Application.customerLogin!.id.toString(), offset: '0'));
+    _homeBloc!.add(MyTaskList(userid: Application.customerLogin!.id.toString(), offset: '0',timePeriod: 0.toString()));
     // _homeBloc!.add(MyTaskList(userid: '6', offset: '0'));
   }
 
@@ -53,6 +55,41 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
     super.dispose();
     // getroleofstudent();
   }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < myTaskList.length; i++) {
+        MyTaskModel myTaskListData = new MyTaskModel();
+        myTaskListData.machineImg = myTaskList[i].machineProblemImg.toString();
+        myTaskListData.machineName = myTaskList[i].machineName.toString();
+        myTaskListData.enquiryId = myTaskList[i].enquiryId;
+        myTaskListData.dateAndTime = myTaskList[i].dateAndTime.toString();
+
+
+
+        if (myTaskListData.machineImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            myTaskListData.machineName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            myTaskListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            myTaskListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
+          flagSearchResult=false;
+          searchResult.add(myTaskListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
+  }
+
 
   Widget buildCustomerEnquiriesList(List<MyTaskModel> myTaskList) {
 
@@ -316,9 +353,15 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: ThemeColors.bottomNavColor,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ThemeColors.textFieldHintColor,
+                                prefixIcon: IconButton(
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: 25.0,
+                                    color: ThemeColors.blackColor,
+                                  ),
+                                  onPressed: () {
+                                    _handleSearchStart();
+                                  },
                                 ),
                                 hintText: "Search all Orders",
                                 contentPadding: EdgeInsets.symmetric(
@@ -344,31 +387,22 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                         color: ThemeColors.bottomNavColor)),
                               ),
                               validator: (value) {
-                                Pattern pattern =
-                                    r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                RegExp regex = new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter GST Number';
-                                } else if (!regex.hasMatch(value)) {
-                                  return 'Please enter valid GST Number';
-                                }
                                 return null;
                               },
                               onChanged: (value) {
-                                // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
+                                searchOperation(value);
                               },
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(context,
+                            onTap: ()async {
+                              var filterResult = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) =>
                                       MyTaskFilterScreen()));
-                              ;
+
+                              if(filterResult != null){
+                                myTaskList = filterResult["taskList"];
+                              }
                             },
                             child: Row(
                               children: [
@@ -384,7 +418,11 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                       ),
                     ),
                   ),
-                  SingleChildScrollView(child: Container(child: buildCustomerEnquiriesList(myTaskList))),
+                  SingleChildScrollView(child: Container(
+                      child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                        buildCustomerEnquiriesList(searchResult): buildCustomerEnquiriesList(myTaskList) : Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: const Center(child: Text("No Data"),),))),
                 ],
               ),
             ) : ShimmerCard()

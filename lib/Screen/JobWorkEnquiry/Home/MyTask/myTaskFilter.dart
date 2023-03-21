@@ -1,41 +1,37 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:service_engineer/Widget/function_button.dart';
-import 'package:service_engineer/app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Bloc/home/home_state.dart';
+import 'package:service_engineer/Config/font.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
+import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/app_button.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 
 
-class EnquiryMyTaskFilterScreen extends StatefulWidget {
-  const EnquiryMyTaskFilterScreen({Key? key}) : super(key: key);
+
+class JobWorkMyTaskFilterScreen extends StatefulWidget {
+  const JobWorkMyTaskFilterScreen({Key? key}) : super(key: key);
 
   @override
-  _EnquiryMyTaskFilterScreenState createState() => _EnquiryMyTaskFilterScreenState();
+  _JobWorkMyTaskFilterScreenState createState() => _JobWorkMyTaskFilterScreenState();
 }
 
-class _EnquiryMyTaskFilterScreenState extends State<EnquiryMyTaskFilterScreen> {
+class _JobWorkMyTaskFilterScreenState extends State<JobWorkMyTaskFilterScreen> {
 
   final _formKey = GlobalKey<FormState>();
-  String radioBtnType = "Iron";
-  int machineCategoryId = 1;
-
-  String  numberOfItemsType = "0-100 items";
-  int numberOfItemsId = 1;
-
-  String  deliveryType = '0-20 KM';
-  int deliveryId = 1;
-
-  String  productMainCategoryradioBtnType = 'Category 1';
-  int productMainCategoryId = 1;
-
-  String productSubCategoryradioBtnType = 'Category 1';
-  int productSubCategoryId = 1;
-
-  String areaType = 'All India';
-  int areaId = 1;
+  String radioBtnType = "for week";
+  int timePeriodId = 1;
 
   bool loading = true;
+  HomeBloc? _homeBloc;
+  List<JobWorkEnquiryMyTaskModel> myTaskList=[];
 
 
   @override
@@ -43,8 +39,7 @@ class _EnquiryMyTaskFilterScreenState extends State<EnquiryMyTaskFilterScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-
-
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
   }
   @override
   void dispose() {
@@ -64,24 +59,47 @@ class _EnquiryMyTaskFilterScreenState extends State<EnquiryMyTaskFilterScreen> {
               onTap: (){
                 Navigator.of(context).pop();
                 // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Machine Maintenance")));
               },
               child: Icon(Icons.arrow_back_ios)),
-          title: Text('Filter for Task',),
+          title: Text('My Task Filter',style:appBarheadingStyle ,),
         ),
         bottomNavigationBar:Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: FunctionButton(
-            onPressed: () async {
-            },
-            shape: const RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.all(Radius.circular(50))),
-            text: 'Apply',
-            loading: loading,
+            padding: const EdgeInsets.all(10.0),
+            child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+              return BlocListener<HomeBloc, HomeState>(
+                listener: (context, state) {
+                  if(state is MyTaskJWELoading){
+                    loading = state.isLoading;
+                  }
+                  if(state is MyTaskJWEListSuccess){
+                    myTaskList = state.MyTaskJWEList;
+                    Navigator.pop(context,{"taskList": myTaskList});
+                  }
+                  if(state is MyTaskJWEListLoadFail){
+                    showCustomSnackBar(context,state.msg.toString());
+                  }
+                },
+                child:  AppButton(
+                  onPressed: () async {
+                    _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: timePeriodId.toString()));
+                  },
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(50))),
+                  text: 'Apply',
+                  loading: loading,
+                  color: ThemeColors.defaultbuttonColor,
+                ),
+
+                // Center(
+                //   child: CircularProgressIndicator(),
+                // )
+
+              );
 
 
-          ),
+            })
         ),
         body: ListView(
           children: [
@@ -105,52 +123,42 @@ class _EnquiryMyTaskFilterScreenState extends State<EnquiryMyTaskFilterScreen> {
                               children: [
                                 Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Material for Product',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
+                                    child: Text('Time Period',style:filterHeadingRadiobtnStyle,)),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
                                   Radio(
                                     value: 1,
-                                    groupValue: machineCategoryId,
+                                    groupValue: timePeriodId,
                                     onChanged: (val) {
                                       setState(() {
-                                        radioBtnType = 'Iron';
-                                        machineCategoryId = 1;
+                                        radioBtnType = 'for week';
+                                        timePeriodId = 1;
                                       });
                                     },
                                   ),
                                   Text(
-                                    'Iron',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
+                                    'for week',
+                                    style:filterRadiobtnStyle,
                                   ),
                                 ],),
                                 Row(
                                   children: [
                                     Radio(
                                       value: 2,
-                                      groupValue: machineCategoryId,
+                                      groupValue: timePeriodId,
                                       onChanged: (val) {
                                         setState(() {
                                           radioBtnType =
-                                          'Steal';
-                                          machineCategoryId = 2;
+                                          'for 30 days';
+                                          timePeriodId = 2;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Steal',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'for 30 days',
+                                      style: filterRadiobtnStyle,
                                     ),
                                   ],
                                 ),
@@ -158,133 +166,17 @@ class _EnquiryMyTaskFilterScreenState extends State<EnquiryMyTaskFilterScreen> {
                                   children: [
                                     Radio(
                                       value: 3,
-                                      groupValue: machineCategoryId,
+                                      groupValue: timePeriodId,
                                       onChanged: (val) {
                                         setState(() {
-                                          radioBtnType = 'Copper';
-                                          machineCategoryId = 3;
+                                          radioBtnType = 'for 6 month';
+                                          timePeriodId = 3;
                                         });
                                       },
                                     ),
                                     Text(
-                                      'Copper',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: machineCategoryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          radioBtnType = 'Aluminum';
-                                          machineCategoryId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Aluminum',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Number of Items Required',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: numberOfItemsId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        numberOfItemsType = '0-100 items';
-                                        numberOfItemsId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    '0-100 items',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: numberOfItemsId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          numberOfItemsType =
-                                          '100-500 items';
-                                          numberOfItemsId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      '100-500 items',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: numberOfItemsId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          numberOfItemsType = '500-1000 items';
-                                          numberOfItemsId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      '500-1000 items',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'for 6 month',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
@@ -293,111 +185,17 @@ class _EnquiryMyTaskFilterScreenState extends State<EnquiryMyTaskFilterScreen> {
                                   children: [
                                     Radio(
                                       value: 4,
-                                      groupValue: numberOfItemsId,
+                                      groupValue: timePeriodId,
                                       onChanged: (val) {
                                         setState(() {
-                                          numberOfItemsType = '400-500 items';
-                                          numberOfItemsId = 4;
+                                          radioBtnType = 'for last year';
+                                          timePeriodId = 4;
                                         });
                                       },
                                     ),
                                     Text(
-                                      '400-500 items',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child: Container(
-                          //decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black12),
-                          // borderRadius: BorderRadius.circular(12),
-                          // ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text('Delivery Distance',style:TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600
-                                    ),)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: deliveryId,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        deliveryType = '0-20 KM';
-                                        deliveryId = 1;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    '0-20 KM',
-                                    style:TextStyle(
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 2,
-                                      groupValue: deliveryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          deliveryType =
-                                          '20-50 KM';
-                                          deliveryId = 2;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      '20-50 KM',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Radio(
-                                      value: 3,
-                                      groupValue: deliveryId,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          deliveryType = '50-100 KM';
-                                          deliveryId = 3;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      '50-100 KM',
-                                      style:TextStyle(
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 15,
-                                      ),
+                                      'for last year',
+                                      style:filterRadiobtnStyle,
                                     ),
 
                                   ],
