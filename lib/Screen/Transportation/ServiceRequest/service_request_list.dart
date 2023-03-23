@@ -38,6 +38,9 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
 
   HomeBloc? _homeBloc;
   List<ServiceRequestTranspotationModel>? serviceList = [];
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<ServiceRequestTranspotationModel> searchResult=[];
 
 
   @override
@@ -46,13 +49,45 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequestTranspotation(offSet: '0'));
+    _homeBloc!.add(OnServiceRequestTranspotation(offSet: '0',timeId: '0'));
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     // getroleofstudent();
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < serviceList!.length; i++) {
+        ServiceRequestTranspotationModel serviceListData = new ServiceRequestTranspotationModel();
+        serviceListData.enquiryId = serviceList![i].enquiryId;
+        serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
+        serviceListData.enquiryId = serviceList![i].enquiryId;
+        serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
+
+
+
+        if (serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase())) {
+          flagSearchResult=false;
+          searchResult.add(serviceListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
   }
 
   Widget buildTransportationList(BuildContext context, List<ServiceRequestTranspotationModel> serviceList) {
@@ -309,9 +344,15 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: ThemeColors.bottomNavColor,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ThemeColors.textFieldHintColor,
+                                prefixIcon: IconButton(
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: 25.0,
+                                    color: ThemeColors.blackColor,
+                                  ),
+                                  onPressed: () {
+                                    _handleSearchStart();
+                                  },
                                 ),
                                 hintText: "Search all Orders",
                                 contentPadding: EdgeInsets.symmetric(
@@ -334,29 +375,21 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                                         width: 0.8, color: ThemeColors.bottomNavColor)),
                               ),
                               validator: (value) {
-                                Pattern pattern =
-                                    r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                RegExp regex = new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter GST Number';
-                                } else if (!regex.hasMatch(value)) {
-                                  return 'Please enter valid GST Number';
-                                }
                                 return null;
                               },
                               onChanged: (value) {
-                                // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
+                                searchOperation(value);
                               },
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(context,
+                            onTap: () async {
+                              var filterResult = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => ServiceRequestTransportationFilterScreen()));
+
+                              if(filterResult!= null){
+                                serviceList = filterResult['serviceList'];
+                              }
                             },
                             child: Row(
                               children: [
@@ -373,9 +406,13 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                     ),
                   ),
                   // _isLoading ?
+                  flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                  buildTransportationList(context, searchResult):
                   buildTransportationList(context, serviceList!)
-                  // : ShimmerCard()
-                  // : CircularProgressIndicator()
+                      : Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: const Center(child: Text("No Data"),),
+                  )
                 ],
               ),
             ) : ShimmerCard()

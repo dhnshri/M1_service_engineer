@@ -5,6 +5,7 @@ import 'package:service_engineer/Bloc/profile/profile_bloc.dart';
 import 'package:service_engineer/Bloc/profile/profile_event.dart';
 import 'package:service_engineer/Bloc/profile/profile_state.dart';
 import 'package:service_engineer/Model/profile_repo.dart';
+import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/home.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/enquiry_quotations_reply.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Order/order_items.dart';
@@ -39,6 +40,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   bool backIcon = false;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   bool _isLoading = false;
+  List<ServiceRequestModel>? serviceList = [];
 
 
   void _onItemTapped(int index) {

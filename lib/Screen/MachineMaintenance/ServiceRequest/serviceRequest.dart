@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
@@ -32,11 +33,19 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool _isLoading = false;
+  bool flagSearchResult=false;
+  bool _isSearching=false;
 
   HomeBloc? _homeBloc;
   List<ServiceRequestModel>? serviceList = [];
-  final ScrollController _scrollController = ScrollController();
-
+  ScrollController _scrollController = ScrollController();
+  List<ServiceRequestModel> searchResult=[];
+  // final RefreshController _controller = RefreshController(initialRefresh: false);
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  int offset = 0;
+  PagingController<int, ServiceRequestModel>? _pagingController;
+  int? _pageSize;
+  ScrollController? _pagignatedScrollController ;
 
   @override
   void initState() {
@@ -44,8 +53,10 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequest(userID: Application.customerLogin!.id.toString(),offSet: '0'));
+    _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: '0'));
     print(Application.customerLogin!.id.toString());
+    _pagignatedScrollController = new ScrollController(initialScrollOffset: 5.0)
+      ..addListener(_scrollListener);
   }
   @override
   void dispose() {
@@ -54,12 +65,91 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     // getroleofstudent();
   }
 
+  //// ADDING THE SCROLL LISTINER
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // setState(() {
+      //   print("comes to bottom $isLoading");
+      //   isLoading = true;
+      //
+      //   if (isLoading) {
+      //     print("RUNNING LOAD MORE");
+
+      offset+=10;
+      setProductBlocData(serviceList!,offset);
+      //   }
+      // });
+    }
+  }
+
+  void paginationCall(List<ServiceRequestModel> serviceList){
+    _pageSize=10;
+    _pagingController= PagingController(firstPageKey: 0);
+    //updated on 15/11/2021 for pagination
+    _pagingController!.addPageRequestListener((pageKey) {
+      offset= pageKey;
+      print("pageKey:-"+pageKey.toString());
+      _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: offset.toString()));
+
+    });
+  }
+
+  //for product Listing api
+  void setProductBlocData(List<ServiceRequestModel> serviceList, int offset){
+    _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: offset.toString()));
+
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < serviceList!.length; i++) {
+        ServiceRequestModel serviceListData = new ServiceRequestModel();
+        serviceListData.machineImg = serviceList![i].machineProblemImg.toString();
+        serviceListData.machineName = serviceList![i].machineName.toString();
+        serviceListData.enquiryId = serviceList![i].enquiryId;
+        serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
+
+        if (serviceListData.machineImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.machineName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
+          flagSearchResult=false;
+          searchResult.add(serviceListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
+  }
+
+
   Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        if (!_isLoading) {
+          _isLoading = !_isLoading;
+          // Perform event when user reach at the end of list (e.g. do Api call)
+        }
+      }
+    });
     return ListView.builder(
-      controller: _scrollController
-       ..addListener(() {
-         if(_scrollController.offset == _scrollController.position.maxScrollExtent){}
-       }),
+      controller: _scrollController,
+       // ..addListener(() {
+       //   if(_scrollController.offset == _scrollController.position.maxScrollExtent){}
+       // }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -197,34 +287,34 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     ),
                     SizedBox(height: 3,),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Working Timing:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/6.3,
-                        // ),
-                        Container(
-                          // width: MediaQuery.of(context).size.width*0.2,
-                          child: Text(
-                            "10 AM - 6 PM",
-                            style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
-                              fontSize: 12,
-                              // fontWeight: FontWeight.bold
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(
+                    //       "Working Timing:",
+                    //       style: TextStyle(
+                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.bold
+                    //       ),
+                    //     ),
+                    //     // SizedBox(
+                    //     //   width: MediaQuery.of(context).size.width/6.3,
+                    //     // ),
+                    //     Container(
+                    //       // width: MediaQuery.of(context).size.width*0.2,
+                    //       child: Text(
+                    //         "10 AM - 6 PM",
+                    //         style: TextStyle(
+                    //           fontFamily: 'Poppins-Regular',
+                    //           fontSize: 12,
+                    //           // fontWeight: FontWeight.bold
+                    //         ),
+                    //         overflow: TextOverflow.ellipsis,
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(height: 3,),
 
                     Row(
@@ -270,6 +360,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: widget.isSwitched?
       BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         return BlocListener<HomeBloc, HomeState>(
@@ -313,9 +404,15 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: ThemeColors.bottomNavColor,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: ThemeColors.textFieldHintColor,
+                                prefixIcon: IconButton(
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: 25.0,
+                                    color: ThemeColors.blackColor,
+                                  ),
+                                  onPressed: () {
+                                    _handleSearchStart();
+                                  },
                                 ),
                                 hintText: "Search all Orders",
                                 contentPadding: EdgeInsets.symmetric(
@@ -338,29 +435,23 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                         width: 0.8, color: ThemeColors.bottomNavColor)),
                               ),
                               validator: (value) {
-                                Pattern pattern =
-                                    r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                RegExp regex = new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter GST Number';
-                                } else if (!regex.hasMatch(value)) {
-                                  return 'Please enter valid GST Number';
-                                }
-                                return null;
+
                               },
                               onChanged: (value) {
                                 // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
+                                searchOperation(value);
                               },
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(context,
+                            onTap: () async {
+                              var filterResult = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
+
+                              if(filterResult != null){
+                                print(filterResult);
+                                serviceList = filterResult['serviceList'];
+                              }
                             },
                             child: Row(
                               children: [
@@ -377,7 +468,14 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     ),
                   ),
                   // _isLoading ?
+                  flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                  buildCustomerEnquiriesList(context, searchResult)
+                  :
                   buildCustomerEnquiriesList(context, serviceList!)
+                      : Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: const Center(child: Text("No Data"),),
+                      )
                       // : ShimmerCard()
                   // : CircularProgressIndicator()
                 ],

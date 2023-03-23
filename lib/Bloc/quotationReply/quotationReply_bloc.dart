@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reject_revise_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
@@ -209,6 +210,84 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       }
     }
 
+    //Quotation Reject
+    if (event is QuotationReject) {
+      ///Notify loading to UI
+      yield QuotationRejectLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final RejectReviseRepo result = await userRepository!
+          .fetchRejectRevised(
+          machineEnquiryId: event.machineEnquiryId.toString(),
+          serviceUserId: event.serviceUserId.toString(),
+          jobWorkEnquiryId: event.JobWorkEnquiryId.toString(),
+          transportEnquiryId: event.transportEnquiryId.toString(),
+          status: event.status.toString()
+      );
+      print(result);
+
+
+      if (result.success == true) {
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield QuotationRejectLoading(
+            isLoading: true,
+          );
+          yield QuotationRejectSuccess(msg: result.msg);
+        } catch (error) {
+          ///Notify loading to UI
+          yield QuotationRejectLoading(isLoading: false);
+          yield QuotationRejectFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield QuotationRejectLoading(isLoading: false);
+        yield QuotationRejectFail(msg: result.msg,);
+      }
+    }
+
+    //Quotation Revised
+    if (event is QuotationRevised) {
+      ///Notify loading to UI
+      yield QuotationRevisedLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final RejectReviseRepo result = await userRepository!
+          .fetchRejectRevised(
+          machineEnquiryId: event.machineEnquiryId.toString(),
+          serviceUserId: event.serviceUserId.toString(),
+          jobWorkEnquiryId: event.JobWorkEnquiryId.toString(),
+          transportEnquiryId: event.transportEnquiryId.toString(),
+          status: event.status.toString()
+      );
+      print(result);
+
+
+      if (result.success == true) {
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield QuotationRevisedLoading(
+            isLoading: true,
+          );
+          yield QuotationRevisedSuccess(msg: result.msg);
+        } catch (error) {
+          ///Notify loading to UI
+          yield QuotationRevisedLoading(isLoading: false);
+          yield QuotationRevisedFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield QuotationRevisedLoading(isLoading: false);
+        yield QuotationRevisedFail(msg: result.msg,);
+      }
+    }
+
 
     // job work enquiry QuotationReply List
     if (event is OnQuotationReplyJWEList) {
@@ -388,6 +467,7 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
         "igst": event.igst,
         "commission": event.commission,
         "itemslist": jsonEncode(itemList),
+        "total_amount": event.totalAmount,
         // 'machine_enquiry_id': event.machineEnquiryId,
       };
 

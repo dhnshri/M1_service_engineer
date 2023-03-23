@@ -32,6 +32,9 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
   final _searchController = TextEditingController();
   double? _progressValue;
   bool _isLoading = false;
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<JobWorkEnquiryMyTaskModel> searchResult=[];
 
   @override
   void initState() {
@@ -40,14 +43,45 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '0'));
+    _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: '0'));
 
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     // getroleofstudent();
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < myTaskJobWorkEnquiryList.length; i++) {
+        JobWorkEnquiryMyTaskModel taskListData = new JobWorkEnquiryMyTaskModel();
+        taskListData.itemName = myTaskJobWorkEnquiryList[i].itemName.toString();
+        taskListData.enquiryId = myTaskJobWorkEnquiryList[i].enquiryId;
+        taskListData.dateAndTime = myTaskJobWorkEnquiryList[i].dateAndTime;
+
+        if (taskListData.itemName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            taskListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            taskListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
+          flagSearchResult=false;
+          searchResult.add(taskListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
   }
 
   Widget buildmyTaskJobWorkEnquiryList(List<JobWorkEnquiryMyTaskModel> myTaskJobWorkEnquiryList) {
@@ -307,9 +341,15 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: ThemeColors.bottomNavColor,
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: ThemeColors.textFieldHintColor,
+                                  prefixIcon: IconButton(
+                                    icon: Icon(
+                                      Icons.search,
+                                      size: 25.0,
+                                      color: ThemeColors.blackColor,
+                                    ),
+                                    onPressed: () {
+                                      _handleSearchStart();
+                                    },
                                   ),
                                   hintText: "Search all Orders",
                                   contentPadding: EdgeInsets.symmetric(
@@ -335,31 +375,23 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                                           color: ThemeColors.bottomNavColor)),
                                 ),
                                 validator: (value) {
-                                  Pattern pattern =
-                                      r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                  RegExp regex = new RegExp(pattern.toString());
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please Enter GST Number';
-                                  } else if (!regex.hasMatch(value)) {
-                                    return 'Please enter valid GST Number';
-                                  }
                                   return null;
                                 },
                                 onChanged: (value) {
-                                  // profile.name = value;
-                                  setState(() {
-                                    // _nameController.text = value;
-                                    if (_formKey.currentState!.validate()) {}
-                                  });
+                                  searchOperation(value);
+
                                 },
                               ),
                             ),
                             InkWell(
-                              onTap: () {
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) =>
-                                //         MyTaskFilterScreen()));
+                              onTap: () async {
+                                var filterResult = await Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) =>
+                                        const JobWorkMyTaskFilterScreen()));
 
+                                if(filterResult != null ){
+                                  myTaskJobWorkEnquiryList = filterResult['taskList'];
+                                }
                               },
                               child: Row(
                                 children: [
@@ -375,7 +407,18 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                         ),
                       ),
                     ),
-                    SingleChildScrollView(child: Container(child: buildmyTaskJobWorkEnquiryList(myTaskJobWorkEnquiryList))),
+                    SingleChildScrollView(
+                        child:
+                          Container(
+                              child:
+                              flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                              buildmyTaskJobWorkEnquiryList(searchResult):
+                              buildmyTaskJobWorkEnquiryList(myTaskJobWorkEnquiryList):
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: const Center(child: Text("No Data"),),
+                              )
+                          )),
                   ],
                 ),
               ) : ShimmerCard()

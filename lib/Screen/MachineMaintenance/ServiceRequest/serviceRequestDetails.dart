@@ -157,6 +157,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
       Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppSmallButton(
               onPressed: () async {
@@ -167,26 +168,22 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                   BorderRadius.all(Radius.circular(50))),
               text: 'Ignore',
               loading: loading,
-
-
             ),
             SizedBox(width:8),
-            Expanded(
-              child: AppSmallButton(
-                onPressed: () async {
-                  serviceRequestData!.isEmpty ? null:
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MakeQuotationScreen (serviceRequestData: serviceRequestData![0],)));
+            AppSmallButton(
+              onPressed: () async {
+                serviceRequestData!.isEmpty ? null:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MakeQuotationScreen (serviceRequestData: serviceRequestData![0],)));
 
-                },
-                shape: const RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(50))),
-                text: 'Make Quotation',
-                loading: loading,
+              },
+              shape: const RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(50))),
+              text: 'Make Quotation',
+              loading: loading,
 
 
-              ),
             ),
           ],
         ),

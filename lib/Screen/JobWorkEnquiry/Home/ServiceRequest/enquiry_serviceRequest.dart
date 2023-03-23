@@ -28,6 +28,9 @@ class _EnquiryServiceRequestScreenState
   bool _isLoading = false;
   HomeBloc? _homeBloc;
   List<JobWorkEnquiryServiceRequestModel> serviceJobWorkEnquiryList = [];
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<JobWorkEnquiryServiceRequestModel> searchResult=[];
 
 
   @override
@@ -36,7 +39,7 @@ class _EnquiryServiceRequestScreenState
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequestJWEList(offSet:'0'));
+    _homeBloc!.add(OnServiceRequestJWEList(offSet:'0',timePeriod: '0'));
   }
 
   @override
@@ -44,6 +47,36 @@ class _EnquiryServiceRequestScreenState
     // TODO: implement dispose
     super.dispose();
     // getroleofstudent();
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < serviceJobWorkEnquiryList.length; i++) {
+        JobWorkEnquiryServiceRequestModel serviceListData = new JobWorkEnquiryServiceRequestModel();
+        serviceListData.itemName = serviceJobWorkEnquiryList[i].itemName.toString();
+        serviceListData.enquiryId = serviceJobWorkEnquiryList[i].enquiryId;
+        serviceListData.dateAndTime = serviceJobWorkEnquiryList[i].dateAndTime;
+
+        if (serviceListData.itemName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
+          flagSearchResult=false;
+          searchResult.add(serviceListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
   }
 
   Widget buildJobWorkEnquiriesList(List<JobWorkEnquiryServiceRequestModel> jobWorkEnquiryList) {
@@ -297,9 +330,15 @@ class _EnquiryServiceRequestScreenState
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: ThemeColors.bottomNavColor,
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: ThemeColors.textFieldHintColor,
+                                  prefixIcon: IconButton(
+                                    icon: Icon(
+                                      Icons.search,
+                                      size: 25.0,
+                                      color: ThemeColors.blackColor,
+                                    ),
+                                    onPressed: () {
+                                      _handleSearchStart();
+                                    },
                                   ),
                                   hintText: "Search all Orders",
                                   contentPadding: EdgeInsets.symmetric(
@@ -325,31 +364,22 @@ class _EnquiryServiceRequestScreenState
                                           color: ThemeColors.bottomNavColor)),
                                 ),
                                 validator: (value) {
-                                  Pattern pattern =
-                                      r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                                  RegExp regex = new RegExp(pattern.toString());
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please Enter GST Number';
-                                  } else if (!regex.hasMatch(value)) {
-                                    return 'Please enter valid GST Number';
-                                  }
                                   return null;
                                 },
                                 onChanged: (value) {
-                                  // profile.name = value;
-                                  setState(() {
-                                    // _nameController.text = value;
-                                    if (_formKey.currentState!.validate()) {}
-                                  });
+                                  searchOperation(value);
                                 },
                               ),
                             ),
                             InkWell(
-                              onTap: () {
-                                Navigator.push(context,
+                              onTap: () async {
+                                var searchResult = await Navigator.push(context,
                                     MaterialPageRoute(builder: (context) =>
                                         EnquiryServiceRequestFilterScreen()));
-                                ;
+
+                                if(searchResult != null){
+                                  serviceJobWorkEnquiryList = searchResult['serviceList'];
+                                }
                               },
                               child: Row(
                                 children: [
@@ -365,7 +395,14 @@ class _EnquiryServiceRequestScreenState
                         ),
                       ),
                     ),
-                    SingleChildScrollView(child: Container(child: buildJobWorkEnquiriesList(serviceJobWorkEnquiryList!))),
+                    SingleChildScrollView(child:
+                      Container(child:
+                      flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                      buildJobWorkEnquiriesList(searchResult) :
+                      buildJobWorkEnquiriesList(serviceJobWorkEnquiryList): Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: const Center(child: Text("No Data"),),
+                      ))),
                   ],
                 )
               : ShimmerCard()

@@ -46,6 +46,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isCompleted = false;
   String? workingTimeValue;
+  String? gstChargesValue;
   String? dataOfJoiningValue;
   String? serviceChargesValue;
   String? handlingChargesValue;
@@ -69,12 +70,15 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   final TextEditingController _rateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
+  final TextEditingController _gstChargesController = TextEditingController();
+  final _searchController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
 
   var quantity = 0;
   var totalValue = 0;
   int prodValue = 15000;
+  double totalAmount =0.0;
 
   bool _cartLoading = true;
   bool _isLoading = false;
@@ -82,7 +86,51 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   HomeBloc? _homeBloc;
   List<ProductDetails>? productDetail = [];
   List<CartListModel>? cartList=[];
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<ProductDetails> searchResult=[];
 
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < productDetail!.length; i++) {
+        ProductDetails serviceListData = new ProductDetails();
+        serviceListData.productName = productDetail![i].productName.toString();
+        serviceListData.price = productDetail![i].price.toString();
+        serviceListData.id = productDetail![i].id;
+        serviceListData.prodImg = productDetail![i].prodImg;
+        serviceListData.discountPrice = productDetail![i].discountPrice;
+        serviceListData.aboutProduct = productDetail![i].aboutProduct;
+        serviceListData.cartQuantity = productDetail![i].cartQuantity;
+        serviceListData.productQty = productDetail![i].productQty;
+
+
+        if (serviceListData.productName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.price.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.id.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.prodImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.discountPrice.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.aboutProduct.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.cartQuantity.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.productQty.toString().toLowerCase().contains(searchText.toLowerCase())
+        ) {
+          flagSearchResult=false;
+          searchResult.add(serviceListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -127,67 +175,6 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     });
   }
 
-  // Widget buildItemRequiredList() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     physics: NeverScrollableScrollPhysics(),
-  //     scrollDirection: Axis.vertical,
-  //     itemCount: itemNotAvailabeList.length,
-  //     padding: EdgeInsets.only(top: 0, bottom: 1),
-  //     itemBuilder: (context, index) {
-  //       return  Padding(
-  //           padding: const EdgeInsets.only(bottom:0.0),
-  //           child: Container(
-  //             // color: Color(0xffFFE4E5),
-  //               decoration: BoxDecoration(
-  //                 color: Color(0xffFFE4E5),
-  //               ),
-  //               child:Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Row(
-  //
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(itemNotAvailabeList[index].id.toString())
-  //                       ],
-  //                     ),
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(itemNotAvailabeList[index].itemName.toString())
-  //                       ],
-  //                     ),
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(itemNotAvailabeList[index].quantity.toString())
-  //                       ],
-  //                     ),
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text("₹ ${itemNotAvailabeList[index].rate.toString()}")
-  //                       ],
-  //                     ),
-  //                     // Column(
-  //                     //   crossAxisAlignment: CrossAxisAlignment.start,
-  //                     //   children: [
-  //                     //     Text("₹ ${itemNotAvailabeList[index].amount.toString()}")
-  //                     //   ],
-  //                     // ),
-  //                   ],
-  //                 ),
-  //               )
-  //           )
-  //       );
-  //     },
-  //
-  //   );
-  // }
-
 
   DataRow _buildItemRequiredList(ItemNotAvailableModel? itemNotAvailabeList,index) {
     return DataRow(
@@ -215,28 +202,79 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(Icons.search),
-                SizedBox(width: 5,),
-                Text("Search all Orders")
-              ],
-            ),
+            Expanded(
+              child: TextFormField(
+                // initialValue: Application.customerLogin!.name.toString(),
+                controller: _searchController,
+                textAlign: TextAlign.start,
+                keyboardType: TextInputType.text,
+                style: TextStyle(
+                  fontSize: 18,
+                  height: 1.5,
+                ),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: ThemeColors.bottomNavColor,
+                  prefixIcon: IconButton(
+                    icon: Icon(
+                      Icons.search,
+                      size: 25.0,
+                      color: ThemeColors.blackColor,
+                    ),
+                    onPressed: () {
+                      _handleSearchStart();
+                    },
+                  ),
+                  hintText: "Search all Orders",
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 15.0),
+                  hintStyle: TextStyle(fontSize: 15),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                    borderSide: BorderSide(
+                        width: 0.8, color: ThemeColors.bottomNavColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                    borderSide: BorderSide(
+                        width: 0.8, color: ThemeColors.bottomNavColor),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(1.0)),
+                      borderSide: BorderSide(
+                          width: 0.8, color: ThemeColors.bottomNavColor)),
+                ),
+                validator: (value) {
 
+                },
+                onChanged: (value) {
+                  // profile.name = value;
+                  searchOperation(value);
+                },
+              ),
+            ),
             InkWell(
-              onTap: ()
-              {
-                Navigator.push(context,
+              onTap: () async {
+                var filterResult = await Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ItemRequiredFilterScreen()));
+
+                if(filterResult != null){
+                  print(filterResult);
+                  productDetail = filterResult['serviceList'];
+                }
               },
               child: Row(
                 children: [
                   Icon(Icons.filter_list),
-                  SizedBox(width: 5,),
+                  SizedBox(
+                    width: 5,
+                  ),
                   Text("Filter")
                 ],
               ),
             )
+
 
           ],
         ),
@@ -244,170 +282,13 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
         Container(
           height: 350,
           child:SingleChildScrollView(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: productList!.length,
-              padding: EdgeInsets.only(top: 10, bottom: 15),
-              itemBuilder: (context, index) {
-                return  Padding(
-                    padding: const EdgeInsets.only(bottom:8.0),
-                    child: Card(
-                        elevation: 1,
-                        child: ListTile(
-                          leading: CachedNetworkImage(
-                            filterQuality: FilterQuality.medium,
-                            // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                            // imageUrl: "https://picsum.photos/250?image=9",
-                            imageUrl: productList[index].prodImg.toString(),
-                            placeholder: (context, url) {
-                              return Shimmer.fromColors(
-                                baseColor: Theme.of(context).hoverColor,
-                                highlightColor: Theme.of(context).highlightColor,
-                                enabled: true,
-                                child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              );
-                            },
-                            imageBuilder: (context, imageProvider) {
-                              return Container(
-                                height: 80,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              );
-                            },
-                            errorWidget: (context, url, error) {
-                              return Shimmer.fromColors(
-                                baseColor: Theme.of(context).hoverColor,
-                                highlightColor: Theme.of(context).highlightColor,
-                                enabled: true,
-                                child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(Icons.error),
-                                ),
-                              );
-                            },
-                          ),
-                          title: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(productList[index].productName.toString(),style:itemRequiredCardHeading,),
-                                        Text("ID: ${productList[index].id.toString()}",style: itemRequiredCardSubtitle),
-                                        Text("₹ ${productList[index].discountPrice.toString()}",style:itemRequiredCardSubtitle),
-                                      ],
-
-                                    ),
-
-                                    Flexible(
-                                      child: Container(
-                                        height: 40,
-                                        // width: 110,
-                                        width: MediaQuery.of(context).size.width*0.266,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.black),
-                                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            productList[index].cartQuantity != 0?
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.remove_circle,
-                                                color: Colors.grey,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (productList[index].cartQuantity! > 0) {
-                                                    productList[index].cartQuantity = productList[index].cartQuantity! - 1;
-                                                    _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
-                                                    loadApi();
-
-                                                  }
-                                                });
-                                              },
-                                            ):Padding(
-                                              padding: const EdgeInsets.only(left:20.0),
-                                              child: const Text('Add',style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Poppins-Medium'
-                                              )),
-                                            ),
-                                            productList[index].cartQuantity != 0 ?
-                                            Text(
-                                              productList[index].cartQuantity.toString(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 18),
-                                            ): SizedBox(),
-                                            Expanded(
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    // if (quantity < 10) {
-                                                    //   quantity++;
-                                                    //   totalValue = prodValue * quantity;
-                                                    // }
-                                                    // _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: '1'));
-                                                    if(productList[index].cartQuantity! <= productList[index].productQty!){
-                                                      if( productList[index].productQty! > 0){
-                                                        productList[index].cartQuantity = productList[index].cartQuantity! + 1;
-                                                        _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
-                                                        loadApi();
-                                                      }else{
-                                                        showCustomSnackBar(context,'Quantity is not available.',isError: true);
-                                                      }
-
-                                                    }else{
-                                                      showCustomSnackBar(context,'Quantity is not available.',isError: true);
-                                                    }
-                                                  });
-                                                },
-                                                icon: Icon(
-                                                  Icons.add_circle,
-                                                  color: ThemeColors.baseThemeColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(productList[index].aboutProduct.toString(),style: itemRequiredCardSubtitle)),
-                              ]
-                          ),
-                        )));
-              },
-            ),
+            child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+            ProdductList(context, searchResult):
+            ProdductList(context, productList)
+                : Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: const Center(child: Text("No Data"),),
+            )
           ),
         ):Center(child: CircularProgressIndicator(),),
         SizedBox(height: 15,),
@@ -490,6 +371,173 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
         )
       ],
+    );
+  }
+
+  Widget ProdductList(BuildContext context, List<ProductDetails>? productList){
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemCount: productList!.length,
+      padding: EdgeInsets.only(top: 10, bottom: 15),
+      itemBuilder: (context, index) {
+        return  Padding(
+            padding: const EdgeInsets.only(bottom:8.0),
+            child: Card(
+                elevation: 1,
+                child: ListTile(
+                  leading: CachedNetworkImage(
+                    filterQuality: FilterQuality.medium,
+                    // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                    // imageUrl: "https://picsum.photos/250?image=9",
+                    imageUrl: productList[index].prodImg.toString(),
+                    placeholder: (context, url) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      );
+                    },
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Shimmer.fromColors(
+                        baseColor: Theme.of(context).hoverColor,
+                        highlightColor: Theme.of(context).highlightColor,
+                        enabled: true,
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(Icons.error),
+                        ),
+                      );
+                    },
+                  ),
+                  title: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(productList[index].productName.toString(),style:itemRequiredCardHeading,),
+                                Text("ID: ${productList[index].id.toString()}",style: itemRequiredCardSubtitle),
+                                Text("₹ ${productList[index].discountPrice.toString()}",style:itemRequiredCardSubtitle),
+                              ],
+
+                            ),
+
+                            Flexible(
+                              child: Container(
+                                height: 40,
+                                // width: 110,
+                                width: MediaQuery.of(context).size.width*0.266,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    productList[index].cartQuantity != 0?
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.remove_circle,
+                                        color: Colors.grey,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          if (productList[index].cartQuantity! > 0) {
+                                            productList[index].cartQuantity = productList[index].cartQuantity! - 1;
+                                            _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
+                                            loadApi();
+
+                                          }
+                                        });
+                                      },
+                                    ):Padding(
+                                      padding: const EdgeInsets.only(left:20.0),
+                                      child: const Text('Add',style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Poppins-Medium'
+                                      )),
+                                    ),
+                                    productList[index].cartQuantity != 0 ?
+                                    Text(
+                                      productList[index].cartQuantity.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18),
+                                    ): SizedBox(),
+                                    Expanded(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            // if (quantity < 10) {
+                                            //   quantity++;
+                                            //   totalValue = prodValue * quantity;
+                                            // }
+                                            // _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: '1'));
+                                            if(productList[index].cartQuantity! <= productList[index].productQty!){
+                                              if( productList[index].productQty! > 0){
+                                                productList[index].cartQuantity = productList[index].cartQuantity! + 1;
+                                                _homeBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
+                                                loadApi();
+                                              }else{
+                                                showCustomSnackBar(context,'Quantity is not available.',isError: true);
+                                              }
+
+                                            }else{
+                                              showCustomSnackBar(context,'Quantity is not available.',isError: true);
+                                            }
+                                          });
+                                        },
+                                        icon: Icon(
+                                          Icons.add_circle,
+                                          color: ThemeColors.baseThemeColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              ),
+                            )
+                          ],
+                        ),
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(productList[index].aboutProduct.toString(),style: itemRequiredCardSubtitle)),
+                      ]
+                  ),
+                )));
+      },
     );
   }
 
@@ -788,6 +836,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           BorderRadius.all(Radius.circular(50))),
                       text: 'Add Product',
                       loading: loading,
+                      color: ThemeColors.redTextColor,
 
 
                     )
@@ -838,7 +887,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             serviceCallChargesController: serviceCallChargesController,
             transportChargesController: transportChargesController,
             otherChargesController: otherChargesController,
-            handlingChargesController: handlingChargesController),
+            handlingChargesController: handlingChargesController,
+            gstChargesController: _gstChargesController),
         ),
       ];
 
@@ -938,8 +988,9 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                 showCustomSnackBar(context,state.message,isError: false);
                 for(int i = 0; i < cartList!.length ; i++){
                   _homeBloc!.add(AddToCart(prodId: cartList![i].productId.toString(),userId: Application.customerLogin!.id.toString(),quantity: '0'));
-
                 }
+                Application.preferences!.remove('amount');
+
               }
             },
             child: isCompleted
@@ -972,6 +1023,24 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
+                        // TotalAmount(){
+                        //   if(serviceCallChargesController.text==""){
+                        //     serviceCallChargesController.text = "0";
+                        //   }
+                        //   if(transportChargesController.text==""){
+                        //     transportChargesController.text = "0";
+                        //   }
+                        //   if(handlingChargesController.text==""){
+                        //     handlingChargesController.text = "0";
+                        //   }
+                        //
+                        //   totalAmount = itemRequiredTotalAmount! + otherItemTotalAmount! + double.parse(widget.serviceCallChargesController.text) +
+                        //       double.parse(widget.transportChargesController.text) + double.parse(widget.handlingChargesController.text) +
+                        //       double.parse(widget.gstChargesController.text) + commission!;
+                        //   setState(() {
+                        //   });
+                        // }
+
                         if(workingTimeController.text == ""){
                           showCustomSnackBar(context,'Please add working time.',isError: true);
                         }else {
@@ -993,7 +1062,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                   widget.serviceRequestData!.createdAt
                                       .toString()).toString(),
                               machineEnquiryId: widget.serviceRequestData!
-                                  .machineEnquiryId!.toInt()
+                                  .machineEnquiryId!.toInt(),
+                              totalAmount: Application.totalAmount.toString()
                           ));
                         }
                       },
@@ -1037,19 +1107,22 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                         onPressed: () async {
                           final isLastStep =
                               _currentStep == stepList().length - 1;
-                          if(_currentStep == 0){
-                            if(workingTimeController.text == ""){
-                              showCustomSnackBar(context,'Please add working time.',isError: true);
-                            }
-                          }
+
                           if (isLastStep) {
                             setState(() {
                               isCompleted = true;
                             });
                           } else {
-                            setState(() {
-                              _currentStep += 1;
-                            });
+
+                              if(workingTimeController.text == ""){
+                                showCustomSnackBar(context,'Please add working time.',isError: true);
+                              } else if(_gstChargesController.text == ""){
+                                showCustomSnackBar(context,'Please add GST.',isError: true);
+                              }else{
+                                setState(() {
+                                  _currentStep += 1;
+                                });
+                              }
                           }
                         },
                         shape: const RoundedRectangleBorder(
@@ -1210,6 +1283,66 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             ),
           ),
 
+          SizedBox(height: 10,),
+          ///GST
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 60,
+            child: TextFormField(
+              controller: _gstChargesController,
+              keyboardType: TextInputType.number,
+              // maxLength: 10,
+              cursorColor: primaryAppColor,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: Color(0xffF5F5F5),
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                hintText: 'GST',
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                hintStyle: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500),
+              ),
+              onChanged: (val) {
+                setState(() {
+                  gstChargesValue = val;
+                  // _phoneNumberController.text = val;
+                });
+              },
+            ),
+          ),
+
           ///Service/Call Charges Field
           serviceValue
               ? Column(
@@ -1364,83 +1497,6 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                 )
               : Container(),
 
-          ///Other Charges Field
-          otherValue
-              ? Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: InkWell(
-                        onTap: () => setState(() => otherValue = false),
-                        child: Icon(
-                          Icons.clear,
-                          color: ThemeColors.buttonColor,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: 60,
-                      child: TextFormField(
-                        controller: otherChargesController,
-                        keyboardType: TextInputType.number,
-                        // maxLength: 10,
-                        cursorColor: primaryAppColor,
-                        decoration: InputDecoration(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(
-                              color: Colors.red,
-                              width: 1.0,
-                            ),
-                          ),
-                          fillColor: Color(0xffF5F5F5),
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 1.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: const BorderSide(
-                                color: Colors.white,
-                                width: 1.0,
-                              )),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
-                            ),
-                          ),
-                          hintText: 'Other Charges',
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-                          hintStyle: GoogleFonts.poppins(
-                              color: Colors.grey,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        onChanged: (val) {
-                          setState(() {
-                            otherChargesValue = val;
-                            // _phoneNumberController.text = val;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                )
-              : Container(),
-
           ///Transport Charges Field
           transportValue
               ? Column(
@@ -1555,15 +1611,6 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           labelBackgroundColor: ThemeColors.imageContainerBG,
                           labelStyle: TextStyle(color: ThemeColors.buttonColor),
                           onTap: () => setState(() => transportValue = true),
-                        ),
-                        SpeedDialChild(
-                          // child: const Icon(Icons.accessibility) ,
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          label: 'Other Charges',
-                          labelBackgroundColor: ThemeColors.imageContainerBG,
-                          labelStyle: TextStyle(color: ThemeColors.buttonColor),
-                          onTap: () => setState(() => otherValue = true),
                         ),
                         SpeedDialChild(
                           // child: const Icon(Icons.accessibility) ,

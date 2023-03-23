@@ -3,8 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/authentication/authentication_event.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/item_not_available_model.dart';
+import 'package:service_engineer/app_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,6 +20,7 @@ class RevisedQuotationPreviewScreen extends StatefulWidget {
   TextEditingController handlingChargesController = TextEditingController();
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
+  TextEditingController gstChargesController = TextEditingController();
   RevisedQuotationPreviewScreen(
       {Key? key,
         required this.cartList,
@@ -27,7 +30,8 @@ class RevisedQuotationPreviewScreen extends StatefulWidget {
         required this.serviceCallChargesController,
         required this.handlingChargesController,
         required this.transportChargesController,
-        required this.otherChargesController})
+        required this.otherChargesController,
+        required this.gstChargesController})
       : super(key: key);
 
   @override
@@ -75,6 +79,16 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     // getroleofstudent();
   }
 
+  TotalAmount(){
+    totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
+        int.parse(widget.transportChargesController.text.toString()) +
+        commission! + int.parse(widget.handlingChargesController.text.toString()) + int.parse(widget.gstChargesController.text.toString());
+    AppBloc.authBloc.add(OnSaveMaintainenceRevisedTotalAmount(totalAmount));
+
+    setState(() {
+
+    });
+  }
 
   DataRow _getItemRequiredDataRow(ItemNotAvailableModel? cartData,index) {
     return DataRow(
@@ -105,6 +119,8 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
       ],
     );
   }
+
+
 
 
   @override
@@ -165,10 +181,10 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                           double.parse(amountWithGST.toString())
                       ).reduce((value, current) => value + current);
                     });
-                    print(itemRequiredTotalAmount);
-                    totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
-                          int.parse(widget.transportChargesController.text.toString()) +
-                           commission! + int.parse(widget.handlingChargesController.text.toString()) + 18;
+                    // print(itemRequiredTotalAmount);
+                    WidgetsBinding.instance.addPostFrameCallback((_){
+                        TotalAmount();
+                    });
                     return _getItemRequiredDataRow(widget.cartList![index],index);
                   }),
                 ),
@@ -342,13 +358,21 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total Items charges"),
+                      Row(
+                        children: [
+                          Text("Total Items charges"),
+                          SizedBox(width: 2,),
+                          Text("(Item + Other Items)",style: TextStyle(fontSize: 12),),
+
+                        ],
+                      ),
                       Text(
                           "₹ ${itemRequiredTotalAmount! + otherItemTotalAmount!}"),
                     ],
                   ),
-                  SizedBox(height: 3,),
-                  Row(
+                  SizedBox(
+                    height: 10,
+                  ),                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Service charge"),
@@ -357,8 +381,9 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                           : "₹ ${widget.serviceCallChargesController.text}"),
                     ],
                   ),
-                  SizedBox(height: 3,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -368,8 +393,9 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                           : "₹ ${widget.transportChargesController.text}"),
                     ],
                   ),
-                  SizedBox(height: 3,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -379,8 +405,9 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                           : "₹ ${widget.handlingChargesController.text}"),
                     ],
                   ),
-                  SizedBox(height: 3,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -388,13 +415,16 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                       Text("₹ $commission"),
                     ],
                   ),
-                  SizedBox(height: 3,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("GST "),
-                      Text("18"),
+                      Text(widget.gstChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.gstChargesController.text}"),
                     ],
                   ),
                   Divider(),

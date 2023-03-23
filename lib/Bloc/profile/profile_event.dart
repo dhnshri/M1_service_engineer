@@ -1,6 +1,4 @@
-
 import 'package:service_engineer/Screen/Transportation/Profile/widget/vehicle_info_widget.dart';
-
 import '../../Model/education_model.dart';
 import '../../Model/experience_company_model.dart';
 import '../../Model/machine_list_model.dart';
@@ -40,7 +38,8 @@ class UpdateProfile extends ProfileEvent {
   String addharCardImg;
   List<ExpCompanyFormWidget> experienceCompanyList;
   List<EducationFormWidget> educationList;
-  EducationCertificateModel certificate;
+  List<EducationFormWidget> certificate;
+  // EducationCertificateModel certificate;
 
   UpdateProfile({
     required this.certificate,

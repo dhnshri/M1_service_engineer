@@ -12,6 +12,8 @@ class Application {
   static SharedPreferences? preferences;
 
   static CustomerLogin? customerLogin;
+  static double? totalAmount;
+  static double? revisedTotalAmount;
   // static ProductModel? products;
   // static AddressModel? address;
   // static CartListRepo? cart;

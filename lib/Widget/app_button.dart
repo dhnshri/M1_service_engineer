@@ -10,6 +10,8 @@ class AppButton extends StatelessWidget {
   final bool? disableTouchWhenLoading;
   final OutlinedBorder? shape;
   final Color? color;
+  final Color? borderColor;
+  final Color? textColor;
 
 
   AppButton({
@@ -19,7 +21,9 @@ class AppButton extends StatelessWidget {
     this.loading = false,
     this.disableTouchWhenLoading = false,
     this.shape,
-  this.color,
+    this.color,
+    this.borderColor,
+    this.textColor
   }) : super(key: key);
 
   Widget _buildLoading() {
@@ -44,8 +48,8 @@ class AppButton extends StatelessWidget {
 
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-            side: BorderSide(color: Theme.of(context).buttonColor, width: 1),
-         primary: Theme.of(context).buttonColor,
+            side: BorderSide(color: borderColor!= null ? borderColor! : color!, width: 1),
+         primary: color,
          // color:Colors.red,
           shape: shape,
         ),
@@ -60,7 +64,7 @@ class AppButton extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .button!
-                .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                .copyWith(color: textColor!=null ? textColor! : Colors.white, fontWeight: FontWeight.w600),
           ),
           _buildLoading()
         ],

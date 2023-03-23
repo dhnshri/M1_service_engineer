@@ -142,7 +142,7 @@ class _EnquiryReviseQuotationPreviewScreenState
                     columnSpacing: 15.0,
                     columns: const [
                       DataColumn(
-                        label: Expanded(child: Text('S no')),
+                        label: Text('S no'),
                       ),
                       DataColumn(
                         label: Text('Item Name'),
@@ -383,138 +383,136 @@ class _EnquiryReviseQuotationPreviewScreenState
             height: 40,
           ),
 
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if(value==true) {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: new Text(
-                                        "Are you sure, you want to send this quotation?"),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if(value==true) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: new Text(
+                                      "Are you sure, you want to send this quotation?"),
 
-                                    // content: new Text(""),
-                                    actions: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TextButton(
+                                  // content: new Text(""),
+                                  actions: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                            child: new Text(
+                                              "No",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: TextButton.styleFrom(
+                                              fixedSize: const Size(120, 30),
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  25))),
+                                              side: BorderSide(
+                                                  color: ThemeColors
+                                                      .defaultbuttonColor,
+                                                  width: 1.5),
+                                            )),
+                                        SizedBox(
+                                          width: 7,
+                                        ),
+                                        BlocBuilder<QuotationReplyBloc, QuotationReplyState>(
+                                            builder: (context, state) {
+                                          return BlocListener<QuotationReplyBloc,
+                                              QuotationReplyState>(
+                                            listener: (context, state) {
+                                              if (state
+                                                  is JobWorkSendRevisedQuotationSuccess) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BottomNavigation(
+                                                              index: 0,
+                                                              dropValue: Application
+                                                                  .customerLogin!
+                                                                  .role
+                                                                  .toString(),
+                                                            )));
+                                                showCustomSnackBar(
+                                                    context, state.message,
+                                                    isError: false);
+                                              }
+                                            },
+                                            child: TextButton(
                                               child: new Text(
-                                                "No",
+                                                "Yes",
                                                 style: TextStyle(
-                                                    color: Colors.black),
+                                                    color: Colors.white),
                                               ),
                                               onPressed: () {
-                                                Navigator.of(context).pop();
+                                                _quotationBloc!.add(JobWorkSendRevisedQuotation(
+                                                  serviceUserId: Application.customerLogin!.id.toString(),
+                                                  jobWorkEnquirydate: widget.quotationReplyJobWorkEnquiryData.dateAndTime.toString(),
+                                                  jobWorkEnquiryId: widget.quotationReplyJobWorkEnquiryData.enquiryId.toString(),
+                                                  transportCharge: widget.transportController.text == "" ? '0': widget.transportController.text,
+                                                  packingCharge: widget.packingController.text == "" ? '0':widget.packingController.text,
+                                                  testingCharge: widget.testingChargesController.text == "" ? '0':widget.testingChargesController.text,
+                                                  cgst: widget.cgstController.text == "" ? '0':widget.cgstController.text,
+                                                  sgst: widget.sgstController.text == "" ? '0':widget.sgstController.text,
+                                                  igst: widget.igstController.text == "" ? '0':widget.igstController.text,
+                                                  commission: commission.toString(),
+                                                  itemList: widget.requestDetailList!,
+                                                  itemRateController: widget.itemRateController,
+                                                  volumeController: widget.volumeController,
+                                                    totalAmount:grandTotal.toString()
+                                                ));
                                               },
                                               style: TextButton.styleFrom(
-                                                fixedSize: const Size(120, 30),
+                                                fixedSize:
+                                                    const Size(120, 30),
+                                                backgroundColor: ThemeColors
+                                                    .defaultbuttonColor,
                                                 shape:
                                                     const RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.all(
-                                                                Radius.circular(
-                                                                    25))),
-                                                side: BorderSide(
-                                                    color: ThemeColors
-                                                        .defaultbuttonColor,
-                                                    width: 1.5),
-                                              )),
-                                          SizedBox(
-                                            width: 7,
-                                          ),
-                                          BlocBuilder<QuotationReplyBloc, QuotationReplyState>(
-                                              builder: (context, state) {
-                                            return BlocListener<QuotationReplyBloc,
-                                                QuotationReplyState>(
-                                              listener: (context, state) {
-                                                if (state
-                                                    is JobWorkSendRevisedQuotationSuccess) {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              BottomNavigation(
-                                                                index: 0,
-                                                                dropValue: Application
-                                                                    .customerLogin!
-                                                                    .role
-                                                                    .toString(),
-                                                              )));
-                                                  showCustomSnackBar(
-                                                      context, state.message,
-                                                      isError: false);
-                                                }
-                                              },
-                                              child: TextButton(
-                                                child: new Text(
-                                                  "Yes",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () {
-                                                  _quotationBloc!.add(JobWorkSendRevisedQuotation(
-                                                    serviceUserId: Application.customerLogin!.id.toString(),
-                                                    jobWorkEnquirydate: widget.quotationReplyJobWorkEnquiryData.dateAndTime.toString(),
-                                                    jobWorkEnquiryId: widget.quotationReplyJobWorkEnquiryData.enquiryId.toString(),
-                                                    transportCharge: widget.transportController.text == "" ? '0': widget.transportController.text,
-                                                    packingCharge: widget.packingController.text == "" ? '0':widget.packingController.text,
-                                                    testingCharge: widget.testingChargesController.text == "" ? '0':widget.testingChargesController.text,
-                                                    cgst: widget.cgstController.text == "" ? '0':widget.cgstController.text,
-                                                    sgst: widget.sgstController.text == "" ? '0':widget.sgstController.text,
-                                                    igst: widget.igstController.text == "" ? '0':widget.igstController.text,
-                                                    commission: commission.toString(),
-                                                    itemList: widget.requestDetailList!,
-                                                    itemRateController: widget.itemRateController,
-                                                    volumeController: widget.volumeController,
-
-                                                  ));
-                                                },
-                                                style: TextButton.styleFrom(
-                                                  fixedSize:
-                                                      const Size(120, 30),
-                                                  backgroundColor: ThemeColors
-                                                      .defaultbuttonColor,
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          25))),
-                                                ),
+                                                                Radius
+                                                                    .circular(
+                                                                        25))),
                                               ),
-                                            );
-                                          })
-                                        ],
-                                      ),
-                                    ],
-                                  ));
-                        }else{
-                          showCustomSnackBar(context,'Please agree the terms and condition.',isError: true);
+                                            ),
+                                          );
+                                        })
+                                      ],
+                                    ),
+                                  ],
+                                ));
+                      }else{
+                        showCustomSnackBar(context,'Please agree the terms and condition.',isError: true);
 
-                        }
-                        // Navigator.push(context, MaterialPageRoute(builder: (contex)=>EnquiryReviseQuotationPreviewScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.defaultbuttonColor,
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text(
-                        "Next",
-                        style: Theme.of(context).textTheme.button!.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
+                      }
+                      // Navigator.push(context, MaterialPageRoute(builder: (contex)=>EnquiryReviseQuotationPreviewScreen()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: ThemeColors.defaultbuttonColor,
+                      shape: StadiumBorder(),
                     ),
-                  )),
-            ),
+                    child: Text(
+                      "Next",
+                      style: Theme.of(context).textTheme.button!.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                )),
           )
         ],
       ),

@@ -694,7 +694,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w400)),
                                           Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
-                                            style: TextStyle(color: Colors.red),)
+                                            style: TextStyle(color: trackProgressData![index].status == 0 ?Colors.red : Colors.green),)
                                         ],
                                       ),
                                     ),

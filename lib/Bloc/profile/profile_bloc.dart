@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:service_engineer/Bloc/profile/profile_event.dart';
 import 'package:service_engineer/Bloc/profile/profile_state.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart';
 import 'package:mime/mime.dart';
 import '../../Model/profile_model.dart';
 import 'package:file_picker/file_picker.dart';
@@ -122,12 +126,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       for(int j = 0; j < event.educationList.length; j++) {
         final mimeTypeDataProfile = lookupMimeType(
-            event.educationList[j].educationCertificateModel!.certificateImg
+            event.educationList[j].educationModel!.certificateImg
                 .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
         //initialize multipart request
         //attach the file in the request
         final certi = await http.MultipartFile.fromPath(
-            'certificate[]', event.educationList[j].educationCertificateModel!.certificateImg.toString(),
+            'certificate[]', event.educationList[j].imageFile!.imagePath.toString(),
             contentType: MediaType(
                 mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
 
@@ -252,8 +256,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
 
 
+      // var companyProfileImg = await http.MultipartFile.fromBytes('company_profile_pic', await File.fromUri(Uri.parse(event.companyProfilePic.toString())).readAsBytes(), contentType: new MediaType('image', 'jpeg'));
+      // var _base64 = base64Encode(event.companyProfilePic);
+
       var companyProfileImg = await http.MultipartFile.fromPath(
-          'company_profile_pic', event.companyProfilePic.toString());
+          'company_profile_pic', event.companyProfilePic.toString(),);
 
       var gstCertFile = await http.MultipartFile.fromPath(
           'gst_certificate', event.gstCertificateImg.toString());
@@ -493,6 +500,88 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       _request.files.add(drivingLicensePhoto);
       _request.files.add(driverIdProofPhoto);
 
+      // for(MultipartBody multipart in event.userProfileImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "user_profile_pic", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.gstCertificateImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "gst_certificate", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.panCardImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "pan_card", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.shopActLicenseImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "shop_act_licence", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.addharCardImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "udhyog_adhar_licence", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.companyCertificateImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "company_certificate", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.driverProfileImg) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "driver_pic", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.driverLicenseImage) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "driving_licence", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+      // for(MultipartBody multipart in event.driverIdProofImage) {
+      //   if(multipart.file != null) {
+      //     Uint8List _list = await multipart.file.readAsBytes();
+      //     _request.files.add(http.MultipartFile(
+      //       "id_proof", multipart.file.readAsBytes().asStream(), _list.length,
+      //       filename: '${DateTime.now().toString()}.jpg',
+      //     ));
+      //   }
+      // }
+
       /// Upload Multiple Vehicle Images
       List<http.MultipartFile> vehicleImageList = <http.MultipartFile>[];
       for(int j = 0; j < event.vehicleInfoList.length; j++) {
@@ -659,3 +748,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return request;
   }
  }
+class MultipartBody {
+  String key;
+  XFile file;
+
+  MultipartBody(this.key, this.file);
+}

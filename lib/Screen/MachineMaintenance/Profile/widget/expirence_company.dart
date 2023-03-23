@@ -37,9 +37,12 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
   final formKey = GlobalKey<FormState>();
   DateTime selectedWorkFromDate = DateTime.now();
   DateTime selectedWorkTillDate = DateTime.now();
+  int length = 0;
 
   void initState(){
-    // getData();
+    length = widget.expCompanyModel!.id! + 1;
+
+    getData();
   }
 
   getData(){
@@ -105,16 +108,34 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                    onTap: (){
-                      widget.onRemove();
-                    },
-                    child: Icon(Icons.clear, color: ThemeColors.buttonColor,))
-              ],
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     InkWell(
+            //         onTap: (){
+            //           widget.onRemove();
+            //         },
+            //         child: Icon(Icons.clear, color: ThemeColors.buttonColor,))
+            //   ],
+            // ),
+            const SizedBox(height: 10,),
+
+            Text('${length.toString()}',style: const TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins-Medium',
+                fontSize: 16,
+                fontWeight: FontWeight.w400
+            )),
+            const SizedBox(height: 10,),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Company Name",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
             ),
+
             ///Company Name
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -174,6 +195,13 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
 
             SizedBox(height: 15,),
 
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Description",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
 
             ///Description
             TextFormField(
@@ -249,6 +277,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
 
             SizedBox(height: 15,),
 
+
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Worked From",
@@ -320,147 +349,6 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
                 },
               ),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     ///Years
-            //     SizedBox(
-            //       // width: MediaQuery.of(context).size.width * 0.4,
-            //       child: TextFormField(
-            //         // initialValue: Application.customerLogin!.name.toString(),
-            //         controller: widget._workFromYearsController,
-            //         textAlign: TextAlign.start,
-            //         keyboardType: TextInputType.text,
-            //         style: TextStyle(
-            //           fontSize: 18,
-            //           height: 1.5,
-            //         ),
-            //         decoration: InputDecoration(
-            //           filled: true,
-            //           fillColor: ThemeColors.textFieldBackgroundColor,
-            //           hintText: "Years",
-            //           contentPadding: EdgeInsets.symmetric(
-            //               vertical: 10.0, horizontal: 15.0),
-            //           hintStyle: TextStyle(fontSize: 15),
-            //           enabledBorder: OutlineInputBorder(
-            //             borderRadius:
-            //             BorderRadius.all(Radius.circular(1.0)),
-            //             borderSide: BorderSide(
-            //                 width: 0.8,
-            //                 color: ThemeColors.textFieldBackgroundColor
-            //             ),
-            //           ),
-            //           focusedBorder: OutlineInputBorder(
-            //             borderRadius:
-            //             BorderRadius.all(Radius.circular(1.0)),
-            //             borderSide: BorderSide(
-            //                 width: 0.8,
-            //                 color: ThemeColors.textFieldBackgroundColor),
-            //           ),
-            //           border: OutlineInputBorder(
-            //               borderRadius:
-            //               BorderRadius.all(Radius.circular(1.0)),
-            //               borderSide: BorderSide(
-            //                   width: 0.8,
-            //                   color: ThemeColors.textFieldBackgroundColor)),
-            //         ),
-            //         validator: (value) {
-            //           // profile.name = value!.trim();
-            //           // Pattern pattern =
-            //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-            //           // RegExp regex =
-            //           // new RegExp(pattern.toString());
-            //           if (value == null || value.isEmpty) {
-            //             return 'Please enter Years';
-            //           }
-            //           // else if(!regex.hasMatch(value)){
-            //           //   return 'Please enter valid name';
-            //           // }
-            //           return null;
-            //         },
-            //         onSaved: (value) => widget.expCompanyModel!.fromYear = value!,
-            //
-            //         onChanged: (value) {
-            //           widget.expCompanyModel!.fromYear=value;
-            //           setState(() {
-            //             // _nameController.text = value;
-            //             if (formKey.currentState!.validate()) {}
-            //           });
-            //         },
-            //       ),
-            //     ),
-            //
-            //     ///Months
-            //     // SizedBox(
-            //     //   width: MediaQuery.of(context).size.width * 0.4,
-            //     //
-            //     //   child: TextFormField(
-            //     //     // initialValue: Application.customerLogin!.name.toString(),
-            //     //     controller: widget._workFromMonthsController,
-            //     //     textAlign: TextAlign.start,
-            //     //     keyboardType: TextInputType.number,
-            //     //     style: TextStyle(
-            //     //       fontSize: 18,
-            //     //       height: 1.5,
-            //     //     ),
-            //     //     decoration: InputDecoration(
-            //     //       filled: true,
-            //     //       fillColor: ThemeColors.textFieldBackgroundColor,
-            //     //       hintText: "Months",
-            //     //       contentPadding: EdgeInsets.symmetric(
-            //     //           vertical: 10.0, horizontal: 15.0),
-            //     //       hintStyle: TextStyle(fontSize: 15),
-            //     //       enabledBorder: OutlineInputBorder(
-            //     //         borderRadius:
-            //     //         BorderRadius.all(Radius.circular(1.0)),
-            //     //         borderSide: BorderSide(
-            //     //             width: 0.8,
-            //     //             color: ThemeColors.textFieldBackgroundColor
-            //     //         ),
-            //     //       ),
-            //     //       focusedBorder: OutlineInputBorder(
-            //     //         borderRadius:
-            //     //         BorderRadius.all(Radius.circular(1.0)),
-            //     //         borderSide: BorderSide(
-            //     //             width: 0.8,
-            //     //             color: ThemeColors.textFieldBackgroundColor),
-            //     //       ),
-            //     //       border: OutlineInputBorder(
-            //     //           borderRadius:
-            //     //           BorderRadius.all(Radius.circular(1.0)),
-            //     //           borderSide: BorderSide(
-            //     //               width: 0.8,
-            //     //               color: ThemeColors.textFieldBackgroundColor)),
-            //     //     ),
-            //     //     validator: (value) {
-            //     //       // profile.name = value!.trim();
-            //     //       // Pattern pattern =
-            //     //       //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-            //     //       // RegExp regex =
-            //     //       // new RegExp(pattern.toString());
-            //     //       if (value == null || value.isEmpty) {
-            //     //         return 'Please enter months';
-            //     //       }
-            //     //       // else if(!regex.hasMatch(value)){
-            //     //       //   return 'Please enter valid name';
-            //     //       // }
-            //     //       return null;
-            //     //     },
-            //     //     onSaved: (value) => widget.expCompanyModel!.fromMonth = value!,
-            //     //
-            //     //     onChanged: (value) {
-            //     //       widget.expCompanyModel!.fromMonth=value;
-            //     //       setState(() {
-            //     //         // _nameController.text = value;
-            //     //         if (formKey.currentState!.validate()) {}
-            //     //       });
-            //     //     },
-            //     //   ),
-            //     // ),
-            //
-            //
-            //   ],
-            // ),
 
             SizedBox(height: 15,),
 
@@ -534,149 +422,8 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
               ),
             ),
 
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     ///Years
-            //     SizedBox(
-            //       width: MediaQuery.of(context).size.width * 0.4,
-            //       child: TextFormField(
-            //         // initialValue: Application.customerLogin!.name.toString(),
-            //         controller: widget._workTillYearsController,
-            //         textAlign: TextAlign.start,
-            //         keyboardType: TextInputType.text,
-            //         style: TextStyle(
-            //           fontSize: 18,
-            //           height: 1.5,
-            //         ),
-            //         decoration: InputDecoration(
-            //           filled: true,
-            //           fillColor: ThemeColors.textFieldBackgroundColor,
-            //           hintText: "Years",
-            //           contentPadding: EdgeInsets.symmetric(
-            //               vertical: 10.0, horizontal: 15.0),
-            //           hintStyle: TextStyle(fontSize: 15),
-            //           enabledBorder: OutlineInputBorder(
-            //             borderRadius:
-            //             BorderRadius.all(Radius.circular(1.0)),
-            //             borderSide: BorderSide(
-            //                 width: 0.8,
-            //                 color: ThemeColors.textFieldBackgroundColor
-            //             ),
-            //           ),
-            //           focusedBorder: OutlineInputBorder(
-            //             borderRadius:
-            //             BorderRadius.all(Radius.circular(1.0)),
-            //             borderSide: BorderSide(
-            //                 width: 0.8,
-            //                 color: ThemeColors.textFieldBackgroundColor),
-            //           ),
-            //           border: OutlineInputBorder(
-            //               borderRadius:
-            //               BorderRadius.all(Radius.circular(1.0)),
-            //               borderSide: BorderSide(
-            //                   width: 0.8,
-            //                   color: ThemeColors.textFieldBackgroundColor)),
-            //         ),
-            //         validator: (value) {
-            //           // profile.name = value!.trim();
-            //           // Pattern pattern =
-            //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-            //           // RegExp regex =
-            //           // new RegExp(pattern.toString());
-            //           if (value == null || value.isEmpty) {
-            //             return 'Please enter Years';
-            //           }
-            //           // else if(!regex.hasMatch(value)){
-            //           //   return 'Please enter valid name';
-            //           // }
-            //           return null;
-            //         },
-            //         onSaved: (value) => widget.expCompanyModel!.tillYear = value!,
-            //
-            //         onChanged: (value) {
-            //           widget.expCompanyModel!.tillYear=value;
-            //           setState(() {
-            //             // _nameController.text = value;
-            //             if (formKey.currentState!.validate()) {}
-            //           });
-            //         },
-            //       ),
-            //     ),
-            //
-            //     ///Months
-            //     SizedBox(
-            //       width: MediaQuery.of(context).size.width * 0.4,
-            //
-            //       child: TextFormField(
-            //         // initialValue: Application.customerLogin!.name.toString(),
-            //         controller: widget._workTillMonthsController,
-            //         textAlign: TextAlign.start,
-            //         keyboardType: TextInputType.number,
-            //         style: TextStyle(
-            //           fontSize: 18,
-            //           height: 1.5,
-            //         ),
-            //         decoration: InputDecoration(
-            //           filled: true,
-            //           fillColor: ThemeColors.textFieldBackgroundColor,
-            //           hintText: "Months",
-            //           contentPadding: EdgeInsets.symmetric(
-            //               vertical: 10.0, horizontal: 15.0),
-            //           hintStyle: TextStyle(fontSize: 15),
-            //           enabledBorder: OutlineInputBorder(
-            //             borderRadius:
-            //             BorderRadius.all(Radius.circular(1.0)),
-            //             borderSide: BorderSide(
-            //                 width: 0.8,
-            //                 color: ThemeColors.textFieldBackgroundColor
-            //             ),
-            //           ),
-            //           focusedBorder: OutlineInputBorder(
-            //             borderRadius:
-            //             BorderRadius.all(Radius.circular(1.0)),
-            //             borderSide: BorderSide(
-            //                 width: 0.8,
-            //                 color: ThemeColors.textFieldBackgroundColor),
-            //           ),
-            //           border: OutlineInputBorder(
-            //               borderRadius:
-            //               BorderRadius.all(Radius.circular(1.0)),
-            //               borderSide: BorderSide(
-            //                   width: 0.8,
-            //                   color: ThemeColors.textFieldBackgroundColor)),
-            //         ),
-            //         validator: (value) {
-            //           // profile.name = value!.trim();
-            //           // Pattern pattern =
-            //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-            //           // RegExp regex =
-            //           // new RegExp(pattern.toString());
-            //           if (value == null || value.isEmpty) {
-            //             return 'Please enter months';
-            //           }
-            //           // else if(!regex.hasMatch(value)){
-            //           //   return 'Please enter valid name';
-            //           // }
-            //           return null;
-            //         },
-            //         onSaved: (value) => widget.expCompanyModel!.tillMonth = value!,
-            //
-            //         onChanged: (value) {
-            //           widget.expCompanyModel!.tillMonth=value;
-            //           setState(() {
-            //             // _nameController.text = value;
-            //             if (formKey.currentState!.validate()) {}
-            //           });
-            //         },
-            //       ),
-            //     ),
-            //
-            //
-            //   ],
-            // ),
-
-            SizedBox(height: 15,),
+            const SizedBox(height: 10,),
+            const Divider(thickness: 2,)
 
 
 

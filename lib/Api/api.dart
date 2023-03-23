@@ -4,6 +4,7 @@ import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/cart_repo.dart';
 import 'package:service_engineer/Model/customer_registration.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reject_revise_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
@@ -73,6 +74,7 @@ class Api {
   static const String VEHICLE_NUMBER=HOST_URL+"transport_vehicle_number_list";
   static const String TRANSPORT_PROFILE="get_transport_profile";
   static const String MACHINE_PROFILE="get_machine_maintainence_profile";
+  static const String REJECT_REVISE_QUOTATION="service_revise_and_reject_quotations";
 
 
 
@@ -195,6 +197,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return QuotaionReplyDetailRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getRejectRevised(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+REJECT_REVISE_QUOTATION),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return RejectReviseRepo.fromJson(responseJson);
     }
   }
 

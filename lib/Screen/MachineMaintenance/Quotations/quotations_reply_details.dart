@@ -9,6 +9,8 @@ import 'package:service_engineer/Bloc/quotationReply/quotationReply_bloc.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_state.dart';
 import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_quotations.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -32,6 +34,8 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
   final TextEditingController _phoneNumberController = TextEditingController();
   bool loading = true;
   bool isLoading = false;
+  bool isRejectLoading = true;
+  bool isRevisedLoading = true;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequired = new GlobalKey();
@@ -71,6 +75,15 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
     // getroleofstudent();
   }
 
+  TotalAmount(){
+    grandTotal = itemRequiredTotal + itemOthersTotal + double.parse(quotationChargesList![0].serviceCharge.toString()) +
+        double.parse(quotationChargesList![0].transportCharge.toString()) + double.parse(quotationChargesList![0].commission.toString()) +
+        double.parse(quotationChargesList![0].gst.toString());
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,23 +104,22 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
           children: [
             AppSmallButton(
               onPressed: () async {
+                _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
               },
               shape: const RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Reject',
-              loading: loading,
+              loading: isRejectLoading,
 
 
             ),
             AppSmallButton(
               onPressed: () async {
                 if(value==true) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MachineRevisedQuotationScreen(quotationRequiredItemList: quotationRequiredItemList,quotationOtherItemList: quotationOtherItemList,
-                                quotationChargesList: quotationChargesList,)));
+                  _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
                   }
                 else{
                   showCustomSnackBar(context,'Please agree the terms and condition.');
@@ -118,7 +130,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   borderRadius:
                   BorderRadius.all(Radius.circular(50))),
               text: 'Revise Quotation',
-              loading: loading,
+              loading: isRevisedLoading,
 
 
             ),
@@ -141,6 +153,29 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
               if(state is MachineQuotationReplyDetailFail){
                 showCustomSnackBar(context,state.msg.toString());
 
+              }
+              if(state is QuotationRejectLoading){
+                isRejectLoading = state.isLoading;
+              }
+              if(state is QuotationRejectSuccess){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>QuotationsReplyScreen()));
+                showCustomSnackBar(context,state.msg.toString(),isError: false);
+              }
+              if(state is QuotationRejectFail){
+                showCustomSnackBar(context,state.msg.toString());
+              }
+              if(state is QuotationRevisedLoading){
+                isRevisedLoading = state.isLoading;
+              }
+              if(state is QuotationRevisedSuccess){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MachineRevisedQuotationScreen(quotationRequiredItemList: quotationRequiredItemList,quotationOtherItemList: quotationOtherItemList,
+                          quotationChargesList: quotationChargesList,quotationReplyList: widget.quotationReplyList,)));
+              }
+              if(state is QuotationRevisedFail){
+                showCustomSnackBar(context,state.msg.toString());
               }
             },
             child: isLoading ? quotationRequiredItemList!.length <= 0 ? Center(child: CircularProgressIndicator(),):
@@ -193,9 +228,10 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                               itemRequiredTotal = quotationRequiredItemList!
                                   .map((item) => double.parse(item.amount.toString()))
                                   .reduce((value, current) => value + current);
+                              WidgetsBinding.instance.addPostFrameCallback((_){
 
-                              grandTotal = itemRequiredTotal + itemOthersTotal + double.parse(quotationChargesList![0].serviceCharge.toString()) +
-                                  double.parse(quotationChargesList![0].transportCharge.toString()) + double.parse(quotationChargesList![0].commission.toString());
+                                TotalAmount();
+                              });
 
                               return _getItemRequiredDataRow(quotationRequiredItemList![index],itemNo);
                             }),),
@@ -393,11 +429,18 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Total Items charges"),
+                              Row(
+                                children: [
+                                  Text("Total Items charges"),
+                                  SizedBox(width: 2,),
+                                  Text("(Item + Other Items)",style: TextStyle(fontSize: 12),),
+
+                                ],
+                              ),
                               Text("₹ ${itemRequiredTotal + itemOthersTotal}"),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -405,7 +448,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                               Text("₹ ${quotationChargesList![0].serviceCharge}"),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
 
 
                           Row(
@@ -416,7 +459,17 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                             ],
                           ),
 
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Handling charges"),
+                              Text("₹ ${quotationChargesList![0].handlingCharge}"),
+                            ],
+                          ),
+
+                          SizedBox(height: 10,),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -425,13 +478,13 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                               Text("₹ ${quotationChargesList![0].commission}"),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("GST %"),
-                              Text("${quotationChargesList![0].gst}%"),
+                              Text("GST "),
+                              Text("₹ ${quotationChargesList![0].gst}"),
                             ],
                           ),
                           Divider(),

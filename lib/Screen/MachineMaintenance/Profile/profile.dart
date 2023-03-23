@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -131,7 +132,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     getData();
   }
 
-  getData(){
+  getData()async{
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
@@ -141,19 +142,36 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
       _ageController.text = widget.serviceUserdataList![0].age.toString();
       _genderController.text = widget.serviceUserdataList![0].gender.toString();
-      // uploadCompanyProfileImageFile!.imagePath = widget.serviceUserdataList![0].companyProfilePic.toString();
-      uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
+      var userImgFile = await DefaultCacheManager().getSingleFile(widget.serviceUserdataList![0].userProfilePic.toString());
+      print(userImgFile);
+      uploadUserProfileImageFile!.imagePath = userImgFile.path;
+      // uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
       _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
       _locationController.text = widget.serviceUserdataList![0].currentAddress.toString();
       _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
       _cityController.text = widget.serviceUserdataList![0].city.toString();
       _stateController.text = widget.serviceUserdataList![0].state.toString();
       _countryController.text = widget.serviceUserdataList![0].country.toString();
-      imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
-      gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
-      panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
-      shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
-      aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
+      var companyCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].companyCertificate.toString());
+      print(companyCertificateImgFile);
+      imageFile!.imagePath = companyCertificateImgFile.path;
+      // imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
+      var gstCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].gstCertificate.toString());
+      print(gstCertificateImgFile);
+      gstImageFile!.imagePath = gstCertificateImgFile.path;
+      // gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
+      var panCardImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].panCard.toString());
+      print(panCardImgFile);
+      panImageFile!.imagePath = panCardImgFile.path;
+      // panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
+      var shopActImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].shopActLicence.toString());
+      print(shopActImgFile);
+      shopActImageFile!.imagePath = shopActImgFile.path;
+      // shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
+      var aadharCardImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].udhyogAdharLicence.toString());
+      print(aadharCardImgFile);
+      aadharImageFile!.imagePath = aadharCardImgFile.path;
+      // aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
       _bankNameController.text = widget.profileKycList![0].bankName.toString();
       _accountNumberController.text = widget.profileKycList![0].accountNumber.toString();
       _iFSCCodeController.text = widget.profileKycList![0].ifscCode.toString();
@@ -162,14 +180,30 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       _yearsController.text = widget.profileMachineExperienceList![0].yearOfExperience.toString();
       _monthsController.text = widget.profileMachineExperienceList![0].monthOfExperience.toString();
 
-      // for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
-      //   ExpCompanyModel _expData = ExpCompanyModel(id: widget.profileMachineExperienceList!.length,companyName: widget.profileMachineExperienceList![i].companyName);
-      //   expCompanyForms.add(ExpCompanyFormWidget(
-      //     index: expCompanyForms.length,
-      //     expCompanyModel: _expData,
-      //     onRemove: () => onRemove(_expData),
-      //   ));
-      // }
+      for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
+        ExpCompanyModel _expData = ExpCompanyModel(id: expCompanyForms.length,companyName: widget.profileMachineExperienceList![i].companyName,
+          desciption: widget.profileMachineExperienceList![i].description,fromYear: widget.profileMachineExperienceList![i].workFrom,
+          tillYear: widget.profileMachineExperienceList![i].workTill);
+        expCompanyForms.add(ExpCompanyFormWidget(
+          index: expCompanyForms.length,
+          expCompanyModel: _expData,
+          onRemove: () => onRemove(_expData),
+        ));
+      }
+
+      for(int i=0; i < widget.profileMachineEducationList!.length;i++){
+        EducationModel _eduData = EducationModel(id: educationForms.length,schoolName: widget.profileMachineEducationList![i].schoolName,
+            courseName: widget.profileMachineEducationList![i].courseName,passYear: widget.profileMachineEducationList![i].passingYear,
+            certificateImg: widget.profileMachineEducationList![i].certificate);
+        EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length,certificateImg: widget.profileMachineEducationList![i].certificate);
+        educationForms.add(EducationFormWidget(
+          index: educationForms.length,
+          educationModel: _eduData,
+          educationCertificateModel: _educationCertificateModel,
+          onRemove: () => educationOnRemove(_eduData,_educationCertificateModel),
+        ));
+      }
+      setState(() { });
     }else{
       _iDController.text = "";
       _companyNameController.text = "";
@@ -552,11 +586,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       int index = educationForms
           .indexWhere((element) => element.educationModel!.id == educationModel.id);
 
-      int certificateIndex = educationForms
-          .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
+      // int certificateIndex = educationForms
+      //     .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
 
       if (educationForms != null) educationForms.removeAt(index);
-      if (educationCertificateModel.id != null) educationForms.removeAt(certificateIndex);
+      // if (educationCertificateModel.id != null) educationForms.removeAt(certificateIndex);
     });
   }
 
@@ -616,6 +650,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                   Application.preferences!.remove('user');
+                  DefaultCacheManager().emptyCache();
                   // _RemoverUser();
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -677,8 +712,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                              : Image.network(
-                                            uploadUserProfileImageFile!.imagePath.toString(),
+                                              : Image.file(
+                                            File(uploadUserProfileImageFile!.imagePath.toString()),
                                             fit: BoxFit.fill,
                                           )
 
@@ -736,7 +771,15 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("ID",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///ID
                         TextFormField(
                           enabled: false,
@@ -802,6 +845,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -866,6 +916,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Email",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Email
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -929,6 +986,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Phone Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Phone Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -990,6 +1054,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("GST Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///GST Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1051,6 +1122,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         SizedBox(height: 15,),
 
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Category",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Category
                         SizedBox(
                           // height: deviceHeight,
@@ -1077,6 +1155,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Sub-Category",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Sub-Category
                         SizedBox(
                           // height: deviceHeight,
@@ -1105,146 +1190,166 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         ///AGE and GENDER
                         Row(
+
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+
                             ///Age
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: TextFormField(
-                                // initialValue: Application.customerLogin!.name.toString(),
-                                controller: _ageController,
-                                textAlign: TextAlign.start,
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  height: 1.5,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                                  child: Text("Age",
+                                    style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
-                                  hintText: "Age",
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 15.0),
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  child: TextFormField(
+                                    // initialValue: Application.customerLogin!.name.toString(),
+                                    controller: _ageController,
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      height: 1.5,
                                     ),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: ThemeColors.textFieldBackgroundColor,
+                                      hintText: "Age",
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 15.0),
+                                      hintStyle: TextStyle(fontSize: 15),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor),
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(1.0)),
+                                          borderSide: BorderSide(
+                                              width: 0.8,
+                                              color: ThemeColors.textFieldBackgroundColor)),
+                                    ),
+                                    validator: (value) {
+                                      // profile.name = value!.trim();
+                                      // Pattern pattern =
+                                      //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                      // RegExp regex =
+                                      // new RegExp(pattern.toString());
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter Years';
+                                      }
+                                      // else if(!regex.hasMatch(value)){
+                                      //   return 'Please enter valid name';
+                                      // }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      // profile.name = value;
+                                      setState(() {
+                                        // _nameController.text = value;
+                                        if (_formKey.currentState!.validate()) {}
+                                      });
+                                    },
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor),
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(1.0)),
-                                      borderSide: BorderSide(
-                                          width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor)),
                                 ),
-                                validator: (value) {
-                                  // profile.name = value!.trim();
-                                  // Pattern pattern =
-                                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                  // RegExp regex =
-                                  // new RegExp(pattern.toString());
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter Years';
-                                  }
-                                  // else if(!regex.hasMatch(value)){
-                                  //   return 'Please enter valid name';
-                                  // }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  // profile.name = value;
-                                  setState(() {
-                                    // _nameController.text = value;
-                                    if (_formKey.currentState!.validate()) {}
-                                  });
-                                },
-                              ),
+                              ],
                             ),
 
                             ///Gender
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-
-                              child: TextFormField(
-                                // initialValue: Application.customerLogin!.name.toString(),
-                                controller: _genderController,
-                                textAlign: TextAlign.start,
-                                keyboardType: TextInputType.text,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  height: 1.5,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [Padding(
+                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                                child: Text("Gender",
+                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
-                                  hintText: "Gender",
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 15.0),
-                                  hintStyle: TextStyle(fontSize: 15),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor),
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(1.0)),
-                                      borderSide: BorderSide(
-                                          width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor)),
-                                ),
-                                validator: (value) {
-                                  // profile.name = value!.trim();
-                                  // Pattern pattern =
-                                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                  // RegExp regex =
-                                  // new RegExp(pattern.toString());
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter months';
-                                  }
-                                  // else if(!regex.hasMatch(value)){
-                                  //   return 'Please enter valid name';
-                                  // }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  // profile.name = value;
-                                  setState(() {
-                                    // _nameController.text = value;
-                                    if (_formKey.currentState!.validate()) {}
-                                  });
-                                },
                               ),
-                            ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.4,
 
+                                  child: TextFormField(
+                                    // initialValue: Application.customerLogin!.name.toString(),
+                                    controller: _genderController,
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.text,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      height: 1.5,
+                                    ),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: ThemeColors.textFieldBackgroundColor,
+                                      hintText: "Gender",
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 15.0),
+                                      hintStyle: TextStyle(fontSize: 15),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor),
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(1.0)),
+                                          borderSide: BorderSide(
+                                              width: 0.8,
+                                              color: ThemeColors.textFieldBackgroundColor)),
+                                    ),
+                                    validator: (value) {
+                                      // profile.name = value!.trim();
+                                      // Pattern pattern =
+                                      //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                      // RegExp regex =
+                                      // new RegExp(pattern.toString());
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter months';
+                                      }
+                                      // else if(!regex.hasMatch(value)){
+                                      //   return 'Please enter valid name';
+                                      // }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      // profile.name = value;
+                                      setState(() {
+                                        // _nameController.text = value;
+                                        if (_formKey.currentState!.validate()) {}
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
 
                           ],
                         ),
-
-
-
-
                       ],
                     ),
                   ),
@@ -1268,6 +1373,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// GEt Current Location
                         InkWell(
@@ -1304,6 +1410,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Current Address",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Current Address
                         TextFormField(
                           controller: _locationController,
@@ -1375,6 +1488,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Pin Code",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Pin Code
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1439,6 +1559,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("City",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///City
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1497,6 +1624,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         ),
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("State",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///State
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1555,6 +1689,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         ),
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Country",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Country
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1641,134 +1782,158 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ///Years
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            child: TextFormField(
-                              // initialValue: Application.customerLogin!.name.toString(),
-                              controller: _yearsController,
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                                child: Text("Year",
+                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
-                                hintText: "Years",
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                hintStyle: TextStyle(fontSize: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: TextFormField(
+                                  // initialValue: Application.customerLogin!.name.toString(),
+                                  controller: _yearsController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    height: 1.5,
                                   ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: ThemeColors.textFieldBackgroundColor,
+                                    hintText: "Years",
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 15.0),
+                                    hintStyle: TextStyle(fontSize: 15),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor)),
+                                  ),
+                                  validator: (value) {
+                                    // profile.name = value!.trim();
+                                    // Pattern pattern =
+                                    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                    // RegExp regex =
+                                    // new RegExp(pattern.toString());
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Years';
+                                    }
+                                    // else if(!regex.hasMatch(value)){
+                                    //   return 'Please enter valid name';
+                                    // }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    // profile.name = value;
+                                    setState(() {
+                                      // _nameController.text = value;
+                                      if (_formKey.currentState!.validate()) {}
+                                    });
+                                  },
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
                               ),
-                              validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Years';
-                                }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
-                              },
-                            ),
+                            ],
                           ),
 
                           ///Months
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                                child: Text("Months",
+                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
 
-                            child: TextFormField(
-                              // initialValue: Application.customerLogin!.name.toString(),
-                              controller: _monthsController,
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
-                              ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
-                                hintText: "Months",
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                hintStyle: TextStyle(fontSize: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                child: TextFormField(
+                                  // initialValue: Application.customerLogin!.name.toString(),
+                                  controller: _monthsController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    height: 1.5,
                                   ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: ThemeColors.textFieldBackgroundColor,
+                                    hintText: "Months",
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 15.0),
+                                    hintStyle: TextStyle(fontSize: 15),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor)),
+                                  ),
+                                  validator: (value) {
+                                    // profile.name = value!.trim();
+                                    // Pattern pattern =
+                                    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                    // RegExp regex =
+                                    // new RegExp(pattern.toString());
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter months';
+                                    }
+                                    // else if(!regex.hasMatch(value)){
+                                    //   return 'Please enter valid name';
+                                    // }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    // profile.name = value;
+                                    setState(() {
+                                      // _nameController.text = value;
+                                      if (_formKey.currentState!.validate()) {}
+                                    });
+                                  },
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
                               ),
-                              validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter months';
-                                }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
-                              },
-                            ),
+                            ],
                           ),
 
 
@@ -1942,7 +2107,15 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Bank Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Bank NAme
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2007,6 +2180,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Account Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Account Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2071,6 +2251,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("IFSC Code",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///IFSC Code
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2129,6 +2316,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         ),
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Branch Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Branch Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2187,6 +2381,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         ),
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("UPI Id",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///UPI ID
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2274,7 +2475,15 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                     child: Form(
                       // key: _formKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Company Name",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Company Name
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -2339,6 +2548,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Company Certificate",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Company Certificate
                           Container(
                             height: 50,
@@ -2381,6 +2597,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("GST Certificate",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///GST Certificate
                           Container(
                             height: 50,
@@ -2423,6 +2646,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Pan Card",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Upload Pan Card
                           Container(
                             height: 50,
@@ -2465,6 +2695,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("SHOP ACT License",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///SHOPACT License
                           Container(
                             height: 50,
@@ -2507,6 +2744,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("MSME/Udhyog Aadhar Card",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///MSME/Udhyog Aadhar License
                           Container(
                             height: 50,
@@ -2589,7 +2833,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   }
                                   else if(_formKey.currentState!.validate()) {
                                   _profileBloc!.add(UpdateProfile(
-                                    certificate: _educationCertificateModel,
+                                    certificate: educationForms,
                                     serviceUserId: Application.customerLogin!.id
                                         .toString(),
                                     fullName: _nameController.text,
