@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
@@ -37,9 +38,14 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
   HomeBloc? _homeBloc;
   List<ServiceRequestModel>? serviceList = [];
-  final ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
   List<ServiceRequestModel> searchResult=[];
-
+  // final RefreshController _controller = RefreshController(initialRefresh: false);
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  int offset = 0;
+  PagingController<int, ServiceRequestModel>? _pagingController;
+  int? _pageSize;
+  ScrollController? _pagignatedScrollController ;
 
   @override
   void initState() {
@@ -49,6 +55,8 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: '0'));
     print(Application.customerLogin!.id.toString());
+    _pagignatedScrollController = new ScrollController(initialScrollOffset: 5.0)
+      ..addListener(_scrollListener);
   }
   @override
   void dispose() {
@@ -56,6 +64,44 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     super.dispose();
     // getroleofstudent();
   }
+
+  //// ADDING THE SCROLL LISTINER
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // setState(() {
+      //   print("comes to bottom $isLoading");
+      //   isLoading = true;
+      //
+      //   if (isLoading) {
+      //     print("RUNNING LOAD MORE");
+
+      offset+=10;
+      setProductBlocData(serviceList!,offset);
+      //   }
+      // });
+    }
+  }
+
+  void paginationCall(List<ServiceRequestModel> serviceList){
+    _pageSize=10;
+    _pagingController= PagingController(firstPageKey: 0);
+    //updated on 15/11/2021 for pagination
+    _pagingController!.addPageRequestListener((pageKey) {
+      offset= pageKey;
+      print("pageKey:-"+pageKey.toString());
+      _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: offset.toString()));
+
+    });
+  }
+
+  //for product Listing api
+  void setProductBlocData(List<ServiceRequestModel> serviceList, int offset){
+    _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: offset.toString()));
+
+  }
+
   void _handleSearchStart() {
     setState(() {
       _isSearching = true;
@@ -71,8 +117,6 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
         serviceListData.machineName = serviceList![i].machineName.toString();
         serviceListData.enquiryId = serviceList![i].enquiryId;
         serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
-
-
 
         if (serviceListData.machineImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
             serviceListData.machineName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
@@ -92,11 +136,20 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
 
   Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        if (!_isLoading) {
+          _isLoading = !_isLoading;
+          // Perform event when user reach at the end of list (e.g. do Api call)
+        }
+      }
+    });
     return ListView.builder(
-      controller: _scrollController
-       ..addListener(() {
-         if(_scrollController.offset == _scrollController.position.maxScrollExtent){}
-       }),
+      controller: _scrollController,
+       // ..addListener(() {
+       //   if(_scrollController.offset == _scrollController.position.maxScrollExtent){}
+       // }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -307,6 +360,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: widget.isSwitched?
       BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         return BlocListener<HomeBloc, HomeState>(

@@ -63,9 +63,27 @@ class _EnquiryQuotationsPreviewScreenState
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _phoneNumberController.clear();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
+    // TotalAmount();
+  }
 
+  TotalAmount(){
+    if(widget.transportController.text == ""){
+      widget.transportController.text = "0";
+    }
+    if(widget.packingController.text == ""){
+      widget.packingController.text = "0";
+    }
+    if(widget.testingChargesController.text == ""){
+      widget.testingChargesController.text = "0";
+    }
+    grandTotal = itemRequiredTotalAmount! + double.parse(widget.transportController.text) + double.parse(widget.packingController.text) +
+        double.parse(widget.testingChargesController.text) + commission! + double.parse(widget.cgstController.text) +
+        double.parse(widget.sgstController.text) + double.parse(widget.igstController.text);
+
+    setState(() {
+
+    });
   }
 
   @override
@@ -164,6 +182,7 @@ class _EnquiryQuotationsPreviewScreenState
                       itemRequiredTotalAmount = widget.requestDetailList!
                           .map((item) => double.parse(widget.itemRateController[index].text.toString()) * double.parse(item.qty.toString()))
                           .reduce((value, current) => value + current);
+                      TotalAmount();
                       return _getItemRequiredDataRow(widget.requestDetailList![index],index);
                     }),
                   ),
@@ -300,7 +319,7 @@ class _EnquiryQuotationsPreviewScreenState
                                 fontFamily: 'Poppins-Medium',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
-                        Text("₹",
+                        Text("₹ $grandTotal",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Poppins-Medium',
@@ -376,127 +395,125 @@ class _EnquiryQuotationsPreviewScreenState
             height: 40,
           ),
 
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  title: new Text("Are you sure, you want to send this quotation?"),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: new Text("Are you sure, you want to send this quotation?"),
 
 
 
-                                  // content: new Text(""),
-                                  actions: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        TextButton(
+                                // content: new Text(""),
+                                actions: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      TextButton(
+                                          child: new Text(
+                                            "No",
+                                            style: TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          style: TextButton.styleFrom(
+                                            fixedSize: const Size(120, 30),
+                                            shape:
+                                                const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                25))),
+                                            side: BorderSide(
+                                                color: ThemeColors
+                                                    .defaultbuttonColor,
+                                                width: 1.5),
+                                          )),
+                                      SizedBox(
+                                        width: 7,
+                                      ),
+                                      BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+                                        return BlocListener<HomeBloc, HomeState>(
+                                          listener: (context, state) {
+                                            if(state is JobWorkSendQuotationSuccess){
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => BottomNavigation(
+                                                        index: 0,
+                                                        dropValue: Application.customerLogin!.role.toString(),
+                                                      )));
+                                              showCustomSnackBar(context,state.message,isError: false);
+                                            }
+                                          },
+                                          child: TextButton(
                                             child: new Text(
-                                              "No",
-                                              style: TextStyle(
-                                                  color: Colors.black),
+                                              "Yes",
+                                              style:
+                                              TextStyle(color: Colors.white),
                                             ),
                                             onPressed: () {
-                                              Navigator.of(context).pop();
+                                              _homeBloc!.add(JobWorkSendQuotation(
+                                                serviceUserId: Application.customerLogin!.id.toString(),
+                                                jobWorkEnquirydate: widget.requestDetailList![0].createdAt.toString(),
+                                                jobWorkEnquiryId: widget.requestDetailList![0].userId.toString(),
+                                                transportCharge: widget.transportController.text == "" ? '0': widget.transportController.text,
+                                                packingCharge: widget.packingController.text == "" ? '0':widget.packingController.text,
+                                                testingCharge: widget.testingChargesController.text == "" ? '0':widget.testingChargesController.text,
+                                                cgst: widget.cgstController.text == "" ? '0':widget.cgstController.text,
+                                                sgst: widget.sgstController.text == "" ? '0':widget.sgstController.text,
+                                                igst: widget.igstController.text == "" ? '0':widget.igstController.text,
+                                                commission: commission.toString(),
+                                                itemList: widget.requestDetailList!,
+                                                itemRateController: widget.itemRateController,
+                                                volumeController: widget.volumeController,
+                                                totalAmount: grandTotal.toString(),
+                                              ));
                                             },
                                             style: TextButton.styleFrom(
                                               fixedSize: const Size(120, 30),
+                                              backgroundColor: ThemeColors
+                                                  .defaultbuttonColor,
                                               shape:
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  25))),
-                                              side: BorderSide(
-                                                  color: ThemeColors
-                                                      .defaultbuttonColor,
-                                                  width: 1.5),
-                                            )),
-                                        SizedBox(
-                                          width: 7,
-                                        ),
-                                        BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-                                          return BlocListener<HomeBloc, HomeState>(
-                                            listener: (context, state) {
-                                              if(state is JobWorkSendQuotationSuccess){
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => BottomNavigation(
-                                                          index: 0,
-                                                          dropValue: Application.customerLogin!.role.toString(),
-                                                        )));
-                                                showCustomSnackBar(context,state.message,isError: false);
-                                              }
-                                            },
-                                            child: TextButton(
-                                              child: new Text(
-                                                "Yes",
-                                                style:
-                                                TextStyle(color: Colors.white),
-                                              ),
-                                              onPressed: () {
-                                                _homeBloc!.add(JobWorkSendQuotation(
-                                                  serviceUserId: Application.customerLogin!.id.toString(),
-                                                  jobWorkEnquirydate: widget.requestDetailList![0].createdAt.toString(),
-                                                  jobWorkEnquiryId: widget.requestDetailList![0].userId.toString(),
-                                                  transportCharge: widget.transportController.text == "" ? '0': widget.transportController.text,
-                                                  packingCharge: widget.packingController.text == "" ? '0':widget.packingController.text,
-                                                  testingCharge: widget.testingChargesController.text == "" ? '0':widget.testingChargesController.text,
-                                                  cgst: widget.cgstController.text == "" ? '0':widget.cgstController.text,
-                                                  sgst: widget.sgstController.text == "" ? '0':widget.sgstController.text,
-                                                  igst: widget.igstController.text == "" ? '0':widget.igstController.text,
-                                                  commission: commission.toString(),
-                                                  itemList: widget.requestDetailList!,
-                                                  itemRateController: widget.itemRateController,
-                                                  volumeController: widget.volumeController,
-                                                  totalAmount: grandTotal.toString(),
-                                                ));
-                                              },
-                                              style: TextButton.styleFrom(
-                                                fixedSize: const Size(120, 30),
-                                                backgroundColor: ThemeColors
-                                                    .defaultbuttonColor,
-                                                shape:
-                                                const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.all(
-                                                        Radius.circular(
-                                                            25))),),
+                                              const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.all(
+                                                      Radius.circular(
+                                                          25))),),
 
-                                            ),
+                                          ),
 
-                                          );
+                                        );
 
 
-                                        })
+                                      })
 
-                                      ],
-                                    ),
-                                  ],
-                                ));
-                        // Navigator.push(context, MaterialPageRoute(builder: (contex)=>EnquiryQuotationsPreviewScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.defaultbuttonColor,
-                        shape: StadiumBorder(),
-                      ),
-                      child: Text(
-                        "Next",
-                        style: Theme.of(context).textTheme.button!.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
+                                    ],
+                                  ),
+                                ],
+                              ));
+                      // Navigator.push(context, MaterialPageRoute(builder: (contex)=>EnquiryQuotationsPreviewScreen()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: ThemeColors.defaultbuttonColor,
+                      shape: StadiumBorder(),
                     ),
-                  )),
-            ),
+                    child: Text(
+                      "Next",
+                      style: Theme.of(context).textTheme.button!.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                )),
           )
         ],
       ),

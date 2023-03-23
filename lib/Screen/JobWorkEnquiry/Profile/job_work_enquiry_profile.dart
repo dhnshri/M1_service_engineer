@@ -664,7 +664,15 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("ID",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///ID
                         TextFormField(
                           enabled: false,
@@ -729,6 +737,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Company Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Company Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -793,6 +808,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Co-Ordinator Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///CoOrdinator Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -857,6 +879,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Email",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Email
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -920,6 +949,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Phone Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Phone Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -981,6 +1017,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("GST Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///GST Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1041,7 +1084,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
-
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Category",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Category
                         SizedBox(
                           // height: deviceHeight,
@@ -1067,7 +1116,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         ),
 
                         SizedBox(height: 15,),
-
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Sub-Category",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Sub-Category
                         SizedBox(
                           // height: deviceHeight,
@@ -1094,6 +1149,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Company Profile",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Upload Company Profile
                         Container(
                           height: 50,
@@ -1411,6 +1473,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     child: Form(
                       key: _addressFormKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           /// GEt Current Location
                           InkWell(
@@ -1447,6 +1510,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Address",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Address
                           TextFormField(
                             controller: _addressController,
@@ -1518,6 +1588,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Pin Code",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Pin Code
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1582,6 +1659,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("City",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///City
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1646,6 +1730,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("State",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///State
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1710,6 +1801,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Country",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Country
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1794,7 +1892,15 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     child: Form(
                       // key: _formKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Company Name",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Company Name
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1859,6 +1965,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Company Certificate",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Company Certificate
                           Container(
                             height: 50,
@@ -1901,6 +2014,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("GST Certificate",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///GST Certificate
                           Container(
                             height: 50,
@@ -1943,6 +2063,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Pan Card",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Upload Pan Card
                           Container(
                             height: 50,
@@ -1985,6 +2112,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("SHOPACT License",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///SHOPACT License
                           Container(
                             height: 50,
@@ -2027,6 +2161,13 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("MSME/Udhyog Aadhar Card",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///MSME/Udhyog Aadhar License
                           Container(
                             height: 50,

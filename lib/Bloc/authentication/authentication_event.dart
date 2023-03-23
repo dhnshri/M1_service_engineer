@@ -8,13 +8,16 @@ class OnAuthCheck extends AuthenticationEvent {}
 class OnSaveUser extends AuthenticationEvent {
   final CustomerLogin user;
   OnSaveUser(this.user);
-
 }
 
-class OnSaveAddress extends AuthenticationEvent {
-  // final AddressModel address;
-  // OnSaveAddress(this.address);
+class OnSaveMaintainenceTotalAmount extends AuthenticationEvent {
+   double? totalAmount;
+   OnSaveMaintainenceTotalAmount(this.totalAmount);
+}
 
+class OnSaveMaintainenceRevisedTotalAmount extends AuthenticationEvent {
+  double? totalAmount;
+  OnSaveMaintainenceRevisedTotalAmount(this.totalAmount);
 }
 
 class OnSaveCart extends AuthenticationEvent {

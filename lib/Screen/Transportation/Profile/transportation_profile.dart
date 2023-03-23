@@ -1283,7 +1283,15 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Driver Profile",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Owner Profile
                         Container(
                           height: 50,
@@ -1326,7 +1334,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
-
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1391,7 +1405,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
-
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Phone Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Phone Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1453,6 +1473,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Driver License Validity",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Driver License Validity
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1514,6 +1541,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Driver License Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Driver License Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1575,6 +1609,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Driver License Image",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Driving License Image
                         Container(
                           height: 50,
@@ -1617,6 +1658,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Driver Id Proof",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Driver Id Proof
                         Container(
                           height: 50,
@@ -1687,6 +1735,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                     child: Form(
                       key: _addressFormKey,
                       child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           /// GEt Current Location
                           InkWell(
@@ -1723,6 +1772,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Address",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Address
                           TextFormField(
                             controller: _addressController,
@@ -1793,7 +1849,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           ),
 
                           SizedBox(height: 15,),
-
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Pin Code",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Pin Code
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1858,6 +1920,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("City",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///City
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1922,6 +1991,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("State",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///State
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -1986,6 +2062,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Country",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Country
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -2119,458 +2202,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                     ),
                   ),
 
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 30,right: 20),
-                  //   child: Column(
-                  //     children: [
-                  //       ///Vehicle Name
-                  //       TextFormField(
-                  //         // initialValue: Application.customerLogin!.name.toString(),
-                  //         controller: _vehicleNameController,
-                  //         textAlign: TextAlign.start,
-                  //         keyboardType: TextInputType.text,
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           height: 1.5,
-                  //         ),
-                  //         decoration: InputDecoration(
-                  //           filled: true,
-                  //           fillColor: ThemeColors.textFieldBackgroundColor,
-                  //           hintText: "Vehicle Name",
-                  //           contentPadding: EdgeInsets.symmetric(
-                  //               vertical: 10.0, horizontal: 15.0),
-                  //           hintStyle: TextStyle(fontSize: 15),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor
-                  //             ),
-                  //           ),
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor),
-                  //           ),
-                  //           border: OutlineInputBorder(
-                  //               borderRadius:
-                  //               BorderRadius.all(Radius.circular(1.0)),
-                  //               borderSide: BorderSide(
-                  //                   width: 0.8,
-                  //                   color: ThemeColors.textFieldBackgroundColor)),
-                  //         ),
-                  //         validator: (value) {
-                  //           // profile.name = value!.trim();
-                  //           // Pattern pattern =
-                  //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  //           // RegExp regex =
-                  //           // new RegExp(pattern.toString());
-                  //           if (value == null || value.isEmpty) {
-                  //             return 'Please enter vehicle name';
-                  //           }
-                  //           // else if(!regex.hasMatch(value)){
-                  //           //   return 'Please enter valid name';
-                  //           // }
-                  //           return null;
-                  //         },
-                  //         onChanged: (value) {
-                  //           // profile.name = value;
-                  //           setState(() {
-                  //             // _nameController.text = value;
-                  //             if (_formKey.currentState!.validate()) {}
-                  //           });
-                  //         },
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //       ///Vehicle Type
-                  //       TextFormField(
-                  //         // initialValue: Application.customerLogin!.name.toString(),
-                  //         controller: _vehicleTypeController,
-                  //         textAlign: TextAlign.start,
-                  //         keyboardType: TextInputType.text,
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           height: 1.5,
-                  //         ),
-                  //         decoration: InputDecoration(
-                  //           filled: true,
-                  //           fillColor: ThemeColors.textFieldBackgroundColor,
-                  //           hintText: "Vehicle Type",
-                  //           contentPadding: EdgeInsets.symmetric(
-                  //               vertical: 10.0, horizontal: 15.0),
-                  //           hintStyle: TextStyle(fontSize: 15),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor
-                  //             ),
-                  //           ),
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor),
-                  //           ),
-                  //           border: OutlineInputBorder(
-                  //               borderRadius:
-                  //               BorderRadius.all(Radius.circular(1.0)),
-                  //               borderSide: BorderSide(
-                  //                   width: 0.8,
-                  //                   color: ThemeColors.textFieldBackgroundColor)),
-                  //         ),
-                  //         validator: (value) {
-                  //           // profile.name = value!.trim();
-                  //           // Pattern pattern =
-                  //           //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  //           // RegExp regex =
-                  //           // new RegExp(pattern.toString());
-                  //           if (value == null || value.isEmpty) {
-                  //             return 'Please enter vehicle type';
-                  //           }
-                  //           // else if(!regex.hasMatch(value)){
-                  //           //   return 'Please enter valid name';
-                  //           // }
-                  //           return null;
-                  //         },
-                  //         onChanged: (value) {
-                  //           // profile.name = value;
-                  //           setState(() {
-                  //             // _nameController.text = value;
-                  //             if (_formKey.currentState!.validate()) {}
-                  //           });
-                  //         },
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //
-                  //       ///Chassis Number
-                  //       TextFormField(
-                  //         // initialValue: Application.customerLogin!.name.toString(),
-                  //         controller: _chassisNumberController,
-                  //         textAlign: TextAlign.start,
-                  //         keyboardType: TextInputType.text,
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           height: 1.5,
-                  //         ),
-                  //         decoration: InputDecoration(
-                  //           filled: true,
-                  //           fillColor: ThemeColors.textFieldBackgroundColor,
-                  //           hintText: "Chassis Number",
-                  //           contentPadding: EdgeInsets.symmetric(
-                  //               vertical: 10.0, horizontal: 15.0),
-                  //           hintStyle: TextStyle(fontSize: 15),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor
-                  //             ),
-                  //           ),
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor),
-                  //           ),
-                  //           border: OutlineInputBorder(
-                  //               borderRadius:
-                  //               BorderRadius.all(Radius.circular(1.0)),
-                  //               borderSide: BorderSide(
-                  //                   width: 0.8,
-                  //                   color: ThemeColors.textFieldBackgroundColor)),
-                  //         ),
-                  //         validator: (value) {
-                  //           // Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                  //           // RegExp regex = new RegExp(pattern.toString());
-                  //           if (value == null || value.isEmpty) {
-                  //             return 'Please Enter Chassis Number';
-                  //           }
-                  //           // else if(!regex.hasMatch(value)){
-                  //           //   return 'Please enter valid GST Number';
-                  //           // }
-                  //           return null;
-                  //         },
-                  //         onChanged: (value) {
-                  //           // profile.name = value;
-                  //           setState(() {
-                  //             // _nameController.text = value;
-                  //             if (_formKey.currentState!.validate()) {}
-                  //           });
-                  //         },
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //       ///Registration Upto
-                  //       TextFormField(
-                  //         // initialValue: Application.customerLogin!.name.toString(),
-                  //         controller: _registrationUptoController,
-                  //         textAlign: TextAlign.start,
-                  //         keyboardType: TextInputType.text,
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           height: 1.5,
-                  //         ),
-                  //         decoration: InputDecoration(
-                  //           filled: true,
-                  //           fillColor: ThemeColors.textFieldBackgroundColor,
-                  //           hintText: "Registration Upto",
-                  //           contentPadding: EdgeInsets.symmetric(
-                  //               vertical: 10.0, horizontal: 15.0),
-                  //           hintStyle: TextStyle(fontSize: 15),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor
-                  //             ),
-                  //           ),
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor),
-                  //           ),
-                  //           border: OutlineInputBorder(
-                  //               borderRadius:
-                  //               BorderRadius.all(Radius.circular(1.0)),
-                  //               borderSide: BorderSide(
-                  //                   width: 0.8,
-                  //                   color: ThemeColors.textFieldBackgroundColor)),
-                  //         ),
-                  //         validator: (value) {
-                  //           // Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                  //           // RegExp regex = new RegExp(pattern.toString());
-                  //           if (value == null || value.isEmpty) {
-                  //             return 'Please Enter Registration Upto';
-                  //           }
-                  //           // else if(!regex.hasMatch(value)){
-                  //           //   return 'Please enter valid GST Number';
-                  //           // }
-                  //           return null;
-                  //         },
-                  //         onChanged: (value) {
-                  //           // profile.name = value;
-                  //           setState(() {
-                  //             // _nameController.text = value;
-                  //             if (_formKey.currentState!.validate()) {}
-                  //           });
-                  //         },
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //       ///Vehicle Number
-                  //       TextFormField(
-                  //         // initialValue: Application.customerLogin!.name.toString(),
-                  //         controller: _vehicleNumberController,
-                  //         textAlign: TextAlign.start,
-                  //         keyboardType: TextInputType.text,
-                  //         style: TextStyle(
-                  //           fontSize: 18,
-                  //           height: 1.5,
-                  //         ),
-                  //         decoration: InputDecoration(
-                  //           filled: true,
-                  //           fillColor: ThemeColors.textFieldBackgroundColor,
-                  //           hintText: "Vehicle Number",
-                  //           contentPadding: EdgeInsets.symmetric(
-                  //               vertical: 10.0, horizontal: 15.0),
-                  //           hintStyle: TextStyle(fontSize: 15),
-                  //           enabledBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor
-                  //             ),
-                  //           ),
-                  //           focusedBorder: OutlineInputBorder(
-                  //             borderRadius:
-                  //             BorderRadius.all(Radius.circular(1.0)),
-                  //             borderSide: BorderSide(
-                  //                 width: 0.8,
-                  //                 color: ThemeColors.textFieldBackgroundColor),
-                  //           ),
-                  //           border: OutlineInputBorder(
-                  //               borderRadius:
-                  //               BorderRadius.all(Radius.circular(1.0)),
-                  //               borderSide: BorderSide(
-                  //                   width: 0.8,
-                  //                   color: ThemeColors.textFieldBackgroundColor)),
-                  //         ),
-                  //         validator: (value) {
-                  //           // Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                  //           // RegExp regex = new RegExp(pattern.toString());
-                  //           if (value == null || value.isEmpty) {
-                  //             return 'Please Enter Vehicle Number';
-                  //           }
-                  //           // else if(!regex.hasMatch(value)){
-                  //           //   return 'Please enter valid GST Number';
-                  //           // }
-                  //           return null;
-                  //         },
-                  //         onChanged: (value) {
-                  //           // profile.name = value;
-                  //           setState(() {
-                  //             // _nameController.text = value;
-                  //             if (_formKey.currentState!.validate()) {}
-                  //           });
-                  //         },
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //
-                  //       ///Upload Vehicle Image
-                  //       Container(
-                  //         height: 50,
-                  //         color: ThemeColors.textFieldBackgroundColor,
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.only(left: 8),
-                  //                 child: Text("Upload Vehicle Image",
-                  //                   style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                  //                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                 ),
-                  //               ),
-                  //               InkWell(
-                  //                 onTap: (){
-                  //                   // _openGallery(context);
-                  //                 },
-                  //                 child: Container(
-                  //                   height: 30,
-                  //                   color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                  //                   child: Padding(
-                  //                     padding: const EdgeInsets.only(left: 4,right: 4),
-                  //                     child: Center(child: Text("+Add Image",
-                  //                       style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                  //                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                     )),
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //       ///Upload your RC
-                  //       Container(
-                  //         height: 50,
-                  //         color: ThemeColors.textFieldBackgroundColor,
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.only(left: 8),
-                  //                 child: Text("Upload your RC",
-                  //                   style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                  //                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                 ),
-                  //               ),
-                  //               InkWell(
-                  //                 onTap: (){
-                  //                   // _openGallery(context);
-                  //                 },
-                  //                 child: Container(
-                  //                   height: 30,
-                  //                   color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                  //                   child: Padding(
-                  //                     padding: const EdgeInsets.only(left: 4,right: 4),
-                  //                     child: Center(child: Text("+Add Image",
-                  //                       style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                  //                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                     )),
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //       ///Upload your PVC
-                  //       Container(
-                  //         height: 50,
-                  //         color: ThemeColors.textFieldBackgroundColor,
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.only(left: 8),
-                  //                 child: Text("Upload your PVC",
-                  //                   style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
-                  //                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                 ),
-                  //               ),
-                  //               InkWell(
-                  //                 onTap: (){
-                  //                   // _openGallery(context);
-                  //                 },
-                  //                 child: Container(
-                  //                   height: 30,
-                  //                   color: ThemeColors.textFieldHintColor.withOpacity(0.3),
-                  //                   child: Padding(
-                  //                     padding: const EdgeInsets.only(left: 4,right: 4),
-                  //                     child: Center(child: Text("+Add Image",
-                  //                       style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
-                  //                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                     )),
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //
-                  //       SizedBox(height: 15,),
-                  //
-                  //       ///Add More
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.end,
-                  //         children: [
-                  //           Text("Add More",
-                  //             style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
-                  //             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //           ),
-                  //           SizedBox(width: 5,),
-                  //           CircleAvatar(
-                  //             backgroundColor: ThemeColors.redTextColor,
-                  //             child: Icon(Icons.add,color: Colors.white,),
-                  //           )
-                  //         ],
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
+
 
                   const SizedBox(height: 10,),
 
@@ -2603,134 +2235,158 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ///Years
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            child: TextFormField(
-                              // initialValue: Application.customerLogin!.name.toString(),
-                              controller: _yearsController,
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                                child: Text("Years",
+                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
-                                hintText: "Years",
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                hintStyle: TextStyle(fontSize: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: TextFormField(
+                                  // initialValue: Application.customerLogin!.name.toString(),
+                                  controller: _yearsController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    height: 1.5,
                                   ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: ThemeColors.textFieldBackgroundColor,
+                                    hintText: "Years",
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 15.0),
+                                    hintStyle: TextStyle(fontSize: 15),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor)),
+                                  ),
+                                  validator: (value) {
+                                    // profile.name = value!.trim();
+                                    // Pattern pattern =
+                                    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                    // RegExp regex =
+                                    // new RegExp(pattern.toString());
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Years';
+                                    }
+                                    // else if(!regex.hasMatch(value)){
+                                    //   return 'Please enter valid name';
+                                    // }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    // profile.name = value;
+                                    setState(() {
+                                      // _nameController.text = value;
+                                      if (_formKey.currentState!.validate()) {}
+                                    });
+                                  },
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
                               ),
-                              validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter Years';
-                                }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
-                              },
-                            ),
+                            ],
                           ),
 
                           ///Months
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                                child: Text("Months",
+                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
 
-                            child: TextFormField(
-                              // initialValue: Application.customerLogin!.name.toString(),
-                              controller: _monthsController,
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
-                              ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
-                                hintText: "Months",
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                hintStyle: TextStyle(fontSize: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                child: TextFormField(
+                                  // initialValue: Application.customerLogin!.name.toString(),
+                                  controller: _monthsController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    height: 1.5,
                                   ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: ThemeColors.textFieldBackgroundColor,
+                                    hintText: "Months",
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 15.0),
+                                    hintStyle: TextStyle(fontSize: 15),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.textFieldBackgroundColor),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8,
+                                            color: ThemeColors.textFieldBackgroundColor)),
+                                  ),
+                                  validator: (value) {
+                                    // profile.name = value!.trim();
+                                    // Pattern pattern =
+                                    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                    // RegExp regex =
+                                    // new RegExp(pattern.toString());
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter months';
+                                    }
+                                    // else if(!regex.hasMatch(value)){
+                                    //   return 'Please enter valid name';
+                                    // }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    // profile.name = value;
+                                    setState(() {
+                                      // _nameController.text = value;
+                                      if (_formKey.currentState!.validate()) {}
+                                    });
+                                  },
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
                               ),
-                              validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter months';
-                                }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                // profile.name = value;
-                                setState(() {
-                                  // _nameController.text = value;
-                                  if (_formKey.currentState!.validate()) {}
-                                });
-                              },
-                            ),
+                            ],
                           ),
 
 
@@ -2834,7 +2490,15 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Bank Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Bank NAme
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2899,6 +2563,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Account Number",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Account Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2963,6 +2634,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("IFSC Code",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///IFSC Code
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -3021,6 +2699,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         ),
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("Branch Name",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///Branch Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -3079,6 +2764,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         ),
                         SizedBox(height: 15,),
 
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          child: Text("UPI ID",
+                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         ///UPI ID
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -3167,6 +2859,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                       // key: _formKey,
                       child: Column(
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Company Name",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Company Name
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -3231,6 +2930,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("Company Certificate",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Company Certificate
                           Container(
                             height: 50,
@@ -3273,6 +2979,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("GST Certificate",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///GST Certificate
                           Container(
                             height: 50,
@@ -3315,6 +3028,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("PAN Card",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///Upload Pan Card
                           Container(
                             height: 50,
@@ -3357,6 +3077,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("SHOPACT License",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///SHOPACT License
                           Container(
                             height: 50,
@@ -3399,6 +3126,13 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
 
                           SizedBox(height: 15,),
 
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text("MSME/Udhyog Aadhar Card",
+                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           ///MSME/Udhyog Aadhar License
                           Container(
                             height: 50,

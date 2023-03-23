@@ -64,11 +64,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
 
       ///Check result save user
       if (savePreferences) {
-        ///Set token network
-        // httpManager.getOption.headers["Authorization"] =
-        //     "Bearer " + event.user.token;
-        // httpManager.postOption.headers["Authorization"] =
-        //     "Bearer " + event.user.token;
+
 
         ///Set user
         Application.customerLogin = event.user;
@@ -76,6 +72,68 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
 
         ///Notify loading to UI
         if(Application.customerLogin!.id!=null) {
+          yield AuthenticationSuccess();
+        }else{
+          yield AuthenticationFail();
+        }
+
+
+      } else {
+        final String message = "Cannot save user data to storage phone";
+        throw Exception(message);
+      }
+    }
+
+
+    if (event is OnSaveMaintainenceTotalAmount) {
+      ///Save to Storage user via repository
+      final savePreferences = await userRepository!.saveTotalAmount(event.totalAmount);
+
+      ///Check result save user
+      if (savePreferences) {
+        ///Set token network
+        // httpManager.getOption.headers["Authorization"] =
+        //     "Bearer " + event.user.token;
+        // httpManager.postOption.headers["Authorization"] =
+        //     "Bearer " + event.user.token;
+
+        ///Set user
+        Application.totalAmount = event.totalAmount;
+        // UtilPreferences.setString(Preferences.user, Application.user.toString());
+
+        ///Notify loading to UI
+        if(Application.totalAmount!=null) {
+          yield AuthenticationSuccess();
+        }else{
+          yield AuthenticationFail();
+        }
+
+
+      } else {
+        final String message = "Cannot save user data to storage phone";
+        throw Exception(message);
+      }
+    }
+
+
+    if (event is OnSaveMaintainenceRevisedTotalAmount) {
+      ///Save to Storage user via repository
+      final savePreferences = await userRepository!.saveRevisedTotalAmount(event.totalAmount);
+
+      ///Check result save user
+      if (savePreferences) {
+        ///Set token network
+        // httpManager.getOption.headers["Authorization"] =
+        //     "Bearer " + event.user.token;
+        // httpManager.postOption.headers["Authorization"] =
+        //     "Bearer " + event.user.token;
+
+        ///Set user
+        Application.revisedTotalAmount = event.totalAmount;
+        // UtilPreferences.setString(Preferences.user, Application.user.toString());
+
+        ///Notify loading to UI
+        if(Application.revisedTotalAmount!=null) {
           yield AuthenticationSuccess();
         }else{
           yield AuthenticationFail();

@@ -291,13 +291,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             )),
             const SizedBox(height: 10,),
 
-            const Text('Vehicle Name',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            const SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Vehicle Name",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Vehicle Name
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -356,13 +356,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             const SizedBox(height: 15,),
 
-            const Text('Vehicle Type',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            const SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Vehicle Type",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Vehicle Type
             TextFormField(
               controller: widget._vehicleTypeController,
@@ -419,13 +419,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             SizedBox(height: 15,),
 
-            Text('Chasis Number',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Chasis Number",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Chasis Number
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -484,13 +484,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             SizedBox(height: 15,),
 
-            Text('Registration number',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Registration Upto",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Registration Upto
             InkWell(
               onTap: (){
@@ -555,13 +555,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             SizedBox(height: 15,),
 
-            const Text('Vehicle Number',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            const SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Vehicle Number",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Vehicle Number
             TextFormField(
               // initialValue: Application.customerLogin!.name.toString(),
@@ -620,13 +620,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             const SizedBox(height: 15,),
 
-            const Text('Vehicle Image',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            const SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Vehicle Image",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Vehicle Image
             Container(
               height: 50,
@@ -670,13 +670,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             const SizedBox(height: 15,),
 
-            const Text('Vehicle RC Image',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            const SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Vehicle RC Image",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Vehicle RC Image
             Container(
               height: 50,
@@ -720,13 +720,13 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             const SizedBox(height: 15,),
 
-            const Text('Vehicle PUC Image',style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins-Medium',
-                fontSize: 16,
-                fontWeight: FontWeight.w400
-            )),
-            const SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("Vehicle PUC Image",
+                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
             ///Vehicle PUC Image
             Container(
               height: 50,

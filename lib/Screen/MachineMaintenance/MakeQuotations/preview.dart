@@ -3,7 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/authentication/authentication_event.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
+import 'package:service_engineer/app_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,6 +20,7 @@ class PreviewScreen extends StatefulWidget {
   TextEditingController handlingChargesController = TextEditingController();
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
+  TextEditingController gstChargesController = TextEditingController();
   PreviewScreen(
       {Key? key,
       required this.cartList,
@@ -27,7 +30,8 @@ class PreviewScreen extends StatefulWidget {
       required this.serviceCallChargesController,
       required this.handlingChargesController,
       required this.transportChargesController,
-      required this.otherChargesController})
+      required this.otherChargesController,
+      required this.gstChargesController})
       : super(key: key);
 
   @override
@@ -38,7 +42,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
   bool loading = true;
   bool value = false;
-
 
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequired =
@@ -65,6 +68,23 @@ class _PreviewScreenState extends State<PreviewScreen> {
     //       int.parse(widget.transportChargesController.text.toString()) +
     //        commission!;
     // });
+  }
+  
+  TotalAmount(){
+    if(widget.serviceCallChargesController.text==""){
+      widget.serviceCallChargesController.text = "0";
+    }
+    if(widget.transportChargesController.text==""){
+      widget.transportChargesController.text = "0";
+    }
+    if(widget.handlingChargesController.text==""){
+      widget.handlingChargesController.text = "0";
+    }
+
+    totalAmount = itemRequiredTotalAmount! + otherItemTotalAmount! + double.parse(widget.serviceCallChargesController.text) +
+        double.parse(widget.transportChargesController.text) + double.parse(widget.handlingChargesController.text) +
+        double.parse(widget.gstChargesController.text) + commission!;
+    AppBloc.authBloc.add(OnSaveMaintainenceTotalAmount(totalAmount));
   }
 
   @override
@@ -162,6 +182,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           double.parse(amountWithGST.toString())
                           )
                               .reduce((value, current) => value + current);
+                          WidgetsBinding.instance.addPostFrameCallback((_){
+                            if(widget.gstChargesController.text!=""){
+                              TotalAmount();
+                            }
+                          });
+
                           return _getItemRequiredDataRow(widget.cartList![index],index);
                         }),
                       ),
@@ -302,19 +328,19 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   ),
                 ],
               ),
-        // Date and Time
-        Padding(
-          padding: const EdgeInsets.only(
-              right: 16.0, left: 16.0, bottom: 8.0, top: 8.0),
-          child: Container(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Date & Time"),
-              Text("20 Nov, 2022 / 12PM - 4PM"),
-            ],
-          )),
-        ),
+        // // Date and Time
+        // Padding(
+        //   padding: const EdgeInsets.only(
+        //       right: 16.0, left: 16.0, bottom: 8.0, top: 8.0),
+        //   child: Container(
+        //       child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Text("Date & Time"),
+        //       Text("20 Nov, 2022 / 12PM - 4PM"),
+        //     ],
+        //   )),
+        // ),
 
         //Quotation Charges
         ExpansionTileCard(
@@ -335,19 +361,32 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Row(
+                        children: [
+                          Text("Total Items charges"),
+                          SizedBox(width: 2,),
+                          Text("(Item + Other Items)",style: TextStyle(fontSize: 12),),
+
+                        ],
+                      ),
+                      Text(
+                          "₹ ${itemRequiredTotalAmount! + otherItemTotalAmount!}"),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       Text("Service charge"),
                       Text(widget.serviceCallChargesController.text == ''
                           ? "₹ 0"
                           : "₹ ${widget.serviceCallChargesController.text}"),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Total Items charges"),
-                      Text(
-                          "₹ ${itemRequiredTotalAmount! + otherItemTotalAmount!}"),
-                    ],
+                  SizedBox(
+                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -358,14 +397,20 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           : "₹ ${widget.transportChargesController.text}"),
                     ],
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Other charge"),
-                      Text(widget.otherChargesController.text == ''
+                      Text("Handling charge"),
+                      Text(widget.handlingChargesController.text == ''
                           ? "₹ 0"
-                          : "₹ ${widget.otherChargesController.text}"),
+                          : "₹ ${widget.handlingChargesController.text}"),
                     ],
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -374,11 +419,16 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       Text("₹ $commission"),
                     ],
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("GST %"),
-                      Text("5%"),
+                      Text("GST "),
+                      Text(widget.gstChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.gstChargesController.text}"),
                     ],
                   ),
                   Divider(),

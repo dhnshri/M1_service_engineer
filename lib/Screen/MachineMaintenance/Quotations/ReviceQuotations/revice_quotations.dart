@@ -13,6 +13,7 @@ import 'package:service_engineer/Bloc/quotationReply/quotationReply_event.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_state.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/item_not_available_model.dart';
 import 'package:service_engineer/Model/product_model.dart';
@@ -36,8 +37,9 @@ import 'package:flutter/src/material/date_picker.dart';
 class MachineRevisedQuotationScreen extends StatefulWidget {
   List<QuotationRequiredItems>? quotationRequiredItemList;
   List<QuotationRequiredItems>? quotationOtherItemList;
-  List<QuotationCharges>? quotationChargesList;
-  MachineRevisedQuotationScreen({Key? key,required this.quotationRequiredItemList,required this.quotationOtherItemList, required this.quotationChargesList}) : super(key: key);
+  List<QuotationCharges>? quotationChargesList;  QuotationReplyModel quotationReplyList;
+  MachineRevisedQuotationScreen({Key? key,required this.quotationRequiredItemList,required this.quotationOtherItemList, required this.quotationChargesList,
+    required this.quotationReplyList}) : super(key: key);
 
   @override
   _MachineRevisedQuotationScreenState createState() => _MachineRevisedQuotationScreenState();
@@ -65,6 +67,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
   TextEditingController handlingChargesController = TextEditingController();
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
+  TextEditingController gstChargesController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   final TextEditingController _srNumberController = TextEditingController();
   final TextEditingController _itemNameController = TextEditingController();
@@ -131,67 +134,6 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
     });
   }
 
-  // Widget buildItemRequiredList() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     physics: NeverScrollableScrollPhysics(),
-  //     scrollDirection: Axis.vertical,
-  //     itemCount: itemNotAvailabeList.length,
-  //     padding: EdgeInsets.only(top: 0, bottom: 1),
-  //     itemBuilder: (context, index) {
-  //       return  Padding(
-  //           padding: const EdgeInsets.only(bottom:0.0),
-  //           child: Container(
-  //             // color: Color(0xffFFE4E5),
-  //               decoration: BoxDecoration(
-  //                 color: Color(0xffFFE4E5),
-  //               ),
-  //               child:Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: Row(
-  //
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(itemNotAvailabeList[index].id.toString())
-  //                       ],
-  //                     ),
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(itemNotAvailabeList[index].itemName.toString())
-  //                       ],
-  //                     ),
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text(itemNotAvailabeList[index].quantity.toString())
-  //                       ],
-  //                     ),
-  //                     Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Text("₹ ${itemNotAvailabeList[index].rate.toString()}")
-  //                       ],
-  //                     ),
-  //                     // Column(
-  //                     //   crossAxisAlignment: CrossAxisAlignment.start,
-  //                     //   children: [
-  //                     //     Text("₹ ${itemNotAvailabeList[index].amount.toString()}")
-  //                     //   ],
-  //                     // ),
-  //                   ],
-  //                 ),
-  //               )
-  //           )
-  //       );
-  //     },
-  //
-  //   );
-  // }
-
 
   DataRow _buildItemRequiredList(ItemNotAvailableModel? itemNotAvailabeList,index) {
     return DataRow(
@@ -216,34 +158,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
     mainWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     Row(
-        //       children: [
-        //         Icon(Icons.search),
-        //         SizedBox(width: 5,),
-        //         Text("Search all Orders")
-        //       ],
-        //     ),
-        //
-        //     InkWell(
-        //       onTap: ()
-        //       {
-        //         Navigator.push(context,
-        //             MaterialPageRoute(builder: (context) => ItemRequiredFilterScreen()));
-        //       },
-        //       child: Row(
-        //         children: [
-        //           Icon(Icons.filter_list),
-        //           SizedBox(width: 5,),
-        //           Text("Filter")
-        //         ],
-        //       ),
-        //     )
-        //
-        //   ],
-        // ),
+
         Container(
           // height: 350,
           child:SingleChildScrollView(
@@ -837,7 +752,8 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
           serviceCallChargesController: serviceCallChargesController,
           transportChargesController: transportChargesController,
           otherChargesController: otherChargesController,
-          handlingChargesController: handlingChargesController),
+          handlingChargesController: handlingChargesController,
+          gstChargesController: gstChargesController),
     ),
   ];
 
@@ -857,6 +773,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
     serviceCallChargesController.text = widget.quotationChargesList![0].serviceCharge.toString();
     handlingChargesController.text = widget.quotationChargesList![0].handlingCharge.toString();
     transportChargesController.text = widget.quotationChargesList![0].transportCharge.toString();
+    gstChargesController.text = widget.quotationChargesList![0].gst.toString();
     int itemIndex = 0;
     for(int i = 0; i < widget.quotationOtherItemList!.length ; i++) {
       itemIndex = itemIndex + 1;
@@ -901,7 +818,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 },
                 child: Icon(Icons.arrow_back_ios)),
             title: Text(
-              'Quotation for #102GRDSA36987',
+              'Quotation for #${widget.quotationReplyList.enquiryId}',
               style: appBarheadingStyle,
             ),
           ),
@@ -981,7 +898,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                                         .toString()).toString(),
                                 machineEnquiryId: widget.quotationRequiredItemList![0].machineEnquiryId!
                                     .toInt(),
-                                totalAmount: totalAmount.toString(),
+                                totalAmount: Application.revisedTotalAmount.toString(),
                             ));
                           }
                         },
@@ -1335,6 +1252,74 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
               onChanged: (val) {
                 setState(() {
                   transportChargesValue = val;
+                  // _phoneNumberController.text = val;
+                });
+              },
+            ),
+          ),
+
+          Text('GST',style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins-Medium',
+              fontSize: 16,
+              fontWeight: FontWeight.w400
+          )),
+          SizedBox(height: 5,),
+
+          ///GST Field
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 60,
+            child: TextFormField(
+              controller: gstChargesController,
+              keyboardType: TextInputType.number,
+              // maxLength: 10,
+              cursorColor: primaryAppColor,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: Color(0xffF5F5F5),
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(
+                      color: Colors.white, width: 1.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                hintText: 'GST',
+                contentPadding:
+                const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                hintStyle: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500),
+              ),
+              onChanged: (val) {
+                setState(() {
                   // _phoneNumberController.text = val;
                 });
               },

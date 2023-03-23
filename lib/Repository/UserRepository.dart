@@ -288,18 +288,31 @@ class UserRepository {
     return UtilPreferences.getString(Preferences.user);
   }
   //
-  // ///Save address
-  // Future<dynamic> saveAddress(AddressModel address) async {
-  //   return await UtilPreferences.setString(
-  //     Preferences.address,
-  //     jsonEncode(address.toJson()),
-  //   );
-  // }
-  //
-  // ///Get address
-  // dynamic getAddress() {
-  //   return UtilPreferences.getString(Preferences.address);
-  // }
+  // ///Save Machine Total Amount
+  Future<dynamic> saveTotalAmount(double totalAmount) async {
+    return await UtilPreferences.setString(
+      Preferences.totalAmount,
+      totalAmount.toString(),
+    );
+  }
+
+  ///Get address
+  dynamic getAmount() {
+    return UtilPreferences.getString(Preferences.totalAmount);
+  }
+
+  // ///Save Machine Revised Total Amount
+  Future<dynamic> saveRevisedTotalAmount(double totalAmount) async {
+    return await UtilPreferences.setString(
+      Preferences.RevisedtotalAmount,
+      totalAmount.toString(),
+    );
+  }
+
+  ///Get address
+  dynamic getRevisedAmount() {
+    return UtilPreferences.getString(Preferences.RevisedtotalAmount);
+  }
   //
   //
   // ///Save cartCount
