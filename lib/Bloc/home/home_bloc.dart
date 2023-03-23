@@ -14,10 +14,13 @@ import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
 import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
 import '../../Model/MachineMaintance/myTaskModel.dart';
+import '../../Model/MachineMaintance/task_hand_over_model.dart';
 import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../Model/cart_list_repo.dart';
 import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
@@ -72,6 +75,128 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ///Notify loading to UI
         yield MyTaskLoading(isLoading: false);
         yield ServiceRequestFail(msg: result.msg!);
+      }
+    }
+
+    //Event for Task Hand Over Machine Maintaince
+
+    if (event is OnTaskHandOver) {
+      ///Notify loading to UI
+      yield TaskHandOverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final MachineMaintanceTaskHandOverRepo result = await userRepository!
+          .fetchTaskHandOverList(
+        offSet: event.offSet,
+        userID: event.userID,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorTaskHandOverList = result.data! ?? [];
+        final TaskHandOverList = refactorTaskHandOverList.map((item) {
+          return MachineMaintanceTaskHandOverModel.fromJson(item);
+        }).toList();
+        print('Task Hand Over List: $TaskHandOverList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TaskHandOverLoading(
+            isLoading: true,
+          );
+          yield TaskHandOverSuccess(serviceListData:TaskHandOverList, message:"Task Hand Over Successfully");
+        } catch (error) {
+          ///Notify loading to UI
+          yield TaskHandOverFail(msg:"Task Hand Over Fail");
+        }
+      } else {
+        ///Notify loading to UI
+        yield TaskHandOverLoading(isLoading: false);
+        yield TaskHandOverFail(msg:"Task Hand Over Fail");
+      }
+    }
+
+    //Event for Task Hand Over Job Work Enquiry
+
+    if (event is OnJobWorkEnquiryTaskHandOver) {
+      ///Notify loading to UI
+      yield JobWorkEnquiryTaskHandOverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkEnquiryTaskHandOverRepo result = await userRepository!
+          .fetchJobWorkEnquiryTaskHandOverList(
+        offSet: event.offSet,
+        userID: event.userID,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorTaskHandOverList = result.data! ?? [];
+        final TaskHandOverList = refactorTaskHandOverList.map((item) {
+          return JobWorkEnquiryTaskHandOverModel.fromJson(item);
+        }).toList();
+        print('Task Hand Over List: $TaskHandOverList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield JobWorkEnquiryTaskHandOverLoading(
+            isLoading: true,
+          );
+          yield JobWorkEnquiryTaskHandOverSuccess(serviceListJWEData:TaskHandOverList, message:"Task Hand Over Successfully");
+        } catch (error) {
+          ///Notify loading to UI
+          yield JobWorkEnquiryTaskHandOverFail(msg:"Task Hand Over Fail");
+        }
+      } else {
+        ///Notify loading to UI
+        yield JobWorkEnquiryTaskHandOverLoading(isLoading: false);
+        yield JobWorkEnquiryTaskHandOverFail(msg:"Task Hand Over Fail");
+      }
+    }
+
+
+    //Event for Transport Task Hand Over
+    if (event is OnTransportTaskHandOver) {
+      ///Notify loading to UI
+      yield TransportTaskHandOverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final TransportTaskHandOverRepo result = await userRepository!
+          .fetchTransportTaskHandOverList(
+        offSet: event.offSet,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorTaskHandOverList = result.data! ?? [];
+        final TransportTaskHandOverList = refactorTaskHandOverList.map((item) {
+          return TransportTaskHandOverModel.fromJson(item);
+        }).toList();
+        print('Task Hand Over List: $TransportTaskHandOverList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TransportTaskHandOverLoading(
+            isLoading: true,
+          );
+          yield TransportTaskHandOverSuccess(serviceListTransportData:TransportTaskHandOverList, message:"Task Hand Over Successfully");
+        } catch (error) {
+          ///Notify loading to UI
+          yield TransportTaskHandOverFail(msg:"Task Hand Over Fail");
+        }
+      } else {
+        ///Notify loading to UI
+        yield TransportTaskHandOverLoading(isLoading: false);
+        yield TransportTaskHandOverFail(msg:"Task Hand Over Fail");
       }
     }
 

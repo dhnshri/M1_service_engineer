@@ -10,6 +10,7 @@ import 'package:service_engineer/Widget/custom_snackbar.dart';
 import '../../../../Constant/theme_colors.dart';
 import '../../../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../../../Model/JobWorkEnquiry/track_process_report_model.dart';
+import 'job_work_enquiry_service_provider_list.dart';
 import 'my_task_detail.dart';
 
 
@@ -84,7 +85,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
         children: [
           InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderListScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>JobWorkEnquiryServiceProviderListScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),

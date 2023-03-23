@@ -11,6 +11,7 @@ import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/Transpotation/myTaskListModel.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
 import 'package:service_engineer/Screen/Transportation/MyTask/process_detail_transport_screen.dart';
+import 'package:service_engineer/Screen/Transportation/MyTask/transpotation_service_provider_list.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -596,34 +597,34 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   // ),
 
                   ///Add task Button
-                  Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Material(
-                      elevation: 5,
-                      child: Container(
-                        height: 60,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
-
-                            ),
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen ()));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                                Text("Daily Update Task",
-                                  style: TextStyle(fontFamily: 'Poppins-Medium',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.55)
-                                  ),)
-                              ],
-                            )),
-                      ),
-                    ),),
+                  // Padding(
+                  //   padding: EdgeInsets.all(15.0),
+                  //   child: Material(
+                  //     elevation: 5,
+                  //     child: Container(
+                  //       height: 60,
+                  //       child: ElevatedButton(
+                  //           style: ButtonStyle(
+                  //             backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+                  //
+                  //           ),
+                  //           onPressed: (){
+                  //             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen ()));
+                  //           },
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: [
+                  //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
+                  //               Text("Daily Update Task",
+                  //                 style: TextStyle(fontFamily: 'Poppins-Medium',
+                  //                     fontSize: 16,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     color: Colors.black.withOpacity(0.55)
+                  //                 ),)
+                  //             ],
+                  //           )),
+                  //     ),
+                  //   ),),
 
                   SizedBox(
                     height: 20,
@@ -668,6 +669,29 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ),
                     ),
                   ),
+              // Assign other task data
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen()));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: ThemeColors.defaultbuttonColor,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Center(child: Text("Assign to Other",
+                            style: TextStyle(fontFamily: 'Poppins-Medium',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ))),
+                      ),
+                    ),
+                  ),
+
 
                   ///Mark as Completed Button
                   InkWell(
@@ -729,11 +753,10 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ),
                     ),
                   ),
-
-
                   SizedBox(
                     height: 80,
                   )
+
 
 
                 ],

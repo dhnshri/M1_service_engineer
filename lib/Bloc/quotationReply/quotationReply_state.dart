@@ -136,6 +136,22 @@ class JobWorkSendRevisedQuotationSuccess extends QuotationReplyState {
   JobWorkSendRevisedQuotationSuccess({required this.message});
 }
 
+// Transpotation
+class TranspotationSendRevisedQuotationLoading extends QuotationReplyState {
+  bool isLoading;
+  TranspotationSendRevisedQuotationLoading({required this.isLoading});
+}
+
+class TranspotationSendRevisedQuotationFail extends QuotationReplyState {
+  final String? msg;
+  TranspotationSendRevisedQuotationFail({this.msg});
+}
+
+class TranspotationSendRevisedQuotationSuccess extends QuotationReplyState {
+  String message;
+  TranspotationSendRevisedQuotationSuccess({required this.message});
+}
+
 class MachineSendQuotationReplyLoading extends QuotationReplyState {
   bool isLoading;
   MachineSendQuotationReplyLoading({required this.isLoading});

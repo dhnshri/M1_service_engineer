@@ -308,6 +308,54 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       }
     }
 
+
+    //Send Revice Quotation for Transpotation
+    if (event is TranspotationSendRevisedQuotation) {
+      ///Notify loading to UI
+      yield TranspotationSendRevisedQuotationLoading(isLoading: false);
+
+      Map<String, String> params = {
+        "vehicle_number": event.vehicleNumber,
+        "vehicle_name":event.vehicleName,
+        "vehicle_type":event.vehicleType,
+        "gst":event.gst,
+        "service_charge":event.serviceCharges == "" ? '0' : event.serviceCharges,
+        "handling_charge":event.handlingCharges == "" ? '0' : event.handlingCharges,
+        "commission": event.commision == "" ? '0' : event.commision,
+        "gst_no":event.gst_no,
+        "transport_enquiry_date": event.transport_enquiry_date,
+        "transport_enquiry_id": event.transport_enquiry_id.toString(),
+        "service_user_id": event.service_user_id,
+        "total_amount": event.total_amount,
+      };
+
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/transport_quatation'));
+      // ..fields.addAll(params);
+      _request = jsonToFormData(_request, params);
+      print(jsonEncode(_request.fields));
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      CreateTaskRepo res =  CreateTaskRepo.fromJson(responseJson);
+      print(res.msg);
+
+
+      ///Case API fail but not have token
+      if (res.success == true) {
+        print(response.body);
+        yield TranspotationSendRevisedQuotationSuccess(message: res.msg.toString());
+
+      } else {
+        ///Notify loading to UI
+        yield TranspotationSendRevisedQuotationFail(msg: res.msg.toString());
+        print(response.body);
+      }
+    }
+
+
+
+
     if (event is JobWorkSendRevisedQuotation) {
       ///Notify loading to UI
       yield JobWorkSendRevisedQuotationLoading(isLoading: false);

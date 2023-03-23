@@ -65,6 +65,26 @@ class UserRepository {
     final params = {"offset":offSet};
     return await Api.getServiceRequestList(params);
   }
+
+  //Service Request Api
+  Future<dynamic> fetchTaskHandOverList({String? userID, String? offSet}) async {
+    final params = {"offset":offSet,
+      'sub_category_id':userID};
+    return await Api.getTaskHandOverList(params);
+  }
+  //Service Request Api
+  Future<dynamic> fetchJobWorkEnquiryTaskHandOverList({String? userID, String? offSet}) async {
+    final params = {"offset":offSet,
+      'category_id':userID};
+    return await Api.getJobWorkEnquiryTaskHandOverList(params);
+  }
+
+  //Service Request Api
+  Future<dynamic> fetchTransportTaskHandOverList({String? offSet}) async {
+    final params = {"offset":offSet};
+    return await Api.getTransportTaskHandOverList(params);
+  }
+
   Future<dynamic> fetchServiceRequestTranspotationList({String? offSet}) async {
     final params = {"offset":offSet};
     return await Api.getServiceRequestTranspotationList(params);

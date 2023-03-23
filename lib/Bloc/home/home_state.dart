@@ -11,11 +11,14 @@ import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
 import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
+import '../../Model/MachineMaintance/task_hand_over_model.dart';
 import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestListModel.dart';
+import '../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../Model/customer_login.dart';
 
 @immutable
@@ -425,4 +428,58 @@ class TranspotationSendQuotationFail extends HomeState {
 class TranspotationSendQuotationSuccess extends HomeState {
   String message;
   TranspotationSendQuotationSuccess({required this.message});
+}
+
+// Machine maintaince Task handover
+class TaskHandOverLoading extends HomeState {
+
+  bool isLoading;
+  TaskHandOverLoading({required this.isLoading});
+}
+
+class TaskHandOverFail extends HomeState {
+  final String? msg;
+  TaskHandOverFail({this.msg});
+}
+
+class TaskHandOverSuccess extends HomeState {
+  List<MachineMaintanceTaskHandOverModel> serviceListData;
+  String message;
+  TaskHandOverSuccess({required this.message,required this.serviceListData});
+}
+
+// Transport Task handover
+class TransportTaskHandOverLoading extends HomeState {
+
+  bool isLoading;
+  TransportTaskHandOverLoading({required this.isLoading});
+}
+
+class TransportTaskHandOverFail extends HomeState {
+  final String? msg;
+  TransportTaskHandOverFail({this.msg});
+}
+
+class TransportTaskHandOverSuccess extends HomeState {
+  List<TransportTaskHandOverModel> serviceListTransportData;
+  String message;
+  TransportTaskHandOverSuccess({required this.message,required this.serviceListTransportData});
+}
+
+// Job Work Enquiry Task handover
+class JobWorkEnquiryTaskHandOverLoading extends HomeState {
+
+  bool isLoading;
+  JobWorkEnquiryTaskHandOverLoading({required this.isLoading});
+}
+
+class JobWorkEnquiryTaskHandOverFail extends HomeState {
+  final String? msg;
+  JobWorkEnquiryTaskHandOverFail({this.msg});
+}
+
+class JobWorkEnquiryTaskHandOverSuccess extends HomeState {
+  List<JobWorkEnquiryTaskHandOverModel> serviceListJWEData;
+  String message;
+  JobWorkEnquiryTaskHandOverSuccess({required this.message,required this.serviceListJWEData});
 }

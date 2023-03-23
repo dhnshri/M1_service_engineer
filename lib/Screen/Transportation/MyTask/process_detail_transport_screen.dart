@@ -7,6 +7,7 @@ import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/my_task_detail.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/service_provider_list.dart';
+import 'package:service_engineer/Screen/Transportation/MyTask/transpotation_service_provider_list.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import '../../../Constant/theme_colors.dart';
 import '../../../Model/Transpotation/MyTaskTransportDetailModel.dart';
@@ -85,7 +86,7 @@ class _ProcessDetailTransportScreenState extends State<ProcessDetailTransportScr
         children: [
           InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderListScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),

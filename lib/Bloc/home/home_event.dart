@@ -283,3 +283,29 @@ class TranspotationSendQuotation extends HomeEvent {
     });
 
 }
+// Machine maintaince Task Hand Over
+class OnTaskHandOver extends HomeEvent {
+
+  String userID,offSet;
+
+  OnTaskHandOver({required this.userID,required this.offSet});
+
+}
+
+// Transport Task Hand Over
+class OnTransportTaskHandOver extends HomeEvent {
+
+  String offSet;
+
+  OnTransportTaskHandOver({required this.offSet});
+
+}
+
+// Machine maintaince Task Hand Over
+class OnJobWorkEnquiryTaskHandOver extends HomeEvent {
+
+  String userID,offSet;
+
+  OnJobWorkEnquiryTaskHandOver({required this.userID,required this.offSet});
+
+}
