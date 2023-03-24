@@ -89,7 +89,8 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
             //     MaterialPageRoute(builder: (context) => QuotationFor()));
             Navigator.push(context, MaterialPageRoute(builder: (contex)=>
                 QuotationFor(vehicleNameselected:vehicleNameselected,vehicleNumberselected: vehicleNumberselected,vehicleTypeselected: vehicleTypeselected,
-                HandlingChargesController: HandlingChargesController,ServiceCallChargesController: ServiceCallChargesController,dropdownValue4:dropdownValue4,)));
+                HandlingChargesController: HandlingChargesController,ServiceCallChargesController: ServiceCallChargesController,dropdownValue4:dropdownValue4,
+                requestDetailList:widget.serviceRequestData,)));
           },
           shape: const RoundedRectangleBorder(
               borderRadius:

@@ -31,11 +31,13 @@ class QuotationFor extends StatefulWidget {
   String dropdownValue4;
   TextEditingController ServiceCallChargesController = TextEditingController();
   TextEditingController HandlingChargesController = TextEditingController();
+
   QuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
     required this.vehicleNumberselected,required this.HandlingChargesController,
-    required this.ServiceCallChargesController,required this.dropdownValue4}) : super(key: key,);
+    required this.ServiceCallChargesController,required this.dropdownValue4,
+    required this.requestDetailList,}) : super(key: key,);
 
-  List<TransportDetailsModel>? requestDetailList = [];
+  TransportDetailsModel? requestDetailList;
 
 
   @override
@@ -318,8 +320,8 @@ class QuotationForState extends State<QuotationFor> {
                                 print("Print Date : ${widget.requestDetailList!}");
                                 _homeBloc!.add(TranspotationSendQuotation(
                                   service_user_id: Application.customerLogin!.id.toString(),
-                                  transport_enquiry_date: widget.requestDetailList![0].createdAt.toString(),
-                                  transport_enquiry_id: widget.requestDetailList![0].transportEnquiryId.toString(),
+                                  transport_enquiry_date: widget.requestDetailList!.createdAt.toString(),
+                                  transport_enquiry_id: widget.requestDetailList!.transportEnquiryId.toString(),
                                   handlingCharges: widget.HandlingChargesController.text == "" ? '0':widget.HandlingChargesController.text,
                                   serviceCharges: widget.ServiceCallChargesController.text == "" ? '0':widget.ServiceCallChargesController.text,
                                   vehicleType: widget.vehicleTypeselected.toString(),
