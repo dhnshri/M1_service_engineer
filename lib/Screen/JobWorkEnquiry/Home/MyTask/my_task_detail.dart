@@ -5,6 +5,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
@@ -285,22 +286,29 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                 ),
                                 SizedBox(height: 5,),
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => MapSample()));
+                                  onTap: ()async{
+                                    List<Location> locations = await locationFromAddress(myTaskData![index].cityName.toString());
+                                    print(locations);
+                                    if(locations!=null) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MapSample(addressLat: locations[0].latitude,addressLong: locations[0].longitude,)));
+                                    }
                                   },
                                   child: Container(
                                     color:Color(0xFFFFE0E1),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Transform.rotate (
                                               angle: 180 * math.pi / 100,
                                               child: Icon(Icons.send,color: Colors.red, size: 11,)),
                                           SizedBox(width: 10,),
-                                          Text("Google location Link | Google location Link ….",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
+                                          Text("location",style: ExpanstionTileRightDataStyle.copyWith(color: Colors.red,fontWeight: FontWeight.normal),),
                                         ],
                                       ),
                                     ),

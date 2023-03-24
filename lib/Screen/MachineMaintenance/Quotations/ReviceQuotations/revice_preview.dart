@@ -91,12 +91,13 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
   }
 
   DataRow _getItemRequiredDataRow(ItemNotAvailableModel? cartData,index) {
+    int itemIndex = index+1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
       }),
       cells: <DataCell>[
-        DataCell(Text(index.toString())),
+        DataCell(Text(itemIndex.toString())),
         DataCell(Text(cartData!.itemName.toString())),
         DataCell(Text(cartData.quantity.toString())),
         DataCell(Text('₹${cartData.rate.toString()}')),
@@ -105,14 +106,15 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     );
   }
 
-  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData) {
+  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData,index) {
+    int itemIndex = index+1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
       }),
       cells: <DataCell>[
-        DataCell(Text(itemNotAvailableData!.id.toString())),
-        DataCell(Text(itemNotAvailableData.itemName.toString())),
+        DataCell(Text(itemIndex.toString())),
+        DataCell(Text(itemNotAvailableData!.itemName.toString())),
         DataCell(Text(itemNotAvailableData.quantity.toString())),
         DataCell(Text('₹${itemNotAvailableData.rate.toString()}')),
         DataCell(Text('₹${otherItemsAmountWithGST.toString()}')),
@@ -282,7 +284,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                         .map((item) =>
                         double.parse(otherItemsAmountWithGST.toString()))
                         .reduce((value, current) => value + current);
-                    return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index]);
+                    return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index],index);
                   }),),
               ],
             ),

@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/cart_repo.dart';
 import 'package:service_engineer/Model/customer_registration.dart';
+import 'package:service_engineer/Model/dashboard_cound_repo.dart';
+import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reject_revise_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
@@ -66,6 +68,10 @@ class Api {
   static const String TRANSPORT_PROFILE="get_transport_profile";
   static const String MACHINE_PROFILE="get_machine_maintainence_profile";
   static const String REJECT_REVISE_QUOTATION="service_revise_and_reject_quotations";
+  static const String GET_BRAND_LIST="get_brand_list";
+  static const String MACHINE_DASHBOARD_COUNT="machine_maintenance_dashboard_count";
+  static const String JOBWORK_DASHBOARD_COUNT="job_work_dashboard_count";
+  static const String TRANSPORT_DASHBOARD_COUNT="transport_dashboard_count";
 
 
 
@@ -95,6 +101,42 @@ class Api {
     }
   }
 
+  static Future<dynamic> getMachineDashboardCount(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+MACHINE_DASHBOARD_COUNT),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return DashboardCountRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getJobWorkDashboardCount(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOBWORK_DASHBOARD_COUNT),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return DashboardCountRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getTransportDashboardCount(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRANSPORT_DASHBOARD_COUNT),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return DashboardCountRepo.fromJson(responseJson);
+    }
+  }
+
   static Future<dynamic> getServiceRequestList(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+SERVICE_REQUEST_LIST),
@@ -104,6 +146,17 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return ServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getFilterList() async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+GET_BRAND_LIST),
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return FilterRepo.fromJson(responseJson);
     }
   }
 

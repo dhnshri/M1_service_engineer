@@ -39,6 +39,21 @@ class UserRepository {
     return await Api.login(params);
   }
 
+  Future<dynamic> fetchMachineDashboardCount({String? serviceUserId}) async {
+    final params = {"service_user_id":serviceUserId};
+    return await Api.getMachineDashboardCount(params);
+  }
+
+  Future<dynamic> fetchJobWorkDashboardCount({String? serviceUserId}) async {
+    final params = {"service_user_id":serviceUserId};
+    return await Api.getJobWorkDashboardCount(params);
+  }
+
+  Future<dynamic> fetchTransportDashboardCount({String? serviceUserId}) async {
+    final params = {"service_user_id":serviceUserId};
+    return await Api.getTransportDashboardCount(params);
+  }
+
   Future<dynamic> registration({String? fullname,String? createPassword,String? reCreatePassword,String? email,String? mobileNo,String? role,String? username}) async {
     final params = {
       'name':fullname,
@@ -65,6 +80,11 @@ class UserRepository {
     final params = {"offset":offSet,"time_id":timeId};
     return await Api.getServiceRequestList(params);
   }
+
+  Future<dynamic> fetchFilterData() async {
+    return await Api.getFilterList();
+  }
+
   Future<dynamic> fetchServiceRequestTranspotationList({String? offSet,String? timeId}) async {
     final params = {"offset":offSet,'time_id':timeId};
     return await Api.getServiceRequestTranspotationList(params);
@@ -198,9 +218,9 @@ class UserRepository {
     return await Api.getMyTaskJWEList(params);
   }
   //Fetch Product List
-  Future<dynamic> fetchProductList({String? prodId,String? offset}) async {
+  Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId}) async {
     final params = {"user_id":prodId,
-      "offset":offset};
+      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId};
     return await Api.getProductList(params);
   }
 

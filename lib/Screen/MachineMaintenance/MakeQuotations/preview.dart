@@ -110,14 +110,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
     );
   }
 
-  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData) {
+  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData,index) {
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
       }),
       cells: <DataCell>[
-        DataCell(Text(itemNotAvailableData!.id.toString())),
-        DataCell(Text(itemNotAvailableData.itemName.toString())),
+        DataCell(Text(index.toString())),
+        DataCell(Text(itemNotAvailableData!.itemName.toString())),
         DataCell(Text(itemNotAvailableData.quantity.toString())),
         DataCell(Text('₹${itemNotAvailableData.rate.toString()}')),
         DataCell(Text('₹${otherItemsAmountWithGST.toString()}')),
@@ -173,6 +173,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           ),
                         ],
                         rows: List.generate(widget.cartList!.length, (index) {
+                          int itemIndex = index+1;
                           amount = int.parse(widget.cartList![index].discountPrice
                                   .toString()) * 100/100+int.parse(widget.cartList![index].gst.toString());
                           amountWithGST = amount! *
@@ -188,7 +189,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                             }
                           });
 
-                          return _getItemRequiredDataRow(widget.cartList![index],index);
+                          return _getItemRequiredDataRow(widget.cartList![index],itemIndex);
                         }),
                       ),
                     ],
@@ -274,6 +275,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                             ),
                           ],
                           rows: List.generate(widget.itemNotAvailableList.length, (index) {
+                            int itemIndex=index+1;
                             oterItemsAmount = double.parse(
                                 widget.itemNotAvailableList[index].rate.toString()) *
                                 100/100+int.parse(widget.itemNotAvailableList[index].gst.toString());
@@ -285,7 +287,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                 .map((item) =>
                                 double.parse(otherItemsAmountWithGST.toString()))
                                 .reduce((value, current) => value + current);
-                            return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index]);
+                            return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index],itemIndex);
                           }),),
                     ],
                   ),

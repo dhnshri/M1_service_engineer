@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapSample extends StatefulWidget {
-  const MapSample({Key? key}) : super(key: key);
+  MapSample({Key? key,required this.addressLat,required this.addressLong}) : super(key: key);
+  double? addressLat;
+  double? addressLong;
   @override
   State<MapSample> createState() => MapSampleState();
 }
 class MapSampleState extends State<MapSample> {
   final Set<Marker> _markers = {};
   late LatLng _lastMapPosition;
-  double? addressLat;
-  double? addressLong;
+
   Completer<GoogleMapController> controller1 = Completer();
 
 
@@ -34,9 +35,9 @@ class MapSampleState extends State<MapSample> {
     //saveDeviceTokenAndId();
     super.initState();
     super.initState();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
+    // addressLat = double.parse(21.1458.toString());
+    // addressLong = double.parse(79.0882.toString());
+    _lastMapPosition = LatLng(widget.addressLat!, widget.addressLong!);
 
     _markers.add(Marker(
         markerId: MarkerId(151.toString()),
