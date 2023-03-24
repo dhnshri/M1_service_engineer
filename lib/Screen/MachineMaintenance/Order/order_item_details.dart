@@ -110,6 +110,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                 BorderRadius.all(Radius.circular(50))),
             text: 'Cancel Order',
             loading: true,
+            color: ThemeColors.defaultbuttonColor,
 
 
           ),

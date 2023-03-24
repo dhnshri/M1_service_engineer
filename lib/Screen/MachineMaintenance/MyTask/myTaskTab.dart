@@ -269,35 +269,34 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                       ],
                     ),
                     SizedBox(height: 3,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Progress:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/8,
-                        // ),
-                        Container(
-                          width: MediaQuery.of(context).size.width*0.3,
-                          height: 7,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            child: LinearProgressIndicator(
-                              backgroundColor: ThemeColors.greyBackgrounColor,
-                              valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                              value: _progressValue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(
+                    //       "Progress:",
+                    //       style: TextStyle(
+                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.bold
+                    //       ),
+                    //     ),
+                    //     // SizedBox(
+                    //     //   width: MediaQuery.of(context).size.width/8,
+                    //     // ),
+                    //     Container(
+                    //       width: MediaQuery.of(context).size.width*0.3,
+                    //       height: 7,
+                    //       child: ClipRRect(
+                    //         borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //         child: LinearProgressIndicator(
+                    //           backgroundColor: ThemeColors.greyBackgrounColor,
+                    //           valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+                    //           value: _progressValue,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -405,7 +404,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               }
                             },
                             child: Row(
-                              children: [
+                              children: const [
                                 Icon(Icons.filter_list),
                                 SizedBox(
                                   width: 5,

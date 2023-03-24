@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:service_engineer/Model/cart_repo.dart';
+import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
@@ -77,6 +78,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ServiceRequestFail(msg: result.msg!);
       }
     }
+
+    if (event is ItemFilter) {
+      ///Notify loading to UI
+      yield ItemFilterLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final FilterRepo result = await userRepository!
+          .fetchFilterData();
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorFilterList = result.data! ?? [];
+        final filterList = refactorFilterList.map((item) {
+          return BrandModule.fromJson(item);
+        }).toList();
+        print('Service Request List: $filterList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ItemFilterLoading(
+            isLoading: true,
+          );
+          yield ItemFilterSuccess(brandListData: filterList.reversed.toList());
+        } catch (error) {
+          ///Notify loading to UI
+          yield ItemFilterFail(msg: "Error Occured.");
+        }
+      } else {
+        ///Notify loading to UI
+        yield MyTaskLoading(isLoading: true);
+        yield ServiceRequestFail(msg: "Error Occured.");
+      }
+    }
+
 
     //Event for Task Hand Over Machine Maintaince
 
@@ -908,7 +946,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         "items_not_available": jsonEncode(itemNotAvalList),
         "commission": event.commission,
         "machine_enquiry_date": event.machineEnquiryDate,
-        // 'machine_enquiry_id': event.machineEnquiryId,
+        "total_amount": event.totalAmount,
       };
 
       http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/machine_maintainence_quatation'));
@@ -949,7 +987,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryServiceRequestRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryList(
         offSet: event.offSet,
-          timeId:event.timePeriod,
+        timeId: event.timePeriod
       );
       print(result);
 
@@ -988,7 +1026,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .fetchJobWorkEnquiryMyTaskList(
           userId: event.userid,
           offset:event.offset,
-          timeId:event.timeId
+          timeId: event.timeId
       );
       print(response);
 
@@ -1026,7 +1064,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestTranspotationRepo result = await userRepository!
           .fetchServiceRequestTranspotationList(
         offSet: event.offSet,
-        timeId: event.timeId,
+        timeId: event.timeId
       );
       print(result);
 
@@ -1065,7 +1103,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .fetchTranspotationMyTaskList(
           userId: event.userid,
           offset:event.offset,
-          timeId: event.timeId
+          timeId: event.timeId,
       );
       print(response);
 

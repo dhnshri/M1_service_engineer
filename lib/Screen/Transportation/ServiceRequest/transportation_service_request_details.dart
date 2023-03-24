@@ -314,8 +314,11 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
                                 ],
                               ),
                               SizedBox(height: 10,),
-                              Text(serviceRequestData![0].about.toString(),
-                                    style: ExpanstionTileLeftDataStyle,),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(serviceRequestData![0].about.toString(),
+                                      style: ExpanstionTileLeftDataStyle,textAlign: TextAlign.start,),
+                              ),
                             ],
                           ),
                         ),

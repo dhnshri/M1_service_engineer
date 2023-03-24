@@ -260,8 +260,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     MaterialPageRoute(builder: (context) => ItemRequiredFilterScreen()));
 
                 if(filterResult != null){
-                  print(filterResult);
-                  productDetail = filterResult['serviceList'];
+                  print(filterResult['product_list']);
+                  print(filterResult['brand_id']);
+                  print(filterResult['ascending_descending_id']);
+                  productDetail = filterResult['product_list'];
                 }
               },
               child: Row(
@@ -899,7 +901,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(ProductList(prodId: '0',offSet: '0'));
+    _homeBloc!.add(ProductList(prodId: '0',offSet: '0',brandId: '0',priceId: '0'));
     loadApi();
     // setState((){
     //   if(_quantityController.text != '' && _rateController.text != ''){
@@ -942,7 +944,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text(
-            'Quotation for #102GRDSA36987',
+            'Quotation for #${widget.serviceRequestData!.machineEnquiryId.toString()}',
             style: appBarheadingStyle,
           ),
         ),

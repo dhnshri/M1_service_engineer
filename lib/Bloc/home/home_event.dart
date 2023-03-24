@@ -11,7 +11,10 @@ class OnServiceRequest extends HomeEvent {
   String offSet,timeId;
 
   OnServiceRequest({required this.offSet,required this.timeId});
+}
 
+class ItemFilter extends HomeEvent {
+  ItemFilter();
 }
 
 class MyTaskList extends HomeEvent {
@@ -62,9 +65,9 @@ class OnMyTaskJobWorkEnquiryDetail extends HomeEvent {
 
 class ProductList extends HomeEvent {
 
-  String prodId,offSet;
+  String prodId,offSet,brandId,priceId;
 
-  ProductList({required this.prodId,required this.offSet,});
+  ProductList({required this.prodId,required this.offSet,required this.brandId,required this.priceId});
 
 }
 

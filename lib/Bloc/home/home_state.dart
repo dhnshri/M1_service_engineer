@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
+import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
@@ -40,6 +41,21 @@ class ServiceRequestSuccess extends HomeState {
   List<ServiceRequestModel> serviceListData;
   String message;
   ServiceRequestSuccess({required this.serviceListData, required this.message});
+}
+
+class ItemFilterLoading extends HomeState {
+  bool isLoading;
+  ItemFilterLoading({required this.isLoading});
+}
+
+class ItemFilterFail extends HomeState {
+  final String? msg;
+  ItemFilterFail({this.msg});
+}
+
+class ItemFilterSuccess extends HomeState {
+  List<BrandModule> brandListData;
+  ItemFilterSuccess({required this.brandListData,});
 }
 
 
