@@ -8,13 +8,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../Config/font.dart';
+import '../../../../Constant/theme_colors.dart';
+import '../../../../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../../../../Model/Transpotation/vehicle_name_model.dart';
+import '../../../../Model/Transpotation/vehicle_number_model.dart';
+import '../../../../Model/Transpotation/vehicle_type_model.dart';
+import '../../../../NetworkFunction/fetchVehicleName.dart';
+import '../../../../NetworkFunction/fetchVehicleNumber.dart';
+import '../../../../NetworkFunction/fetchVehicleType.dart';
 import '../../../../Widget/function_button.dart';
 import '../../../bottom_navbar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 
 class MakeQuotationTransposationScreen extends StatefulWidget {
-  const MakeQuotationTransposationScreen({Key? key}) : super(key: key);
+  TransportDetailsModel serviceRequestData;
+  MakeQuotationTransposationScreen({Key? key,required this.serviceRequestData}) : super(key: key);
 
   @override
   _MakeQuotationTransposationScreenState createState() => _MakeQuotationTransposationScreenState();
@@ -22,6 +31,11 @@ class MakeQuotationTransposationScreen extends StatefulWidget {
 
 class _MakeQuotationTransposationScreenState extends State<MakeQuotationTransposationScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
+  List<VehicleNameModel> addVehicleNameList = [];
+  List<VehicleTypeModel> addVehicleTypeList = [];
+  VehicleNameModel? vehicleNameselected;
+  VehicleTypeModel? vehicleTypeselected;
+  VehicleNumberModel? vehicleNumberselected;
   String? phoneNum;
   String? role;
   bool loading = true;
@@ -71,23 +85,12 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
         padding: const EdgeInsets.all(10.0),
         child: FunctionButton(
           onPressed: () async {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => QuotationFor()));
-            //   isconnectedToInternet = await ConnectivityCheck
-            //       .checkInternetConnectivity();
-            //   if (isconnectedToInternet == true) {
-            //     if (_formKey.currentState!.validate()) {
-            //       // setState(() {
-            //       //   loading=true;
-            //       // });
-            //       _userLoginBloc!.add(OnLogin(email: _textEmailController.text,password: _textPasswordController.text));
-            //     }
-            //   } else {
-            //     CustomDialogs.showDialogCustom(
-            //         "Internet",
-            //         "Please check your Internet Connection!",
-            //         context);
-            //   }
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => QuotationFor()));
+            Navigator.push(context, MaterialPageRoute(builder: (contex)=>
+                QuotationFor(vehicleNameselected:vehicleNameselected,vehicleNumberselected: vehicleNumberselected,vehicleTypeselected: vehicleTypeselected,
+                HandlingChargesController: HandlingChargesController,ServiceCallChargesController: ServiceCallChargesController,dropdownValue4:dropdownValue4,
+                requestDetailList:widget.serviceRequestData,)));
           },
           shape: const RoundedRectangleBorder(
               borderRadius:
@@ -102,196 +105,195 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
         padding: const EdgeInsets.all(12.0),
         child: ListView(
           children: [
+          // For Vehicle Name
             Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Container(
-                width:
-                MediaQuery.of(context).size.width * 0.9,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.circular(8.0)),
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      items: <String>[
-                        'Vehicle Type',
-                        'Van',
-                        'Motorcycle',
-                        'Dump truck'
+                padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                //to hide underline
+                child: FutureBuilder<List<VehicleNameModel>>(
+                    future: fetchVehicleName(vehicleNameselected!=null?vehicleNameselected!.transportProfileVehicleInformationId.toString():""),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<VehicleNameModel>> snapshot) {
+                      if (!snapshot.hasData) return Container();
 
-                      ].map((item) =>
-                          DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                  fontFamily: 'Poppins-Medium',
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500
-                              ),
+                      return DropdownButtonHideUnderline(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              // color: Theme.of(context).dividerColor,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                    color: ThemeColors.textFieldBgColor)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                              child:
+                              //updated on 15/06/2021 to change background colour of dropdownbutton
+                              new Theme(
+                                  data: Theme.of(context)
+                                      .copyWith(canvasColor: Colors.white),
+                                  child: DropdownButton(
+                                      items: snapshot.data!
+                                          .map((vehiclename) =>
+                                          DropdownMenuItem<VehicleNameModel>(
+                                            value: vehiclename,
+                                            child: Text(
+                                              vehiclename.vehicleName.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ))
+                                          .toList(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600),
+                                      isExpanded: true,
+                                      hint: Text('Select Vehicle Name',
+                                          style: TextStyle(
+                                              color: Color(0xFF3F4141))),
+                                      value: vehicleNameselected == null
+                                          ? vehicleNameselected
+                                          : snapshot.data!
+                                          .where((i) =>
+                                      i.vehicleName ==
+                                          vehicleNameselected!
+                                              .vehicleName)
+                                          .first as VehicleNameModel,
+                                      onChanged: (VehicleNameModel? vehiclename) {
+                                        setState(() {
+                                          vehicleNameselected = vehiclename;
+                                        });
+                                      })),
                             ),
-                          ))
-                          .toList(),
-                      value: dropdownValue,
-                      onChanged: (value) {
-                        setState(() {
-                          dropdownValue = value as String;
-                        });
-                      },
-                      buttonHeight: 40,
-                      buttonWidth: 140,
-                      itemHeight: 40,
-                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // color: Colors.redAccent,
-                      ),
-                      // itemWidth: 140,
-                    )
-                  // DropdownButton<String>(
-                  //   isExpanded: true,
-                  //   value: dropdownValue,
-                  //   icon: Padding(
-                  //     padding: const EdgeInsets.only(left:100.0),
-                  //     child: const Icon(Icons.arrow_drop_down_sharp),
-                  //   ),
-                  //   iconSize: 24,
-                  //   elevation: 16,
-                  //   iconEnabledColor: primaryAppColor,
-                  //   borderRadius:
-                  //   BorderRadius.circular(8.0),
-                  //   style: TextStyle(
-                  //       color: Colors.black,
-                  //       fontSize: 16,
-                  //       fontWeight: FontWeight.normal),
-                  //   onChanged: (String? newValue) {
-                  //     setState(() {
-                  //       dropdownValue = newValue!;
-                  //     });
-                  //   },
-                  //   items: <String>[
-                  //     'Machine Maintenance',
-                  //     'Job Work Enquiry',
-                  //     'Transportation',
-                  //
-                  //   ].map<DropdownMenuItem<String>>(
-                  //           (String value) {
-                  //         return DropdownMenuItem<String>(
-                  //           value: value,
-                  //           child: Center(child: Text(value)),
-                  //         );
-                  //       }).toList(),
-                  // )),
-                ),
-              ),
-            ),
+                          ));
+                    })),
+
+// For Vehicle Type
             Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Container(
-                width:
-                MediaQuery.of(context).size.width * 0.9,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.circular(8.0)),
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      items: <String>[
-                        'Vehicle Name',
-                        'ABC',
-                        'XYZ',
-                        'MNO'
+                padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                //to hide underline
+                child: FutureBuilder<List<VehicleTypeModel>>(
+                    future: fetchVehicleType(vehicleTypeselected!=null?vehicleTypeselected!.transportProfileVehicleInformationId.toString():""),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<VehicleTypeModel>> snapshot) {
+                      if (!snapshot.hasData) return Container();
 
-                      ].map((item) =>
-                          DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                  fontFamily: 'Poppins-Medium',
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500
-                              ),
+                      return DropdownButtonHideUnderline(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              // color: Theme.of(context).dividerColor,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                    color: ThemeColors.textFieldBgColor)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                              child:
+                              //updated on 15/06/2021 to change background colour of dropdownbutton
+                              Theme(
+                                  data: Theme.of(context)
+                                      .copyWith(canvasColor: Colors.white),
+                                  child: DropdownButton(
+                                      items: snapshot.data!
+                                          .map((vehicletype) =>
+                                          DropdownMenuItem<VehicleTypeModel>(
+                                            value: vehicletype,
+                                            child: Text(
+                                              vehicletype.vehicleType.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ))
+                                          .toList(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600),
+                                      isExpanded: true,
+                                      hint: Text('Select Vehicle Type',
+                                          style: TextStyle(
+                                              color: Color(0xFF3F4141))),
+                                      value: vehicleTypeselected == null
+                                          ? vehicleTypeselected
+                                          : snapshot.data!
+                                          .where((i) =>
+                                      i.vehicleType ==
+                                          vehicleTypeselected!
+                                              .vehicleType)
+                                          .first as VehicleTypeModel,
+                                      onChanged: (VehicleTypeModel? vehicletype) {
+                                        setState(() {
+                                          vehicleTypeselected = vehicletype;
+                                        });
+                                      })),
                             ),
-                          ))
-                          .toList(),
-                      value: dropdownValue2,
-                      onChanged: (value) {
-                        setState(() {
-                          dropdownValue2 = value as String;
-                        });
-                      },
-                      buttonHeight: 40,
-                      buttonWidth: 140,
-                      itemHeight: 40,
-                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // color: Colors.redAccent,
-                      ),
-                      // itemWidth: 140,
-                    )
-                ),
-              ),
-            ),
+                          ));
+                    })),
+
+           // For Vehicle Number
             Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Container(
-                width:
-                MediaQuery.of(context).size.width * 0.9,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.circular(8.0)),
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      items: <String>[
-                        'Vehicle Number',
-                        '123456',
-                        '789123',
-                        '456789'
+                padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                //to hide underline
+                child: FutureBuilder<List<VehicleNumberModel>>(
+                    future: fetchVehicleNumber(vehicleNumberselected!=null?vehicleNumberselected!.transportProfileVehicleInformationId.toString():""),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<VehicleNumberModel>> snapshot) {
+                      if (!snapshot.hasData) return Container();
 
-                      ].map((item) =>
-                          DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                  fontFamily: 'Poppins-Medium',
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500
-                              ),
+                      return DropdownButtonHideUnderline(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              // color: Theme.of(context).dividerColor,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                    color: ThemeColors.textFieldBgColor)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                              child:
+                              //updated on 15/06/2021 to change background colour of dropdownbutton
+                              Theme(
+                                  data: Theme.of(context)
+                                      .copyWith(canvasColor: Colors.white),
+                                  child: DropdownButton(
+                                      items: snapshot.data!
+                                          .map((vehiclenumber) =>
+                                          DropdownMenuItem<VehicleNumberModel>(
+                                            value: vehiclenumber,
+                                            child: Text(
+                                              vehiclenumber.vehicleNumber.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ))
+                                          .toList(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600),
+                                      isExpanded: true,
+                                      hint: Text('Select Vehicle Number',
+                                          style: TextStyle(
+                                              color: Color(0xFF3F4141))),
+                                      value: vehicleNumberselected == null
+                                          ? vehicleNumberselected
+                                          : snapshot.data!
+                                          .where((i) =>
+                                      i.vehicleNumber ==
+                                          vehicleNumberselected!
+                                              .vehicleNumber)
+                                          .first as VehicleNumberModel,
+                                      onChanged: (VehicleNumberModel? vehiclenumber) {
+                                        setState(() {
+                                          vehicleNumberselected = vehiclenumber;
+                                        });
+                                      })),
                             ),
-                          ))
-                          .toList(),
-                      value: dropdownValue3,
-                      onChanged: (value) {
-                        setState(() {
-                          dropdownValue3 = value as String;
-                        });
-                      },
-                      buttonHeight: 40,
-                      buttonWidth: 140,
-                      itemHeight: 40,
-                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // color: Colors.redAccent,
-                      ),
-                      // itemWidth: 140,
-                    )
-                ),
-              ),
-            ),
+                          ));
+                    })),
+
             SizedBox(height: 10,),
             SizedBox(
               width:
@@ -437,9 +439,9 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                     child: DropdownButton2(
                       items: <String>[
                         'GST',
-                        'AB3456',
-                        'CD9123',
-                        'EF6789'
+                        '12',
+                        '18',
+                        '21'
 
                       ].map((item) =>
                           DropdownMenuItem<String>(

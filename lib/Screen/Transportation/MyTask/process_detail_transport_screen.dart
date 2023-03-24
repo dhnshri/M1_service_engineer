@@ -3,29 +3,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
+import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/MyTask/my_task_detail.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/MyTask/service_provider_list.dart';
+import 'package:service_engineer/Screen/Transportation/MyTask/transpotation_service_provider_list.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
-
-import '../../../../Constant/theme_colors.dart';
-import '../../../../Model/JobWorkEnquiry/my_task_model.dart';
-import '../../../../Model/JobWorkEnquiry/track_process_report_model.dart';
-import 'job_work_enquiry_service_provider_list.dart';
-import 'my_task_detail.dart';
+import '../../../Constant/theme_colors.dart';
+import '../../../Model/Transpotation/MyTaskTransportDetailModel.dart';
+import '../../../Model/Transpotation/myTaskListModel.dart';
+import 'my_task_details.dart';
 
 
 
+class ProcessDetailTransportScreen extends StatefulWidget {
+  TrackProcessModel trackProgressData;
+  MyTaskTransportationModel myTaskData;
 
-class ProcessDetailScreen extends StatefulWidget {
-  TrackProcessJobWorkEnquiryModel trackProgressData;
-  JobWorkEnquiryMyTaskModel myTaskJobWorkEnquiryData;
-  ProcessDetailScreen({Key? key,required this.trackProgressData,required this.myTaskJobWorkEnquiryData}) : super(key: key);
+  ProcessDetailTransportScreen({Key? key,required this.trackProgressData,required this.myTaskData}) : super(key: key);
 
   @override
-  _ProcessDetailScreenState createState() => _ProcessDetailScreenState();
+  _ProcessDetailTransportScreenState createState() => _ProcessDetailTransportScreenState();
 }
 
-class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
+class _ProcessDetailTransportScreenState extends State<ProcessDetailTransportScreen> {
   HomeBloc? _homeBloc;
 
 
@@ -85,7 +86,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
         children: [
           InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>JobWorkEnquiryServiceProviderListScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -108,24 +109,28 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
             return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
 
-                if(state is TaskCompleteJWELoading){
+                if(state is TaskCompleteLoading){
                   // _isLoading = state.isLoading;
                 }
-                if(state is TaskCompleteJWESuccess){
+                if(state is TaskCompleteSuccess){
                   showCustomSnackBar(context,state.message.toString(),isError: false);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context)=> EnquiryMyTaskDetailsScreen(myTaskJobWorkEnquiryData:widget.myTaskJobWorkEnquiryData)));
-                  // Navigator.pushReplacement(context,newRoute)
+                  // Navigator.of(context).pop();
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>
+                      TransportationMyTaskDetailsScreen(myTaskData:widget.myTaskData,)));
 
                 }
-                if(state is TaskCompleteJWEFail){
+                if(state is TaskCompleteFail){
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
               },
               child: InkWell(
                 onTap: (){
-                  _homeBloc!.add(TaskCompleteJWE(serviceUserId:'1',machineEnquiryId:'0',
-                      transportEnquiryId: '0',jobWorkEnquiryId:'1', dailyTaskId:'1', status: 1));
+                  // _homeBloc!.add(TaskComplete(serviceUserId: widget.trackProgressData.serviceUserId.toString(),machineEnquiryId: '0',
+                  //     transportEnquiryId:widget.trackProgressData.machineEnquiryId.toString(),jobWorkEnquiryId: '0', dailyTaskId: widget.trackProgressData.id.toString(), status: 1));
+
+                  _homeBloc!.add(TaskComplete(serviceUserId:'1',machineEnquiryId: '0',
+    transportEnquiryId:'1',jobWorkEnquiryId: '0', dailyTaskId: widget.trackProgressData.id.toString(), status: 1));
+
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),

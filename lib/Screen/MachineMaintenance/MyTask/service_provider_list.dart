@@ -25,6 +25,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter/foundation.dart';
 import '../../../Config/font.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../../Model/MachineMaintance/task_hand_over_model.dart';
+import '../../../Widget/custom_snackbar.dart';
 import '../../Chat/chat_listing.dart';
 import '../../JobWorkEnquiry/Home/MyTask/show_google_map.dart';
 import '../../bottom_navbar.dart';
@@ -47,6 +49,10 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
   bool loading = true;
   bool _isLoading = false;
 
+  HomeBloc? _homeBloc;
+  List<MachineMaintanceTaskHandOverModel>? serviceList = [];
+
+
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
@@ -59,7 +65,6 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
   double? addressLat;
   double? addressLong;
   Completer<GoogleMapController> controller1 = Completer();
-  HomeBloc? _homeBloc;
   List<MachineServiceDetailsModel>? serviceRequestData = [];
   List<TrackProcessModel>? trackProgressData = [];
 
@@ -85,7 +90,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
     // _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
     // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
     _homeBloc!.add(TrackProcessList(userId: '1',machineEnquiryId: '1',transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-
+    _homeBloc!.add(OnTaskHandOver(userID:'2' ,offSet: '0'));
     _phoneNumberController.clear();
     addressLat = double.parse(21.1458.toString());
     addressLong = double.parse(79.0882.toString());
@@ -109,8 +114,420 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
     // getroleofstudent();
   }
 
+  Widget buildServiceProviderList(List<MachineMaintanceTaskHandOverModel> handOverList) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      padding: EdgeInsets.only(top: 10, bottom: 15),
+      itemBuilder: (context, index) {
+        return InkWell(
+            onTap: (){
+              // Navigator.push(context, MaterialPageRoute(
+              //     builder: (context) => MyTaskDetailsScreen(myTaskData: myTaskList[index],)));
+            },
+            child: TaskHandOverCard(context,handOverList[index]));
+      },
+      itemCount: handOverList.length,
+    );
+  }
 
+  Widget TaskHandOverCard(BuildContext context,MachineMaintanceTaskHandOverModel TaskData)
+  {
+    return
+    Container(
+      width: MediaQuery.of(context).size.width ,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+        // color: Colors.white70,
+        elevation: 5,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.28,
+                  maxHeight: MediaQuery.of(context).size.width * 0.28,
+                ),
+                child: CachedNetworkImage(
+                  filterQuality: FilterQuality.medium,
+                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+                  // imageUrl: "https://picsum.photos/250?image=9",
+                  imageUrl: "https://picsum.photos/250?image=9",
+                  placeholder: (context, url) {
+                    return Shimmer.fromColors(
+                      baseColor: Theme.of(context).hoverColor,
+                      highlightColor: Theme.of(context).highlightColor,
+                      enabled: true,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                      ),
+                    );
+                  },
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, error) {
+                    return Shimmer.fromColors(
+                      baseColor: Theme.of(context).hoverColor,
+                      highlightColor: Theme.of(context).highlightColor,
+                      enabled: true,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(Icons.error),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+      Flexible(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                // width: MediaQuery.of(context).size.width/1.8,
+                child: Text(
+                  TaskData.username.toString(),
+                  // "Job Title/Services Name or Any Other Name",
+                  style: TextStyle(
+                      fontFamily: 'Poppins-SemiBold',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ),
+              SizedBox(height: 4,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Work category:",
+                    style: TextStyle(
+                        fontFamily: 'Poppins-SemiBold',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width/9,
+                  // ),
+                  Container(
+                    // width: MediaQuery.of(context).size.width*0.2,
+                    child: Text(TaskData.serviceCategoryName.toString(),
+                      // "#102GRDSA36987",
+                      style: TextStyle(
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 12,
+                        // fontWeight: FontWeight.bold
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
 
+                ],
+              ),
+              SizedBox(height: 3,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Work sub category:",
+                    style: TextStyle(
+                        fontFamily: 'Poppins-SemiBold',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width/11,
+                  // ),
+                  Container(
+                    // width: MediaQuery.of(context).size.width*0.2,
+                    child: Text(
+                      TaskData.serviceSubCategoryName.toString(),
+                      //"Step 1",
+                      style: TextStyle(
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 12,
+                        // fontWeight: FontWeight.bold
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 3,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Total Experience:",
+                    style: TextStyle(
+                        fontFamily: 'Poppins-SemiBold',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width/8,
+                  // ),
+                  Container(
+                    // width: MediaQuery.of(context).size.width*0.2,
+                    child: Text(
+                      TaskData.yearOfExperience.toString(),
+                      //"Step 1",
+                      style: TextStyle(
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 12,
+                        // fontWeight: FontWeight.bold
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget ShimmerCard(){
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Theme.of(context).hoverColor,
+          highlightColor: Theme.of(context).highlightColor,
+          enabled: true,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0.0),
+              ),
+              // color: Colors.white70,
+              elevation: 5,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.28,
+                        maxHeight: MediaQuery.of(context).size.width * 0.28,
+                      ),
+                      child: CachedNetworkImage(
+                        filterQuality: FilterQuality.medium,
+                        imageUrl: '',
+                        placeholder: (context, url) {
+                          return Shimmer.fromColors(
+                            baseColor: Theme.of(context).hoverColor,
+                            highlightColor: Theme.of(context).highlightColor,
+                            enabled: true,
+                            child: Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                            ),
+                          );
+                        },
+                        imageBuilder: (context, imageProvider) {
+                          return Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                          );
+                        },
+                        errorWidget: (context, url, error) {
+                          return Shimmer.fromColors(
+                            baseColor: Theme.of(context).hoverColor,
+                            highlightColor: Theme.of(context).highlightColor,
+                            enabled: true,
+                            child: Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(Icons.error),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            // width: MediaQuery.of(context).size.width/2.5,
+                            child: Text(
+                              '',
+                              style: TextStyle(
+                                  fontFamily: 'Poppins-SemiBold',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ),
+                          SizedBox(height: 4,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Enquiry ID:",
+                                style: TextStyle(
+                                    fontFamily: 'Poppins-SemiBold',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              // SizedBox(
+                              //   // width: MediaQuery.of(context).size.width/,
+                              // ),
+                              Container(
+                                // width: MediaQuery.of(context).size.width*0.2,
+                                child: Text(
+                                  '',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins-Regular',
+                                    fontSize: 12,
+                                    // fontWeight: FontWeight.bold
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 3,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Working Timing:",
+                                style: TextStyle(
+                                    fontFamily: 'Poppins-SemiBold',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              // SizedBox(
+                              //   width: MediaQuery.of(context).size.width/6.3,
+                              // ),
+                              Container(
+                                // width: MediaQuery.of(context).size.width*0.2,
+                                child: Text(
+                                  "10 AM - 6 PM",
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins-Regular',
+                                    fontSize: 12,
+                                    // fontWeight: FontWeight.bold
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 3,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Date & Time:",
+                                style: TextStyle(
+                                    fontFamily: 'Poppins-SemiBold',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              // SizedBox(
+                              //   width: MediaQuery.of(context).size.width/6.3,
+                              // ),
+                              Container(
+                                // width: MediaQuery.of(context).size.width*0.2,
+                                child: Text(
+                                  '',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins-Regular',
+                                    fontSize: 12,
+                                    // fontWeight: FontWeight.bold
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      itemCount: List.generate(8, (index) => index).length,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,212 +572,243 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: ListView.builder(
-              itemCount: 20,
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (_, index) {
-                return InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderProfileScreen()));
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width ,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0),
-                      ),
-                      // color: Colors.white70,
-                      elevation: 5,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width * 0.28,
-                                maxHeight: MediaQuery.of(context).size.width * 0.28,
-                              ),
-                              child: CachedNetworkImage(
-                                filterQuality: FilterQuality.medium,
-                                // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                                imageUrl: "https://picsum.photos/250?image=9",
-                                // imageUrl: myTaskData.machineImg == null
-                                //     ? "https://picsum.photos/250?image=9"
-                                //     : myTaskData.machineImg.toString(),
-                                placeholder: (context, url) {
-                                  return Shimmer.fromColors(
-                                    baseColor: Theme.of(context).hoverColor,
-                                    highlightColor: Theme.of(context).highlightColor,
-                                    enabled: true,
-                                    child: Container(
-                                      height: 80,
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(0),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                imageBuilder: (context, imageProvider) {
-                                  return Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: BorderRadius.circular(0),
-                                    ),
-                                  );
-                                },
-                                errorWidget: (context, url, error) {
-                                  return Shimmer.fromColors(
-                                    baseColor: Theme.of(context).hoverColor,
-                                    highlightColor: Theme.of(context).highlightColor,
-                                    enabled: true,
-                                    child: Container(
-                                      height: 80,
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Icon(Icons.error),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    // width: MediaQuery.of(context).size.width/1.8,
-                                    child: Text(
-                                      "User Name",
-                                      // "Job Title/Services Name or Any Other Name",
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins-SemiBold',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4,),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Work category:",
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins-SemiBold',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: MediaQuery.of(context).size.width/9,
-                                      // ),
-                                      Container(
-                                        // width: MediaQuery.of(context).size.width*0.2,
-                                        child: Text('Category Type',
-                                          // "#102GRDSA36987",
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins-Regular',
-                                            fontSize: 12,
-                                            // fontWeight: FontWeight.bold
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
+        // body: SingleChildScrollView(
+        //   child: ListView.builder(
+        //       itemCount: 20,
+        //       physics: NeverScrollableScrollPhysics(),
+        //       shrinkWrap: true,
+        //       itemBuilder: (_, index) {
+        //         return InkWell(
+        //           onTap: (){
+        //             Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderProfileScreen()));
+        //           },
+        //           child: Container(
+        //             width: MediaQuery.of(context).size.width ,
+        //             child: Card(
+        //               shape: RoundedRectangleBorder(
+        //                 borderRadius: BorderRadius.circular(0.0),
+        //               ),
+        //               // color: Colors.white70,
+        //               elevation: 5,
+        //               child: Row(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 children: [
+        //                   Padding(
+        //                     padding: const EdgeInsets.all(10.0),
+        //                     child: ConstrainedBox(
+        //                       constraints: BoxConstraints(
+        //                         maxWidth: MediaQuery.of(context).size.width * 0.28,
+        //                         maxHeight: MediaQuery.of(context).size.width * 0.28,
+        //                       ),
+        //                       child: CachedNetworkImage(
+        //                         filterQuality: FilterQuality.medium,
+        //                         // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+        //                         imageUrl: "https://picsum.photos/250?image=9",
+        //                         // imageUrl: myTaskData.machineImg == null
+        //                         //     ? "https://picsum.photos/250?image=9"
+        //                         //     : myTaskData.machineImg.toString(),
+        //                         placeholder: (context, url) {
+        //                           return Shimmer.fromColors(
+        //                             baseColor: Theme.of(context).hoverColor,
+        //                             highlightColor: Theme.of(context).highlightColor,
+        //                             enabled: true,
+        //                             child: Container(
+        //                               height: 80,
+        //                               width: 80,
+        //                               decoration: BoxDecoration(
+        //                                 color: Colors.white,
+        //                                 borderRadius: BorderRadius.circular(0),
+        //                               ),
+        //                             ),
+        //                           );
+        //                         },
+        //                         imageBuilder: (context, imageProvider) {
+        //                           return Container(
+        //                             height: 100,
+        //                             width: 100,
+        //                             decoration: BoxDecoration(
+        //                               image: DecorationImage(
+        //                                 image: imageProvider,
+        //                                 fit: BoxFit.cover,
+        //                               ),
+        //                               borderRadius: BorderRadius.circular(0),
+        //                             ),
+        //                           );
+        //                         },
+        //                         errorWidget: (context, url, error) {
+        //                           return Shimmer.fromColors(
+        //                             baseColor: Theme.of(context).hoverColor,
+        //                             highlightColor: Theme.of(context).highlightColor,
+        //                             enabled: true,
+        //                             child: Container(
+        //                               height: 80,
+        //                               width: 80,
+        //                               decoration: BoxDecoration(
+        //                                 color: Colors.white,
+        //                                 borderRadius: BorderRadius.circular(8),
+        //                               ),
+        //                               child: Icon(Icons.error),
+        //                             ),
+        //                           );
+        //                         },
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   Flexible(
+        //                     child: Padding(
+        //                       padding: const EdgeInsets.all(10.0),
+        //                       child: Column(
+        //                         crossAxisAlignment: CrossAxisAlignment.start,
+        //                         // mainAxisAlignment: MainAxisAlignment.start,
+        //                         children: [
+        //                           Container(
+        //                             // width: MediaQuery.of(context).size.width/1.8,
+        //                             child: Text(
+        //                               "User Name",
+        //                               // "Job Title/Services Name or Any Other Name",
+        //                               style: TextStyle(
+        //                                   fontFamily: 'Poppins-SemiBold',
+        //                                   fontSize: 16,
+        //                                   fontWeight: FontWeight.bold
+        //                               ),
+        //                               overflow: TextOverflow.ellipsis,
+        //                               maxLines: 2,
+        //                             ),
+        //                           ),
+        //                           SizedBox(height: 4,),
+        //                           Row(
+        //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                             children: [
+        //                               Text(
+        //                                 "Work category:",
+        //                                 style: TextStyle(
+        //                                     fontFamily: 'Poppins-SemiBold',
+        //                                     fontSize: 12,
+        //                                     fontWeight: FontWeight.bold
+        //                                 ),
+        //                               ),
+        //                               // SizedBox(
+        //                               //   width: MediaQuery.of(context).size.width/9,
+        //                               // ),
+        //                               Container(
+        //                                 // width: MediaQuery.of(context).size.width*0.2,
+        //                                 child: Text('Category Type',
+        //                                   // "#102GRDSA36987",
+        //                                   style: TextStyle(
+        //                                     fontFamily: 'Poppins-Regular',
+        //                                     fontSize: 12,
+        //                                     // fontWeight: FontWeight.bold
+        //                                   ),
+        //                                   overflow: TextOverflow.ellipsis,
+        //                                 ),
+        //                               ),
+        //
+        //                             ],
+        //                           ),
+        //                           SizedBox(height: 3,),
+        //
+        //                           Row(
+        //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                             children: [
+        //                               Text(
+        //                                 "Work sub category:",
+        //                                 style: TextStyle(
+        //                                     fontFamily: 'Poppins-SemiBold',
+        //                                     fontSize: 12,
+        //                                     fontWeight: FontWeight.bold
+        //                                 ),
+        //                               ),
+        //                               // SizedBox(
+        //                               //   width: MediaQuery.of(context).size.width/11,
+        //                               // ),
+        //                               Container(
+        //                                 // width: MediaQuery.of(context).size.width*0.2,
+        //                                 child: Text(
+        //                                   'category type',
+        //                                   //"Step 1",
+        //                                   style: TextStyle(
+        //                                     fontFamily: 'Poppins-Regular',
+        //                                     fontSize: 12,
+        //                                     // fontWeight: FontWeight.bold
+        //                                   ),
+        //                                   overflow: TextOverflow.ellipsis,
+        //                                 ),
+        //                               )
+        //                             ],
+        //                           ),
+        //                           SizedBox(height: 3,),
+        //
+        //                           Row(
+        //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //                             children: [
+        //                               Text(
+        //                                 "Total Experience:",
+        //                                 style: TextStyle(
+        //                                     fontFamily: 'Poppins-SemiBold',
+        //                                     fontSize: 12,
+        //                                     fontWeight: FontWeight.bold
+        //                                 ),
+        //                               ),
+        //                               // SizedBox(
+        //                               //   width: MediaQuery.of(context).size.width/8,
+        //                               // ),
+        //                               Container(
+        //                                 // width: MediaQuery.of(context).size.width*0.2,
+        //                                 child: Text(
+        //                                   '5 Years',
+        //                                   //"Step 1",
+        //                                   style: TextStyle(
+        //                                     fontFamily: 'Poppins-Regular',
+        //                                     fontSize: 12,
+        //                                     // fontWeight: FontWeight.bold
+        //                                   ),
+        //                                   overflow: TextOverflow.ellipsis,
+        //                                 ),
+        //                               )
+        //                             ],
+        //                           ),
+        //                         ],
+        //                       ),
+        //                     ),
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //           ),
+        //         );
+        //       }),
+        // )
 
-                                    ],
-                                  ),
-                                  SizedBox(height: 3,),
+        body:BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          return BlocListener<HomeBloc, HomeState>(
+              listener: (context, state) {
+                if(state is TaskHandOverLoading){
+                  _isLoading = state.isLoading;
+                }
+                if(state is TaskHandOverSuccess){
+                  serviceList = state.serviceListData;
+                }
+                if(state is TaskHandOverFail){
+                  showCustomSnackBar(context,state.msg.toString());
+                }
+              },
+              child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+              Container(
+                child: ListView(
+                  children: [
+                    SingleChildScrollView(child: Container(child:buildServiceProviderList(serviceList!))),
+                  ],
+                ),
+              ) : ShimmerCard()
 
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Work sub category:",
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins-SemiBold',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: MediaQuery.of(context).size.width/11,
-                                      // ),
-                                      Container(
-                                        // width: MediaQuery.of(context).size.width*0.2,
-                                        child: Text(
-                                          'category type',
-                                          //"Step 1",
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins-Regular',
-                                            fontSize: 12,
-                                            // fontWeight: FontWeight.bold
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 3,),
+            // Center(
+            //   child: CircularProgressIndicator(),
+            // )
 
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Total Experience:",
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins-SemiBold',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: MediaQuery.of(context).size.width/8,
-                                      // ),
-                                      Container(
-                                        // width: MediaQuery.of(context).size.width*0.2,
-                                        child: Text(
-                                          '5 Years',
-                                          //"Step 1",
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins-Regular',
-                                            fontSize: 12,
-                                            // fontWeight: FontWeight.bold
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        )
+          );
+
+
+        })
 
     );
   }

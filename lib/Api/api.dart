@@ -14,9 +14,12 @@ import 'dart:convert';
 
 import '../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
 import '../Model/JobWorkEnquiry/my_task_detail_model.dart';
+import '../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
 import '../Model/JobWorkEnquiry/track_process_report_model.dart';
+import '../Model/MachineMaintance/task_hand_over_model.dart';
 import '../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../Model/cart_list_repo.dart';
 import '../Model/JobWorkEnquiry/my_task_model.dart';
 import '../Model/JobWorkEnquiry/quotation_reply.dart';
@@ -38,6 +41,9 @@ class Api {
   // static const String HOST_URL="http://unstoppabletrade.ezii.live/App_details/";
   static const String CUSTOMER_LOGIN="login";
   static const String SERVICE_REQUEST_LIST="machine_service_request_list";
+  static const String MACHINE_TASK_HAND_OVER="machine_mainienance_handover_service_user_list";
+  static const String JOB_WORK_ENQUIRY_TASK_HAND_OVER="job_work_handover_service_user_list";
+  static const String TRANSPORT_TASK_HAND_OVER="transport_handover_service_user_list";
   static const String SERVICE_REQUEST_TRANSPOTATION_LIST="transport_service_request_list";
   static const String QUOTATION_REPLY_LIST="get_machine_quotation_reply_list";
   static const String QUOTATION_REPLY_DETAIL="get_machine_quotation_reply_details_list";
@@ -65,6 +71,9 @@ class Api {
   static const String COMPLETE_TASK="update_daily_my_task_list";
   static const String MACHINE_QUOTATION="machine_maintainence_quatation";
   static const String JOBWORK_PROFILE="get_job_work_enquiry_profile";
+  static const String VEHICLE_NAME=HOST_URL+"transport_vehicle_name_list";
+  static const String VEHICLE_TYPE=HOST_URL+"transport_vehicle_type_list";
+  static const String VEHICLE_NUMBER=HOST_URL+"transport_vehicle_number_list";
   static const String TRANSPORT_PROFILE="get_transport_profile";
   static const String MACHINE_PROFILE="get_machine_maintainence_profile";
   static const String REJECT_REVISE_QUOTATION="service_revise_and_reject_quotations";
@@ -146,6 +155,42 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return ServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getTaskHandOverList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+MACHINE_TASK_HAND_OVER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return MachineMaintanceTaskHandOverRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getJobWorkEnquiryTaskHandOverList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOB_WORK_ENQUIRY_TASK_HAND_OVER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return JobWorkEnquiryTaskHandOverRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getTransportTaskHandOverList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRANSPORT_TASK_HAND_OVER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return TransportTaskHandOverRepo.fromJson(responseJson);
     }
   }
 

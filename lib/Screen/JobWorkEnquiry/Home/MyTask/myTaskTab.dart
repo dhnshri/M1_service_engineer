@@ -43,7 +43,8 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: '0'));
+    // _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: '0'));
+    _homeBloc!.add(OnMyTaskJWEList(userid:'1', offset: '0',timeId: '0'));
 
   }
 

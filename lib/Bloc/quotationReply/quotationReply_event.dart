@@ -24,8 +24,9 @@ class OnQuotationReplyJWEList extends QuotationReplyEvent {
 
   String offSet;
   String userId;
+  String timeId;
 
-  OnQuotationReplyJWEList({required this.offSet,required this.userId});
+  OnQuotationReplyJWEList({required this.offSet,required this.userId,required this.timeId});
 
 }
 
@@ -85,6 +86,28 @@ class JobWorkSendRevisedQuotation extends QuotationReplyEvent {
     required this.packingCharge,required this.testingCharge,required this.transportCharge,required this.itemList,
     required this.commission,required this.cgst, required this.sgst,required this.igst,required this.itemRateController,
     required this.volumeController,required this.totalAmount});
+
+}
+
+class TranspotationSendRevisedQuotation extends QuotationReplyEvent {
+
+  String vehicleNumber;
+  String vehicleName;
+  String vehicleType;
+  String serviceCharges;
+  String handlingCharges;
+  String gst;
+  String commision;
+  String gst_no;
+  String transport_enquiry_date;
+  String transport_enquiry_id;
+  String service_user_id;
+  String total_amount;
+
+  TranspotationSendRevisedQuotation({ required this.vehicleNumber, required this.vehicleName, required this.vehicleType,
+    required this.service_user_id,required this.commision,required this.gst,required this.gst_no,
+    required this.handlingCharges,required this.serviceCharges, required this.total_amount,required this.transport_enquiry_date,required this.transport_enquiry_id,
+  });
 
 }
 

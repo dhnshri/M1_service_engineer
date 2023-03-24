@@ -19,8 +19,8 @@ class UserRepository {
   }
 
   dynamic getPhoneNo() {
-      return UtilPreferences.getString(Preferences.phoneNo);
-    }
+    return UtilPreferences.getString(Preferences.phoneNo);
+  }
 
   Future<dynamic> saveRole(String role) async {
     return await UtilPreferences.setString(
@@ -55,6 +55,8 @@ class UserRepository {
   }
 
   Future<dynamic> registration({String? fullname,String? createPassword,String? reCreatePassword,String? email,String? mobileNo,String? role,String? username}) async {
+  Future<dynamic> registration(
+      {String? fullname, String? createPassword, String? reCreatePassword, String? email, String? mobileNo, String? role, String? username}) async {
     final params = {
       'name':fullname,
       'password':createPassword,
@@ -80,6 +82,34 @@ class UserRepository {
     final params = {"offset":offSet,"time_id":timeId};
     return await Api.getServiceRequestList(params);
   }
+
+  //Service Request Api
+  Future<dynamic> fetchTaskHandOverList(
+      {String? userID, String? offSet}) async {
+    final params = {"offset": offSet,
+      'sub_category_id': userID};
+    return await Api.getTaskHandOverList(params);
+  }
+
+  //Service Request Api
+  Future<dynamic> fetchJobWorkEnquiryTaskHandOverList(
+      {String? userID, String? offSet}) async {
+    final params = {"offset": offSet,
+      'category_id': userID};
+    return await Api.getJobWorkEnquiryTaskHandOverList(params);
+  }
+
+  //Service Request Api
+  Future<dynamic> fetchTransportTaskHandOverList({String? offSet}) async {
+    final params = {"offset": offSet};
+    return await Api.getTransportTaskHandOverList(params);
+  }
+
+    Future<dynamic> fetchServiceRequestTranspotationList(
+        {String? offSet, String? timeId}) async {
+      final params = {"offset": offSet, 'time_id': timeId};
+      return await Api.getServiceRequestTranspotationList(params);
+    }
 
   Future<dynamic> fetchFilterData() async {
     return await Api.getFilterList();
@@ -223,6 +253,18 @@ class UserRepository {
       "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId};
     return await Api.getProductList(params);
   }
+    Future<dynamic> fetchJobWorkEnquiryMyTaskList(
+        {String? userId, String? offset, String? timeId}) async {
+      final params = {"service_user_id": userId,
+        "offset": offset, 'time_id': timeId};
+      return await Api.getMyTaskJWEList(params);
+    }
+    //Fetch Product List
+    Future<dynamic> fetchProductList({String? prodId, String? offset}) async {
+      final params = {"user_id": prodId,
+        "offset": offset};
+      return await Api.getProductList(params);
+    }
 
   //Add To Cart
   Future<dynamic> addToCart({String? prodId,String? userId, String? quantity}) async {

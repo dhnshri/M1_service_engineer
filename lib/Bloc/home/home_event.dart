@@ -99,6 +99,18 @@ class TrackProcessList extends HomeEvent {
 
 }
 
+class TrackProcessTransportList extends HomeEvent {
+
+  String userId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+
+  TrackProcessTransportList({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId});
+
+}
+
 class OnTrackProcessList extends HomeEvent {
 
   String userId;
@@ -122,6 +134,21 @@ class CreateTask extends HomeEvent {
   int status;
 
   CreateTask({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
+    required this.transportEnquiryId,required this.heading, required this.description,required this.status});
+
+}
+// Transport Create Task
+class CreateTransportTask extends HomeEvent {
+
+  String userId;
+  String machineEnquiryId;
+  String jobWorkEnquiryId;
+  String transportEnquiryId;
+  String heading;
+  String description;
+  int status;
+
+  CreateTransportTask({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
     required this.transportEnquiryId,required this.heading, required this.description,required this.status});
 
 }
@@ -239,5 +266,53 @@ class JobWorkSendQuotation extends HomeEvent {
     required this.packingCharge,required this.testingCharge,required this.transportCharge,required this.itemList,
     required this.commission,required this.cgst, required this.sgst,required this.igst,required this.itemRateController,
     required this.volumeController,required this.totalAmount});
+
+}
+
+class TranspotationSendQuotation extends HomeEvent {
+
+  String vehicleNumber;
+  String vehicleName;
+  String vehicleType;
+  String serviceCharges;
+  String handlingCharges;
+  String gst;
+  String commision;
+  String gst_no;
+  String transport_enquiry_date;
+  String transport_enquiry_id;
+  String service_user_id;
+  String total_amount;
+
+  TranspotationSendQuotation({ required this.vehicleNumber, required this.vehicleName, required this.vehicleType,
+    required this.service_user_id,required this.commision,required this.gst,required this.gst_no,
+    required this.handlingCharges,required this.serviceCharges, required this.total_amount,required this.transport_enquiry_date,required this.transport_enquiry_id,
+    });
+
+}
+// Machine maintaince Task Hand Over
+class OnTaskHandOver extends HomeEvent {
+
+  String userID,offSet;
+
+  OnTaskHandOver({required this.userID,required this.offSet});
+
+}
+
+// Transport Task Hand Over
+class OnTransportTaskHandOver extends HomeEvent {
+
+  String offSet;
+
+  OnTransportTaskHandOver({required this.offSet});
+
+}
+
+// Machine maintaince Task Hand Over
+class OnJobWorkEnquiryTaskHandOver extends HomeEvent {
+
+  String userID,offSet;
+
+  OnJobWorkEnquiryTaskHandOver({required this.userID,required this.offSet});
 
 }
