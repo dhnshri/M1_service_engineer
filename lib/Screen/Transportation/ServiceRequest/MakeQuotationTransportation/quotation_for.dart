@@ -315,6 +315,7 @@ class QuotationForState extends State<QuotationFor> {
                                 TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
+                                print("Print Date : ${widget.requestDetailList!}");
                                 _homeBloc!.add(TranspotationSendQuotation(
                                   service_user_id: Application.customerLogin!.id.toString(),
                                   transport_enquiry_date: widget.requestDetailList![0].createdAt.toString(),

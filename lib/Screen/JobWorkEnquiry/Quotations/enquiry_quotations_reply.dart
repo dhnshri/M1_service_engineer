@@ -50,7 +50,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
     super.initState();
     _progressValue = 0.5;
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyJWEList(offSet: '0',userId: Application.customerLogin!.id.toString()));
+    _quotationReplyBloc!.add(OnQuotationReplyJWEList(offSet: '0',userId: Application.customerLogin!.id.toString(),timeId: '0'));
 
   }
   @override

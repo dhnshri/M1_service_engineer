@@ -97,8 +97,6 @@ class UserRepository {
     return await Api.getTransportTaskHandOverList(params);
   }
 
-  Future<dynamic> fetchServiceRequestTranspotationList({String? offSet}) async {
-    final params = {"offset": offSet};
     Future<dynamic> fetchServiceRequestTranspotationList(
         {String? offSet, String? timeId}) async {
       final params = {"offset": offSet, 'time_id': timeId};
@@ -121,8 +119,8 @@ class UserRepository {
 
 // Job wprk enquiry Quotation Reply
     Future<dynamic> fetchQuotationReplyJWEList(
-        {String? offSet, String? userId}) async {
-      final params = {"offset": offSet, 'service_user_id': userId};
+        {String? offSet, String? userId, String? timeId}) async {
+      final params = {"offset": offSet, 'service_user_id': userId, 'time_id':timeId};
       return await Api.getQuotaionReplyJWEList(params);
     }
 
@@ -472,6 +470,9 @@ class UserRepository {
     //   return await UtilPreferences.remove(Preferences.user);
     // }
 
-
   }
+
+
+
+
 

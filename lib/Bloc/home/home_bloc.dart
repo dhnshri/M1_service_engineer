@@ -949,6 +949,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryServiceRequestRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryList(
         offSet: event.offSet,
+          timeId:event.timePeriod,
       );
       print(result);
 
@@ -986,7 +987,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryMyTaskRepo response = await userRepository!
           .fetchJobWorkEnquiryMyTaskList(
           userId: event.userid,
-          offset:event.offset
+          offset:event.offset,
+          timeId:event.timeId
       );
       print(response);
 
@@ -1024,6 +1026,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestTranspotationRepo result = await userRepository!
           .fetchServiceRequestTranspotationList(
         offSet: event.offSet,
+        timeId: event.timeId,
       );
       print(result);
 
@@ -1061,7 +1064,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final MyTaskTransportationRepo response = await userRepository!
           .fetchTranspotationMyTaskList(
           userId: event.userid,
-          offset:event.offset
+          offset:event.offset,
+          timeId: event.timeId
       );
       print(response);
 

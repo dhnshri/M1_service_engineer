@@ -24,8 +24,9 @@ class OnQuotationReplyJWEList extends QuotationReplyEvent {
 
   String offSet;
   String userId;
+  String timeId;
 
-  OnQuotationReplyJWEList({required this.offSet,required this.userId});
+  OnQuotationReplyJWEList({required this.offSet,required this.userId,required this.timeId});
 
 }
 

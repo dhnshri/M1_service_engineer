@@ -300,7 +300,8 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       final QuotationReplyJWERepo result = await userRepository!
           .fetchQuotationReplyJWEList(
         offSet: event.offSet,
-        userId: event.userId
+        userId: event.userId,
+          timeId:event.timeId
       );
       print(result);
 
