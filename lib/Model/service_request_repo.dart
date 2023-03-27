@@ -34,6 +34,9 @@ class ServiceRequestModel {
   String? machineImg;
   String? machineProblemImg;
   String? dateAndTime;
+  int? dailyTaskId;
+  int? assignUserId;
+  int? serviceUserId;
 
   ServiceRequestModel(
       {this.enquiryId,
@@ -41,7 +44,10 @@ class ServiceRequestModel {
         this.machineName,
         this.machineImg,
         this.machineProblemImg,
-        this.dateAndTime});
+        this.dateAndTime,
+        this.dailyTaskId,
+        this.assignUserId,
+        this.serviceUserId});
 
   ServiceRequestModel.fromJson(Map<String, dynamic> json) {
     enquiryId = json['enquiry_id'];
@@ -50,6 +56,9 @@ class ServiceRequestModel {
     machineImg = json['machine_img'];
     machineProblemImg = json['machine_problem_img'];
     dateAndTime = json['date_and_time'];
+    dailyTaskId = json['daily_task_id'];
+    assignUserId = json['asign_user_id'];
+    serviceUserId = json['service_user_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +69,9 @@ class ServiceRequestModel {
     data['machine_img'] = this.machineImg;
     data['machine_problem_img'] = this.machineProblemImg;
     data['date_and_time'] = this.dateAndTime;
+    data['daily_task_id'] = this.dailyTaskId;
+    data['asign_user_id'] = this.assignUserId;
+    data['service_user_id'] = this.serviceUserId;
     return data;
   }
 }

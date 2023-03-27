@@ -81,6 +81,8 @@ class ServiceUserData {
   String? mobile;
   String? gstNo;
   int? categoryId;
+  String? workCatgory;
+  String? workSubCatgory;
   int? subCategoryId;
   String? location;
   String? currentAddress;
@@ -118,7 +120,9 @@ class ServiceUserData {
         this.role,
         this.name,
         this.age,
-        this.gender});
+        this.gender,
+        this.workCatgory,
+        this.workSubCatgory});
 
   ServiceUserData.fromJson(Map<String, dynamic> json) {
     serviceUserId = json['service_user_id'];
@@ -142,6 +146,8 @@ class ServiceUserData {
     name = json['name'];
     age = json['age'];
     gender = json['gender'];
+    workCatgory = json['work_category'];
+    workSubCatgory = json['work_sub_category'];
   }
 
   Map<String, dynamic> toJson() {
@@ -166,6 +172,8 @@ class ServiceUserData {
     data['role'] = this.role;
     data['name'] = this.name;
     data['age'] = this.gender;
+    data['work_category'] = this.workCatgory;
+    data['work_sub_category'] = this.workSubCatgory;
     return data;
   }
 }

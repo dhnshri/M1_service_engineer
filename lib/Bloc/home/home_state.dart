@@ -43,21 +43,66 @@ class ServiceRequestSuccess extends HomeState {
   ServiceRequestSuccess({required this.serviceListData, required this.message});
 }
 
-class ItemFilterLoading extends HomeState {
+class HandOverServiceRequestLoading extends HomeState {
   bool isLoading;
-  ItemFilterLoading({required this.isLoading});
+  HandOverServiceRequestLoading({required this.isLoading});
 }
 
-class ItemFilterFail extends HomeState {
+class HandOverServiceRequestFail extends HomeState {
   final String? msg;
-  ItemFilterFail({this.msg});
+  HandOverServiceRequestFail({this.msg});
 }
 
-class ItemFilterSuccess extends HomeState {
-  List<BrandModule> brandListData;
-  ItemFilterSuccess({required this.brandListData,});
+class HandOverServiceRequestSuccess extends HomeState {
+  List<ServiceRequestModel> serviceListData;
+  String message;
+  HandOverServiceRequestSuccess({required this.serviceListData, required this.message});
 }
 
+class AcceptRejectHandoverLoading extends HomeState {
+  bool isLoading;
+  AcceptRejectHandoverLoading({required this.isLoading});
+}
+
+class AcceptRejectHandoverFail extends HomeState {
+  final String? msg;
+  AcceptRejectHandoverFail({this.msg});
+}
+
+class AcceptRejectHandoverSuccess extends HomeState {
+  String message;
+  AcceptRejectHandoverSuccess({required this.message});
+}
+
+class BrandFilterLoading extends HomeState {
+  bool isLoading;
+  BrandFilterLoading({required this.isLoading});
+}
+
+class BrandFilterFail extends HomeState {
+  final String? msg;
+  BrandFilterFail({this.msg});
+}
+
+class BrandFilterSuccess extends HomeState {
+  List<FilterModule> brandListData;
+  BrandFilterSuccess({required this.brandListData,});
+}
+
+class CategoryFilterLoading extends HomeState {
+  bool isLoading;
+  CategoryFilterLoading({required this.isLoading});
+}
+
+class CategoryFilterFail extends HomeState {
+  final String? msg;
+  CategoryFilterFail({this.msg});
+}
+
+class CategoryFilterSuccess extends HomeState {
+  List<FilterModule> categoryListData;
+  CategoryFilterSuccess({required this.categoryListData,});
+}
 
 class ServiceRequestDetailLoading extends HomeState {
   bool isLoading;

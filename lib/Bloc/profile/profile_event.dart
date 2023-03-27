@@ -147,8 +147,17 @@ class GetTransportProfile extends ProfileEvent {
 class GetMachineProfile extends ProfileEvent {
   String serviceUserId;
   String roleId;
-
   GetMachineProfile({ required this.serviceUserId, required this.roleId,});
+}
+
+class MachineTaskHandover extends ProfileEvent {
+  String serviceUserId;
+  String machineEnquiryId;
+  String dailyTaskId;
+  String description;
+  String price;
+  MachineTaskHandover({ required this.serviceUserId, required this.machineEnquiryId,required this.dailyTaskId,
+    required this.description,required this.price});
 }
 
 

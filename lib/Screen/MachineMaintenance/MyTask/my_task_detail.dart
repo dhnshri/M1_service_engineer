@@ -762,56 +762,55 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   ),),
 
                 ///Mark as Completed Button
-                InkWell(
-                  onTap: (){
-                    // Navigator.of(context).pop();
-                    AlertDialog(
-                      title: new Text(""),
-                      content: new Text("Are you sure, you want to mark service as completed?"),
-                      actions: <Widget>[
-                        Row(
-                          children: [
-                            TextButton(
-                              child: new Text("No"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            SizedBox(width: 7,),
-                            TextButton(
-                              child: new Text("Yes"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: ThemeColors.defaultbuttonColor,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Center(child: Text("Mark As Completed",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ))),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: (){
+                //     // Navigator.of(context).pop();
+                //     AlertDialog(
+                //       title: new Text(""),
+                //       content: new Text("Are you sure, you want to mark service as completed?"),
+                //       actions: <Widget>[
+                //         Row(
+                //           children: [
+                //             TextButton(
+                //               child: new Text("No"),
+                //               onPressed: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //             ),
+                //             SizedBox(width: 7,),
+                //             TextButton(
+                //               child: new Text("Yes"),
+                //               onPressed: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //             ),
+                //           ],
+                //         ),
+                //       ],
+                //     );
+                //   },
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(10.0),
+                //     child: Container(
+                //       height: 40,
+                //       width: MediaQuery.of(context).size.width,
+                //       decoration: BoxDecoration(
+                //           color: ThemeColors.defaultbuttonColor,
+                //           borderRadius: BorderRadius.circular(30)),
+                //       child: Center(child: Text("Mark As Completed",
+                //           style: TextStyle(fontFamily: 'Poppins-Medium',
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500,
+                //             color: Colors.white,
+                //           ))),
+                //     ),
+                //   ),
+                // ),
 
 
                 SizedBox(
                   height: 80,
                 )
-
 
               ],
             )

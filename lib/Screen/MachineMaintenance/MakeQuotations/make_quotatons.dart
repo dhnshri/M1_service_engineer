@@ -89,6 +89,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   bool flagSearchResult=false;
   bool _isSearching=false;
   List<ProductDetails> searchResult=[];
+  int? catId=0;
+  int? brandId=0;
+  int? priceId=0;
+  int? offSet=0;
 
   void _handleSearchStart() {
     setState(() {
@@ -263,7 +267,12 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   print(filterResult['product_list']);
                   print(filterResult['brand_id']);
                   print(filterResult['ascending_descending_id']);
+                  print(filterResult['category_id']);
                   productDetail = filterResult['product_list'];
+                  catId = filterResult['category_id'];
+                  priceId = filterResult['ascending_descending_id'];
+                  brandId = filterResult['brand_id'];
+
                 }
               },
               child: Row(
@@ -901,7 +910,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(ProductList(prodId: '0',offSet: '0',brandId: '0',priceId: '0'));
+    _homeBloc!.add(ProductList(prodId: '0',offSet: offSet.toString(),brandId: brandId.toString(),priceId: priceId.toString(),catId: catId.toString()));
     loadApi();
     // setState((){
     //   if(_quantityController.text != '' && _rateController.text != ''){

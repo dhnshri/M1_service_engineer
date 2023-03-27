@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
-import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reject_revise_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
-import 'package:service_engineer/Model/service_request_detail_repo.dart';
-import 'package:service_engineer/Model/service_request_repo.dart';
+
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
@@ -301,7 +299,6 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
           .fetchQuotationReplyJWEList(
         offSet: event.offSet,
         userId: event.userId,
-          timeId:event.timeId
       );
       print(result);
 

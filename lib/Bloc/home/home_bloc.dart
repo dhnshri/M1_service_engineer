@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:service_engineer/Model/cart_repo.dart';
+import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
@@ -32,6 +33,7 @@ import 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({this.userRepository}) : super(InitialHomeState());
   final UserRepository? userRepository;
+  bool isFetching = false;
 
 
   @override
@@ -78,9 +80,89 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    if (event is ItemFilter) {
+    ///HandOver Service List
+    if (event is HandOverServiceRequest) {
       ///Notify loading to UI
-      yield ItemFilterLoading(
+      yield HandOverServiceRequestLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .fetchHandOverServiceRequestList(
+          offSet: event.offSet,
+          timeId: event.timeId,
+          serviceUserId: event.serviceUserId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestList = result.data! ?? [];
+        final serviceRequestList = refactorServiceRequestList.map((item) {
+          return ServiceRequestModel.fromJson(item);
+        }).toList();
+        print('Service Request List: $serviceRequestList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield HandOverServiceRequestLoading(
+            isLoading: true,
+          );
+          yield HandOverServiceRequestSuccess(serviceListData: serviceRequestList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield HandOverServiceRequestFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield HandOverServiceRequestLoading(isLoading: true);
+        yield HandOverServiceRequestFail(msg: result.msg!);
+      }
+    }
+
+    /// Accept and Reject Handover Task
+    if (event is AcceptRejectHandOverTask) {
+      ///Notify loading to UI
+      yield AcceptRejectHandoverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .acceptRejectHandover(
+        machineEnquiryId: event.machineEnquiryId,
+        dailyTaskId: event.dailyTaskId,
+        status: event.status,
+        serviceUserId: event.serviceUserId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        print('${result.msg}');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield AcceptRejectHandoverLoading(
+            isLoading: true,
+          );
+          yield AcceptRejectHandoverSuccess(message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield AcceptRejectHandoverFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield AcceptRejectHandoverLoading(isLoading: true);
+        yield AcceptRejectHandoverFail(msg: result.msg!);
+      }
+    }
+
+
+    if (event is BrandFilter) {
+      ///Notify loading to UI
+      yield BrandFilterLoading(
         isLoading: false,
       );
 
@@ -94,18 +176,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ///Home API success
         final Iterable refactorFilterList = result.data! ?? [];
         final filterList = refactorFilterList.map((item) {
-          return BrandModule.fromJson(item);
+          return FilterModule.fromJson(item);
         }).toList();
         print('Service Request List: $filterList');
         try {
           ///Begin start AuthBloc Event AuthenticationSave
-          yield ItemFilterLoading(
+          yield BrandFilterLoading(
             isLoading: true,
           );
-          yield ItemFilterSuccess(brandListData: filterList.reversed.toList());
+          yield BrandFilterSuccess(brandListData: filterList.reversed.toList());
         } catch (error) {
           ///Notify loading to UI
-          yield ItemFilterFail(msg: "Error Occured.");
+          yield BrandFilterFail(msg: "Error Occured.");
         }
       } else {
         ///Notify loading to UI
@@ -114,6 +196,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    if (event is CategoryFilter) {
+      ///Notify loading to UI
+      yield CategoryFilterLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final FilterRepo result = await userRepository!
+          .fetchFilterCategoryList();
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorFilterCategoryList = result.data! ?? [];
+        final filterCategoryList = refactorFilterCategoryList.map((item) {
+          return FilterModule.fromJson(item);
+        }).toList();
+        print('Service Request List: $filterCategoryList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield CategoryFilterLoading(
+            isLoading: true,
+          );
+          yield CategoryFilterSuccess(categoryListData: filterCategoryList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield CategoryFilterFail(msg: "Error Occured.");
+        }
+      } else {
+        ///Notify loading to UI
+        yield MyTaskLoading(isLoading: true);
+        yield ServiceRequestFail(msg: "Error Occured.");
+      }
+    }
 
     //Event for Task Hand Over Machine Maintaince
 
@@ -127,7 +244,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final MachineMaintanceTaskHandOverRepo result = await userRepository!
           .fetchTaskHandOverList(
         offSet: event.offSet,
-        userID: event.userID,
+        subCatId: event.subCatId,
       );
       print(result);
 
@@ -494,6 +611,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         offset: event.offSet,
         brandId: event.brandId,
         priceId: event.priceId,
+        catId: event.catId
       );
       print(result);
 

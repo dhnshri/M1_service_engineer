@@ -238,6 +238,44 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
 
+    ///Machine Maintainance Task HandOver
+    if (event is MachineTaskHandover) {
+      ///Notify loading to UI
+      yield MachineTaskHandoverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final TrackProcessRepo result = await userRepository!
+          .machineTaskHandOver(
+          serviceUserId: event.serviceUserId,
+          machineEnqId: event.machineEnquiryId,
+          dailyTaskId: event.dailyTaskId,
+          description: event.description,
+          price: event.price,
+      );
+      print(result);
+
+
+      if (result.success == true) {
+
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield MachineTaskHandoverLoading(
+            isLoading: true,
+          );
+          yield MachineTaskHandoverSuccess(msg: result.msg.toString());
+        } catch (error) {
+          ///Notify loading to UI
+          yield MachineTaskHandoverFail(msg: result.msg.toString());
+        }
+      } else {
+        ///Notify loading to UI
+        yield MachineTaskHandoverFail(msg: result.msg.toString());
+      }
+    }
+
 
     /// Update Profile for Job Work Enquiry
     if (event is UpdateJobWorkProfile) {

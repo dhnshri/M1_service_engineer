@@ -13,8 +13,24 @@ class OnServiceRequest extends HomeEvent {
   OnServiceRequest({required this.offSet,required this.timeId});
 }
 
-class ItemFilter extends HomeEvent {
-  ItemFilter();
+class HandOverServiceRequest extends HomeEvent {
+  String offSet,timeId,serviceUserId;
+
+  HandOverServiceRequest({required this.offSet,required this.timeId,required this.serviceUserId});
+}
+
+class AcceptRejectHandOverTask extends HomeEvent {
+  String dailyTaskId,machineEnquiryId,serviceUserId,status;
+
+  AcceptRejectHandOverTask({required this.dailyTaskId,required this.machineEnquiryId,required this.serviceUserId,required this.status});
+}
+
+class BrandFilter extends HomeEvent {
+  BrandFilter();
+}
+
+class CategoryFilter extends HomeEvent {
+  CategoryFilter();
 }
 
 class MyTaskList extends HomeEvent {
@@ -65,9 +81,9 @@ class OnMyTaskJobWorkEnquiryDetail extends HomeEvent {
 
 class ProductList extends HomeEvent {
 
-  String prodId,offSet,brandId,priceId;
+  String prodId,offSet,brandId,priceId,catId;
 
-  ProductList({required this.prodId,required this.offSet,required this.brandId,required this.priceId});
+  ProductList({required this.prodId,required this.offSet,required this.brandId,required this.priceId,required this.catId});
 
 }
 
@@ -293,9 +309,9 @@ class TranspotationSendQuotation extends HomeEvent {
 // Machine maintaince Task Hand Over
 class OnTaskHandOver extends HomeEvent {
 
-  String userID,offSet;
+  String subCatId,offSet;
 
-  OnTaskHandOver({required this.userID,required this.offSet});
+  OnTaskHandOver({required this.subCatId,required this.offSet});
 
 }
 
