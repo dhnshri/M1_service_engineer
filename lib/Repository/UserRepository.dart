@@ -89,10 +89,24 @@ class UserRepository {
   }
 
   ///Fetch HandOver Service Request
-  Future<dynamic> fetchHandOverServiceRequestList(
+  Future<dynamic> fetchMachineHandOverServiceRequestListList(
       {String? timeId, String? offSet,String? serviceUserId}) async {
     final params = {"offset": offSet, "time_id": timeId,"service_user_id":serviceUserId};
-    return await Api.getHandOverServiceRequestList(params);
+    return await Api.getMachineHandOverServiceRequestListList(params);
+  }
+
+  ///Fetch handover task detail data
+  Future<dynamic> fetchMachineHandOverDetailData(
+      { String? dailyTaskId,String? serviceUserId}) async {
+    final params = {"daily_task_id": dailyTaskId,"service_user_id":serviceUserId};
+    return await Api.getMachineHandOverTaskDetail(params);
+  }
+
+  ///Fetch Job Work HandOver Service Request
+  Future<dynamic> fetchJobWorkHandOverServiceRequestListList(
+      {String? timeId, String? offSet,String? serviceUserId}) async {
+    final params = {"offset": offSet, "time_id": timeId,"service_user_id":serviceUserId};
+    return await Api.getJobWorkHandOverServiceRequestListList(params);
   }
 
   ///Accept And Reject Handover
@@ -100,6 +114,13 @@ class UserRepository {
       {String? machineEnquiryId, String? dailyTaskId,String? serviceUserId,String? status}) async {
     final params = {"machine_enquiry_id": machineEnquiryId, "daily_task_id": dailyTaskId,"service_user_id":serviceUserId,"status":status};
     return await Api.acceptRejectHandOver(params);
+  }
+
+  ///Accept And Reject Handover Of Job Work
+  Future<dynamic> jobworkAcceptRejectHandover(
+      {String? jobworkEnquiryId,String? serviceUserId,String? status}) async {
+    final params = {"job_work_enquiry_id": jobworkEnquiryId,"service_user_id":serviceUserId,"status":status};
+    return await Api.jobworkAcceptRejectHandOver(params);
   }
 
   //Service Request Api
@@ -206,6 +227,13 @@ class UserRepository {
     final params = {"service_user_id":serviceUserId,'machine_enquiry_id':machineEnqId,"daily_task_id":dailyTaskId,
       "description":description,"price":price};
     return await Api.sendMachineTaskHandOver(params);
+  }
+
+  ///Jobwork Task Handover
+  Future<dynamic> jobWorkTaskHandOver({String? serviceUserId,String? jobWorkEnqId,String? description,}) async {
+    final params = {"service_user_id":serviceUserId,'job_work_enquiry_id':jobWorkEnqId,
+      "description":description,};
+    return await Api.sendJobWorkTaskHandOver(params);
   }
 
   ///Get Transport Profile Data

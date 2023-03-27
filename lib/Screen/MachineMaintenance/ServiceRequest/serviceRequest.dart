@@ -54,7 +54,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
-    _homeBloc!.add(HandOverServiceRequest(timeId: timeId.toString(),offSet: offSet.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: offSet.toString(),serviceUserId: Application.customerLogin!.id.toString()));
     print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
   }
   @override
@@ -323,181 +323,6 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     return Scaffold(
       key: _scaffoldKey,
       body: widget.isSwitched?
-      // BlocConsumer<HomeBloc, HomeState>(
-      //   listener: (context, state) {
-      //     if (state is ServiceRequestLoading) {
-      //       showCustomSnackBar(context,'loading...');
-      //     } else if (state is ServiceRequestSuccess && state.serviceListData.isEmpty) {
-      //       showCustomSnackBar(context,'No more data');
-      //     } else if (state is ServiceRequestFail) {
-      //       showCustomSnackBar(context,state.msg.toString());
-      //       BlocProvider.of<HomeBloc>(context).isFetching = false;
-      //     }
-      //     return;
-      //   },
-      //   builder: (context,state) {
-      //     if (state is InitialHomeState ||
-      //         state is ServiceRequestLoading && serviceList!.isEmpty) {
-      //       return CircularProgressIndicator();
-      //     }if (state is ServiceRequestSuccess) {
-      //       serviceList!.addAll(state.serviceListData);
-      //       BlocProvider.of<HomeBloc>(context).isFetching = false;
-      //       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      //     }if (state is ServiceRequestFail && serviceList!.isEmpty) {
-      //       showCustomSnackBar(context,state.msg.toString());
-      //     }
-      //     return   serviceList!.length <= 0 ? Center(child: Text('No Data'),):
-      //     Container(
-      //       child: Column(
-      //         children:<Widget> [
-      //           const SizedBox(height: 5,),
-      //           handOverServiceList!.length > 0 ?
-      //           Padding(
-      //             padding: const EdgeInsets.all(5.0),
-      //             child: Container(
-      //               decoration: BoxDecoration(
-      //                   color: ThemeColors.imageContainerBG
-      //               ),
-      //               child: Padding(
-      //                 padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-      //                 child: Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Container(
-      //                       // width:200,
-      //                       child: const Text("Task Assigned By Other Service Providers",
-      //                           overflow: TextOverflow.ellipsis,
-      //                           style: TextStyle(
-      //                             // color: ThemeColors.buttonColor,
-      //                               fontFamily: 'Poppins-Regular',
-      //                               fontSize: 15,
-      //                               fontWeight: FontWeight.w600
-      //                           )),
-      //                     ),
-      //                     InkWell(
-      //                       onTap: () async {
-      //                         Navigator.push(context, MaterialPageRoute(builder: (context)=>
-      //                             HandOverTaskList()));
-      //                       },
-      //                       child: Container(
-      //                         child: Text('View',
-      //                             style: TextStyle(
-      //                                 color: ThemeColors.buttonColor,
-      //                                 fontFamily: 'Poppins-Regular',
-      //                                 fontSize: 14,
-      //                                 fontWeight: FontWeight.w500
-      //                             )),
-      //                       ),
-      //                     )
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //           ): Container(),
-      //           Container(
-      //             decoration: BoxDecoration(
-      //                 border: Border(
-      //                   bottom: BorderSide(width: 0.2,),
-      //                 )
-      //             ),
-      //             child: Padding(
-      //               padding: const EdgeInsets.only(
-      //                   top: 10.0, left: 10, right: 10, bottom: 5),
-      //               child: Row(
-      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                 children: [
-      //                   Expanded(
-      //                     child: TextFormField(
-      //                       // initialValue: Application.customerLogin!.name.toString(),
-      //                       controller: _searchController,
-      //                       textAlign: TextAlign.start,
-      //                       keyboardType: TextInputType.text,
-      //                       style: TextStyle(
-      //                         fontSize: 18,
-      //                         height: 1.5,
-      //                       ),
-      //                       decoration: InputDecoration(
-      //                         filled: true,
-      //                         fillColor: ThemeColors.bottomNavColor,
-      //                         prefixIcon: IconButton(
-      //                           icon: Icon(
-      //                             Icons.search,
-      //                             size: 25.0,
-      //                             color: ThemeColors.blackColor,
-      //                           ),
-      //                           onPressed: () {
-      //                             _handleSearchStart();
-      //                           },
-      //                         ),
-      //                         hintText: "Search all Orders",
-      //                         contentPadding: EdgeInsets.symmetric(
-      //                             vertical: 10.0, horizontal: 15.0),
-      //                         hintStyle: TextStyle(fontSize: 15),
-      //                         enabledBorder: OutlineInputBorder(
-      //                           borderRadius: BorderRadius.all(Radius.circular(1.0)),
-      //                           borderSide: BorderSide(
-      //                               width: 0.8, color: ThemeColors.bottomNavColor),
-      //                         ),
-      //                         focusedBorder: OutlineInputBorder(
-      //                           borderRadius: BorderRadius.all(Radius.circular(1.0)),
-      //                           borderSide: BorderSide(
-      //                               width: 0.8, color: ThemeColors.bottomNavColor),
-      //                         ),
-      //                         border: OutlineInputBorder(
-      //                             borderRadius:
-      //                             BorderRadius.all(Radius.circular(1.0)),
-      //                             borderSide: BorderSide(
-      //                                 width: 0.8, color: ThemeColors.bottomNavColor)),
-      //                       ),
-      //                       validator: (value) {
-      //
-      //                       },
-      //                       onChanged: (value) {
-      //                         // profile.name = value;
-      //                         searchOperation(value);
-      //                       },
-      //                     ),
-      //                   ),
-      //                   InkWell(
-      //                     onTap: () async {
-      //                       var filterResult = await Navigator.push(context,
-      //                           MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
-      //
-      //                       if(filterResult != null){
-      //                         print(filterResult);
-      //                         serviceList = filterResult['serviceList'];
-      //                       }
-      //                     },
-      //                     child: Row(
-      //                       children: [
-      //                         Icon(Icons.filter_list),
-      //                         SizedBox(
-      //                           width: 5,
-      //                         ),
-      //                         Text("Filter")
-      //                       ],
-      //                     ),
-      //                   )
-      //                 ],
-      //               ),
-      //             ),
-      //           ),
-      //           // _isLoading ?
-      //           flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-      //           buildCustomerEnquiriesList(context, searchResult)
-      //               :
-      //           Expanded(child: buildCustomerEnquiriesList(context, serviceList!))
-      //               : Padding(
-      //             padding: const EdgeInsets.only(top: 20.0),
-      //             child: const Center(child: Text("No Data"),),
-      //           )
-      //           // : ShimmerCard()
-      //           // : CircularProgressIndicator()
-      //         ],
-      //       ),
-      //     );
-      //   },
-      // )
       BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
         return BlocListener<HomeBloc, HomeState>(
@@ -511,13 +336,13 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
               if(state is ServiceRequestFail){
                 showCustomSnackBar(context,state.msg.toString());
               }
-              if(state is HandOverServiceRequestLoading){
+              if(state is MachineHandOverServiceRequestListLoading){
                 _isLoading = state.isLoading;
               }
-              if(state is HandOverServiceRequestSuccess){
+              if(state is MachineHandOverServiceRequestListSuccess){
                 handOverServiceList = state.serviceListData;
               }
-              if(state is HandOverServiceRequestFail){
+              if(state is MachineHandOverServiceRequestListFail){
                 showCustomSnackBar(context,state.msg.toString());
               }
             },

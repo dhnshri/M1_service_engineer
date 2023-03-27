@@ -247,11 +247,13 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                   _isLoading = state.isLoading;
                 }
                 if(state is MachineTaskHandoverSuccess){
-                  showCustomSnackBar(context,state.msg.toString(),isError: true);
+                  showCustomSnackBar(context,state.msg.toString(),isError: false);
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                       MyTaskDetailsScreen(myTaskData: widget.myTaskData,)));
                 }
                 if(state is MachineTaskHandoverFail){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                      MyTaskDetailsScreen(myTaskData: widget.myTaskData,)));
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
               },

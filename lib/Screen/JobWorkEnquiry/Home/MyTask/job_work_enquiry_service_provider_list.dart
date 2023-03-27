@@ -1,47 +1,31 @@
-import 'dart:async';
-import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
-import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
-import 'package:service_engineer/Model/service_request_detail_repo.dart';
-import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
-import 'package:service_engineer/Screen/MachineMaintenance/MyTask/process_detail.dart';
-import 'package:service_engineer/Screen/MachineMaintenance/MyTask/service_provider_profile.dart';
-import 'package:service_engineer/Utils/application.dart';
-import 'package:service_engineer/Widget/image_view_screen.dart';
-import 'package:service_engineer/Widget/pdfViewer.dart';
-import 'package:http/http.dart' as http;
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/service_provider_profile.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/foundation.dart';
 import '../../../../Config/font.dart';
 import '../../../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
 import '../../../../Widget/custom_snackbar.dart';
-import '../../../Chat/chat_listing.dart';
-import 'add_task.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 
 
 class JobWorkEnquiryServiceProviderListScreen extends StatefulWidget {
-
-  JobWorkEnquiryServiceProviderListScreen({Key? key}) : super(key: key);
+  JobWorkEnquiryMyTaskModel myTaskJobWorkEnquiryData;
+  JobWorkEnquiryServiceProviderListScreen({Key? key,required this.myTaskJobWorkEnquiryData}) : super(key: key);
 
   @override
   _JobWorkEnquiryServiceProviderListScreenState createState() => _JobWorkEnquiryServiceProviderListScreenState();
 }
 
 class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiryServiceProviderListScreen> {
-  final TextEditingController _phoneNumberController = TextEditingController();
   String? role;
   bool loading = true;
   bool _isLoading = false;
@@ -54,28 +38,8 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
-  String? url =
-      "http://www.africau.edu/images/default/sample.pdf";
-
-  final Set<Marker> _markers = {};
-  late LatLng _lastMapPosition;
-  double? addressLat;
-  double? addressLong;
-  Completer<GoogleMapController> controller1 = Completer();
 
   List<TrackProcessModel>? trackProgressData = [];
-
-  _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      controller1.complete(controller);
-    });
-  }
-
-  MapType _currentMapType = MapType.normal;
 
 
   @override
@@ -84,25 +48,8 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    // _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    _homeBloc!.add(TrackProcessList(userId: '1',machineEnquiryId: '0',transportEnquiryId: '0',jobWorkEnquiryId: '1'));
-    _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(userID: '2', offSet: '0'));
-    _phoneNumberController.clear();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
+    _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(userID: 2.toString(), offSet: '0'));
+    // _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(userID: Application.customerLogin!.workCategoryId.toString(), offSet: '0'));
   }
   @override
   void dispose() {
@@ -120,8 +67,8 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              // Navigator.push(context, MaterialPageRoute(
-              //     builder: (context) => MyTaskDetailsScreen(myTaskData: myTaskList[index],)));
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => JobWorkServiceProviderProfile(serviceList: handOverList[index],myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
             },
             child: TaskHandOverCard(context,handOverList[index]));
       },
@@ -212,7 +159,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                       Container(
                         // width: MediaQuery.of(context).size.width/1.8,
                         child: Text(
-                          TaskData.serviceUser.toString(),
+                          TaskData.username.toString(),
                           // "Job Title/Services Name or Any Other Name",
                           style: TextStyle(
                               fontFamily: 'Poppins-SemiBold',
@@ -538,38 +485,8 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                 //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
               },
               child: Icon(Icons.arrow_back_ios)),
-          title: Text("",style:appBarheadingStyle ,),
+          title: Text("Service Provider List",style:appBarheadingStyle ,),
         ),
-        floatingActionButton:Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                backgroundColor: ThemeColors.defaultbuttonColor,
-                heroTag: "btn1",
-                child: Icon(
-                  Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
-                ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>chatListing()));
-                },
-              ),
-              SizedBox(width: 8,),
-              FloatingActionButton(
-                backgroundColor: ThemeColors.defaultbuttonColor,
-                heroTag: "btn2",
-                child: Icon(
-                  Icons.call,color: ThemeColors.whiteTextColor,size: 30,
-                ),
-                onPressed: () {
-                  //...
-                },
-              ),
-            ],
-          ),
-        ),
-
         body:BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {

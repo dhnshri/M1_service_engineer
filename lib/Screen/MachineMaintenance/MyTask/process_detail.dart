@@ -97,7 +97,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                       color: ThemeColors.defaultbuttonColor,
                       width: 1,
                     )),
-                child: Center(child: Text("Assign Task to Other",
+                child: const Center(child: Text("Assign Task to Other",
                     style: TextStyle(fontFamily: 'Poppins-Medium',
                       fontSize: 16,
                       fontWeight: FontWeight.w500,

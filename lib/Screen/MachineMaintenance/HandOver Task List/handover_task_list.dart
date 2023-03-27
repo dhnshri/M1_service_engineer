@@ -47,7 +47,7 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     // _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
-    _homeBloc!.add(HandOverServiceRequest(timeId: timeId.toString(),offSet: offSet.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: offSet.toString(),serviceUserId: Application.customerLogin!.id.toString()));
     // print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
   }
   @override
@@ -331,16 +331,16 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
           builder: (context, state) {
             return BlocListener<HomeBloc, HomeState>(
                 listener: (context, state) {
-                  if(state is HandOverServiceRequestLoading){
+                  if(state is MachineHandOverServiceRequestListLoading){
                     _isLoading = state.isLoading;
                   }
-                  if(state is HandOverServiceRequestSuccess){
+                  if(state is MachineHandOverServiceRequestListSuccess){
                     // serviceList = state.serviceListData;
                     // if(serviceList!=null) {
                     handOverServiceList!.addAll(state.serviceListData);
                     // }
                   }
-                  if(state is HandOverServiceRequestFail){
+                  if(state is MachineHandOverServiceRequestListFail){
                     showCustomSnackBar(context,state.msg.toString());
                   }
                 },

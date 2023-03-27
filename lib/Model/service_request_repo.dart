@@ -75,3 +75,40 @@ class ServiceRequestModel {
     return data;
   }
 }
+
+class HandOverTaskDetailModel {
+  int? id;
+  int? serviceUserId;
+  String? heading;
+  String? description;
+  int? asignUserId;
+  int? price;
+
+  HandOverTaskDetailModel(
+      {this.id,
+        this.serviceUserId,
+        this.heading,
+        this.description,
+        this.asignUserId,
+        this.price});
+
+  HandOverTaskDetailModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceUserId = json['service_user_id'];
+    heading = json['heading'];
+    description = json['description'];
+    asignUserId = json['asign_user_id'];
+    price = json['price'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['service_user_id'] = this.serviceUserId;
+    data['heading'] = this.heading;
+    data['description'] = this.description;
+    data['asign_user_id'] = this.asignUserId;
+    data['price'] = this.price;
+    return data;
+  }
+}

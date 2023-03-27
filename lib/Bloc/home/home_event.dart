@@ -13,16 +13,28 @@ class OnServiceRequest extends HomeEvent {
   OnServiceRequest({required this.offSet,required this.timeId});
 }
 
-class HandOverServiceRequest extends HomeEvent {
+class MachineHandOverServiceRequestList extends HomeEvent {
   String offSet,timeId,serviceUserId;
 
-  HandOverServiceRequest({required this.offSet,required this.timeId,required this.serviceUserId});
+  MachineHandOverServiceRequestList({required this.offSet,required this.timeId,required this.serviceUserId});
 }
 
-class AcceptRejectHandOverTask extends HomeEvent {
+class JobWorkHandOverServiceRequestList extends HomeEvent {
+  String offSet,timeId,serviceUserId;
+
+  JobWorkHandOverServiceRequestList({required this.offSet,required this.timeId,required this.serviceUserId});
+}
+
+class MachineAcceptRejectHandOverTask extends HomeEvent {
   String dailyTaskId,machineEnquiryId,serviceUserId,status;
 
-  AcceptRejectHandOverTask({required this.dailyTaskId,required this.machineEnquiryId,required this.serviceUserId,required this.status});
+  MachineAcceptRejectHandOverTask({required this.dailyTaskId,required this.machineEnquiryId,required this.serviceUserId,required this.status});
+}
+
+class JobWorkAcceptRejectHandOverTask extends HomeEvent {
+  String jobWorkEnquiryId,serviceUserId,status;
+
+  JobWorkAcceptRejectHandOverTask({required this.jobWorkEnquiryId,required this.serviceUserId,required this.status});
 }
 
 class BrandFilter extends HomeEvent {
@@ -42,40 +54,48 @@ class MyTaskList extends HomeEvent {
 
 class OnServiceRequestDetail extends HomeEvent {
 
-  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+  String userID,machineEnquiryId,jobWorkEnquiryId,transportEnquiryId;
 
-  OnServiceRequestDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+  OnServiceRequestDetail({required this.userID,required this.machineEnquiryId, required this.jobWorkEnquiryId, required this.transportEnquiryId});
+
+}
+
+class MachineHandOverTaskDetail extends HomeEvent {
+
+  String serviceUserID,dailyTaskId;
+
+  MachineHandOverTaskDetail({required this.serviceUserID,required this.dailyTaskId,});
 
 }
 
 class OnServiceRequestTranspotationDetail extends HomeEvent {
 
-  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+  String userID,machineEnquiryId,jobWorkEnquiryId,transportEnquiryId;
 
-  OnServiceRequestTranspotationDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+  OnServiceRequestTranspotationDetail({required this.userID,required this.machineEnquiryId, required this.jobWorkEnquiryId, required this.transportEnquiryId});
 
 }
 class OnServiceRequestJobWorkEnquiryDetail extends HomeEvent {
 
-  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+  String userID,machineEnquiryId,jobWorkEnquiryId,transportEnquiryId;
 
-  OnServiceRequestJobWorkEnquiryDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+  OnServiceRequestJobWorkEnquiryDetail({required this.userID,required this.machineEnquiryId, required this.jobWorkEnquiryId, required this.transportEnquiryId});
 
 }
 
 class OnMyTaskTranspotationDetail extends HomeEvent {
 
-  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+  String userID,machineEnquiryId,jobWorkEnquiryId,transportEnquiryId;
 
-  OnMyTaskTranspotationDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+  OnMyTaskTranspotationDetail({required this.userID,required this.machineEnquiryId, required this.jobWorkEnquiryId, required this.transportEnquiryId});
 
 }
 
 class OnMyTaskJobWorkEnquiryDetail extends HomeEvent {
 
-  String userID,machineServiceId,jobWorkServiceId,transportServiceId;
+  String userID,machineEnquiryId,jobWorkEnquiryId,transportEnquiryId;
 
-  OnMyTaskJobWorkEnquiryDetail({required this.userID,required this.machineServiceId, required this.jobWorkServiceId, required this.transportServiceId});
+  OnMyTaskJobWorkEnquiryDetail({required this.userID,required this.machineEnquiryId, required this.jobWorkEnquiryId, required this.transportEnquiryId});
 
 }
 
@@ -137,6 +157,13 @@ class OnTrackProcessList extends HomeEvent {
   OnTrackProcessList({ required this.userId, required this.machineEnquiryId, required this.jobWorkEnquiryId,
     required this.transportEnquiryId});
 
+}
+
+class JobWorkQuotationReplyDetail extends HomeEvent {
+  String jobWorkEnquiryId;
+  String customerUserId;
+
+  JobWorkQuotationReplyDetail({required this.jobWorkEnquiryId,required this.customerUserId});
 }
 
 class CreateTask extends HomeEvent {

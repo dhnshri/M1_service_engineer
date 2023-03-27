@@ -43,6 +43,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
 
   HomeBloc? _homeBloc;
   List<MachineServiceDetailsModel>? serviceRequestData = [];
+  List<HandOverTaskDetailModel>? handoverTaskData = [];
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
@@ -55,7 +56,8 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestDetail(userID: widget.handoverTaskData.serviceUserId.toString(), machineServiceId: widget.handoverTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    _homeBloc!.add(OnServiceRequestDetail(userID: widget.handoverTaskData.serviceUserId.toString(), machineEnquiryId: widget.handoverTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
+    _homeBloc!.add(MachineHandOverTaskDetail(serviceUserID: widget.handoverTaskData.serviceUserId.toString(), dailyTaskId: widget.handoverTaskData.dailyTaskId.toString(),));
 
   }
   @override
@@ -89,7 +91,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
               Flexible(
                 child: AppButton(
                   onPressed: () async {
-                    _homeBloc!.add(AcceptRejectHandOverTask(serviceUserId: widget.handoverTaskData.serviceUserId.toString(), machineEnquiryId: widget.handoverTaskData.enquiryId.toString(),
+                    _homeBloc!.add(MachineAcceptRejectHandOverTask(serviceUserId: widget.handoverTaskData.serviceUserId.toString(), machineEnquiryId: widget.handoverTaskData.enquiryId.toString(),
                         status: '2', dailyTaskId: widget.handoverTaskData.dailyTaskId.toString()));
                   },
                   shape: const RoundedRectangleBorder(
@@ -105,7 +107,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
               Flexible(
                 child: AppButton(
                   onPressed: () async {
-                    _homeBloc!.add(AcceptRejectHandOverTask(serviceUserId: widget.handoverTaskData.serviceUserId.toString(), machineEnquiryId: widget.handoverTaskData.enquiryId.toString(),
+                    _homeBloc!.add(MachineAcceptRejectHandOverTask(serviceUserId: widget.handoverTaskData.serviceUserId.toString(), machineEnquiryId: widget.handoverTaskData.enquiryId.toString(),
                         status: '1', dailyTaskId: widget.handoverTaskData.dailyTaskId.toString()));
                   },
                   shape: const RoundedRectangleBorder(
@@ -129,6 +131,15 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                   serviceRequestData = state.machineServiceDetail;
                 }
                 if(state is ServiceRequestFail){
+                  showCustomSnackBar(context,state.msg.toString(),isError: true);
+                }
+                if(state is MachineHandOverTaskDetailLoading){
+                  _isLoading = state.isLoading;
+                }
+                if(state is MachineHandOverTaskDetailSuccess){
+                  handoverTaskData = state.serviceListData;
+                }
+                if(state is MachineHandOverTaskDetailFail){
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
                 if(state is AcceptRejectHandoverLoading){
@@ -336,7 +347,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                   ExpansionTileCard(
                     initiallyExpanded: true,
                     key: cardC,
-                    title: const Text("Track Progress",
+                    title: const Text("Task Detail",
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Poppins-Medium',
@@ -344,6 +355,31 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                             fontWeight: FontWeight.w500
                         )),
                     children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0,bottom: 10),
+                        child: Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                children: [
+                                  Text(handoverTaskData![0].heading.toString(),
+                                      style: TextStyle(fontFamily: 'Poppins-Medium',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(height: 8,),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(handoverTaskData![0].description.toString())),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
 
@@ -359,6 +395,71 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                             fontWeight: FontWeight.w500
                         )),
                     children: <Widget>[
+                      handoverTaskData![0].price != 0?
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: ThemeColors.imageContainerBG
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  // width:200,
+                                  child: const Text("Task Amount:",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        // color: ThemeColors.buttonColor,
+                                          fontFamily: 'Poppins-Regular',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500
+                                      )),
+                                ),
+                                Container(
+                                  child: Text("₹ ${handoverTaskData![0].price.toString()}",
+                                      style: TextStyle(
+                                          // color: ThemeColors.buttonColor,
+                                          fontFamily: 'Poppins-Regular',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500
+                                      )),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ):Container(),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0,top: 20,bottom: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Other Information",
+                              style: TextStyle(
+                                // color: ThemeColors.buttonColor,
+                                  fontFamily: 'Poppins-Regular',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600
+                              )),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0,bottom: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(handoverTaskData![0].description.toString(),
+                              style: TextStyle(
+                                // color: ThemeColors.buttonColor,
+                                  fontFamily: 'Poppins-Regular',
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500
+                              )),
+                        ),
+                      )
                     ],
                   ),
 

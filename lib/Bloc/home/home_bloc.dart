@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:service_engineer/Model/cart_repo.dart';
 import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
@@ -80,16 +81,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    ///HandOver Service List
-    if (event is HandOverServiceRequest) {
+    ///Machine HandOver Service List
+    if (event is MachineHandOverServiceRequestList) {
       ///Notify loading to UI
-      yield HandOverServiceRequestLoading(
+      yield MachineHandOverServiceRequestListLoading(
         isLoading: false,
       );
 
       ///Fetch API via repository
       final ServiceRequestRepo result = await userRepository!
-          .fetchHandOverServiceRequestList(
+          .fetchMachineHandOverServiceRequestListList(
           offSet: event.offSet,
           timeId: event.timeId,
           serviceUserId: event.serviceUserId,
@@ -106,23 +107,105 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         print('Service Request List: $serviceRequestList');
         try {
           ///Begin start AuthBloc Event AuthenticationSave
-          yield HandOverServiceRequestLoading(
+          yield MachineHandOverServiceRequestListLoading(
             isLoading: true,
           );
-          yield HandOverServiceRequestSuccess(serviceListData: serviceRequestList, message: result.msg!);
+          yield MachineHandOverServiceRequestListSuccess(serviceListData: serviceRequestList, message: result.msg!);
         } catch (error) {
           ///Notify loading to UI
-          yield HandOverServiceRequestFail(msg: result.msg!);
+          yield MachineHandOverServiceRequestListFail(msg: result.msg!);
         }
       } else {
         ///Notify loading to UI
-        yield HandOverServiceRequestLoading(isLoading: true);
-        yield HandOverServiceRequestFail(msg: result.msg!);
+        yield MachineHandOverServiceRequestListLoading(isLoading: true);
+        yield MachineHandOverServiceRequestListFail(msg: result.msg!);
+      }
+    }
+
+    ///Machine Handover Task Detail
+    if (event is MachineHandOverTaskDetail) {
+      ///Notify loading to UI
+      yield MachineHandOverTaskDetailLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .fetchMachineHandOverDetailData(
+        dailyTaskId: event.dailyTaskId,
+        serviceUserId: event.serviceUserID,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == false) {
+        ///Home API success
+        final Iterable refactorServiceRequestList = result.data! ?? [];
+        final serviceRequestList = refactorServiceRequestList.map((item) {
+          return HandOverTaskDetailModel.fromJson(item);
+        }).toList();
+        print('Service Request List: $serviceRequestList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield MachineHandOverTaskDetailLoading(
+            isLoading: true,
+          );
+          yield MachineHandOverTaskDetailSuccess(serviceListData: serviceRequestList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield MachineHandOverTaskDetailFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield MachineHandOverTaskDetailLoading(isLoading: true);
+        yield MachineHandOverTaskDetailFail(msg: "Error");
+      }
+    }
+
+
+    ///Job Work HandOver Service List
+    if (event is JobWorkHandOverServiceRequestList) {
+      ///Notify loading to UI
+      yield JobWorkHandOverServiceRequestListLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .fetchJobWorkHandOverServiceRequestListList(
+        offSet: event.offSet,
+        timeId: event.timeId,
+        serviceUserId: event.serviceUserId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestList = result.data! ?? [];
+        final serviceRequestList = refactorServiceRequestList.map((item) {
+          return JobWorkEnquiryMyTaskModel.fromJson(item);
+        }).toList();
+        print('Service Request List: $serviceRequestList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield JobWorkHandOverServiceRequestListLoading(
+            isLoading: true,
+          );
+          yield JobWorkHandOverServiceRequestListSuccess(serviceListData: serviceRequestList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield JobWorkHandOverServiceRequestListFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield JobWorkHandOverServiceRequestListLoading(isLoading: true);
+        yield JobWorkHandOverServiceRequestListFail(msg: result.msg!);
       }
     }
 
     /// Accept and Reject Handover Task
-    if (event is AcceptRejectHandOverTask) {
+    if (event is MachineAcceptRejectHandOverTask) {
       ///Notify loading to UI
       yield AcceptRejectHandoverLoading(
         isLoading: false,
@@ -133,6 +216,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .acceptRejectHandover(
         machineEnquiryId: event.machineEnquiryId,
         dailyTaskId: event.dailyTaskId,
+        status: event.status,
+        serviceUserId: event.serviceUserId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        print('${result.msg}');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield AcceptRejectHandoverLoading(
+            isLoading: true,
+          );
+          yield AcceptRejectHandoverSuccess(message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield AcceptRejectHandoverFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield AcceptRejectHandoverLoading(isLoading: true);
+        yield AcceptRejectHandoverFail(msg: result.msg!);
+      }
+    }
+
+    /// Accept Reject Handover task Of Job Work
+    if (event is JobWorkAcceptRejectHandOverTask) {
+      ///Notify loading to UI
+      yield AcceptRejectHandoverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .jobworkAcceptRejectHandover(
+        jobworkEnquiryId: event.jobWorkEnquiryId,
         status: event.status,
         serviceUserId: event.serviceUserId,
       );
@@ -401,9 +521,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestDetailRepo result = await userRepository!
           .fetchServiceRequestDetail(
         userID: event.userID,
-        machineEnquiryId: event.machineServiceId,
-        jobWorkEnquiryId: event.jobWorkServiceId,
-        transportEnquiryId: event.transportServiceId
+        machineEnquiryId: event.machineEnquiryId,
+        jobWorkEnquiryId: event.jobWorkEnquiryId,
+        transportEnquiryId: event.transportEnquiryId
       );
       print(result);
 
@@ -444,9 +564,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final TranspotationServiceRequestDetailRepo result = await userRepository!
           .fetchServiceRequestTransportationDetail(
           userID: event.userID,
-          machineEnquiryId: event.machineServiceId,
-          jobWorkEnquiryId: event.jobWorkServiceId,
-          transportEnquiryId: event.transportServiceId
+          machineEnquiryId: event.machineEnquiryId,
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          transportEnquiryId: event.transportEnquiryId
       );
       print(result);
 
@@ -485,9 +605,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestDetailRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryDetail(
           userID: event.userID,
-          machineEnquiryId: event.machineServiceId,
-          jobWorkEnquiryId: event.jobWorkServiceId,
-          transportEnquiryId: event.transportServiceId
+          machineEnquiryId: event.machineEnquiryId,
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          transportEnquiryId: event.transportEnquiryId
       );
       print(result);
 
@@ -526,9 +646,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryMyTaskDetailRepo result = await userRepository!
           .fetchMyTaskJobWorkEnquiryDetail(
           userID: event.userID,
-          machineEnquiryId: event.machineServiceId,
-          jobWorkEnquiryId: event.jobWorkServiceId,
-          transportEnquiryId: event.transportServiceId
+          machineEnquiryId: event.machineEnquiryId,
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          transportEnquiryId: event.transportEnquiryId
       );
       print(result);
 
@@ -567,9 +687,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final MyTaskTransportDetailRepo result = await userRepository!
           .fetchMyTaskTransportationDetail(
           userID: event.userID,
-          machineEnquiryId: event.machineServiceId,
-          jobWorkEnquiryId: event.jobWorkServiceId,
-          transportEnquiryId: event.transportServiceId
+          machineEnquiryId: event.machineEnquiryId,
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          transportEnquiryId: event.transportEnquiryId
       );
       print(result);
 
@@ -836,6 +956,61 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    if (event is JobWorkQuotationReplyDetail) {
+      ///Notify loading to UI
+      yield JobWorkQuotationReplyDetailLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final JobWorkQuotaionReplyDetailRepo result = await userRepository!
+          .fetchJobWorkQuotationReplyDetail(
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          customerUserId: event.customerUserId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+        ///For Required Item List
+        final Iterable refactorRequiredItemList = result.quotationRequiredItems! ?? [];
+        final requiredItemList = refactorRequiredItemList.map((item) {
+          return QuotationRequiredItems.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $requiredItemList');
+
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
+        final quotationChargesList = refactorQuotationChargesList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationChargesList');
+
+        ///For Customer Message
+        final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
+        final msgsList = refactormMsgList.map((item) {
+          return CustomerReplyMsg.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $msgsList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield JobWorkQuotationReplyDetailLoading(
+            isLoading: true,
+          );
+          yield JobWorkQuotationReplyDetailSuccess(quotationRequiredItemList: requiredItemList,
+              quotationChargesList: quotationChargesList,quotationMsgList: msgsList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield JobWorkQuotationReplyDetailFail(msg: '');
+        }
+      } else {
+        ///Notify loading to UI
+        yield JobWorkQuotationReplyDetailLoading(isLoading: false);
+        yield JobWorkQuotationReplyDetailFail(msg: '');
+      }
+    }
 
     //Create Task
     if (event is CreateTask) {

@@ -103,6 +103,21 @@ class MachineTaskHandoverSuccess extends ProfileState {
   MachineTaskHandoverSuccess({required this.msg});
 }
 
+class JobWorkTaskHandoverLoading extends ProfileState {
+  bool isLoading;
+  JobWorkTaskHandoverLoading({required this.isLoading});
+}
+
+class JobWorkTaskHandoverFail extends ProfileState {
+  final String? msg;
+  JobWorkTaskHandoverFail({this.msg});
+}
+
+class JobWorkTaskHandoverSuccess extends ProfileState {
+  String msg;
+  JobWorkTaskHandoverSuccess({required this.msg});
+}
+
 class GetTransportProfileLoading extends ProfileState {
   bool isLoading;
   GetTransportProfileLoading({required this.isLoading});

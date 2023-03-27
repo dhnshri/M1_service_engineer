@@ -1,162 +1,133 @@
-import 'dart:async';
 import 'dart:math' as math;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:service_engineer/Config/font.dart';
+
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Bloc/home/home_state.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Screen/Chat/chat_listing.dart';
-import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/job_work_enquiry_service_provider_list.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/my_task_detail_model.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/service_request_model.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/track_process_report_model.dart';
+import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/HandOver%20Task%20List/handover_task_list.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/add_task.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/show_google_map.dart';
-import 'package:service_engineer/Screen/bottom_navbar.dart';
-import 'package:service_engineer/Widget/pdf.dart';
-import 'package:service_engineer/Widget/pdfViewer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
-import '../../../../Bloc/home/home_bloc.dart';
-import '../../../../Bloc/home/home_event.dart';
-import '../../../../Bloc/home/home_state.dart';
-import '../../../../Model/JobWorkEnquiry/my_task_detail_model.dart';
-import '../../../../Model/JobWorkEnquiry/my_task_model.dart';
-import '../../../../Model/JobWorkEnquiry/service_request_model.dart';
-import '../../../../Model/JobWorkEnquiry/track_process_report_model.dart';
-import '../../../../Utils/application.dart';
-import '../../../../Widget/image_view_screen.dart';
-import 'add_task.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:service_engineer/Widget/app_button.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
+import 'package:service_engineer/Widget/image_view_screen.dart';
+import '../../../Config/font.dart';
 
-
-
-class EnquiryMyTaskDetailsScreen extends StatefulWidget {
-  JobWorkEnquiryMyTaskModel myTaskJobWorkEnquiryData;
-  EnquiryMyTaskDetailsScreen({Key? key,required this.myTaskJobWorkEnquiryData}) : super(key: key);
+class JobWorkHandOverTaskDetailScreen extends StatefulWidget {
+  JobWorkEnquiryMyTaskModel handoverTaskData;
+  JobWorkHandOverTaskDetailScreen({Key? key,required this.handoverTaskData}) : super(key: key);
 
   @override
-  _EnquiryMyTaskDetailsScreenState createState() => _EnquiryMyTaskDetailsScreenState();
+  _JobWorkHandOverTaskDetailScreenState createState() => _JobWorkHandOverTaskDetailScreenState();
 }
 
-class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen> {
-  final TextEditingController _phoneNumberController = TextEditingController();
+class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDetailScreen> {
   String dropdownValue = '+ 91';
   String? phoneNum;
   String? role;
   bool loading = true;
   bool _isLoading = false;
-
+  bool _acceptLoading = true;
+  List<QuotationRequiredItems>? quotationRequiredItemList=[];
+  List<QuotationCharges>? quotationChargesList=[];
+  List<CustomerReplyMsg>? quotationMsgList=[];
+  HomeBloc? _homeBloc;
   List<MyTaskEnquiryDetails>? myTaskData = [];
   List<TrackProcessJobWorkEnquiryModel>? trackProgressData = [];
-
-  String? url =
-      "http://www.africau.edu/images/default/sample.pdf";
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
-  final Set<Marker> _markers = {};
-  late LatLng _lastMapPosition;
-  double? addressLat;
-  double? addressLong;
-  Completer<GoogleMapController> controller1 = Completer();
-
-
-  _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      controller1.complete(controller);
-    });
-  }
-
-  MapType _currentMapType = MapType.normal;
-  HomeBloc? _homeBloc;
+  final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
+  final GlobalKey<ExpansionTileCardState> cardMessage = new GlobalKey();
+  double itemRequiredTotal = 0.0;
+  double grandTotal = 0.0;
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc = BlocProvider.of<HomeBloc>(this.context);
+    // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
     _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
-    // _homeBloc!.add(OnTrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:widget.myTaskJobWorkEnquiryData.enquiryId.toString()));
     _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
+    // _jobworkQuotationBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId.toString(),
+    //     customerUserId: widget.quotationReplyJobWorkEnquiryList.userId.toString()));
+    _homeBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13', customerUserId: '100'));
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _phoneNumberController.clear();
-
-    // getroleofstudent();
   }
-
-
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: InkWell(
-            onTap: (){
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
-            },
-            child: Icon(Icons.arrow_back_ios)),
-        title: Text(widget.myTaskJobWorkEnquiryData.enquiryId.toString(),),
-      ),
-      floatingActionButton:Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              backgroundColor: ThemeColors.defaultbuttonColor,
-              heroTag: "btn1",
-              child: Icon(
-                Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>chatListing()));
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: InkWell(
+              onTap: (){
+                Navigator.pop(context);
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
               },
-            ),
-            SizedBox(width: 8,),
-            FloatingActionButton(
-              backgroundColor: ThemeColors.defaultbuttonColor,
-              heroTag: "btn2",
-              child: Icon(
-                Icons.call,color: ThemeColors.whiteTextColor,size: 30,
-              ),
-              onPressed: () {
-                //...
-              },
-            ),
-          ],
+              child: Icon(Icons.arrow_back_ios)),
+          title: Text('${widget.handoverTaskData.itemName.toString()}'),
         ),
-      ),
-
+        bottomNavigationBar:
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: AppButton(
+                  onPressed: () async {
+                    _homeBloc!.add(JobWorkAcceptRejectHandOverTask(serviceUserId: widget.handoverTaskData.userId.toString(), jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),
+                        status: '2',));
+                  },
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(50))),
+                  text: 'Reject',
+                  loading: loading,
+                  color: ThemeColors.whiteTextColor,
+                  borderColor: ThemeColors.defaultbuttonColor,textColor: ThemeColors.defaultbuttonColor,
+                ),
+              ),
+              const SizedBox(width:10),
+              Flexible(
+                child: AppButton(
+                  onPressed: () async {
+                    _homeBloc!.add(JobWorkAcceptRejectHandOverTask(serviceUserId: widget.handoverTaskData.userId.toString(), jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),
+                      status: '1',));
+                    },
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(50))),
+                  text: 'Accept',
+                  loading: _acceptLoading,
+                  color: ThemeColors.defaultbuttonColor,
+                ),
+              ),
+            ],
+          ),
+        ),
         body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
@@ -167,7 +138,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                   myTaskData = state.MyTaskDetail;
                 }
                 if(state is MyTaskJobWorkEnquiryDetailFail){
-                  // Fluttertoast.showToast(msg: state.msg.toString());
+                  showCustomSnackBar(context,state.msg.toString());
                 }
                 if(state is TrackProcssJWEListLoading){
                   // _isLoading = state.isLoading;
@@ -176,11 +147,32 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                   trackProgressData = state.trackProgressList;
                 }
                 if(state is TrackProcssJWEListFail){
-                  // Fluttertoast.showToast(msg: state.msg.toString());
+                  showCustomSnackBar(context,state.msg.toString());
+                }
+                if(state is JobWorkQuotationReplyDetailLoading){
+                  _isLoading = state.isLoading;
+                }
+                if(state is JobWorkQuotationReplyDetailSuccess){
+                  quotationRequiredItemList = state.quotationRequiredItemList;
+                  quotationChargesList = state.quotationChargesList;
+                  quotationMsgList = state.quotationMsgList;
+
+                }
+                if(state is JobWorkQuotationReplyDetailFail){
+                  showCustomSnackBar(context,state.msg.toString());
+                }
+                if(state is AcceptRejectHandoverLoading){
+                  _acceptLoading = state.isLoading;
+                }
+                if(state is AcceptRejectHandoverSuccess){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>JobWorkHandOverTaskList()));
+                  showCustomSnackBar(context,state.message.toString(),isError: false);
+                }
+                if(state is AcceptRejectHandoverFail){
+                  showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
               },
-              child: _isLoading ?myTaskData!.length <=0 ? Center(child: CircularProgressIndicator(),):
-              ListView(
+              child: _isLoading ? myTaskData!.length <=0 ? Center(child: CircularProgressIndicator(),):ListView(
                 children: [
                   SizedBox(height: 7,),
                   //Basic Info
@@ -210,7 +202,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text("Company Name:",style: ExpanstionTileLeftDataStyle,),
-                               // Text(myTaskData![0]..toString(),style: ExpanstionTileRightDataStyle,),
+                                // Text(myTaskData![0]..toString(),style: ExpanstionTileRightDataStyle,),
                               ],
                             ),
                             Row(
@@ -424,7 +416,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
+                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],myTaskJobWorkEnquiryData: widget.handoverTaskData,)));
                                   },
                                   child: Container(
                                     // height: 60,
@@ -501,87 +493,226 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                       ),
                     ),),
 
-                  ///Assign to Other Button
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>JobWorkEnquiryServiceProviderListScreen(
-                        myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: ThemeColors.defaultbuttonColor,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                              color: ThemeColors.defaultbuttonColor,
-                              width: 1,
-                            )),
-                        child: const Center(child: Text("Assign Task to Other",
-                            style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: ThemeColors.whiteTextColor,
-                            ))),
+                  quotationRequiredItemList!.isEmpty ? Container():
+                  ExpansionTileCard(
+                    key: cardItemRequired,
+                    initiallyExpanded: true,
+                    title: Text("Item Required",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500
+                        )),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+
+                          children: [
+                            DataTable(
+                              headingRowHeight: 40,
+                              headingRowColor: MaterialStateColor.resolveWith(
+                                      (states) => Color(0xffE47273)),
+                              columnSpacing: 15.0,
+                              columns:const [
+                                DataColumn(
+                                  label: Expanded(child: Text('S no')),
+                                ),
+                                DataColumn(
+                                  label: Text('Item Name'),
+                                ),
+                                DataColumn(
+                                  label: Text('QTY'),
+                                ),
+                                DataColumn(
+                                  label: Text('Rate'),
+                                ),
+                                DataColumn(
+                                  label: Text('Amount'),
+                                ),
+                              ],
+                              rows: List.generate(quotationRequiredItemList!.length, (index) {
+                                int itemNo = index+1;
+                                itemRequiredTotal = quotationRequiredItemList!
+                                    .map((item) => double.parse(item.amount.toString()))
+                                    .reduce((value, current) => value + current);
+
+                                grandTotal = itemRequiredTotal + double.parse(quotationRequiredItemList![0].packingCharge.toString()) +
+                                    double.parse(quotationRequiredItemList![0].testingCharge.toString()) + double.parse(quotationRequiredItemList![0].transportCharge.toString()) +
+                                    double.parse(quotationChargesList![0].commission.toString()) + double.parse(quotationChargesList![0].sgst.toString()) +
+                                    double.parse(quotationChargesList![0].igst.toString()) + double.parse(quotationChargesList![0].cgst.toString());
+
+                                return _getItemRequiredDataRow(quotationRequiredItemList![index],itemNo);
+                              }),),
+                          ],
+                        ),
+
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xffFFE4E5),
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, right: 40.0, bottom: 8.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Total",
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      "₹ $itemRequiredTotal",
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      quotationChargesList!.length <=0 ? Container():
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0,left: 10.0, bottom: 8.0),
+                        child: Column(
+                          children: [
+                            Divider(thickness: 1,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Total Items charges"),
+                                Text("₹ ${itemRequiredTotal}"),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Packing charge"),
+                                Text("₹ ${quotationRequiredItemList![0].packingCharge.toString()}"),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Testing charge"),
+                                Text("₹ ${quotationRequiredItemList![0].testingCharge.toString()}"),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Transport charges"),
+                                Text("₹ ${quotationRequiredItemList![0].transportCharge.toString()}"),
+                              ],
+                            ),
+
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("M1 Commission"),
+                                Text("₹ ${quotationChargesList![0].commission}"),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("CGST"),
+                                Text("${quotationChargesList![0].cgst}"),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("SGST"),
+                                Text("${quotationChargesList![0].sgst}"),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("IGST"),
+                                Text("${quotationChargesList![0].igst}"),
+                              ],
+                            ),
+                            Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Amount",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Poppins-Medium',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500
+                                    )),
+                                Text("₹ $grandTotal",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'Poppins-Medium',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
 
-
-                  // ///Mark as Completed Button
-                  // InkWell(
-                  //   onTap: (){
-                  //     // Navigator.of(context).pop();
-                  //     AlertDialog(
-                  //       title: new Text(""),
-                  //       content: new Text("Are you sure, you want to mark service as completed?"),
-                  //       actions: <Widget>[
-                  //         Row(
-                  //           children: [
-                  //             TextButton(
-                  //               child: new Text("No"),
-                  //               onPressed: () {
-                  //                 Navigator.of(context).pop();
-                  //               },
-                  //             ),
-                  //             SizedBox(width: 7,),
-                  //             TextButton(
-                  //               child: new Text("Yes"),
-                  //               onPressed: () {
-                  //                 Navigator.of(context).pop();
-                  //               },
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     child: Container(
-                  //       height: 50,
-                  //       width: MediaQuery.of(context).size.width,
-                  //       decoration: BoxDecoration(
-                  //           color: ThemeColors.defaultbuttonColor,
-                  //           borderRadius: BorderRadius.circular(30)),
-                  //       child: Center(child: Text("Mark As Completed",
-                  //           style: TextStyle(fontFamily: 'Poppins-Medium',
-                  //             fontSize: 16,
-                  //             fontWeight: FontWeight.w500,
-                  //             color: Colors.white,
-                  //           ))),
-                  //     ),
-                  //   ),
-                  // ),
-
-
-                  SizedBox(
-                    height: 80,
-                  )
-
-
+                  ///Message from Client
+                  quotationMsgList!.length <= 0 ? Container():
+                  ExpansionTileCard(
+                    key: cardMessage,
+                    initiallyExpanded: true,
+                    title:  Text("Message from Client",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500
+                        )),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(quotationMsgList![0].message.toString(),textAlign: TextAlign.start,)),
+                      ),
+                    ],
+                  ),
                 ],
               )
                   : Center(
@@ -592,6 +723,22 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
 
 
         })
+
     );
   }
+  DataRow _getItemRequiredDataRow(QuotationRequiredItems? requiredItemData,index) {
+    return DataRow(
+      color: MaterialStateColor.resolveWith((states) {
+        return Color(0xffFFE4E5); //make tha magic!
+      }),
+      cells: <DataCell>[
+        DataCell(Text(index.toString())),
+        DataCell(Text(requiredItemData!.itemName.toString())),
+        DataCell(Text(requiredItemData.itemQty.toString())),
+        DataCell(Text('₹${requiredItemData.rate.toString()}')),
+        DataCell(Text('₹${requiredItemData.amount.toString()}')),
+      ],
+    );
+  }
+
 }

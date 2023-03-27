@@ -138,7 +138,7 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestTranspotationDetail(userID:widget.serviceRequestData.userId.toString(), machineServiceId:'0',jobWorkServiceId: '0',transportServiceId:widget.serviceRequestData.enquiryId.toString()));
+    _homeBloc!.add(OnServiceRequestTranspotationDetail(userID:widget.serviceRequestData.userId.toString(), machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:widget.serviceRequestData.enquiryId.toString()));
 
   }
   @override

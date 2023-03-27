@@ -41,8 +41,11 @@ class Api {
   // static const String HOST_URL="http://unstoppabletrade.ezii.live/App_details/";
   static const String CUSTOMER_LOGIN="login";
   static const String SERVICE_REQUEST_LIST="machine_service_request_list";
+  static const String HANDOVER_TASK_DETAIL="service_request_details_list_machine_maintenance_assign_task_to_other";
   static const String HANDOVER_SERVICE_REQUEST_LIST="service_request_list_machine_maintenance_assign_task_to_other";
+  static const String JOBWORK_HANDOVER_SERVICE_REQUEST_LIST="service_request_list_job_work_assign_task_to_other";
   static const String ACCEPT_REJECT_HANDOVER="machine_maintenance_accept_or_reject_assign_task_to_other";
+  static const String JOBWORK_ACCEPT_REJECT_HANDOVER="job_work_accept_or_reject_assign_task_to_other";
   static const String MACHINE_TASK_HAND_OVER="machine_mainienance_handover_service_user_list";
   static const String JOB_WORK_ENQUIRY_TASK_HAND_OVER="job_work_handover_service_user_list";
   static const String TRANSPORT_TASK_HAND_OVER="transport_handover_service_user_list";
@@ -85,7 +88,7 @@ class Api {
   static const String TRANSPORT_DASHBOARD_COUNT="transport_dashboard_count";
   static const String FILTER_CATEGORY_LIST="get_category_list";
   static const String MACHINE_TASK_HANDOVER="add_machine_maintenance_assign_task_to_other";
-
+  static const String JOBWORK_TASK_HANDOVER="add_job_work_assign_task_to_other";
 
 
   ///Login api
@@ -162,9 +165,33 @@ class Api {
     }
   }
 
-  static Future<dynamic> getHandOverServiceRequestList(params) async {
+  static Future<dynamic> getMachineHandOverServiceRequestListList(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+HANDOVER_SERVICE_REQUEST_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return ServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getMachineHandOverTaskDetail(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+HANDOVER_TASK_DETAIL),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return ServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getJobWorkHandOverServiceRequestListList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOBWORK_HANDOVER_SERVICE_REQUEST_LIST),
       body: params,
     );
     if (response.statusCode == 200) {
@@ -177,6 +204,18 @@ class Api {
   static Future<dynamic> acceptRejectHandOver(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+ACCEPT_REJECT_HANDOVER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return ServiceRequestRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> jobworkAcceptRejectHandOver(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOBWORK_ACCEPT_REJECT_HANDOVER),
       body: params,
     );
     if (response.statusCode == 200) {
@@ -355,6 +394,18 @@ class Api {
   static Future<dynamic> sendMachineTaskHandOver(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+MACHINE_TASK_HANDOVER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return TrackProcessRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> sendJobWorkTaskHandOver(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+JOBWORK_TASK_HANDOVER),
       body: params,
     );
     if (response.statusCode == 200) {

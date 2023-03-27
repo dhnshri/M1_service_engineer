@@ -3,6 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/HandOver%20Task%20List/handover_task_list.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestFilter.dart';
 import 'package:shimmer/shimmer.dart';
@@ -11,6 +13,7 @@ import '../../../../Bloc/home/home_bloc.dart';
 import '../../../../Bloc/home/home_event.dart';
 import '../../../../Bloc/home/home_state.dart';
 import '../../../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../../../Utils/application.dart';
 import '../../../../Widget/custom_snackbar.dart';
 
 class EnquiryServiceRequestScreen extends StatefulWidget {
@@ -31,6 +34,7 @@ class _EnquiryServiceRequestScreenState
   bool flagSearchResult=false;
   bool _isSearching=false;
   List<JobWorkEnquiryServiceRequestModel> searchResult=[];
+  List<JobWorkEnquiryMyTaskModel>? handOverServiceList = [];
 
 
   @override
@@ -40,6 +44,7 @@ class _EnquiryServiceRequestScreenState
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     _homeBloc!.add(OnServiceRequestJWEList(offSet:'0',timePeriod: '0'));
+    _homeBloc!.add(JobWorkHandOverServiceRequestList(timeId: '0',offSet: '0',serviceUserId: Application.customerLogin!.id.toString()));
   }
 
   @override
@@ -301,10 +306,63 @@ class _EnquiryServiceRequestScreenState
                 if(state is ServiceRequestJWEFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
+                if(state is JobWorkHandOverServiceRequestListLoading){
+                  _isLoading = state.isLoading;
+                }
+                if(state is JobWorkHandOverServiceRequestListSuccess){
+                  handOverServiceList = state.serviceListData;
+                }
+                if(state is JobWorkHandOverServiceRequestListFail){
+                  showCustomSnackBar(context,state.msg.toString());
+                }
               },
               child: _isLoading ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
               ListView(
                   children: [
+                    const SizedBox(height: 5,),
+                    handOverServiceList!.length > 0 ?
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: ThemeColors.imageContainerBG
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                // width:200,
+                                child: const Text("Task Assigned By Other Service Providers",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      // color: ThemeColors.buttonColor,
+                                        fontFamily: 'Poppins-Regular',
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600
+                                    )),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                      JobWorkHandOverTaskList()));
+                                },
+                                child: Container(
+                                  child: Text('View',
+                                      style: TextStyle(
+                                          color: ThemeColors.buttonColor,
+                                          fontFamily: 'Poppins-Regular',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ): Container(),
                     Container(
                       decoration: BoxDecoration(
                           border: Border(

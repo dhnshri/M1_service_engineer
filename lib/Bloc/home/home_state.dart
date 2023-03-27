@@ -4,6 +4,7 @@ import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
@@ -43,20 +44,51 @@ class ServiceRequestSuccess extends HomeState {
   ServiceRequestSuccess({required this.serviceListData, required this.message});
 }
 
-class HandOverServiceRequestLoading extends HomeState {
+class MachineHandOverServiceRequestListLoading extends HomeState {
   bool isLoading;
-  HandOverServiceRequestLoading({required this.isLoading});
+  MachineHandOverServiceRequestListLoading({required this.isLoading});
 }
 
-class HandOverServiceRequestFail extends HomeState {
+class MachineHandOverServiceRequestListFail extends HomeState {
   final String? msg;
-  HandOverServiceRequestFail({this.msg});
+  MachineHandOverServiceRequestListFail({this.msg});
 }
 
-class HandOverServiceRequestSuccess extends HomeState {
+class MachineHandOverServiceRequestListSuccess extends HomeState {
   List<ServiceRequestModel> serviceListData;
   String message;
-  HandOverServiceRequestSuccess({required this.serviceListData, required this.message});
+  MachineHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
+}
+
+class MachineHandOverTaskDetailLoading extends HomeState {
+  bool isLoading;
+  MachineHandOverTaskDetailLoading({required this.isLoading});
+}
+
+class MachineHandOverTaskDetailFail extends HomeState {
+  final String? msg;
+  MachineHandOverTaskDetailFail({this.msg});
+}
+
+class MachineHandOverTaskDetailSuccess extends HomeState {
+  List<HandOverTaskDetailModel> serviceListData;
+  MachineHandOverTaskDetailSuccess({required this.serviceListData,});
+}
+
+class JobWorkHandOverServiceRequestListLoading extends HomeState {
+  bool isLoading;
+  JobWorkHandOverServiceRequestListLoading({required this.isLoading});
+}
+
+class JobWorkHandOverServiceRequestListFail extends HomeState {
+  final String? msg;
+  JobWorkHandOverServiceRequestListFail({this.msg});
+}
+
+class JobWorkHandOverServiceRequestListSuccess extends HomeState {
+  List<JobWorkEnquiryMyTaskModel> serviceListData;
+  String message;
+  JobWorkHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
 }
 
 class AcceptRejectHandoverLoading extends HomeState {
@@ -73,6 +105,7 @@ class AcceptRejectHandoverSuccess extends HomeState {
   String message;
   AcceptRejectHandoverSuccess({required this.message});
 }
+
 
 class BrandFilterLoading extends HomeState {
   bool isLoading;
@@ -351,6 +384,23 @@ class TrackProcssListTransportSuccess extends HomeState {
   TrackProcssListTransportSuccess({required this.trackProgressList,required this.message});
 }
 
+class JobWorkQuotationReplyDetailLoading extends HomeState {
+  bool isLoading;
+  JobWorkQuotationReplyDetailLoading({required this.isLoading});
+}
+class JobWorkQuotationReplyDetailFail extends HomeState {
+  final String? msg;
+  JobWorkQuotationReplyDetailFail({this.msg});
+}
+
+class JobWorkQuotationReplyDetailSuccess extends HomeState {
+  List<QuotationRequiredItems> quotationRequiredItemList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+
+  JobWorkQuotationReplyDetailSuccess({required this.quotationRequiredItemList,
+    required this.quotationChargesList,required this.quotationMsgList});
+}
 
 //For Job Work Enquiry
 class TrackProcssJWEListLoading extends HomeState {

@@ -83,8 +83,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineEnquiryId: widget.myTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
+    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineEnquiryId: widget.myTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
     _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.enquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
     _phoneNumberController.clear();
     addressLat = double.parse(21.1458.toString());

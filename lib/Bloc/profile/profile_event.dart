@@ -160,6 +160,14 @@ class MachineTaskHandover extends ProfileEvent {
     required this.description,required this.price});
 }
 
+class JobWorkTaskHandover extends ProfileEvent {
+  String serviceUserId;
+  String jobWorkEnquiryId;
+  String description;
+  JobWorkTaskHandover({ required this.serviceUserId, required this.jobWorkEnquiryId,
+    required this.description});
+}
+
 
 class UpdateTransportProfile extends ProfileEvent {
 
