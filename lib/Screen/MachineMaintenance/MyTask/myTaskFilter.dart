@@ -79,7 +79,7 @@ class _MyTaskFilterScreenState extends State<MyTaskFilterScreen> {
                 }
                 if(state is MyTaskListSuccess){
                   myTaskList = state.MyTaskList;
-                  Navigator.pop(context,{"taskList": myTaskList});
+                  Navigator.pop(context,{"taskList": myTaskList,"time_period":machineCategoryId});
                 }
                 if(state is MyTaskListLoadFail){
                   showCustomSnackBar(context,state.msg.toString());

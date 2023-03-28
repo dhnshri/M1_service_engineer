@@ -15,6 +15,8 @@ import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/HandOver%20Task%20List/handover_task_list.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/app_button.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:service_engineer/Widget/image_view_screen.dart';
@@ -58,7 +60,6 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
     _homeBloc!.add(OnServiceRequestDetail(userID: widget.handoverTaskData.serviceUserId.toString(), machineEnquiryId: widget.handoverTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
     _homeBloc!.add(MachineHandOverTaskDetail(serviceUserID: widget.handoverTaskData.serviceUserId.toString(), dailyTaskId: widget.handoverTaskData.dailyTaskId.toString(),));
-
   }
   @override
   void dispose() {
@@ -146,10 +147,11 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                   _acceptLoading = state.isLoading;
                 }
                 if(state is AcceptRejectHandoverSuccess){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HandOverTaskList()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigation(index: 0,dropValue: Application.customerLogin!.role.toString(),)));
                   showCustomSnackBar(context,state.message.toString(),isError: false);
                 }
                 if(state is AcceptRejectHandoverFail){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigation(index: 0,dropValue: Application.customerLogin!.role.toString(),)));
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
               },

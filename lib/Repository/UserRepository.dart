@@ -109,6 +109,13 @@ class UserRepository {
     return await Api.getJobWorkHandOverServiceRequestListList(params);
   }
 
+  ///Fetch Transport HandOver Service Request
+  Future<dynamic> fetchTransportHandOverServiceRequestListList(
+      {String? timeId, String? offSet,String? serviceUserId}) async {
+    final params = {"offset": offSet, "time_id": timeId,"service_user_id":serviceUserId};
+    return await Api.getTransportHandOverServiceRequestListList(params);
+  }
+
   ///Accept And Reject Handover
   Future<dynamic> acceptRejectHandover(
       {String? machineEnquiryId, String? dailyTaskId,String? serviceUserId,String? status}) async {
@@ -121,6 +128,13 @@ class UserRepository {
       {String? jobworkEnquiryId,String? serviceUserId,String? status}) async {
     final params = {"job_work_enquiry_id": jobworkEnquiryId,"service_user_id":serviceUserId,"status":status};
     return await Api.jobworkAcceptRejectHandOver(params);
+  }
+
+  ///Accept And Reject Handover Of Transport
+  Future<dynamic> transportAcceptRejectHandover(
+      {String? transportEnquiryId,String? serviceUserId,String? status}) async {
+    final params = {"transport_enquiry_id": transportEnquiryId,"service_user_id":serviceUserId,"status":status};
+    return await Api.transportAcceptRejectHandOver(params);
   }
 
   //Service Request Api
@@ -140,8 +154,8 @@ class UserRepository {
   }
 
   //Service Request Api
-  Future<dynamic> fetchTransportTaskHandOverList({String? offSet}) async {
-    final params = {"offset": offSet};
+  Future<dynamic> fetchTransportTaskHandOverList({String? offSet,String? vehicleType}) async {
+    final params = {"offset": offSet,"vehicle_type":vehicleType};
     return await Api.getTransportTaskHandOverList(params);
   }
 
@@ -234,6 +248,13 @@ class UserRepository {
     final params = {"service_user_id":serviceUserId,'job_work_enquiry_id':jobWorkEnqId,
       "description":description,};
     return await Api.sendJobWorkTaskHandOver(params);
+  }
+
+  /// Transport Task handover
+  Future<dynamic> transportTaskHandOver({String? serviceUserId,String? transportEnqId,String? description,}) async {
+    final params = {"service_user_id":serviceUserId,'transport_enquiry_id':transportEnqId,
+      "description":description,};
+    return await Api.sendTransportTaskHandOver(params);
   }
 
   ///Get Transport Profile Data

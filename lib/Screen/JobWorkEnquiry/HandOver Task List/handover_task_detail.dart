@@ -20,6 +20,8 @@ import 'package:service_engineer/Screen/JobWorkEnquiry/HandOver%20Task%20List/ha
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/add_task.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/show_google_map.dart';
+import 'package:service_engineer/Screen/bottom_navbar.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/app_button.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:service_engineer/Widget/image_view_screen.dart';
@@ -61,12 +63,12 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
-    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
-    _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
-    // _jobworkQuotationBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId.toString(),
-    //     customerUserId: widget.quotationReplyJobWorkEnquiryList.userId.toString()));
-    _homeBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13', customerUserId: '100'));
+    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
+    // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
+    // _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
+    _homeBloc!.add(OnTrackProcessList(userId:widget.handoverTaskData.userId.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString()));
+    // _homeBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13', customerUserId: '100'));
+    _homeBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(), customerUserId: widget.handoverTaskData.userId.toString()));
   }
   @override
   void dispose() {
@@ -165,10 +167,11 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                   _acceptLoading = state.isLoading;
                 }
                 if(state is AcceptRejectHandoverSuccess){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>JobWorkHandOverTaskList()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigation(index: 0,dropValue: Application.customerLogin!.role.toString(),)));
                   showCustomSnackBar(context,state.message.toString(),isError: false);
                 }
                 if(state is AcceptRejectHandoverFail){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigation(index: 0,dropValue: Application.customerLogin!.role.toString(),)));
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
               },
@@ -416,7 +419,8 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],myTaskJobWorkEnquiryData: widget.handoverTaskData,)));
+                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
+                                          myTaskJobWorkEnquiryData: widget.handoverTaskData,fromHandOver: false,)));
                                   },
                                   child: Container(
                                     // height: 60,
@@ -464,34 +468,34 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
 
 
                   ///Add task Button
-                  Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Material(
-                      elevation: 5,
-                      child: Container(
-                        height: 60,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
-
-                            ),
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                                Text("Create Task",
-                                  style: TextStyle(fontFamily: 'Poppins-Medium',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black.withOpacity(0.55)
-                                  ),)
-                              ],
-                            )),
-                      ),
-                    ),),
+                  // Padding(
+                  //   padding: EdgeInsets.all(15.0),
+                  //   child: Material(
+                  //     elevation: 5,
+                  //     child: Container(
+                  //       height: 60,
+                  //       child: ElevatedButton(
+                  //           style: ButtonStyle(
+                  //             backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
+                  //
+                  //           ),
+                  //           onPressed: (){
+                  //             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
+                  //           },
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: [
+                  //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
+                  //               Text("Create Task",
+                  //                 style: TextStyle(fontFamily: 'Poppins-Medium',
+                  //                     fontSize: 16,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     color: Colors.black.withOpacity(0.55)
+                  //                 ),)
+                  //             ],
+                  //           )),
+                  //     ),
+                  //   ),),
 
                   quotationRequiredItemList!.isEmpty ? Container():
                   ExpansionTileCard(

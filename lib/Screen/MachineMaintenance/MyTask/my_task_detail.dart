@@ -86,21 +86,6 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
     _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineEnquiryId: widget.myTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
     // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineEnquiryId: widget.myTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
     _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.enquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-    _phoneNumberController.clear();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
   }
   @override
   void dispose() {
@@ -246,8 +231,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                   child: Container(
                                     width: 140,
                                     child: Text(myTaskData![0].location.toString(),
-                                      maxLines: 5,
-                                      overflow: TextOverflow.ellipsis,style:TextStyle(
+                                      maxLines: 5,textAlign: TextAlign.end,
+                                      overflow: TextOverflow.ellipsis,style:const TextStyle(
                                         color: Colors.black,
                                         fontSize: 12,
                                         fontFamily: 'Poppins-Bold',

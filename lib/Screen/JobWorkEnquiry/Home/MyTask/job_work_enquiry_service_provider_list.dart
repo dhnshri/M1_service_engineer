@@ -8,6 +8,7 @@ import 'package:service_engineer/Bloc/home/home_state.dart';
 import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/service_provider_profile.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/foundation.dart';
 import '../../../../Config/font.dart';
@@ -32,6 +33,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
 
   HomeBloc? _homeBloc;
   List<JobWorkEnquiryTaskHandOverModel>? serviceList = [];
+  ScrollController _scrollController = ScrollController();
 
 
   final _formKey = GlobalKey<FormState>();
@@ -40,7 +42,10 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
   final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
 
   List<TrackProcessModel>? trackProgressData = [];
-
+  int offset = 0;
+  int handoverOffset = 0;
+  int? timeId=0;
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -48,9 +53,14 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(userID: 2.toString(), offSet: '0'));
-    // _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(userID: Application.customerLogin!.workCategoryId.toString(), offSet: '0'));
+    // _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(catId: 2.toString(), offSet: '0'));
+    getApi();
   }
+
+  getApi(){
+    _homeBloc!.add(OnJobWorkEnquiryTaskHandOver(catId: Application.customerLogin!.workCategoryId.toString(), offSet: '$offset'));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -60,6 +70,18 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
 
   Widget buildServiceProviderList(List<JobWorkEnquiryTaskHandOverModel> handOverList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -494,13 +516,17 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                   _isLoading = state.isLoading;
                 }
                 if(state is JobWorkEnquiryTaskHandOverSuccess){
-                  serviceList = state.serviceListJWEData;
+                  // serviceList = state.serviceListJWEData;
+                  serviceList!.addAll(state.serviceListJWEData);
+                  if(serviceList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is JobWorkEnquiryTaskHandOverFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [

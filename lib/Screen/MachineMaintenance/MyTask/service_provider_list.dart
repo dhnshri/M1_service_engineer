@@ -47,14 +47,15 @@ class ServiceProviderListScreen extends StatefulWidget {
 class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
   bool loading = true;
-  bool _isLoading = false;
+  bool _loadData = false;
 
   HomeBloc? _homeBloc;
   List<MachineMaintanceTaskHandOverModel>? serviceList = [];
-
+  ScrollController _scrollController = ScrollController();
   Completer<GoogleMapController> controller1 = Completer();
   List<MachineServiceDetailsModel>? serviceRequestData = [];
   List<TrackProcessModel>? trackProgressData = [];
+  int offset=0;
 
 
 
@@ -64,7 +65,11 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnTaskHandOver(subCatId:Application.customerLogin!.workSubCategoryId.toString() ,offSet: '0'));
+    getApi();
+  }
+
+  getApi(){
+    _homeBloc!.add(OnTaskHandOver(subCatId:Application.customerLogin!.workSubCategoryId.toString() ,offSet: '$offset'));
   }
   @override
   void dispose() {
@@ -72,8 +77,20 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
     super.dispose();
   }
 
-  Widget buildServiceProviderList(List<MachineMaintanceTaskHandOverModel> handOverList) {
+  Widget buildServiceProviderList(BuildContext context,List<MachineMaintanceTaskHandOverModel> handOverList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -506,20 +523,24 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
           return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
                 if(state is TaskHandOverLoading){
-                  _isLoading = state.isLoading;
+                  // _isLoading = state.isLoading;
                 }
                 if(state is TaskHandOverSuccess){
-                  serviceList = state.serviceListData;
+                  // serviceList = state.serviceListData;
+                  serviceList!.addAll(state.serviceListData);
+                  if(serviceList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is TaskHandOverFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
-                    SingleChildScrollView(child: Container(child:buildServiceProviderList(serviceList!))),
+                    SingleChildScrollView(child: Container(child:buildServiceProviderList(context,serviceList!))),
                   ],
                 ),
               ) : ShimmerCard()

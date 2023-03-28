@@ -138,7 +138,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print(result);
 
       ///Case API fail but not have token
-      if (result.success == false) {
+      if (result.success == true) {
         ///Home API success
         final Iterable refactorServiceRequestList = result.data! ?? [];
         final serviceRequestList = refactorServiceRequestList.map((item) {
@@ -204,6 +204,48 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    /// Transport HandOver Service List
+    if (event is TransportHandOverServiceRequestList) {
+      ///Notify loading to UI
+      yield TransportHandOverServiceRequestListLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .fetchTransportHandOverServiceRequestListList(
+        offSet: event.offSet,
+        timeId: event.timeId,
+        serviceUserId: event.serviceUserId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+        ///Home API success
+        final Iterable refactorServiceRequestList = result.data! ?? [];
+        final serviceRequestList = refactorServiceRequestList.map((item) {
+          return JobWorkEnquiryMyTaskModel.fromJson(item);
+        }).toList();
+        print('Service Request List: $serviceRequestList');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TransportHandOverServiceRequestListLoading(
+            isLoading: true,
+          );
+          yield TransportHandOverServiceRequestListSuccess(serviceListData: serviceRequestList, message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield TransportHandOverServiceRequestListFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield TransportHandOverServiceRequestListLoading(isLoading: true);
+        yield TransportHandOverServiceRequestListFail(msg: result.msg!);
+      }
+    }
+
+
     /// Accept and Reject Handover Task
     if (event is MachineAcceptRejectHandOverTask) {
       ///Notify loading to UI
@@ -253,6 +295,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final ServiceRequestRepo result = await userRepository!
           .jobworkAcceptRejectHandover(
         jobworkEnquiryId: event.jobWorkEnquiryId,
+        status: event.status,
+        serviceUserId: event.serviceUserId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        print('${result.msg}');
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield AcceptRejectHandoverLoading(
+            isLoading: true,
+          );
+          yield AcceptRejectHandoverSuccess(message: result.msg!);
+        } catch (error) {
+          ///Notify loading to UI
+          yield AcceptRejectHandoverFail(msg: result.msg!);
+        }
+      } else {
+        ///Notify loading to UI
+        yield AcceptRejectHandoverLoading(isLoading: true);
+        yield AcceptRejectHandoverFail(msg: result.msg!);
+      }
+    }
+
+    /// Accept And Request task of transport
+    if (event is TransportAcceptRejectHandOverTask) {
+      ///Notify loading to UI
+      yield AcceptRejectHandoverLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final ServiceRequestRepo result = await userRepository!
+          .transportAcceptRejectHandover(
+        transportEnquiryId: event.transportEnquiryId,
         status: event.status,
         serviceUserId: event.serviceUserId,
       );
@@ -405,7 +484,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final JobWorkEnquiryTaskHandOverRepo result = await userRepository!
           .fetchJobWorkEnquiryTaskHandOverList(
         offSet: event.offSet,
-        userID: event.userID,
+        userID: event.catId,
       );
       print(result);
 
@@ -446,6 +525,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final TransportTaskHandOverRepo result = await userRepository!
           .fetchTransportTaskHandOverList(
         offSet: event.offSet,
+        vehicleType: event.vehicleType
       );
       print(result);
 
@@ -718,6 +798,70 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield MyTaskTranspotationDetailFail(msg: result.msg!);
       }
     }
+
+    if (event is TransportQuotationReplyDetail) {
+      ///Notify loading to UI
+      yield TransportQuotationReplyDetailLoading(
+        isLoading: false,
+      );
+
+      ///Fetch API via repository
+      final TransportQuotaionReplyDetailRepo result = await userRepository!
+          .fetchTransportQuotationReplyDetail(
+          transportEnquiryId: event.transportEnquiryId,
+          customerUserId: event.customerUserId
+      );
+      print(result);
+
+
+      if (result.success == true) {
+        ///For Required Item List
+        final Iterable refactorVehicleDetailsList = result.vehicleDetails! ?? [];
+        final vehicleDetailsList = refactorVehicleDetailsList.map((item) {
+          return VehicleDetails.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $vehicleDetailsList');
+
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationDetailsList = result.quotationDetails! ?? [];
+        final quotationDetailsList = refactorQuotationDetailsList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationDetailsList');
+
+        ///For Quotation Charges
+        final Iterable refactorQuotationChargesList = result.quotationCharges! ?? [];
+        final quotationChargesList = refactorQuotationChargesList.map((item) {
+          return QuotationCharges.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $quotationChargesList');
+
+        ///For Customer Message
+        final Iterable refactormMsgList = result.customerReplyMsg! ?? [];
+        final msgsList = refactormMsgList.map((item) {
+          return CustomerReplyMsg.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $msgsList');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TransportQuotationReplyDetailLoading(
+            isLoading: true,
+          );
+          yield TransportQuotationReplyDetailSuccess(vehicleDetailsList: vehicleDetailsList,
+              quotationChargesList: quotationChargesList,quotationMsgList: msgsList, quotationDetailsList: quotationDetailsList);
+        } catch (error) {
+          ///Notify loading to UI
+          yield TransportQuotationReplyDetailFail(msg: '');
+        }
+      } else {
+        ///Notify loading to UI
+        yield TransportQuotationReplyDetailLoading(isLoading: false);
+        yield TransportQuotationReplyDetailFail(msg: '');
+      }
+    }
+
 
     //Product List
     if (event is ProductList) {

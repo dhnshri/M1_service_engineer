@@ -91,6 +91,22 @@ class JobWorkHandOverServiceRequestListSuccess extends HomeState {
   JobWorkHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
 }
 
+class TransportHandOverServiceRequestListLoading extends HomeState {
+  bool isLoading;
+  TransportHandOverServiceRequestListLoading({required this.isLoading});
+}
+
+class TransportHandOverServiceRequestListFail extends HomeState {
+  final String? msg;
+  TransportHandOverServiceRequestListFail({this.msg});
+}
+
+class TransportHandOverServiceRequestListSuccess extends HomeState {
+  List<JobWorkEnquiryMyTaskModel> serviceListData;
+  String message;
+  TransportHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
+}
+
 class AcceptRejectHandoverLoading extends HomeState {
   bool isLoading;
   AcceptRejectHandoverLoading({required this.isLoading});
@@ -300,6 +316,24 @@ class MyTaskTranspotationDetailSuccess extends HomeState {
   List<TransportMyTaskDetailsModel> transportMyTaskDetail;
   String message;
   MyTaskTranspotationDetailSuccess({required this.transportMyTaskDetail, required this.message});
+}
+
+class TransportQuotationReplyDetailLoading extends HomeState {
+  bool isLoading;
+  TransportQuotationReplyDetailLoading({required this.isLoading});
+}
+class TransportQuotationReplyDetailFail extends HomeState {
+  final String? msg;
+  TransportQuotationReplyDetailFail({this.msg});
+}
+
+class TransportQuotationReplyDetailSuccess extends HomeState {
+  List<VehicleDetails> vehicleDetailsList;
+  List<QuotationCharges> quotationDetailsList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+  TransportQuotationReplyDetailSuccess({required this.vehicleDetailsList,required this.quotationDetailsList,
+    required this.quotationChargesList,required this.quotationMsgList});
 }
 
 class MyTaskJobWorkEnquiryDetailLoading extends HomeState {

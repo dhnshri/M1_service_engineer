@@ -35,6 +35,10 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
   bool flagSearchResult=false;
   bool _isSearching=false;
   List<JobWorkEnquiryMyTaskModel> searchResult=[];
+  bool _loadData=false;
+  ScrollController _scrollController = ScrollController();
+  int offset = 0;
+  int? timeId=0;
 
   @override
   void initState() {
@@ -43,9 +47,12 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: '0'));
     // _homeBloc!.add(OnMyTaskJWEList(userid:'1', offset: '0',timeId: '0'));
+    getApi();
+  }
 
+  getApi(){
+    _homeBloc!.add(OnMyTaskJWEList(userid: Application.customerLogin!.id.toString(), offset: '$offset',timeId: '$timeId'));
   }
 
   @override
@@ -89,6 +96,18 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
 
     // return ListView.builder(
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -307,13 +326,17 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                   _isLoading = state.isLoading;
                 }
                 if(state is MyTaskJWEListSuccess){
-                  myTaskJobWorkEnquiryList = state.MyTaskJWEList;
+                  // myTaskJobWorkEnquiryList = state.MyTaskJWEList;
+                  myTaskJobWorkEnquiryList.addAll(state.MyTaskJWEList);
+                  if(myTaskJobWorkEnquiryList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is MyTaskJWEListLoadFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? myTaskJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? myTaskJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
@@ -392,6 +415,7 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
 
                                 if(filterResult != null ){
                                   myTaskJobWorkEnquiryList = filterResult['taskList'];
+                                  timeId = filterResult['time_period'];
                                 }
                               },
                               child: Row(

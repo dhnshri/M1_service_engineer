@@ -2,23 +2,19 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
-import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
+import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
+import 'package:service_engineer/Screen/Transportation/Handover%20Task%20Screen/hanover_task_list.dart';
 import 'package:service_engineer/Screen/Transportation/ServiceRequest/transportation_filter_serviceRequestscreen.dart';
 import 'package:service_engineer/Screen/Transportation/ServiceRequest/transportation_service_request_details.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../../Bloc/home/home_bloc.dart';
 import '../../../Bloc/home/home_event.dart';
 import '../../../Bloc/home/home_state.dart';
-import '../../../Config/font.dart';
 import '../../../Model/Transpotation/serviceRequestListModel.dart';
 import '../../../Widget/custom_snackbar.dart';
-import '../../JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestDetails.dart';
-import '../../JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestFilter.dart';
+
 
 
 
@@ -31,16 +27,19 @@ class TransportationServiceRequestScreen extends StatefulWidget {
 }
 
 class _TransportationServiceRequestScreenState extends State<TransportationServiceRequestScreen> {
-
-  final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool _isLoading = false;
-
+  ScrollController _scrollController = ScrollController();
   HomeBloc? _homeBloc;
   List<ServiceRequestTranspotationModel>? serviceList = [];
   bool flagSearchResult=false;
   bool _isSearching=false;
   List<ServiceRequestTranspotationModel> searchResult=[];
+  List<JobWorkEnquiryMyTaskModel>? handOverServiceList = [];
+  int offset = 0;
+  int handoverOffset = 0;
+  int? timeId=0;
+  bool _loadData = false;
 
 
   @override
@@ -49,8 +48,16 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequestTranspotation(offSet: '0',timeId: '0'));
+    getApi();
+    // _homeBloc!.add(TransportHandOverServiceRequestList(timeId: '0',offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+    // _homeBloc!.add(TransportHandOverServiceRequestList(timeId: '0',offSet: handoverOffset.toString(),serviceUserId: 1.toString()));
+    _homeBloc!.add(TransportHandOverServiceRequestList(timeId: '0',offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
   }
+
+  getApi(){
+    _homeBloc!.add(OnServiceRequestTranspotation(offSet: offset.toString(),timeId: timeId.toString()));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -92,8 +99,20 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
 
   Widget buildTransportationList(BuildContext context, List<ServiceRequestTranspotationModel> serviceList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -308,17 +327,73 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                 _isLoading = state.isLoading;
               }
               if(state is ServiceRequestTranspotationSuccess){
-                serviceList = state.serviceListData;
+                // serviceList = state.serviceListData;
+                serviceList!.addAll(state.serviceListData);
+                if(serviceList!=null){
+                  _loadData =true;
+                }
               }
               if(state is ServiceRequestTranspotationFail){
                 showCustomSnackBar(context,state.msg.toString());
-
+              }
+              if(state is TransportHandOverServiceRequestListLoading){
+                _isLoading = state.isLoading;
+              }
+              if(state is TransportHandOverServiceRequestListSuccess){
+                handOverServiceList = state.serviceListData;
+              }
+              if(state is TransportHandOverServiceRequestListFail){
+                showCustomSnackBar(context,state.msg.toString());
               }
             },
-            child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+            child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
             Container(
               child: ListView(
                 children: [
+                  const SizedBox(height: 5,),
+                  handOverServiceList!.length > 0 ?
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: ThemeColors.imageContainerBG
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              // width:200,
+                              child: const Text("Task Assigned By Other Service Providers",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    // color: ThemeColors.buttonColor,
+                                      fontFamily: 'Poppins-Regular',
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600
+                                  )),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                    TransportHandOverTaskList()));
+                              },
+                              child: Container(
+                                child: Text('View',
+                                    style: TextStyle(
+                                        color: ThemeColors.buttonColor,
+                                        fontFamily: 'Poppins-Regular',
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    )),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ): Container(),
                   Container(
                     decoration: BoxDecoration(
                         border: Border(
@@ -389,6 +464,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
 
                               if(filterResult!= null){
                                 serviceList = filterResult['serviceList'];
+                                timeId = filterResult['time_id'];
                               }
                             },
                             child: Row(

@@ -44,8 +44,9 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   List<ServiceRequestModel> searchResult=[];
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   int offset = 0;
+  int handoverOffset = 0;
   int? timeId=0;
-  int? offSet = 0;
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -53,10 +54,15 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
-    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: offSet.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+    getApi();
+    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
     print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
   }
+
+  getApi(){
+    _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offset.toString()));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -107,7 +113,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
         print("Offser : ${offset}");
         BlocProvider.of<HomeBloc>(context)
           ..isFetching = true
-          ..add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
+          ..add(getApi());
         // serviceList.addAll(serviceList);
       }
     }),
@@ -332,6 +338,9 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
               }
               if(state is ServiceRequestSuccess){
                 serviceList!.addAll(state.serviceListData);
+                if(serviceList!=null){
+                  _loadData=true;
+                }
               }
               if(state is ServiceRequestFail){
                 showCustomSnackBar(context,state.msg.toString());
@@ -346,7 +355,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                 showCustomSnackBar(context,state.msg.toString());
               }
             },
-            child: serviceList!.isNotEmpty ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+            child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
             Container(
               child: Column(
                 children:<Widget> [
@@ -466,6 +475,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               if(filterResult != null){
                                 print(filterResult);
                                 serviceList = filterResult['serviceList'];
+                                timeId = filterResult['time_id'];
                               }
                             },
                             child: Row(

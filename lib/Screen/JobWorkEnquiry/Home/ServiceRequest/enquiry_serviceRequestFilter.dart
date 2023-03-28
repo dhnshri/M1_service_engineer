@@ -70,7 +70,7 @@ class _EnquiryServiceRequestFilterScreenState extends State<EnquiryServiceReques
                 }
                 if(state is ServiceRequestJWESuccess){
                   serviceList = state.serviceListData;
-                  Navigator.pop(context,{"serviceList": serviceList});
+                  Navigator.pop(context,{"serviceList": serviceList,"time_period":machineCategoryId});
                 }
                 if(state is ServiceRequestJWEFail){
                   showCustomSnackBar(context,state.msg.toString());

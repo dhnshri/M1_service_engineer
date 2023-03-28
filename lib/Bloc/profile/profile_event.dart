@@ -168,6 +168,14 @@ class JobWorkTaskHandover extends ProfileEvent {
     required this.description});
 }
 
+class TransportTaskHandover extends ProfileEvent {
+  String serviceUserId;
+  String transportEnquiryId;
+  String description;
+  TransportTaskHandover({ required this.serviceUserId, required this.transportEnquiryId,
+    required this.description});
+}
+
 
 class UpdateTransportProfile extends ProfileEvent {
 

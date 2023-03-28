@@ -26,6 +26,7 @@ class TransportTaskHandOverModel {
   int? years;
   int? months;
   int? role;
+  String? userProfilePic;
 
   TransportTaskHandOverModel(
       {this.serviceUser,
@@ -33,7 +34,8 @@ class TransportTaskHandOverModel {
         this.vehicleType,
         this.years,
         this.months,
-        this.role});
+        this.role,
+        this.userProfilePic});
 
   TransportTaskHandOverModel.fromJson(Map<String, dynamic> json) {
     serviceUser = json['service_user'];
@@ -42,6 +44,7 @@ class TransportTaskHandOverModel {
     years = json['years'];
     months = json['months'];
     role = json['role'];
+    userProfilePic = json['user_profile_pic'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class TransportTaskHandOverModel {
     data['years'] = this.years;
     data['months'] = this.months;
     data['role'] = this.role;
+    data['user_profile_pic'] = this.userProfilePic;
     return data;
   }
 }

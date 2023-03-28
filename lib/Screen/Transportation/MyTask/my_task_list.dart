@@ -44,8 +44,10 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
   bool flagSearchResult=false;
   bool _isSearching=false;
   List<MyTaskTransportationModel> searchResult=[];
-
-
+  int offset = 0;
+  int? timeId=0;
+  ScrollController _scrollController = ScrollController();
+  bool _loadData= false;
 
   @override
   void initState() {
@@ -54,8 +56,12 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: '0',timeId: '0'));
+    // _homeBloc!.add(OnMyTaskTranspotationList(userid:'1', offset: offset.toString(),timeId: timeId.toString()));
+    getApi();
+  }
 
+  getApi(){
+    _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
   @override
   void dispose() {
@@ -94,8 +100,20 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
   Widget buildTransportationMyTaskList(List<MyTaskTransportationModel> myTaskList,) {
 
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -370,13 +388,17 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                   _isLoading = state.isLoading;
                 }
                 if(state is MyTaskTranspotationListSuccess){
-                  myTaskList = state.MyTaskList;
+                  // myTaskList = state.MyTaskList;
+                  myTaskList.addAll(state.MyTaskList);
+                  if(myTaskList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is MyTaskTranspotationListLoadFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
@@ -454,6 +476,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                                         MyTaskTransportationFilterScreen()));
                                if(filterResult != null){
                                  myTaskList = filterResult['taskList'];
+                                 timeId = filterResult['time_period'];
                                }
                               },
                               child: Row(

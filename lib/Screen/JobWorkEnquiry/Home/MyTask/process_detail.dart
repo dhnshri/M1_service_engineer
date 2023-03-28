@@ -17,9 +17,11 @@ import 'my_task_detail.dart';
 
 
 class ProcessDetailScreen extends StatefulWidget {
+  bool fromHandOver;
   TrackProcessJobWorkEnquiryModel trackProgressData;
   JobWorkEnquiryMyTaskModel myTaskJobWorkEnquiryData;
-  ProcessDetailScreen({Key? key,required this.trackProgressData,required this.myTaskJobWorkEnquiryData}) : super(key: key);
+  ProcessDetailScreen({Key? key,required this.trackProgressData,required this.myTaskJobWorkEnquiryData,
+    required this.fromHandOver}) : super(key: key);
 
   @override
   _ProcessDetailScreenState createState() => _ProcessDetailScreenState();
@@ -78,10 +80,10 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: widget.trackProgressData.status == 1 ? Container():
-      Column(
+      floatingActionButton: widget.trackProgressData.status == 1 ? Container(): Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          widget.fromHandOver ?
           BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
             return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
@@ -125,7 +127,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
             );
 
 
-          }),
+          }) : Container()
 
         ],
       ),

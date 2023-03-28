@@ -38,7 +38,7 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   int offset = 0;
   int? timeId=0;
-  int? offSet = 0;
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -47,9 +47,14 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     // _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
-    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: offSet.toString(),serviceUserId: Application.customerLogin!.id.toString()));
     // print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
+    getApi();
   }
+
+  getApi(){
+    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: offset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -100,8 +105,8 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
             print("Offser : ${offset}");
             BlocProvider.of<HomeBloc>(context)
               ..isFetching = true
-              ..add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
-            serviceList.addAll(serviceList);
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
 
           }
         }),
@@ -338,13 +343,16 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
                     // serviceList = state.serviceListData;
                     // if(serviceList!=null) {
                     handOverServiceList!.addAll(state.serviceListData);
+                    if(handOverServiceList!=null){
+                      _loadData=true;
+                    }
                     // }
                   }
                   if(state is MachineHandOverServiceRequestListFail){
                     showCustomSnackBar(context,state.msg.toString());
                   }
                 },
-                child: _isLoading ? handOverServiceList!.length <= 0 ? Center(child: Text('No Data'),):
+                child: _loadData ? handOverServiceList!.length <= 0 ? Center(child: Text('No Data'),):
                 Container(
                   child: Column(
                     children:<Widget> [
@@ -420,6 +428,7 @@ class _HandOverTaskListState extends State<HandOverTaskList> {
                                   if(filterResult != null){
                                     print(filterResult);
                                     handOverServiceList = filterResult['serviceList'];
+                                    timeId = filterResult['time_id'];
                                   }
                                 },
                                 child: Row(

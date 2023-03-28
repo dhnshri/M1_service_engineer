@@ -35,7 +35,11 @@ class _EnquiryServiceRequestScreenState
   bool _isSearching=false;
   List<JobWorkEnquiryServiceRequestModel> searchResult=[];
   List<JobWorkEnquiryMyTaskModel>? handOverServiceList = [];
-
+  ScrollController _scrollController = ScrollController();
+  int offset = 0;
+  int handoverOffset = 0;
+  int? timeId=0;
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -43,8 +47,12 @@ class _EnquiryServiceRequestScreenState
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequestJWEList(offSet:'0',timePeriod: '0'));
+    getApi();
     _homeBloc!.add(JobWorkHandOverServiceRequestList(timeId: '0',offSet: '0',serviceUserId: Application.customerLogin!.id.toString()));
+  }
+
+  getApi(){
+    _homeBloc!.add(OnServiceRequestJWEList(offSet:'$offset',timePeriod: '$timeId'));
   }
 
   @override
@@ -86,6 +94,18 @@ class _EnquiryServiceRequestScreenState
 
   Widget buildJobWorkEnquiriesList(List<JobWorkEnquiryServiceRequestModel> jobWorkEnquiryList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -301,7 +321,11 @@ class _EnquiryServiceRequestScreenState
                   _isLoading = state.isLoading;
                 }
                 if(state is ServiceRequestJWESuccess){
-                  serviceJobWorkEnquiryList  = state.serviceListData;
+                  // serviceJobWorkEnquiryList  = state.serviceListData;
+                  serviceJobWorkEnquiryList.addAll(state.serviceListData);
+                  if(serviceJobWorkEnquiryList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is ServiceRequestJWEFail){
                   showCustomSnackBar(context,state.msg.toString());
@@ -316,7 +340,7 @@ class _EnquiryServiceRequestScreenState
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
               ListView(
                   children: [
                     const SizedBox(height: 5,),
@@ -437,6 +461,7 @@ class _EnquiryServiceRequestScreenState
 
                                 if(searchResult != null){
                                   serviceJobWorkEnquiryList = searchResult['serviceList'];
+                                  timeId = searchResult['time_period'];
                                 }
                               },
                               child: Row(
@@ -465,8 +490,6 @@ class _EnquiryServiceRequestScreenState
                 )
               : ShimmerCard()
           );
-
-
         })
     );
 

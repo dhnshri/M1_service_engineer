@@ -534,7 +534,7 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       }
     }
 
-    //Job Work Quotation reply detail
+    //Transport Quotation reply detail
     if (event is TransportQuotationReplyDetail) {
       ///Notify loading to UI
       yield TransportQuotationReplyDetailLoading(

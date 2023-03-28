@@ -14,22 +14,23 @@ import 'package:service_engineer/Screen/JobWorkEnquiry/HandOver%20Task%20List/ha
 import 'package:service_engineer/Screen/MachineMaintenance/HandOver%20Task%20List/handover_task_detail.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
+import 'package:service_engineer/Screen/Transportation/Handover%20Task%20Screen/handover_task_detail.dart';
 import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Bloc/home/home_state.dart';
 
-class JobWorkHandOverTaskList extends StatefulWidget {
-  JobWorkHandOverTaskList({
+class TransportHandOverTaskList extends StatefulWidget {
+  TransportHandOverTaskList({
     Key? key,
   }) : super(key: key);
 
   @override
-  _JobWorkHandOverTaskListState createState() =>
-      _JobWorkHandOverTaskListState();
+  _TransportHandOverTaskListState createState() =>
+      _TransportHandOverTaskListState();
 }
 
-class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
+class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool _isLoading = false;
@@ -50,17 +51,14 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    // _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
-    getApi();
+    // _homeBloc!.add(TransportHandOverServiceRequestList(timeId: timeId.toString(), offSet: offset.toString(), serviceUserId: 1.toString()));
     // print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
-  }
-  getApi(){
-    _homeBloc!.add(JobWorkHandOverServiceRequestList(
-        timeId: timeId.toString(),
-        offSet: offset.toString(),
-        serviceUserId: Application.customerLogin!.id.toString()));
+    api();
   }
 
+  api(){
+    _homeBloc!.add(TransportHandOverServiceRequestList(timeId: timeId.toString(), offSet: offset.toString(), serviceUserId: Application.customerLogin!.id.toString()));
+  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -86,9 +84,9 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
             handOverServiceList![i].dateAndTime.toString();
 
         if (serviceListData.itemName
-                .toString()
-                .toLowerCase()
-                .contains(searchText.toLowerCase()) ||
+            .toString()
+            .toLowerCase()
+            .contains(searchText.toLowerCase()) ||
             serviceListData.enquiryId
                 .toString()
                 .toLowerCase()
@@ -120,7 +118,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
             print("Offser : ${offset}");
             BlocProvider.of<HomeBloc>(context)
               ..isFetching = true
-              ..add(getApi());
+              ..add(api());
             // serviceList.addAll(serviceList);
           }
         }),
@@ -133,7 +131,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
         return InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => JobWorkHandOverTaskDetailScreen(handoverTaskData: serviceList[index],)));
+                  MaterialPageRoute(builder: (context) => TransportHandOverTaskDetailScreen(handoverTaskData: serviceList[index],)));
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -153,18 +151,18 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           // mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              // width: MediaQuery.of(context).size.width/2.5,
-                              child: Text(
-                                serviceList[index].itemName!,
-                                style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            ),
+                            // Container(
+                            //   // width: MediaQuery.of(context).size.width/2.5,
+                            //   child: Text(
+                            //     serviceList[index].enquiryId.toString(),
+                            //     style: TextStyle(
+                            //         fontFamily: 'Poppins-SemiBold',
+                            //         fontSize: 16,
+                            //         fontWeight: FontWeight.bold),
+                            //     overflow: TextOverflow.ellipsis,
+                            //     maxLines: 2,
+                            //   ),
+                            // ),
                             SizedBox(
                               height: 4,
                             ),
@@ -178,11 +176,8 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                // SizedBox(
-                                //   // width: MediaQuery.of(context).size.width/,
-                                // ),
+
                                 Container(
-                                  // width: MediaQuery.of(context).size.width*0.2,
                                   child: Text(
                                     serviceList[index].enquiryId.toString(),
                                     style: TextStyle(
@@ -250,7 +245,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                     // serviceListData.dateAndTime!,
                                     DateFormat('MM-dd-yyyy h:mm a')
                                         .format(DateTime.parse(serviceList[index].dateAndTime!
-                                            .toString()))
+                                        .toString()))
                                         .toString(),
                                     style: TextStyle(
                                       fontFamily: 'Poppins-Regular',
@@ -292,164 +287,164 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
         body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
-                if (state is JobWorkHandOverServiceRequestListLoading) {
+                if (state is TransportHandOverServiceRequestListLoading) {
                   _isLoading = state.isLoading;
                 }
-                if (state is JobWorkHandOverServiceRequestListSuccess) {
+                if (state is TransportHandOverServiceRequestListSuccess) {
                   // handOverServiceList = state.serviceListData;
                   handOverServiceList!.addAll(state.serviceListData);
                   if(handOverServiceList!=null){
                     _loadData=true;
                   }
                 }
-                if (state is JobWorkHandOverServiceRequestListFail) {
+                if (state is TransportHandOverServiceRequestListFail) {
                   showCustomSnackBar(context, state.msg.toString());
                 }
               },
               child: _loadData
                   ? handOverServiceList!.length <= 0
-                      ? Center(
-                          child: Text('No Data'),
-                        )
-                      : Container(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  bottom: BorderSide(
-                                    width: 0.2,
-                                  ),
-                                )),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10.0,
-                                      left: 10,
-                                      right: 10,
-                                      bottom: 5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: TextFormField(
-                                          // initialValue: Application.customerLogin!.name.toString(),
-                                          controller: _searchController,
-                                          textAlign: TextAlign.start,
-                                          keyboardType: TextInputType.text,
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            height: 1.5,
-                                          ),
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                ThemeColors.bottomNavColor,
-                                            prefixIcon: IconButton(
-                                              icon: const Icon(
-                                                Icons.search,
-                                                size: 25.0,
-                                                color: ThemeColors.blackColor,
-                                              ),
-                                              onPressed: () {
-                                                _handleSearchStart();
-                                              },
-                                            ),
-                                            hintText: "Search all Orders",
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 10.0,
-                                                    horizontal: 15.0),
-                                            hintStyle:
-                                                const TextStyle(fontSize: 15),
-                                            enabledBorder:
-                                                const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(1.0)),
-                                              borderSide: BorderSide(
-                                                  width: 0.8,
-                                                  color: ThemeColors
-                                                      .bottomNavColor),
-                                            ),
-                                            focusedBorder:
-                                                const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(1.0)),
-                                              borderSide: BorderSide(
-                                                  width: 0.8,
-                                                  color: ThemeColors
-                                                      .bottomNavColor),
-                                            ),
-                                            border: const OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(1.0)),
-                                                borderSide: BorderSide(
-                                                    width: 0.8,
-                                                    color: ThemeColors
-                                                        .bottomNavColor)),
-                                          ),
-                                          validator: (value) {},
-                                          onChanged: (value) {
-                                            // profile.name = value;
-                                            searchOperation(value);
-                                          },
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () async {
-                                          var filterResult = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ServiceRequestFilterScreen()));
-
-                                          if (filterResult != null) {
-                                            print(filterResult);
-                                            handOverServiceList = filterResult['serviceList'];
-                                            timeId=filterResult['time_id'];
-                                          }
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.filter_list),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text("Filter")
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                  ? Center(
+                child: Text('No Data'),
+              )
+                  : Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 0.2,
+                            ),
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0,
+                            left: 10,
+                            right: 10,
+                            bottom: 5),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                // initialValue: Application.customerLogin!.name.toString(),
+                                controller: _searchController,
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.text,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  height: 1.5,
                                 ),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor:
+                                  ThemeColors.bottomNavColor,
+                                  prefixIcon: IconButton(
+                                    icon: const Icon(
+                                      Icons.search,
+                                      size: 25.0,
+                                      color: ThemeColors.blackColor,
+                                    ),
+                                    onPressed: () {
+                                      _handleSearchStart();
+                                    },
+                                  ),
+                                  hintText: "Search all Orders",
+                                  contentPadding:
+                                  const EdgeInsets.symmetric(
+                                      vertical: 10.0,
+                                      horizontal: 15.0),
+                                  hintStyle:
+                                  const TextStyle(fontSize: 15),
+                                  enabledBorder:
+                                  const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8,
+                                        color: ThemeColors
+                                            .bottomNavColor),
+                                  ),
+                                  focusedBorder:
+                                  const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8,
+                                        color: ThemeColors
+                                            .bottomNavColor),
+                                  ),
+                                  border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors
+                                              .bottomNavColor)),
+                                ),
+                                validator: (value) {},
+                                onChanged: (value) {
+                                  // profile.name = value;
+                                  searchOperation(value);
+                                },
                               ),
-                              // _isLoading ?
-                              flagSearchResult == false
-                                  ? (searchResult.length != 0 ||
-                                          _searchController.text.isNotEmpty)
-                                      ? buildCustomerEnquiriesList(
-                                          context, searchResult)
-                                      : Expanded(
-                                          child: buildCustomerEnquiriesList(
-                                              context, handOverServiceList!))
-                                  : Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: const Center(
-                                        child: Text("No Data"),
-                                      ),
-                                    )
-                              // : ShimmerCard()
-                              // : CircularProgressIndicator()
-                            ],
-                          ),
-                        )
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                var filterResult = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ServiceRequestFilterScreen()));
+
+                                if (filterResult != null) {
+                                  print(filterResult);
+                                  handOverServiceList = filterResult['serviceList'];
+                                  timeId=filterResult['time_id'];
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.filter_list),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text("Filter")
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    // _isLoading ?
+                    flagSearchResult == false
+                        ? (searchResult.length != 0 ||
+                        _searchController.text.isNotEmpty)
+                        ? buildCustomerEnquiriesList(
+                        context, searchResult)
+                        : Expanded(
+                        child: buildCustomerEnquiriesList(
+                            context, handOverServiceList!))
+                        : Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: const Center(
+                        child: Text("No Data"),
+                      ),
+                    )
+                    // : ShimmerCard()
+                    // : CircularProgressIndicator()
+                  ],
+                ),
+              )
                   : ShimmerCard()
 
-              // Center(
-              //   child: CircularProgressIndicator(),
-              // )
+            // Center(
+            //   child: CircularProgressIndicator(),
+            // )
 
-              );
+          );
         }));
   }
 

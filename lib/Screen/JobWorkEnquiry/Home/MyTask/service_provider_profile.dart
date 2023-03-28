@@ -102,6 +102,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
       _cityController.text = serviceUserdataList![0].city.toString();
       _stateController.text = serviceUserdataList![0].state.toString();
       _countryController.text = serviceUserdataList![0].country.toString();
+      _categoryController.text = serviceUserdataList![0].workCatgory.toString();
     }else{
       _iDController.text = "";
       _companyNameController.text = "";
@@ -117,6 +118,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
       _stateController.text = "";
       _countryController.text = "";
       imageFile!.imagePath = "";
+      _categoryController.text = "";
     }
   }
 
@@ -142,16 +144,6 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
   }
 
 
-  void addToMachineList(){
-    setState(() {
-      int count = 0;
-      // machineName.insert(0,_machineNameController.text);
-      // quantity.insert(0, _quantityController.text);
-      machineList.add(MachineList(id:count++,machineName: _machineNameController.text.toString(),quantity: _quantityController.text.toString()));
-      print(machineList);
-    });
-  }
-
   List<String> dataString = [
     "Pakistan",
     "Saudi Arabia",
@@ -174,7 +166,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: new Text("Are you sure, you want to send this quotation?"),
+          title: new Text("Are you sure, you want to  handover this Task?"),
           // content: new Text(""),
           actions: <Widget>[
             Row(
@@ -342,8 +334,6 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Hello",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
                                       Text(_companyNameController.text,
                                         style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
                                         textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
@@ -380,7 +370,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             ),
                             ///ID
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _iDController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.emailAddress,
@@ -390,7 +380,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "9876543210@qwert",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -400,7 +390,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -408,27 +398,20 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter ID';
                                 }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
+
                                 return null;
                               },
                               onChanged: (value) {
@@ -451,7 +434,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             ),
                             ///Company Name
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _companyNameController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -461,7 +444,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Company Name",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -471,7 +454,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -479,27 +462,19 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter company name';
                                 }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
                                 return null;
                               },
                               onChanged: (value) {
@@ -522,7 +497,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             ),
                             ///CoOrdinator Name
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _coOrdinatorNameController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -532,7 +507,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Coordinator's Name",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -542,7 +517,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -550,27 +525,21 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
+
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter coordinator name';
                                 }
-                                // else if(!regex.hasMatch(value)){
-                                //   return 'Please enter valid name';
-                                // }
+
                                 return null;
                               },
                               onChanged: (value) {
@@ -593,7 +562,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             ),
                             ///Email
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _emailController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.emailAddress,
@@ -603,7 +572,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Email",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -613,7 +582,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -621,14 +590,14 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
                                 Pattern pattern =
@@ -663,7 +632,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             ),
                             ///Phone Number
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _phoneController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -673,7 +642,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Phone Number",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -683,7 +652,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -691,14 +660,14 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
                                 String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
@@ -731,7 +700,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             ),
                             ///GST Number
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _gstController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -741,7 +710,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "GST Number",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -751,7 +720,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -759,14 +728,14 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
                                 Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
@@ -797,27 +766,58 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                             ),
                             ///Category
-                            SizedBox(
-                              // height: deviceHeight,
-                              // width: deviceWidth,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-
-                                  CustomMultiSelectField<String>(
-                                    decoration: InputDecoration(
-                                        suffixIcon: Icon(Icons.arrow_drop_down),
-                                        filled: true,
-                                        fillColor: ThemeColors.textFieldBackgroundColor
-                                    ),
-                                    title: "Category",
-                                    items: dataString,
-                                    enableAllOptionSelect: true,
-                                    onSelectionDone: _onCountriesSelectionComplete,
-                                    itemAsString: (item) => item.toString(),
-                                  ),
-                                ],
+                            TextFormField(
+                              readOnly: true,
+                              controller: _categoryController,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 18,
+                                height: 1.5,
                               ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: ThemeColors.whiteTextColor,
+                                hintText: "Category",
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 15.0),
+                                hintStyle: TextStyle(fontSize: 15),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8,
+                                      color: ThemeColors.redTextColor
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8,
+                                      color: ThemeColors.redTextColor),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8,
+                                        color: ThemeColors.redTextColor)),
+                              ),
+                              validator: (value) {
+
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Category';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                // profile.name = value;
+                                setState(() {
+                                  // _nameController.text = value;
+                                  if (_formKey.currentState!.validate()) {}
+                                });
+                              },
                             ),
 
                             SizedBox(height: 15,),
@@ -939,7 +939,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                           // msgCount[index]>3? Colors.blue[100]: Colors.grey,
                                           child:Container(
                                             height: 40,
-                                            color: ThemeColors.greyBackgrounColor,
+                                            color: ThemeColors.redTextColor.withOpacity(0.1),
                                             child: Padding(
                                               padding: const EdgeInsets.all(8.0),
                                               child: Row(
@@ -951,7 +951,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                                       width: MediaQuery.of(context).size.width * 0.4,
                                                       child: Text('${machineList[index].machineName}',
                                                         style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
-                                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                                        textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ),
                                                   ),
@@ -959,7 +959,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                                     padding: const EdgeInsets.only(right: 10),
                                                     child: Text('${machineList[index].quantity}',
                                                       style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
-                                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                                      textAlign: TextAlign.end, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
 
@@ -1010,7 +1010,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               ///Address
                               TextFormField(
-                                enabled: false,
+                                readOnly: true,
                                 controller: _addressController,
                                 obscureText: false,
                                 textAlign: TextAlign.start,
@@ -1023,7 +1023,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
+                                  fillColor: ThemeColors.whiteTextColor,
                                   contentPadding:
                                   EdgeInsets.symmetric(
                                       vertical: 10.0,
@@ -1039,7 +1039,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     borderSide: BorderSide(
                                         width: 0.8,
                                         color: ThemeColors
-                                            .textFieldBackgroundColor),
+                                            .redTextColor),
                                   ),
                                   focusedBorder:
                                   OutlineInputBorder(
@@ -1050,7 +1050,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     borderSide: BorderSide(
                                         width: 0.8,
                                         color: ThemeColors
-                                            .textFieldBackgroundColor),
+                                            .redTextColor),
                                   ),
                                   border: OutlineInputBorder(
                                       borderRadius:
@@ -1060,7 +1060,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                       borderSide: BorderSide(
                                           width: 0.8,
                                           color: ThemeColors
-                                              .textFieldBackgroundColor)),
+                                              .redTextColor)),
                                   hintText: "Enter your current address...",
                                 ),
                                 validator: (value) {
@@ -1089,7 +1089,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               ///Pin Code
                               TextFormField(
-                                enabled: false,
+                                readOnly: true,
                                 controller: _pinCodeController,
                                 textAlign: TextAlign.start,
                                 keyboardType: TextInputType.number,
@@ -1099,7 +1099,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
+                                  fillColor: ThemeColors.whiteTextColor,
                                   hintText: "Pin Code",
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 15.0),
@@ -1109,7 +1109,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor
+                                        color: ThemeColors.redTextColor
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -1117,21 +1117,16 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor),
+                                        color: ThemeColors.redTextColor),
                                   ),
                                   border: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor)),
+                                          color: ThemeColors.redTextColor)),
                                 ),
                                 validator: (value) {
-                                  // profile.name = value!.trim();
-                                  // Pattern pattern =
-                                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                  // RegExp regex =
-                                  // new RegExp(pattern.toString());
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter pin code';
                                   }
@@ -1160,7 +1155,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               ///City
                               TextFormField(
-                                enabled: false,
+                                readOnly: true,
                                 controller: _cityController,
                                 textAlign: TextAlign.start,
                                 keyboardType: TextInputType.text,
@@ -1170,7 +1165,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
+                                  fillColor: ThemeColors.whiteTextColor,
                                   hintText: "City",
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 15.0),
@@ -1180,7 +1175,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor
+                                        color: ThemeColors.redTextColor
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -1188,21 +1183,17 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor),
+                                        color: ThemeColors.redTextColor),
                                   ),
                                   border: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor)),
+                                          color: ThemeColors.redTextColor)),
                                 ),
                                 validator: (value) {
-                                  // profile.name = value!.trim();
-                                  // Pattern pattern =
-                                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                  // RegExp regex =
-                                  // new RegExp(pattern.toString());
+
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter city';
                                   }
@@ -1231,7 +1222,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               ///State
                               TextFormField(
-                                enabled: false,
+                                readOnly: true,
                                 controller: _stateController,
                                 textAlign: TextAlign.start,
                                 keyboardType: TextInputType.text,
@@ -1241,7 +1232,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
+                                  fillColor: ThemeColors.whiteTextColor,
                                   hintText: "State",
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 15.0),
@@ -1251,7 +1242,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor
+                                        color: ThemeColors.redTextColor
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -1259,21 +1250,16 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor),
+                                        color: ThemeColors.redTextColor),
                                   ),
                                   border: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor)),
+                                          color: ThemeColors.redTextColor)),
                                 ),
                                 validator: (value) {
-                                  // profile.name = value!.trim();
-                                  // Pattern pattern =
-                                  //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                  // RegExp regex =
-                                  // new RegExp(pattern.toString());
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter state';
                                   }
@@ -1302,7 +1288,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               ),
                               ///Country
                               TextFormField(
-                                enabled: false,
+                                readOnly: true,
                                 controller: _countryController,
                                 textAlign: TextAlign.start,
                                 keyboardType: TextInputType.text,
@@ -1312,7 +1298,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: ThemeColors.textFieldBackgroundColor,
+                                  fillColor: ThemeColors.whiteTextColor,
                                   hintText: "Country",
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 15.0),
@@ -1322,7 +1308,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor
+                                        color: ThemeColors.redTextColor
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -1330,14 +1316,14 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor),
+                                        color: ThemeColors.redTextColor),
                                   ),
                                   border: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor)),
+                                          color: ThemeColors.redTextColor)),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -1388,11 +1374,11 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                                 keyboardType:
                                                 TextInputType.text,
                                                 maxLines: 4,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   height: 1.5,
                                                 ),
-                                                decoration: InputDecoration(
+                                                decoration: const InputDecoration(
                                                   filled: true,
                                                   fillColor: ThemeColors.textFieldBackgroundColor,
                                                   contentPadding:

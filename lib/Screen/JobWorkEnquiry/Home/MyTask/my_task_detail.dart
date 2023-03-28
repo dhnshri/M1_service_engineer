@@ -424,7 +424,8 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
+                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
+                                          myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,fromHandOver: true,)));
                                   },
                                   child: Container(
                                     // height: 60,

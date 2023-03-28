@@ -25,6 +25,12 @@ class JobWorkHandOverServiceRequestList extends HomeEvent {
   JobWorkHandOverServiceRequestList({required this.offSet,required this.timeId,required this.serviceUserId});
 }
 
+class TransportHandOverServiceRequestList extends HomeEvent {
+  String offSet,timeId,serviceUserId;
+
+  TransportHandOverServiceRequestList({required this.offSet,required this.timeId,required this.serviceUserId});
+}
+
 class MachineAcceptRejectHandOverTask extends HomeEvent {
   String dailyTaskId,machineEnquiryId,serviceUserId,status;
 
@@ -35,6 +41,12 @@ class JobWorkAcceptRejectHandOverTask extends HomeEvent {
   String jobWorkEnquiryId,serviceUserId,status;
 
   JobWorkAcceptRejectHandOverTask({required this.jobWorkEnquiryId,required this.serviceUserId,required this.status});
+}
+
+class TransportAcceptRejectHandOverTask extends HomeEvent {
+  String transportEnquiryId,serviceUserId,status;
+
+  TransportAcceptRejectHandOverTask({required this.transportEnquiryId,required this.serviceUserId,required this.status});
 }
 
 class BrandFilter extends HomeEvent {
@@ -89,6 +101,12 @@ class OnMyTaskTranspotationDetail extends HomeEvent {
 
   OnMyTaskTranspotationDetail({required this.userID,required this.machineEnquiryId, required this.jobWorkEnquiryId, required this.transportEnquiryId});
 
+}
+
+class TransportQuotationReplyDetail extends HomeEvent {
+  String transportEnquiryId;
+  String customerUserId;
+  TransportQuotationReplyDetail({required this.transportEnquiryId,required this.customerUserId});
 }
 
 class OnMyTaskJobWorkEnquiryDetail extends HomeEvent {
@@ -344,18 +362,17 @@ class OnTaskHandOver extends HomeEvent {
 
 // Transport Task Hand Over
 class OnTransportTaskHandOver extends HomeEvent {
-
   String offSet;
-
-  OnTransportTaskHandOver({required this.offSet});
+  String vehicleType;
+  OnTransportTaskHandOver({required this.offSet,required this.vehicleType});
 
 }
 
 // Machine maintaince Task Hand Over
 class OnJobWorkEnquiryTaskHandOver extends HomeEvent {
 
-  String userID,offSet;
+  String catId,offSet;
 
-  OnJobWorkEnquiryTaskHandOver({required this.userID,required this.offSet});
+  OnJobWorkEnquiryTaskHandOver({required this.catId,required this.offSet});
 
 }

@@ -74,7 +74,7 @@ class _JobWorkMyTaskFilterScreenState extends State<JobWorkMyTaskFilterScreen> {
                   }
                   if(state is MyTaskJWEListSuccess){
                     myTaskList = state.MyTaskJWEList;
-                    Navigator.pop(context,{"taskList": myTaskList});
+                    Navigator.pop(context,{"taskList": myTaskList,"time_period":timePeriodId});
                   }
                   if(state is MyTaskJWEListLoadFail){
                     showCustomSnackBar(context,state.msg.toString());

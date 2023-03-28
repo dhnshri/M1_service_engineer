@@ -126,7 +126,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: new Text("Are you sure, you want to send this quotation?"),
+          title: new Text("Are you sure, you want to handover this Task?"),
           // content: new Text(""),
           actions: <Widget>[
             Row(
@@ -203,6 +203,8 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
       _yearsController.text = profileMachineExperienceList![0].yearOfExperience.toString();
       _monthsController.text = profileMachineExperienceList![0].monthOfExperience.toString();
       userProfileImageFile!.imagePath = serviceUserdataList![0].userProfilePic.toString();
+      _categoryController.text = serviceUserdataList![0].workCatgory.toString();
+      _sub_CategoryController.text = serviceUserdataList![0].workSubCatgory.toString();
       // selectedDataString?.addAll(serviceUserdataList![0].workCatgory);
     }else{
       _iDController.text = "";
@@ -212,6 +214,8 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
       _gstController.text = "";
       _yearsController.text = "";
       _monthsController.text = "";
+      _categoryController.text = "";
+      _sub_CategoryController.text = "";
     }
   }
 
@@ -341,7 +345,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             ),
                             ///ID
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _iDController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.emailAddress,
@@ -351,7 +355,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "9876543210@qwert",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -361,7 +365,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -369,21 +373,17 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
+
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter ID';
                                 }
@@ -412,7 +412,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             ),
                             ///Name
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _nameController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -422,7 +422,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Full Name",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -432,7 +432,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -440,21 +440,17 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
-                                // profile.name = value!.trim();
-                                // Pattern pattern =
-                                //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                // RegExp regex =
-                                // new RegExp(pattern.toString());
+
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter name';
                                 }
@@ -483,7 +479,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             ),
                             ///Email
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _emailController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.emailAddress,
@@ -493,7 +489,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Email",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -503,7 +499,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -511,14 +507,14 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
                                 Pattern pattern =
@@ -553,7 +549,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             ),
                             ///Phone Number
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _phoneController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -563,7 +559,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "Phone Number",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -573,7 +569,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -581,14 +577,14 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
                                 String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
@@ -621,7 +617,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             ),
                             ///GST Number
                             TextFormField(
-                              enabled: false,
+                              readOnly: true,
                               controller: _gstController,
                               textAlign: TextAlign.start,
                               keyboardType: TextInputType.text,
@@ -631,7 +627,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                               ),
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: ThemeColors.textFieldBackgroundColor,
+                                fillColor: ThemeColors.whiteTextColor,
                                 hintText: "GST Number",
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 15.0),
@@ -641,7 +637,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor
+                                      color: ThemeColors.redTextColor
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -649,14 +645,14 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                   BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor),
+                                      color: ThemeColors.redTextColor),
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(1.0)),
                                     borderSide: BorderSide(
                                         width: 0.8,
-                                        color: ThemeColors.textFieldBackgroundColor)),
+                                        color: ThemeColors.redTextColor)),
                               ),
                               validator: (value) {
                                 Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
@@ -680,54 +676,130 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             SizedBox(height: 15,),
 
 
-                            ///Category
-                            SizedBox(
-                              // height: deviceHeight,
-                              // width: deviceWidth,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-
-                                  CustomMultiSelectField<String>(
-                                    decoration: InputDecoration(
-                                        suffixIcon: Icon(Icons.arrow_drop_down),
-                                        filled: true,
-                                        fillColor: ThemeColors.textFieldBackgroundColor
-                                    ),
-                                    title: "Work Category",
-                                    items: dataString,
-                                    enableAllOptionSelect: true,
-                                    onSelectionDone: _onCountriesSelectionComplete,
-                                    itemAsString: (item) => item.toString(),
-                                  ),
-                                ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                              child: Text("Category",
+                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
+                            ),
+                            ///Category
+                            TextFormField(
+                              readOnly: true,
+                              controller: _categoryController,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 18,
+                                height: 1.5,
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: ThemeColors.whiteTextColor,
+                                hintText: "Category",
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 15.0),
+                                hintStyle: TextStyle(fontSize: 15),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8,
+                                      color: ThemeColors.redTextColor
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8,
+                                      color: ThemeColors.redTextColor),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8,
+                                        color: ThemeColors.redTextColor)),
+                              ),
+                              validator: (value) {
+
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Category';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                // profile.name = value;
+                                setState(() {
+                                  // _nameController.text = value;
+                                  if (_formKey.currentState!.validate()) {}
+                                });
+                              },
                             ),
 
                             SizedBox(height: 15,),
 
-                            ///Sub-Category
-                            SizedBox(
-                              // height: deviceHeight,
-                              // width: deviceWidth,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-
-                                  CustomMultiSelectField<String>(
-                                    decoration: InputDecoration(
-                                        suffixIcon: Icon(Icons.arrow_drop_down),
-                                        filled: true,
-                                        fillColor: ThemeColors.textFieldBackgroundColor
-                                    ),
-                                    title: "Work Sub-Category",
-                                    items: dataString,
-                                    enableAllOptionSelect: true,
-                                    onSelectionDone: _onCountriesSelectionComplete,
-                                    itemAsString: (item) => item.toString(),
-                                  ),
-                                ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                              child: Text("Sub-Category",
+                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
+                            ),
+                            ///Sub-Category
+                            TextFormField(
+                              readOnly: true,
+                              controller: _sub_CategoryController,
+                              textAlign: TextAlign.start,
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 18,
+                                height: 1.5,
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: ThemeColors.whiteTextColor,
+                                hintText: "Sub Category",
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 15.0),
+                                hintStyle: TextStyle(fontSize: 15),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8,
+                                      color: ThemeColors.redTextColor
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                  borderSide: BorderSide(
+                                      width: 0.8,
+                                      color: ThemeColors.redTextColor),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8,
+                                        color: ThemeColors.redTextColor)),
+                              ),
+                              validator: (value) {
+
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Sub Category';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                // profile.name = value;
+                                setState(() {
+                                  // _nameController.text = value;
+                                  if (_formKey.currentState!.validate()) {}
+                                });
+                              },
                             ),
 
                             SizedBox(height: 15,),
@@ -750,7 +822,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: TextFormField(
-                                        enabled: false,
+                                        readOnly: true,
                                         controller: _yearsController,
                                         textAlign: TextAlign.start,
                                         keyboardType: TextInputType.number,
@@ -760,7 +832,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                         ),
                                         decoration: InputDecoration(
                                           filled: true,
-                                          fillColor: ThemeColors.textFieldBackgroundColor,
+                                          fillColor: ThemeColors.whiteTextColor,
                                           hintText: "Years",
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 10.0, horizontal: 15.0),
@@ -770,7 +842,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                             BorderRadius.all(Radius.circular(1.0)),
                                             borderSide: BorderSide(
                                                 width: 0.8,
-                                                color: ThemeColors.textFieldBackgroundColor
+                                                color: ThemeColors.redTextColor
                                             ),
                                           ),
                                           focusedBorder: OutlineInputBorder(
@@ -778,21 +850,16 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                             BorderRadius.all(Radius.circular(1.0)),
                                             borderSide: BorderSide(
                                                 width: 0.8,
-                                                color: ThemeColors.textFieldBackgroundColor),
+                                                color: ThemeColors.redTextColor),
                                           ),
                                           border: OutlineInputBorder(
                                               borderRadius:
                                               BorderRadius.all(Radius.circular(1.0)),
                                               borderSide: BorderSide(
                                                   width: 0.8,
-                                                  color: ThemeColors.textFieldBackgroundColor)),
+                                                  color: ThemeColors.redTextColor)),
                                         ),
                                         validator: (value) {
-                                          // profile.name = value!.trim();
-                                          // Pattern pattern =
-                                          //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                          // RegExp regex =
-                                          // new RegExp(pattern.toString());
                                           if (value == null || value.isEmpty) {
                                             return 'Please enter Years';
                                           }
@@ -828,7 +895,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                       width: MediaQuery.of(context).size.width * 0.4,
 
                                       child: TextFormField(
-                                        enabled: false,
+                                        readOnly: true,
                                         controller: _monthsController,
                                         textAlign: TextAlign.start,
                                         keyboardType: TextInputType.number,
@@ -838,7 +905,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                         ),
                                         decoration: InputDecoration(
                                           filled: true,
-                                          fillColor: ThemeColors.textFieldBackgroundColor,
+                                          fillColor: ThemeColors.whiteTextColor,
                                           hintText: "Months",
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 10.0, horizontal: 15.0),
@@ -848,7 +915,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                             BorderRadius.all(Radius.circular(1.0)),
                                             borderSide: BorderSide(
                                                 width: 0.8,
-                                                color: ThemeColors.textFieldBackgroundColor
+                                                color: ThemeColors.redTextColor
                                             ),
                                           ),
                                           focusedBorder: OutlineInputBorder(
@@ -856,27 +923,21 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                             BorderRadius.all(Radius.circular(1.0)),
                                             borderSide: BorderSide(
                                                 width: 0.8,
-                                                color: ThemeColors.textFieldBackgroundColor),
+                                                color: ThemeColors.redTextColor),
                                           ),
                                           border: OutlineInputBorder(
                                               borderRadius:
                                               BorderRadius.all(Radius.circular(1.0)),
                                               borderSide: BorderSide(
                                                   width: 0.8,
-                                                  color: ThemeColors.textFieldBackgroundColor)),
+                                                  color: ThemeColors.redTextColor)),
                                         ),
                                         validator: (value) {
-                                          // profile.name = value!.trim();
-                                          // Pattern pattern =
-                                          //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                                          // RegExp regex =
-                                          // new RegExp(pattern.toString());
+
                                           if (value == null || value.isEmpty) {
                                             return 'Please enter months';
                                           }
-                                          // else if(!regex.hasMatch(value)){
-                                          //   return 'Please enter valid name';
-                                          // }
+
                                           return null;
                                         },
                                         onChanged: (value) {
