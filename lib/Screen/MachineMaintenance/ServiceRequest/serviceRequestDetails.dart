@@ -15,6 +15,7 @@ import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/app_button.dart';
 import 'package:service_engineer/Widget/image_view_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:path_provider/path_provider.dart';
@@ -48,9 +49,6 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
   HomeBloc? _homeBloc;
   List<MachineServiceDetailsModel>? serviceRequestData = [];
 
-  String? url =
-      "http://www.africau.edu/images/default/sample.pdf";
-  File? pdfUrl;
 
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
@@ -59,67 +57,6 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
 
   final pdf = pw.Document();
 
-  Future<void> _convertImageToPDF(String _image) async {
-
-    //Create the PDF document
-    PdfDocument document = PdfDocument();
-
-    //Add the page
-    PdfPage page = document.pages.add();
-
-    //Load the image
-    final PdfImage image =
-    PdfBitmap(await _readImageData(_image));
-
-    //draw image to the first page
-    page.graphics.drawImage(
-        image, Rect.fromLTWH(0, 0, page.size.width, page.size.height));
-
-    //Save the document
-    List<int> bytes = await document.save();
-
-    // Dispose the document
-    document.dispose();
-
-    //Save the file and launch/download
-    saveAndLaunchFile(bytes, 'output.pdf');
-  }
-
-  Future<List<int>> _readImageData(String name) async {
-    final ByteData data = await rootBundle.load('images/$name');
-    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  }
-
-  static Future<void> saveAndLaunchFile(
-      List<int> bytes, String fileName) async {
-    //Get external storage directory
-    Directory directory = await getApplicationSupportDirectory();
-    //Get directory path
-    String path = directory.path;
-    //Create an empty file to write PDF data
-    File file = File('$path/$fileName');
-    //Write PDF data
-    await file.writeAsBytes(bytes, flush: true);
-    //Open the PDF document in mobile
-    OpenFile.open('$path/$fileName');
-  }
-
-
-  Future<File> loadPdfFromNetwork(String url) async {
-    final response = await http.get(Uri.parse(url));
-    final bytes = response.bodyBytes;
-    return _storeFile(url, bytes);
-  }
-  Future<File> _storeFile(String url, List<int> bytes) async {
-    final filename = basename(url);
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$filename');
-    await file.writeAsBytes(bytes, flush: true);
-    if (kDebugMode) {
-      print('$file');
-    }
-    return file;
-  }
 
   @override
   void initState() {
@@ -127,7 +64,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestDetail(userID: widget.serviceRequestData.userId.toString(), machineServiceId: widget.serviceRequestData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    _homeBloc!.add(OnServiceRequestDetail(userID: widget.serviceRequestData.userId.toString(), machineEnquiryId: widget.serviceRequestData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
 
   }
   @override
@@ -159,31 +96,35 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppSmallButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Ignore',
-              loading: loading,
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Ignore',
+                loading: loading,
+                color: ThemeColors.whiteTextColor,
+                borderColor: ThemeColors.defaultbuttonColor,textColor: ThemeColors.defaultbuttonColor,
+              ),
             ),
-            SizedBox(width:8),
-            AppSmallButton(
-              onPressed: () async {
-                serviceRequestData!.isEmpty ? null:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MakeQuotationScreen (serviceRequestData: serviceRequestData![0],)));
-
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Make Quotation',
-              loading: loading,
-
-
+            const SizedBox(width:10),
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
+                  serviceRequestData!.isEmpty ? null:
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MakeQuotationScreen (serviceRequestData: serviceRequestData![0],)));
+                  },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Make Quotation',
+                loading: loading,
+                color: ThemeColors.defaultbuttonColor,
+              ),
             ),
           ],
         ),
@@ -264,6 +205,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                                 width: 140,
                                 child: Text(serviceRequestData![0].location.toString(),
                                   maxLines: 5,
+                                  textAlign: TextAlign.end,
                                   overflow: TextOverflow.ellipsis,style:TextStyle(
                                   color: Colors.black,
                                   fontSize: 12,
@@ -354,110 +296,122 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Category",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].serviceCategoryName.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Machine Name",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineName.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Manufacturer (Brand)",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].brand.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Make",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].make.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Machine No.",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineNumber.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Controler",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Category",style: ExpanstionTileLeftDataStyle,),
+                                        Container(
+                                          width: 200,
+                                          child: Text(serviceRequestData![0].serviceCategoryName.toString(),style: ExpanstionTileRightDataStyle,
+                                          maxLines: 2,overflow: TextOverflow.ellipsis,),),
+
+                                      ],
+                                    ),
+                                    SizedBox(height: 7,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Machine Name",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestData![0].machineName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    SizedBox(height: 7,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Manufacturer (Brand)",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestData![0].brand.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    SizedBox(height: 7,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Make",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestData![0].make.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    SizedBox(height: 7,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Machine No.",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestData![0].machineNumber.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                    SizedBox(height: 7,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Controler",style: ExpanstionTileLeftDataStyle,),
+                                        Text(serviceRequestData![0].companyName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
+                              Expanded(
+                                  child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Sub-Category",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].serviceSubCategoryName.toString(),style: ExpanstionTileRightDataStyle,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Sub-Category",style: ExpanstionTileLeftDataStyle,),
+                                          Container(
+                                            width: 200,
+                                            child: Text(serviceRequestData![0].serviceSubCategoryName.toString(),style: ExpanstionTileRightDataStyle,
+                                              maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Machine Type",style: ExpanstionTileLeftDataStyle,),
+                                          Text(serviceRequestData![0].machineType.toString(),style: ExpanstionTileRightDataStyle,),
+                                        ],
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("System name",style: ExpanstionTileLeftDataStyle,),
+                                          Text(serviceRequestData![0].systemName.toString(),style: ExpanstionTileRightDataStyle,),
+                                        ],
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Model no.",style: ExpanstionTileLeftDataStyle,),
+                                          Text(serviceRequestData![0].modelNumber.toString(),style: ExpanstionTileRightDataStyle,),
+                                        ],
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Machine Size",style: ExpanstionTileLeftDataStyle,),
+                                          Text(serviceRequestData![0].machineSize.toString(),style: ExpanstionTileRightDataStyle,),
+                                        ],
+                                      ),
+                                      SizedBox(height: 7,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Manufacture Date",style: ExpanstionTileLeftDataStyle,),
+                                          Text(serviceRequestData![0].manufacturingDate.toString(),style: ExpanstionTileRightDataStyle,),
+                                        ],
+                                      ),
                                     ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Machine Type",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineType.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("System name",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].systemName.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Model no.",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].modelNumber.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Machine Size",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].machineSize.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                  SizedBox(height: 7,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Manufacture Date",style: ExpanstionTileLeftDataStyle,),
-                                      Text(serviceRequestData![0].manufacturingDate.toString(),style: ExpanstionTileRightDataStyle,),
-                                    ],
-                                  ),
-                                ],
-                              )
+                                  )
+                              ),
                             ],
                           ),
                         ],

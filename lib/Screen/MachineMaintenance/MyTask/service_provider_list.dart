@@ -36,8 +36,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class ServiceProviderListScreen extends StatefulWidget {
-
-  ServiceProviderListScreen({Key? key}) : super(key: key);
+  ServiceProviderListScreen({Key? key,required this.myTaskData,required this.trackProgressData}) : super(key: key);
+  TrackProcessModel trackProgressData;
+  MyTaskModel myTaskData;
 
   @override
   _ServiceProviderListScreenState createState() => _ServiceProviderListScreenState();
@@ -45,40 +46,17 @@ class ServiceProviderListScreen extends StatefulWidget {
 
 class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  String? role;
   bool loading = true;
-  bool _isLoading = false;
+  bool _loadData = false;
 
   HomeBloc? _homeBloc;
   List<MachineMaintanceTaskHandOverModel>? serviceList = [];
-
-
-  final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
-  String? url =
-      "http://www.africau.edu/images/default/sample.pdf";
-
-  final Set<Marker> _markers = {};
-  late LatLng _lastMapPosition;
-  double? addressLat;
-  double? addressLong;
+  ScrollController _scrollController = ScrollController();
   Completer<GoogleMapController> controller1 = Completer();
   List<MachineServiceDetailsModel>? serviceRequestData = [];
   List<TrackProcessModel>? trackProgressData = [];
+  int offset=0;
 
-  _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      controller1.complete(controller);
-    });
-  }
-
-  MapType _currentMapType = MapType.normal;
 
 
   @override
@@ -87,35 +65,32 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    // _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    _homeBloc!.add(TrackProcessList(userId: '1',machineEnquiryId: '1',transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-    _homeBloc!.add(OnTaskHandOver(userID:'2' ,offSet: '0'));
-    _phoneNumberController.clear();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
+    getApi();
+  }
 
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
+  getApi(){
+    _homeBloc!.add(OnTaskHandOver(subCatId:Application.customerLogin!.workSubCategoryId.toString() ,offSet: '$offset'));
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    // getroleofstudent();
   }
 
-  Widget buildServiceProviderList(List<MachineMaintanceTaskHandOverModel> handOverList) {
+  Widget buildServiceProviderList(BuildContext context,List<MachineMaintanceTaskHandOverModel> handOverList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -123,8 +98,9 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              // Navigator.push(context, MaterialPageRoute(
-              //     builder: (context) => MyTaskDetailsScreen(myTaskData: myTaskList[index],)));
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ServiceProviderProfileScreen(handoverServiceListData: handOverList[index],trackProgressData:widget.trackProgressData,
+                    myTaskData: widget.myTaskData,)));
             },
             child: TaskHandOverCard(context,handOverList[index]));
       },
@@ -541,262 +517,30 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                 //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
               },
               child: Icon(Icons.arrow_back_ios)),
-          title: Text("",style:appBarheadingStyle ,),
+          title: Text("Service Engineers",style:appBarheadingStyle ,),
         ),
-        floatingActionButton:Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                backgroundColor: ThemeColors.defaultbuttonColor,
-                heroTag: "btn1",
-                child: Icon(
-                  Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
-                ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>chatListing()));
-                },
-              ),
-              SizedBox(width: 8,),
-              FloatingActionButton(
-                backgroundColor: ThemeColors.defaultbuttonColor,
-                heroTag: "btn2",
-                child: Icon(
-                  Icons.call,color: ThemeColors.whiteTextColor,size: 30,
-                ),
-                onPressed: () {
-                  //...
-                },
-              ),
-            ],
-          ),
-        ),
-        // body: SingleChildScrollView(
-        //   child: ListView.builder(
-        //       itemCount: 20,
-        //       physics: NeverScrollableScrollPhysics(),
-        //       shrinkWrap: true,
-        //       itemBuilder: (_, index) {
-        //         return InkWell(
-        //           onTap: (){
-        //             Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderProfileScreen()));
-        //           },
-        //           child: Container(
-        //             width: MediaQuery.of(context).size.width ,
-        //             child: Card(
-        //               shape: RoundedRectangleBorder(
-        //                 borderRadius: BorderRadius.circular(0.0),
-        //               ),
-        //               // color: Colors.white70,
-        //               elevation: 5,
-        //               child: Row(
-        //                 crossAxisAlignment: CrossAxisAlignment.start,
-        //                 children: [
-        //                   Padding(
-        //                     padding: const EdgeInsets.all(10.0),
-        //                     child: ConstrainedBox(
-        //                       constraints: BoxConstraints(
-        //                         maxWidth: MediaQuery.of(context).size.width * 0.28,
-        //                         maxHeight: MediaQuery.of(context).size.width * 0.28,
-        //                       ),
-        //                       child: CachedNetworkImage(
-        //                         filterQuality: FilterQuality.medium,
-        //                         // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-        //                         imageUrl: "https://picsum.photos/250?image=9",
-        //                         // imageUrl: myTaskData.machineImg == null
-        //                         //     ? "https://picsum.photos/250?image=9"
-        //                         //     : myTaskData.machineImg.toString(),
-        //                         placeholder: (context, url) {
-        //                           return Shimmer.fromColors(
-        //                             baseColor: Theme.of(context).hoverColor,
-        //                             highlightColor: Theme.of(context).highlightColor,
-        //                             enabled: true,
-        //                             child: Container(
-        //                               height: 80,
-        //                               width: 80,
-        //                               decoration: BoxDecoration(
-        //                                 color: Colors.white,
-        //                                 borderRadius: BorderRadius.circular(0),
-        //                               ),
-        //                             ),
-        //                           );
-        //                         },
-        //                         imageBuilder: (context, imageProvider) {
-        //                           return Container(
-        //                             height: 100,
-        //                             width: 100,
-        //                             decoration: BoxDecoration(
-        //                               image: DecorationImage(
-        //                                 image: imageProvider,
-        //                                 fit: BoxFit.cover,
-        //                               ),
-        //                               borderRadius: BorderRadius.circular(0),
-        //                             ),
-        //                           );
-        //                         },
-        //                         errorWidget: (context, url, error) {
-        //                           return Shimmer.fromColors(
-        //                             baseColor: Theme.of(context).hoverColor,
-        //                             highlightColor: Theme.of(context).highlightColor,
-        //                             enabled: true,
-        //                             child: Container(
-        //                               height: 80,
-        //                               width: 80,
-        //                               decoration: BoxDecoration(
-        //                                 color: Colors.white,
-        //                                 borderRadius: BorderRadius.circular(8),
-        //                               ),
-        //                               child: Icon(Icons.error),
-        //                             ),
-        //                           );
-        //                         },
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   Flexible(
-        //                     child: Padding(
-        //                       padding: const EdgeInsets.all(10.0),
-        //                       child: Column(
-        //                         crossAxisAlignment: CrossAxisAlignment.start,
-        //                         // mainAxisAlignment: MainAxisAlignment.start,
-        //                         children: [
-        //                           Container(
-        //                             // width: MediaQuery.of(context).size.width/1.8,
-        //                             child: Text(
-        //                               "User Name",
-        //                               // "Job Title/Services Name or Any Other Name",
-        //                               style: TextStyle(
-        //                                   fontFamily: 'Poppins-SemiBold',
-        //                                   fontSize: 16,
-        //                                   fontWeight: FontWeight.bold
-        //                               ),
-        //                               overflow: TextOverflow.ellipsis,
-        //                               maxLines: 2,
-        //                             ),
-        //                           ),
-        //                           SizedBox(height: 4,),
-        //                           Row(
-        //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Text(
-        //                                 "Work category:",
-        //                                 style: TextStyle(
-        //                                     fontFamily: 'Poppins-SemiBold',
-        //                                     fontSize: 12,
-        //                                     fontWeight: FontWeight.bold
-        //                                 ),
-        //                               ),
-        //                               // SizedBox(
-        //                               //   width: MediaQuery.of(context).size.width/9,
-        //                               // ),
-        //                               Container(
-        //                                 // width: MediaQuery.of(context).size.width*0.2,
-        //                                 child: Text('Category Type',
-        //                                   // "#102GRDSA36987",
-        //                                   style: TextStyle(
-        //                                     fontFamily: 'Poppins-Regular',
-        //                                     fontSize: 12,
-        //                                     // fontWeight: FontWeight.bold
-        //                                   ),
-        //                                   overflow: TextOverflow.ellipsis,
-        //                                 ),
-        //                               ),
-        //
-        //                             ],
-        //                           ),
-        //                           SizedBox(height: 3,),
-        //
-        //                           Row(
-        //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Text(
-        //                                 "Work sub category:",
-        //                                 style: TextStyle(
-        //                                     fontFamily: 'Poppins-SemiBold',
-        //                                     fontSize: 12,
-        //                                     fontWeight: FontWeight.bold
-        //                                 ),
-        //                               ),
-        //                               // SizedBox(
-        //                               //   width: MediaQuery.of(context).size.width/11,
-        //                               // ),
-        //                               Container(
-        //                                 // width: MediaQuery.of(context).size.width*0.2,
-        //                                 child: Text(
-        //                                   'category type',
-        //                                   //"Step 1",
-        //                                   style: TextStyle(
-        //                                     fontFamily: 'Poppins-Regular',
-        //                                     fontSize: 12,
-        //                                     // fontWeight: FontWeight.bold
-        //                                   ),
-        //                                   overflow: TextOverflow.ellipsis,
-        //                                 ),
-        //                               )
-        //                             ],
-        //                           ),
-        //                           SizedBox(height: 3,),
-        //
-        //                           Row(
-        //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Text(
-        //                                 "Total Experience:",
-        //                                 style: TextStyle(
-        //                                     fontFamily: 'Poppins-SemiBold',
-        //                                     fontSize: 12,
-        //                                     fontWeight: FontWeight.bold
-        //                                 ),
-        //                               ),
-        //                               // SizedBox(
-        //                               //   width: MediaQuery.of(context).size.width/8,
-        //                               // ),
-        //                               Container(
-        //                                 // width: MediaQuery.of(context).size.width*0.2,
-        //                                 child: Text(
-        //                                   '5 Years',
-        //                                   //"Step 1",
-        //                                   style: TextStyle(
-        //                                     fontFamily: 'Poppins-Regular',
-        //                                     fontSize: 12,
-        //                                     // fontWeight: FontWeight.bold
-        //                                   ),
-        //                                   overflow: TextOverflow.ellipsis,
-        //                                 ),
-        //                               )
-        //                             ],
-        //                           ),
-        //                         ],
-        //                       ),
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //         );
-        //       }),
-        // )
-
         body:BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
                 if(state is TaskHandOverLoading){
-                  _isLoading = state.isLoading;
+                  // _isLoading = state.isLoading;
                 }
                 if(state is TaskHandOverSuccess){
-                  serviceList = state.serviceListData;
+                  // serviceList = state.serviceListData;
+                  serviceList!.addAll(state.serviceListData);
+                  if(serviceList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is TaskHandOverFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
-                    SingleChildScrollView(child: Container(child:buildServiceProviderList(serviceList!))),
+                    SingleChildScrollView(child: Container(child:buildServiceProviderList(context,serviceList!))),
                   ],
                 ),
               ) : ShimmerCard()

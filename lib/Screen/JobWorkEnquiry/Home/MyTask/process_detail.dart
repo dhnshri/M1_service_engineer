@@ -17,9 +17,11 @@ import 'my_task_detail.dart';
 
 
 class ProcessDetailScreen extends StatefulWidget {
+  bool fromHandOver;
   TrackProcessJobWorkEnquiryModel trackProgressData;
   JobWorkEnquiryMyTaskModel myTaskJobWorkEnquiryData;
-  ProcessDetailScreen({Key? key,required this.trackProgressData,required this.myTaskJobWorkEnquiryData}) : super(key: key);
+  ProcessDetailScreen({Key? key,required this.trackProgressData,required this.myTaskJobWorkEnquiryData,
+    required this.fromHandOver}) : super(key: key);
 
   @override
   _ProcessDetailScreenState createState() => _ProcessDetailScreenState();
@@ -73,59 +75,36 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
 
               SizedBox(height: 8,),
               Text(widget.trackProgressData.description.toString()),
-
-
             ],
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Column(
+      floatingActionButton: widget.trackProgressData.status == 1 ? Container(): Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>JobWorkEnquiryServiceProviderListScreen()));
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: ThemeColors.defaultbuttonColor,
-                    borderRadius: BorderRadius.circular(30)),
-                child: Center(child: Text("Assign to Other",
-                    style: TextStyle(fontFamily: 'Poppins-Medium',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ))),
-              ),
-            ),
-          ),
+          widget.fromHandOver ?
           BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
             return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
 
-                if(state is TaskCompleteJWELoading){
+                if(state is TaskCompleteLoading){
                   // _isLoading = state.isLoading;
                 }
-                if(state is TaskCompleteJWESuccess){
+                if(state is TaskCompleteSuccess){
                   showCustomSnackBar(context,state.message.toString(),isError: false);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context)=> EnquiryMyTaskDetailsScreen(myTaskJobWorkEnquiryData:widget.myTaskJobWorkEnquiryData)));
-                  // Navigator.pushReplacement(context,newRoute)
+                  // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>
+                  //     MyTaskDetailsScreen(myTaskData: widget.myTaskData,)));
 
                 }
-                if(state is TaskCompleteJWEFail){
+                if(state is TaskCompleteFail){
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
                 }
               },
               child: InkWell(
                 onTap: (){
-                  _homeBloc!.add(TaskCompleteJWE(serviceUserId:'1',machineEnquiryId:'0',
-                      transportEnquiryId: '0',jobWorkEnquiryId:'1', dailyTaskId:'1', status: 1));
+                  _homeBloc!.add(TaskComplete(serviceUserId: widget.trackProgressData.serviceUserId.toString(),machineEnquiryId: widget.trackProgressData.machineEnquiryId.toString(),
+                      transportEnquiryId: '0',jobWorkEnquiryId: '0', dailyTaskId: widget.trackProgressData.id.toString(), status: 1));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -148,7 +127,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
             );
 
 
-          }),
+          }) : Container()
 
         ],
       ),

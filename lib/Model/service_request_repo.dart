@@ -34,6 +34,9 @@ class ServiceRequestModel {
   String? machineImg;
   String? machineProblemImg;
   String? dateAndTime;
+  int? dailyTaskId;
+  int? assignUserId;
+  int? serviceUserId;
 
   ServiceRequestModel(
       {this.enquiryId,
@@ -41,7 +44,10 @@ class ServiceRequestModel {
         this.machineName,
         this.machineImg,
         this.machineProblemImg,
-        this.dateAndTime});
+        this.dateAndTime,
+        this.dailyTaskId,
+        this.assignUserId,
+        this.serviceUserId});
 
   ServiceRequestModel.fromJson(Map<String, dynamic> json) {
     enquiryId = json['enquiry_id'];
@@ -50,6 +56,9 @@ class ServiceRequestModel {
     machineImg = json['machine_img'];
     machineProblemImg = json['machine_problem_img'];
     dateAndTime = json['date_and_time'];
+    dailyTaskId = json['daily_task_id'];
+    assignUserId = json['asign_user_id'];
+    serviceUserId = json['service_user_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +69,46 @@ class ServiceRequestModel {
     data['machine_img'] = this.machineImg;
     data['machine_problem_img'] = this.machineProblemImg;
     data['date_and_time'] = this.dateAndTime;
+    data['daily_task_id'] = this.dailyTaskId;
+    data['asign_user_id'] = this.assignUserId;
+    data['service_user_id'] = this.serviceUserId;
+    return data;
+  }
+}
+
+class HandOverTaskDetailModel {
+  int? id;
+  int? serviceUserId;
+  String? heading;
+  String? description;
+  int? asignUserId;
+  int? price;
+
+  HandOverTaskDetailModel(
+      {this.id,
+        this.serviceUserId,
+        this.heading,
+        this.description,
+        this.asignUserId,
+        this.price});
+
+  HandOverTaskDetailModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceUserId = json['service_user_id'];
+    heading = json['heading'];
+    description = json['description'];
+    asignUserId = json['asign_user_id'];
+    price = json['price'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['service_user_id'] = this.serviceUserId;
+    data['heading'] = this.heading;
+    data['description'] = this.description;
+    data['asign_user_id'] = this.asignUserId;
+    data['price'] = this.price;
     return data;
   }
 }

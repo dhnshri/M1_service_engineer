@@ -1,46 +1,44 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Model/JobWorkEnquiry/my_task_model.dart';
-import 'package:service_engineer/Screen/Transportation/Handover%20Task%20Screen/hanover_task_list.dart';
-import 'package:service_engineer/Screen/Transportation/ServiceRequest/transportation_filter_serviceRequestscreen.dart';
-import 'package:service_engineer/Screen/Transportation/ServiceRequest/transportation_service_request_details.dart';
+import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/HandOver%20Task%20List/handover_task_detail.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../Bloc/home/home_bloc.dart';
-import '../../../Bloc/home/home_event.dart';
 import '../../../Bloc/home/home_state.dart';
-import '../../../Model/Transpotation/serviceRequestListModel.dart';
-import '../../../Widget/custom_snackbar.dart';
 
 
-
-
-class TransportationServiceRequestScreen extends StatefulWidget {
-  bool isSwitched;
-  TransportationServiceRequestScreen({Key? key,required this.isSwitched}) : super(key: key);
+class HandOverTaskList extends StatefulWidget {
+  HandOverTaskList({Key? key,}) : super(key: key);
 
   @override
-  _TransportationServiceRequestScreenState createState() => _TransportationServiceRequestScreenState();
+  _HandOverTaskListState createState() => _HandOverTaskListState();
 }
 
-class _TransportationServiceRequestScreenState extends State<TransportationServiceRequestScreen> {
+class _HandOverTaskListState extends State<HandOverTaskList> {
+
+  final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool _isLoading = false;
-  ScrollController _scrollController = ScrollController();
-  HomeBloc? _homeBloc;
-  List<ServiceRequestTranspotationModel>? serviceList = [];
   bool flagSearchResult=false;
   bool _isSearching=false;
-  List<ServiceRequestTranspotationModel> searchResult=[];
-  List<JobWorkEnquiryMyTaskModel>? handOverServiceList = [];
+  HomeBloc? _homeBloc;
+  List<ServiceRequestModel>? handOverServiceList = [];
+  ScrollController _scrollController = ScrollController();
+  List<ServiceRequestModel> searchResult=[];
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   int offset = 0;
-  int handoverOffset = 0;
   int? timeId=0;
-  bool _loadData = false;
-
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -48,14 +46,13 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
+    // _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offSet.toString()));
+    // print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
     getApi();
-    // _homeBloc!.add(TransportHandOverServiceRequestList(timeId: '0',offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
-    // _homeBloc!.add(TransportHandOverServiceRequestList(timeId: '0',offSet: handoverOffset.toString(),serviceUserId: 1.toString()));
-    _homeBloc!.add(TransportHandOverServiceRequestList(timeId: '0',offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
   }
 
   getApi(){
-    _homeBloc!.add(OnServiceRequestTranspotation(offSet: offset.toString(),timeId: timeId.toString()));
+    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: offset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
   }
 
   @override
@@ -74,17 +71,17 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
   void searchOperation(String searchText) {
     searchResult.clear();
     if (_isSearching != null) {
-      for (int i = 0; i < serviceList!.length; i++) {
-        ServiceRequestTranspotationModel serviceListData = new ServiceRequestTranspotationModel();
-        serviceListData.enquiryId = serviceList![i].enquiryId;
-        serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
-        serviceListData.enquiryId = serviceList![i].enquiryId;
-        serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
+      for (int i = 0; i < handOverServiceList!.length; i++) {
+        ServiceRequestModel serviceListData = new ServiceRequestModel();
+        serviceListData.machineImg = handOverServiceList![i].machineProblemImg.toString();
+        serviceListData.machineName = handOverServiceList![i].machineName.toString();
+        serviceListData.enquiryId = handOverServiceList![i].enquiryId;
+        serviceListData.dateAndTime = handOverServiceList![i].dateAndTime.toString();
 
-
-
-        if (serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase())) {
+        if (serviceListData.machineImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.machineName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
           flagSearchResult=false;
           searchResult.add(serviceListData);
         }
@@ -97,7 +94,8 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
     }
   }
 
-  Widget buildTransportationList(BuildContext context, List<ServiceRequestTranspotationModel> serviceList) {
+
+  Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
     return ListView.builder(
       controller: _scrollController
         ..addListener(() {
@@ -109,6 +107,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
               ..isFetching = true
               ..add(getApi());
             // serviceList.addAll(serviceList);
+
           }
         }),
       shrinkWrap: true,
@@ -119,17 +118,18 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
         return  InkWell(
             onTap: (){
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TransportationServiceRequestDetailsScreen(serviceRequestData: serviceList[index],)));
+                  MaterialPageRoute(builder: (context) => HandOverTaskDetailScreen(handoverTaskData: serviceList[index],)));
             },
-            child: serviceRequestCardNew(context,serviceList[index]));
+            child: serviceRequestCard(context, serviceList[index]));
       },
-      itemCount:serviceList.length,
+      itemCount: serviceList.length,
     );
   }
 
-  Widget serviceRequestCardNew(BuildContext context, ServiceRequestTranspotationModel serviceListData) {
+  Widget serviceRequestCard(BuildContext context, ServiceRequestModel serviceListData)
+  {
     return Container(
-      width: MediaQuery.of(context).size.width ,
+      width: MediaQuery.of(context).size.width,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0.0),
@@ -148,9 +148,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                 ),
                 child: CachedNetworkImage(
                   filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
+                  imageUrl: serviceListData.machineImg!,
                   placeholder: (context, url) {
                     return Shimmer.fromColors(
                       baseColor: Theme.of(context).hoverColor,
@@ -206,9 +204,9 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width/1.8,
+                      // width: MediaQuery.of(context).size.width/2.5,
                       child: Text(
-                        "Job Title/Services Name or Any Other Name...",
+                        serviceListData.machineName!,
                         style: TextStyle(
                             fontFamily: 'Poppins-SemiBold',
                             fontSize: 16,
@@ -231,9 +229,10 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                           ),
                         ),
                         // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/9,
+                        //   // width: MediaQuery.of(context).size.width/,
                         // ),
                         Container(
+                          // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
                             serviceListData.enquiryId.toString(),
                             style: TextStyle(
@@ -247,6 +246,37 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                       ],
                     ),
                     SizedBox(height: 3,),
+
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(
+                    //       "Working Timing:",
+                    //       style: TextStyle(
+                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontSize: 12,
+                    //           fontWeight: FontWeight.bold
+                    //       ),
+                    //     ),
+                    //     // SizedBox(
+                    //     //   width: MediaQuery.of(context).size.width/6.3,
+                    //     // ),
+                    //     Container(
+                    //       // width: MediaQuery.of(context).size.width*0.2,
+                    //       child: Text(
+                    //         "10 AM - 6 PM",
+                    //         style: TextStyle(
+                    //           fontFamily: 'Poppins-Regular',
+                    //           fontSize: 12,
+                    //           // fontWeight: FontWeight.bold
+                    //         ),
+                    //         overflow: TextOverflow.ellipsis,
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
+                    SizedBox(height: 3,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -257,53 +287,26 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
-                          overflow: TextOverflow.ellipsis,
+                        ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/6.3,
+                        // ),
+                        Container(
+                          // width: MediaQuery.of(context).size.width*0.2,
+                          child: Text(
+                            // serviceListData.dateAndTime!,
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceListData.dateAndTime!.toString())).toString(),
+                            style: TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
 
-                        ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/12.5,
-                        // ),
-                        Container(
-                          child: Text(
-                            serviceListData.dateAndTime.toString(),
-                            style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
-                              fontSize: 12,
-                              // fontWeight: FontWeight.bold
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 3,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Applicants:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/5.3,
-                        // ),
-                        Container(
-                          child: Text(
-                            "2",
-                            style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
-                              fontSize: 12,
-                              // fontWeight: FontWeight.bold
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -314,223 +317,160 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.isSwitched?
-      BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-        return BlocListener<HomeBloc, HomeState>(
-            listener: (context, state) {
-              if(state is ServiceRequestTranspotationLoading){
-                _isLoading = state.isLoading;
-              }
-              if(state is ServiceRequestTranspotationSuccess){
-                // serviceList = state.serviceListData;
-                serviceList!.addAll(state.serviceListData);
-                if(serviceList!=null){
-                  _loadData =true;
-                }
-              }
-              if(state is ServiceRequestTranspotationFail){
-                showCustomSnackBar(context,state.msg.toString());
-              }
-              if(state is TransportHandOverServiceRequestListLoading){
-                _isLoading = state.isLoading;
-              }
-              if(state is TransportHandOverServiceRequestListSuccess){
-                handOverServiceList = state.serviceListData;
-              }
-              if(state is TransportHandOverServiceRequestListFail){
-                showCustomSnackBar(context,state.msg.toString());
-              }
+      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
             },
-            child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
-            Container(
-              child: ListView(
-                children: [
-                  const SizedBox(height: 5,),
-                  handOverServiceList!.length > 0 ?
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: ThemeColors.imageContainerBG
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              // width:200,
-                              child: const Text("Task Assigned By Other Service Providers",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    // color: ThemeColors.buttonColor,
-                                      fontFamily: 'Poppins-Regular',
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600
-                                  )),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                    TransportHandOverTaskList()));
-                              },
-                              child: Container(
-                                child: Text('View',
-                                    style: TextStyle(
-                                        color: ThemeColors.buttonColor,
-                                        fontFamily: 'Poppins-Regular',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500
-                                    )),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ): Container(),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 0.2,),
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 10, right: 10, bottom: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              // initialValue: Application.customerLogin!.name.toString(),
-                              controller: _searchController,
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                              style: TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
-                              ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ThemeColors.bottomNavColor,
-                                prefixIcon: IconButton(
-                                  icon: Icon(
-                                    Icons.search,
-                                    size: 25.0,
-                                    color: ThemeColors.blackColor,
-                                  ),
-                                  onPressed: () {
-                                    _handleSearchStart();
-                                  },
-                                ),
-                                hintText: "Search all Orders",
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                hintStyle: TextStyle(fontSize: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8, color: ThemeColors.bottomNavColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8, color: ThemeColors.bottomNavColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8, color: ThemeColors.bottomNavColor)),
-                              ),
-                              validator: (value) {
-                                return null;
-                              },
-                              onChanged: (value) {
-                                searchOperation(value);
-                              },
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              var filterResult = await Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => ServiceRequestTransportationFilterScreen()));
-
-                              if(filterResult!= null){
-                                serviceList = filterResult['serviceList'];
-                                timeId = filterResult['time_id'];
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(Icons.filter_list),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("Filter")
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  // _isLoading ?
-                  flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                  buildTransportationList(context, searchResult):
-                  buildTransportationList(context, serviceList!)
-                      : Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: const Center(child: Text("No Data"),),
-                  )
-                ],
-              ),
-            ) : ShimmerCard()
-
-          // Center(
-          //   child: CircularProgressIndicator(),
-          // )
-
-        );
-
-
-      })
-          :Center(
-        child: Column(
-          mainAxisAlignment:MainAxisAlignment.center,
-          children: [
-            Text("Nothing to show",
-                style: TextStyle(
-                    fontFamily: 'Poppins-SemiBold',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                )),
-            SizedBox(height: 5,),
-            Text("You are currently",
-                style: TextStyle(
-                  fontFamily: 'Poppins-SemiBold',
-                  fontSize: 16,
-                )),
-            SizedBox(height: 5,),
-
-            Text("offline",
-                style: TextStyle(
-                  fontFamily: 'Poppins-SemiBold',
-                  fontSize: 16,
-                )),
-          ],
+            child: Icon(Icons.arrow_back_ios)),
+        title: Text(
+          'Assign Task List',
         ),
       ),
+      body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return BlocListener<HomeBloc, HomeState>(
+                listener: (context, state) {
+                  if(state is MachineHandOverServiceRequestListLoading){
+                    _isLoading = state.isLoading;
+                  }
+                  if(state is MachineHandOverServiceRequestListSuccess){
+                    // serviceList = state.serviceListData;
+                    // if(serviceList!=null) {
+                    handOverServiceList!.addAll(state.serviceListData);
+                    if(handOverServiceList!=null){
+                      _loadData=true;
+                    }
+                    // }
+                  }
+                  if(state is MachineHandOverServiceRequestListFail){
+                    showCustomSnackBar(context,state.msg.toString());
+                  }
+                },
+                child: _loadData ? handOverServiceList!.length <= 0 ? Center(child: Text('No Data'),):
+                Container(
+                  child: Column(
+                    children:<Widget> [
+                      Container(
+                        decoration: const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(width: 0.2,),
+                            )
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 10, right: 10, bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  // initialValue: Application.customerLogin!.name.toString(),
+                                  controller: _searchController,
+                                  textAlign: TextAlign.start,
+                                  keyboardType: TextInputType.text,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    height: 1.5,
+                                  ),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: ThemeColors.bottomNavColor,
+                                    prefixIcon: IconButton(
+                                      icon: const Icon(
+                                        Icons.search,
+                                        size: 25.0,
+                                        color: ThemeColors.blackColor,
+                                      ),
+                                      onPressed: () {
+                                        _handleSearchStart();
+                                      },
+                                    ),
+                                    hintText: "Search all Orders",
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 15.0),
+                                    hintStyle: const TextStyle(fontSize: 15),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderRadius:BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8, color: ThemeColors.bottomNavColor),
+                                    ),
+                                    focusedBorder:const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8, color: ThemeColors.bottomNavColor),
+                                    ),
+                                    border:const OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderSide: BorderSide(
+                                            width: 0.8, color: ThemeColors.bottomNavColor)),
+                                  ),
+                                  validator: (value) {
 
-      );
+                                  },
+                                  onChanged: (value) {
+                                    // profile.name = value;
+                                    searchOperation(value);
+                                  },
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  var filterResult = await Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
 
+                                  if(filterResult != null){
+                                    print(filterResult);
+                                    handOverServiceList = filterResult['serviceList'];
+                                    timeId = filterResult['time_id'];
+                                  }
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.filter_list),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text("Filter")
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      // _isLoading ?
+                      flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                      buildCustomerEnquiriesList(context, searchResult)
+                          :
+                      Expanded(child: buildCustomerEnquiriesList(context, handOverServiceList!))
+                          : Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: const Center(child: Text("No Data"),),
+                      )
+                      // : ShimmerCard()
+                      // : CircularProgressIndicator()
+                    ],
+                  ),
+                ) : ShimmerCard()
+
+              // Center(
+              //   child: CircularProgressIndicator(),
+              // )
+
+            );
+
+
+          })
+    );
   }
+
   Widget ShimmerCard(){
     return ListView.builder(
       scrollDirection: Axis.vertical,
@@ -731,4 +671,5 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
       itemCount: List.generate(8, (index) => index).length,
     );
   }
+
 }

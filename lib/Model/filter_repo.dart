@@ -23,21 +23,25 @@ class FilterRepo {
   }
 }
 
-class BrandModule {
+class FilterModule {
   int? brandId;
   String? name;
+  int? categoryId;
 
-  BrandModule({this.brandId, this.name});
+  FilterModule({this.brandId, this.name});
 
-  BrandModule.fromJson(Map<String, dynamic> json) {
+  FilterModule.fromJson(Map<String, dynamic> json) {
     brandId = json['brand_id'];
     name = json['name'];
+    categoryId = json['category_id'];
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['brand_id'] = this.brandId;
     data['name'] = this.name;
+    data['category_id'] = this.categoryId;
     return data;
   }
 }

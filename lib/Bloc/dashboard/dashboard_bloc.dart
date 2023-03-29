@@ -4,11 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:service_engineer/Bloc/dashboard/dashboard_event.dart';
 import 'package:service_engineer/Bloc/dashboard/dashboard_state.dart';
 import 'package:service_engineer/Model/dashboard_cound_repo.dart';
-import 'package:service_engineer/main.dart';
-import '../../Model/customer_login.dart';
-import '../../Repository/UserRepository.dart';
-import '../../app_bloc.dart';
-import '../authentication/authentication_event.dart';
+import 'package:service_engineer/Repository/UserRepository.dart';
+
 
 
 

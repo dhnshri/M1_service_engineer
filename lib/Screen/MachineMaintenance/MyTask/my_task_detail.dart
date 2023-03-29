@@ -83,24 +83,9 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
+    _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineEnquiryId: widget.myTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
+    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineEnquiryId: widget.myTaskData.enquiryId.toString(),jobWorkEnquiryId: '0',transportEnquiryId: '0'));
     _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.enquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-    _phoneNumberController.clear();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
   }
   @override
   void dispose() {
@@ -246,8 +231,8 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                   child: Container(
                                     width: 140,
                                     child: Text(myTaskData![0].location.toString(),
-                                      maxLines: 5,
-                                      overflow: TextOverflow.ellipsis,style:TextStyle(
+                                      maxLines: 5,textAlign: TextAlign.end,
+                                      overflow: TextOverflow.ellipsis,style:const TextStyle(
                                         color: Colors.black,
                                         fontSize: 12,
                                         fontFamily: 'Poppins-Bold',
@@ -762,56 +747,55 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   ),),
 
                 ///Mark as Completed Button
-                InkWell(
-                  onTap: (){
-                    // Navigator.of(context).pop();
-                    AlertDialog(
-                      title: new Text(""),
-                      content: new Text("Are you sure, you want to mark service as completed?"),
-                      actions: <Widget>[
-                        Row(
-                          children: [
-                            TextButton(
-                              child: new Text("No"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            SizedBox(width: 7,),
-                            TextButton(
-                              child: new Text("Yes"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: ThemeColors.defaultbuttonColor,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Center(child: Text("Mark As Completed",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ))),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: (){
+                //     // Navigator.of(context).pop();
+                //     AlertDialog(
+                //       title: new Text(""),
+                //       content: new Text("Are you sure, you want to mark service as completed?"),
+                //       actions: <Widget>[
+                //         Row(
+                //           children: [
+                //             TextButton(
+                //               child: new Text("No"),
+                //               onPressed: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //             ),
+                //             SizedBox(width: 7,),
+                //             TextButton(
+                //               child: new Text("Yes"),
+                //               onPressed: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //             ),
+                //           ],
+                //         ),
+                //       ],
+                //     );
+                //   },
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(10.0),
+                //     child: Container(
+                //       height: 40,
+                //       width: MediaQuery.of(context).size.width,
+                //       decoration: BoxDecoration(
+                //           color: ThemeColors.defaultbuttonColor,
+                //           borderRadius: BorderRadius.circular(30)),
+                //       child: Center(child: Text("Mark As Completed",
+                //           style: TextStyle(fontFamily: 'Poppins-Medium',
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500,
+                //             color: Colors.white,
+                //           ))),
+                //     ),
+                //   ),
+                // ),
 
 
                 SizedBox(
                   height: 80,
                 )
-
 
               ],
             )

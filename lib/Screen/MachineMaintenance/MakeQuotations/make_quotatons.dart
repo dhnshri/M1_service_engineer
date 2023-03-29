@@ -72,7 +72,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   final TextEditingController _gstController = TextEditingController();
   final TextEditingController _gstChargesController = TextEditingController();
   final _searchController = TextEditingController();
-
+  ScrollController _scrollController = ScrollController();
   DateTime selectedDate = DateTime.now();
 
   var quantity = 0;
@@ -82,6 +82,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
   bool _cartLoading = true;
   bool _isLoading = false;
+  bool _loadData = false;
 
   HomeBloc? _homeBloc;
   List<ProductDetails>? productDetail = [];
@@ -89,6 +90,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   bool flagSearchResult=false;
   bool _isSearching=false;
   List<ProductDetails> searchResult=[];
+  int? catId=0;
+  int? brandId=0;
+  int? priceId=0;
+  int offset=0;
 
   void _handleSearchStart() {
     setState(() {
@@ -263,7 +268,12 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   print(filterResult['product_list']);
                   print(filterResult['brand_id']);
                   print(filterResult['ascending_descending_id']);
+                  print(filterResult['category_id']);
                   productDetail = filterResult['product_list'];
+                  catId = filterResult['category_id'];
+                  priceId = filterResult['ascending_descending_id'];
+                  brandId = filterResult['brand_id'];
+
                 }
               },
               child: Row(
@@ -280,17 +290,29 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
           ],
         ),
-        _isLoading ?
+        _loadData ?
         Container(
           height: 350,
-          child:SingleChildScrollView(
-            child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+          child:ListView(
+              // controller: _scrollController,
+              //   ..addListener(() {
+              //     if (_scrollController.position.pixels  ==
+              //         _scrollController.position.maxScrollExtent) {
+              //       offset++;
+              //       print("Offset : ${offset}");
+              //       BlocProvider.of<HomeBloc>(context)
+              //         ..isFetching = true
+              //         ..add(getApi());
+              //       // serviceList.addAll(serviceList);
+              //     }
+              //   }),
+              children: [flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
             ProdductList(context, searchResult):
             ProdductList(context, productList)
                 : Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: const Center(child: Text("No Data"),),
-            )
+            )]
           ),
         ):Center(child: CircularProgressIndicator(),),
         SizedBox(height: 15,),
@@ -378,8 +400,20 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
   Widget ProdductList(BuildContext context, List<ProductDetails>? productList){
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offset : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      // physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: productList!.length,
       padding: EdgeInsets.only(top: 10, bottom: 15),
@@ -901,16 +935,14 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(ProductList(prodId: '0',offSet: '0',brandId: '0',priceId: '0'));
+    getApi();
     loadApi();
-    // setState((){
-    //   if(_quantityController.text != '' && _rateController.text != ''){
-    //     total = int.parse(_quantityController.text.toString()) * int.parse(_rateController.text.toString());
-    //   }
-    //   print(total);
-    // });
     selectedDate;
     dateofJoiningController.text = DateFormat.yMd('es').format(DateTime.now());
+  }
+
+  getApi(){
+    _homeBloc!.add(ProductList(prodId: '0',offSet: offset.toString(),brandId: brandId.toString(),priceId: priceId.toString(),catId: catId.toString()));
   }
 
   loadApi(){
@@ -955,7 +987,11 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                 _isLoading = state.isLoading;
               }
               if(state is ProductListSuccess){
-                productDetail = state.productList;
+                // productDetail = state.productList;
+                productDetail!.addAll(state.productList);
+                if(productDetail!=null){
+                  _loadData=true;
+                }
               }
               if(state is ProductListFail){
                 // Fluttertoast.showToast(msg: state.msg.toString());

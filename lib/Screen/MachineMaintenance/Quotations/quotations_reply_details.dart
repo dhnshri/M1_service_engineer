@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_bloc.dart';
 import 'package:service_engineer/Bloc/quotationReply/quotationReply_state.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_quotations.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/app_button.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -102,37 +104,40 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppSmallButton(
-              onPressed: () async {
-                _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
-                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Reject',
-              loading: isRejectLoading,
-
-
-            ),
-            AppSmallButton(
-              onPressed: () async {
-                if(value==true) {
-                  _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
-                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
-                  }
-                else{
-                  showCustomSnackBar(context,'Please agree the terms and condition.');
-
-                }
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
+                  _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
                 },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Revise Quotation',
-              loading: isRevisedLoading,
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Reject',
+                loading: isRejectLoading,
+                color: ThemeColors.whiteTextColor,
+                borderColor: ThemeColors.defaultbuttonColor,textColor: ThemeColors.defaultbuttonColor,
+              ),
+            ),
+            const SizedBox(width:10),
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
+                  if(value==true) {
+                    _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                        serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
+                  }
+                  else{
+                    showCustomSnackBar(context,'Please agree the terms and condition.');
 
-
+                  } },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Revise Quotation',
+                loading: isRevisedLoading,
+                color: ThemeColors.defaultbuttonColor,
+              ),
             ),
           ],
         ),
@@ -158,7 +163,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                 isRejectLoading = state.isLoading;
               }
               if(state is QuotationRejectSuccess){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>QuotationsReplyScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigation(index: 3,dropValue: Application.customerLogin!.role.toString(),)));
                 showCustomSnackBar(context,state.msg.toString(),isError: false);
               }
               if(state is QuotationRejectFail){

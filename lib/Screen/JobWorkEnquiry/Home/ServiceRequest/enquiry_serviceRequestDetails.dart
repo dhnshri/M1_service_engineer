@@ -62,71 +62,6 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
   final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
 
-  // final pdf = pw.Document();
-  //
-  // Future<void> _convertImageToPDF(String _image) async {
-  //
-  //   //Create the PDF document
-  //   PdfDocument document = PdfDocument();
-  //
-  //   //Add the page
-  //   PdfPage page = document.pages.add();
-  //
-  //   //Load the image
-  //   final PdfImage image =
-  //   PdfBitmap(await _readImageData(_image));
-  //
-  //   //draw image to the first page
-  //   page.graphics.drawImage(
-  //       image, Rect.fromLTWH(0, 0, page.size.width, page.size.height));
-  //
-  //   //Save the document
-  //   List<int> bytes = await document.save();
-  //
-  //   // Dispose the document
-  //   document.dispose();
-  //
-  //   //Save the file and launch/download
-  //   saveAndLaunchFile(bytes, 'output.pdf');
-  // }
-  //
-  // Future<List<int>> _readImageData(String name) async {
-  //   final ByteData data = await rootBundle.load('images/$name');
-  //   return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  // }
-  //
-  // static Future<void> saveAndLaunchFile(
-  //     List<int> bytes, String fileName) async {
-  //   //Get external storage directory
-  //   Directory directory = await getApplicationSupportDirectory();
-  //   //Get directory path
-  //   String path = directory.path;
-  //   //Create an empty file to write PDF data
-  //   File file = File('$path/$fileName');
-  //   //Write PDF data
-  //   await file.writeAsBytes(bytes, flush: true);
-  //   //Open the PDF document in mobile
-  //   OpenFile.open('$path/$fileName');
-  // }
-  //
-  //
-  // Future<File> loadPdfFromNetwork(String url) async {
-  //   final response = await http.get(Uri.parse(url));
-  //   final bytes = response.bodyBytes;
-  //   return _storeFile(url, bytes);
-  // }
-  // Future<File> _storeFile(String url, List<int> bytes) async {
-  //   final filename = basename(url);
-  //   final dir = await getApplicationDocumentsDirectory();
-  //   final file = File('${dir.path}/$filename');
-  //   await file.writeAsBytes(bytes, flush: true);
-  //   if (kDebugMode) {
-  //     print('$file');
-  //   }
-  //   return file;
-  // }
-
-
 
   @override
   void initState() {
@@ -134,7 +69,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnServiceRequestJobWorkEnquiryDetail(userID:'100', machineServiceId: '0',jobWorkServiceId: '13',transportServiceId: '0'));
+    _homeBloc!.add(OnServiceRequestJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
 
   }
   @override

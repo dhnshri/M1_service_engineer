@@ -1,85 +1,42 @@
-import 'dart:async';
-import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
-import 'package:service_engineer/Model/MachineMaintance/myTaskModel.dart';
-import 'package:service_engineer/Model/service_request_detail_repo.dart';
-import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/Transpotation/MyTaskTransportDetailModel.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
-import 'package:service_engineer/Screen/MachineMaintenance/MyTask/process_detail.dart';
-import 'package:service_engineer/Screen/MachineMaintenance/MyTask/service_provider_profile.dart';
-import 'package:service_engineer/Utils/application.dart';
-import 'package:service_engineer/Widget/image_view_screen.dart';
-import 'package:service_engineer/Widget/pdfViewer.dart';
-import 'package:http/http.dart' as http;
+import 'package:service_engineer/Screen/Transportation/MyTask/service_provider_profile.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/foundation.dart';
 import '../../../Config/font.dart';
-import 'package:path_provider/path_provider.dart';
-import '../../../Model/MachineMaintance/task_hand_over_model.dart';
 import '../../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../../Widget/custom_snackbar.dart';
 import '../../Chat/chat_listing.dart';
-import '../../JobWorkEnquiry/Home/MyTask/show_google_map.dart';
-import '../../bottom_navbar.dart';
-import 'add_task.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 
 
 class TransportServiceProviderListScreen extends StatefulWidget {
-
-  TransportServiceProviderListScreen({Key? key}) : super(key: key);
+  TransportMyTaskDetailsModel? myTaskData;
+  TransportServiceProviderListScreen({Key? key,required this.myTaskData}) : super(key: key);
 
   @override
   _TransportServiceProviderListScreenState createState() => _TransportServiceProviderListScreenState();
 }
 
 class _TransportServiceProviderListScreenState extends State<TransportServiceProviderListScreen> {
-  final TextEditingController _phoneNumberController = TextEditingController();
   String? role;
   bool loading = true;
   bool _isLoading = false;
-
+  int offset = 0;
   HomeBloc? _homeBloc;
   List<TransportTaskHandOverModel>? serviceList = [];
-
-
-  final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> cardC = new GlobalKey();
-  String? url =
-      "http://www.africau.edu/images/default/sample.pdf";
-
-  final Set<Marker> _markers = {};
-  late LatLng _lastMapPosition;
-  double? addressLat;
-  double? addressLong;
-  Completer<GoogleMapController> controller1 = Completer();
   List<TransportTaskHandOverModel>? serviceRequestData = [];
   List<TrackProcessModel>? trackProgressData = [];
-
-  _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      controller1.complete(controller);
-    });
-  }
-
-  MapType _currentMapType = MapType.normal;
+  ScrollController _scrollController = ScrollController();
+  bool _loadData=false;
 
 
   @override
@@ -88,26 +45,14 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    // _homeBloc!.add(OnServiceRequestDetail(userID: Application.customerLogin!.id.toString(), machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-    _homeBloc!.add(TrackProcessList(userId: '1',machineEnquiryId: '0',transportEnquiryId: '1',jobWorkEnquiryId: '0'));
-    _homeBloc!.add(OnTransportTaskHandOver(offSet: '0'));
-    _phoneNumberController.clear();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
+    // _homeBloc!.add(OnTransportTaskHandOver(offSet: offset.toString(),vehicleType: 'TWO Wheeler'));
+    getApi();
   }
+
+  getApi(){
+    _homeBloc!.add(OnTransportTaskHandOver(offSet: '$offset',vehicleType: widget.myTaskData!.vehicleType.toString()));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -115,17 +60,29 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
     // getroleofstudent();
   }
 
-  Widget buildServiceProviderList(List<TransportTaskHandOverModel> handOverList) {
+  Widget buildServiceProviderList(BuildContext context, List<TransportTaskHandOverModel> handOverList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              // Navigator.push(context, MaterialPageRoute(
-              //     builder: (context) => MyTaskDetailsScreen(myTaskData: myTaskList[index],)));
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => TransportServiceProviderProfileScreen(handOverListData: handOverList[index],myTaskData: widget.myTaskData,)));
             },
             child: TaskHandOverCard(context,handOverList[index]));
       },
@@ -158,7 +115,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                     filterQuality: FilterQuality.medium,
                     // imageUrl: Api.PHOTO_URL + widget.users.avatar,
                     // imageUrl: "https://picsum.photos/250?image=9",
-                    imageUrl: "https://picsum.photos/250?image=9",
+                    imageUrl: TaskData.userProfilePic.toString(),
                     placeholder: (context, url) {
                       return Shimmer.fromColors(
                         baseColor: Theme.of(context).hoverColor,
@@ -213,25 +170,34 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        // width: MediaQuery.of(context).size.width/1.8,
-                        child: Text(
-                          TaskData.serviceUser.toString(),
-                          // "Job Title/Services Name or Any Other Name",
-                          style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Service User Id:",
+                            style: TextStyle(
+                                fontFamily: 'Poppins-SemiBold',
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
+                          Text(
+                            TaskData.serviceUser.toString(),
+                            style: const TextStyle(
+                              fontFamily: 'Poppins-Regular',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ],
                       ),
                       SizedBox(height: 4,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Vehicle Name:",
                             style: TextStyle(
                                 fontFamily: 'Poppins-SemiBold',
@@ -246,7 +212,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                             // width: MediaQuery.of(context).size.width*0.2,
                             child: Text(TaskData.vehicleName.toString(),
                               // "#102GRDSA36987",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'Poppins-Regular',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
@@ -542,7 +508,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                 //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
               },
               child: Icon(Icons.arrow_back_ios)),
-          title: Text("",style:appBarheadingStyle ,),
+          title: Text("Service Providers",style:appBarheadingStyle ,),
         ),
         floatingActionButton:Padding(
           padding: const EdgeInsets.all(8.0),
@@ -581,17 +547,21 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                   _isLoading = state.isLoading;
                 }
                 if(state is TransportTaskHandOverSuccess){
-                  serviceList = state.serviceListTransportData;
+                  // serviceList = state.serviceListTransportData;
+                  serviceList!.addAll(state.serviceListTransportData);
+                  if(serviceList!=null){
+                    _loadData=true;
+                  }
                 }
                 if(state is TransportTaskHandOverFail){
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
-                    SingleChildScrollView(child: Container(child:buildServiceProviderList(serviceRequestData!))),
+                    SingleChildScrollView(child: Container(child:buildServiceProviderList(context,serviceList!))),
                   ],
                 ),
               ) : ShimmerCard()

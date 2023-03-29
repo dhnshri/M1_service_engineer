@@ -45,10 +45,10 @@ class UserRepository {
     return await Api.login(params);
   }
 
-    Future<dynamic> fetchMachineDashboardCount({String? serviceUserId}) async {
-      final params = {"service_user_id": serviceUserId};
-      return await Api.getMachineDashboardCount(params);
-    }
+  Future<dynamic> fetchMachineDashboardCount({String? serviceUserId}) async {
+    final params = {"service_user_id": serviceUserId};
+    return await Api.getMachineDashboardCount(params);
+  }
 
   Future<dynamic> fetchJobWorkDashboardCount({String? serviceUserId}) async {
     final params = {"service_user_id":serviceUserId};
@@ -71,6 +71,7 @@ class UserRepository {
       'role': role,};
     return await Api.registration(params);
   }
+
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
   //   final params = {"per_page":perPage,
   //     "start_from":startFrom};
@@ -88,11 +89,60 @@ class UserRepository {
     return await Api.getServiceRequestList(params);
   }
 
+  ///Fetch HandOver Service Request
+  Future<dynamic> fetchMachineHandOverServiceRequestListList(
+      {String? timeId, String? offSet,String? serviceUserId}) async {
+    final params = {"offset": offSet, "time_id": timeId,"service_user_id":serviceUserId};
+    return await Api.getMachineHandOverServiceRequestListList(params);
+  }
+
+  ///Fetch handover task detail data
+  Future<dynamic> fetchMachineHandOverDetailData(
+      { String? dailyTaskId,String? serviceUserId}) async {
+    final params = {"daily_task_id": dailyTaskId,"service_user_id":serviceUserId};
+    return await Api.getMachineHandOverTaskDetail(params);
+  }
+
+  ///Fetch Job Work HandOver Service Request
+  Future<dynamic> fetchJobWorkHandOverServiceRequestListList(
+      {String? timeId, String? offSet,String? serviceUserId}) async {
+    final params = {"offset": offSet, "time_id": timeId,"service_user_id":serviceUserId};
+    return await Api.getJobWorkHandOverServiceRequestListList(params);
+  }
+
+  ///Fetch Transport HandOver Service Request
+  Future<dynamic> fetchTransportHandOverServiceRequestListList(
+      {String? timeId, String? offSet,String? serviceUserId}) async {
+    final params = {"offset": offSet, "time_id": timeId,"service_user_id":serviceUserId};
+    return await Api.getTransportHandOverServiceRequestListList(params);
+  }
+
+  ///Accept And Reject Handover
+  Future<dynamic> acceptRejectHandover(
+      {String? machineEnquiryId, String? dailyTaskId,String? serviceUserId,String? status}) async {
+    final params = {"machine_enquiry_id": machineEnquiryId, "daily_task_id": dailyTaskId,"service_user_id":serviceUserId,"status":status};
+    return await Api.acceptRejectHandOver(params);
+  }
+
+  ///Accept And Reject Handover Of Job Work
+  Future<dynamic> jobworkAcceptRejectHandover(
+      {String? jobworkEnquiryId,String? serviceUserId,String? status}) async {
+    final params = {"job_work_enquiry_id": jobworkEnquiryId,"service_user_id":serviceUserId,"status":status};
+    return await Api.jobworkAcceptRejectHandOver(params);
+  }
+
+  ///Accept And Reject Handover Of Transport
+  Future<dynamic> transportAcceptRejectHandover(
+      {String? transportEnquiryId,String? serviceUserId,String? status}) async {
+    final params = {"transport_enquiry_id": transportEnquiryId,"service_user_id":serviceUserId,"status":status};
+    return await Api.transportAcceptRejectHandOver(params);
+  }
+
   //Service Request Api
   Future<dynamic> fetchTaskHandOverList(
-      {String? userID, String? offSet}) async {
+      {String? subCatId, String? offSet}) async {
     final params = {"offset": offSet,
-      'sub_category_id': userID};
+      'sub_category_id': subCatId};
     return await Api.getTaskHandOverList(params);
   }
 
@@ -105,19 +155,23 @@ class UserRepository {
   }
 
   //Service Request Api
-  Future<dynamic> fetchTransportTaskHandOverList({String? offSet}) async {
-    final params = {"offset": offSet};
+  Future<dynamic> fetchTransportTaskHandOverList({String? offSet,String? vehicleType}) async {
+    final params = {"offset": offSet,"vehicle_type":vehicleType};
     return await Api.getTransportTaskHandOverList(params);
   }
 
-    Future<dynamic> fetchServiceRequestTranspotationList(
-        {String? offSet, String? timeId}) async {
-      final params = {"offset": offSet, 'time_id': timeId};
-      return await Api.getServiceRequestTranspotationList(params);
-    }
+  Future<dynamic> fetchServiceRequestTranspotationList(
+      {String? offSet, String? timeId}) async {
+    final params = {"offset": offSet, 'time_id': timeId};
+    return await Api.getServiceRequestTranspotationList(params);
+  }
 
   Future<dynamic> fetchFilterData() async {
     return await Api.getFilterList();
+  }
+
+  Future<dynamic> fetchFilterCategoryList() async {
+    return await Api.getFilterCategoryList();
   }
 
   // Future<dynamic> fetchServiceRequestTranspotationList({String? offSet,String? timeId}) async {
@@ -182,6 +236,28 @@ class UserRepository {
     return await Api.getMachineProfileData(params);
   }
 
+  ///Machine Task HandOver
+  Future<dynamic> machineTaskHandOver({String? serviceUserId,String? machineEnqId,String? dailyTaskId,String? description,
+    String? price}) async {
+    final params = {"service_user_id":serviceUserId,'machine_enquiry_id':machineEnqId,"daily_task_id":dailyTaskId,
+      "description":description,"price":price};
+    return await Api.sendMachineTaskHandOver(params);
+  }
+
+  ///Jobwork Task Handover
+  Future<dynamic> jobWorkTaskHandOver({String? serviceUserId,String? jobWorkEnqId,String? description,}) async {
+    final params = {"service_user_id":serviceUserId,'job_work_enquiry_id':jobWorkEnqId,
+      "description":description,};
+    return await Api.sendJobWorkTaskHandOver(params);
+  }
+
+  /// Transport Task handover
+  Future<dynamic> transportTaskHandOver({String? serviceUserId,String? transportEnqId,String? description,}) async {
+    final params = {"service_user_id":serviceUserId,'transport_enquiry_id':transportEnqId,
+      "description":description,};
+    return await Api.sendTransportTaskHandOver(params);
+  }
+
   ///Get Transport Profile Data
   Future<dynamic> geTransportProfile({String? serviceUserId,String? roleId}) async {
     final params = {"service_user_id":serviceUserId,'role_id':roleId};
@@ -198,7 +274,7 @@ class UserRepository {
   Future<dynamic> fetchServiceRequestDetail({String? userID, String? machineEnquiryId,
     String? jobWorkEnquiryId, String? transportEnquiryId  }) async {
     final params = {"user_id":userID, "machine_enquiry_id":machineEnquiryId,
-    'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
+      'job_work_enquiry_id':jobWorkEnquiryId,'transport_enquiry_id':transportEnquiryId};
     return await Api.getServiceRequestDetail(params);
   }
 
@@ -247,25 +323,25 @@ class UserRepository {
     return await Api.getMyTaskTranspotationList(params);
   }
 
-    Future<dynamic> fetchJobWorkEnquiryMyTaskList(
-        {String? userId, String? offset, String? timeId}) async {
-      final params = {"service_user_id": userId,
-        "offset": offset, 'time_id': timeId};
-      return await Api.getMyTaskJWEList(params);
-    }
-    //Fetch Product List
-    // Future<dynamic> fetchProductList({String? prodId, String? offset}) async {
-    //   final params = {"user_id": prodId,
-    //     "offset": offset};
-    //   return await Api.getProductList(params);
-    // }
+  Future<dynamic> fetchJobWorkEnquiryMyTaskList(
+      {String? userId, String? offset, String? timeId}) async {
+    final params = {"service_user_id": userId,
+      "offset": offset, 'time_id': timeId};
+    return await Api.getMyTaskJWEList(params);
+  }
+  //Fetch Product List
+  // Future<dynamic> fetchProductList({String? prodId, String? offset}) async {
+  //   final params = {"user_id": prodId,
+  //     "offset": offset};
+  //   return await Api.getProductList(params);
+  // }
   // Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset,String? timeId}) async {
   //   final params = {"service_user_id":userId,
   //     "offset":offset,'time_id':timeId};
   //   return await Api.getMyTaskJWEList(params);
   // }
   //Fetch Product List
-  Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId}) async {
+  Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId,String? catId}) async {
     final params = {"user_id":prodId,
       "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId};
     return await Api.getProductList(params);
@@ -299,7 +375,7 @@ class UserRepository {
   //Create Task
   Future<dynamic> createTask({String? userId,String? machineEnquiryId,String? jobWorkWnquiryId,String? transportEnquiryId,String? heading,String? description,int? status}) async {
     final params = {"service_user_id":userId,'machine_enquiry_id':machineEnquiryId,'job_work_enquiry_id':jobWorkWnquiryId,'transport_enquiry_id':transportEnquiryId,
-    "heading":heading,"description":description,'status': status.toString()};
+      "heading":heading,"description":description,'status': status.toString()};
     return await Api.createTask(params);
   }
 
@@ -380,31 +456,31 @@ class UserRepository {
   dynamic getRevisedAmount() {
     return UtilPreferences.getString(Preferences.RevisedtotalAmount);
   }
-  //
-  //
-  // ///Save cartCount
-  // Future<dynamic> saveCart(CartListRepo cartData) async {
-  //   return await UtilPreferences.setString(
-  //     Preferences.cart,
-  //     jsonEncode(cartData.toJson()),
-  //     // cartData.
-  //   );
-  // }
-  //
-  // ///Get cart count
-  // dynamic getCart() {
-  //   return UtilPreferences.getString(Preferences.cart);
-  // }
-  // // dynamic getProfile() {
-  // //   return UtilPreferences.getString(Preferences.profilePic);
-  // // }
-  //
-  //
-  //
-  // ///Delete Storage
-  // Future<dynamic> deleteUser() async {
-  //   return await UtilPreferences.remove(Preferences.user);
-  // }
+//
+//
+// ///Save cartCount
+// Future<dynamic> saveCart(CartListRepo cartData) async {
+//   return await UtilPreferences.setString(
+//     Preferences.cart,
+//     jsonEncode(cartData.toJson()),
+//     // cartData.
+//   );
+// }
+//
+// ///Get cart count
+// dynamic getCart() {
+//   return UtilPreferences.getString(Preferences.cart);
+// }
+// // dynamic getProfile() {
+// //   return UtilPreferences.getString(Preferences.profilePic);
+// // }
+//
+//
+//
+// ///Delete Storage
+// Future<dynamic> deleteUser() async {
+//   return await UtilPreferences.remove(Preferences.user);
+// }
 
 
 }

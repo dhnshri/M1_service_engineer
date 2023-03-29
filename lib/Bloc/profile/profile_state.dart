@@ -88,6 +88,35 @@ class GetMachineProfileSuccess extends ProfileState {
     required this.profileMachineEducationList, required this.profileMachineExperienceList});
 }
 
+class MachineTaskHandoverLoading extends ProfileState {
+  bool isLoading;
+  MachineTaskHandoverLoading({required this.isLoading});
+}
+
+class MachineTaskHandoverFail extends ProfileState {
+  final String? msg;
+  MachineTaskHandoverFail({this.msg});
+}
+
+class MachineTaskHandoverSuccess extends ProfileState {
+  String msg;
+  MachineTaskHandoverSuccess({required this.msg});
+}
+
+class JobWorkTaskHandoverLoading extends ProfileState {
+  bool isLoading;
+  JobWorkTaskHandoverLoading({required this.isLoading});
+}
+
+class JobWorkTaskHandoverFail extends ProfileState {
+  final String? msg;
+  JobWorkTaskHandoverFail({this.msg});
+}
+
+class JobWorkTaskHandoverSuccess extends ProfileState {
+  String msg;
+  JobWorkTaskHandoverSuccess({required this.msg});
+}
 
 class GetTransportProfileLoading extends ProfileState {
   bool isLoading;

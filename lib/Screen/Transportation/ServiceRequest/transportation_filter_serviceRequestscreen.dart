@@ -71,7 +71,7 @@ class _ServiceRequestTransportationFilterScreenState extends State<ServiceReques
                     serviceList = state.serviceListData;
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>
                     //     BottomNavigation(serviceList: serviceList,index: 0,dropValue: Application.customerLogin!.role.toString(),)));
-                    Navigator.pop(context,{"serviceList": serviceList});
+                    Navigator.pop(context,{"serviceList": serviceList,"time_id":machineCategoryId});
                   }
                   if(state is ServiceRequestTranspotationFail){
                     showCustomSnackBar(context,state.msg.toString());

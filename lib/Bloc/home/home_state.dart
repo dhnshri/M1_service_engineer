@@ -4,6 +4,7 @@ import 'package:service_engineer/Model/MachineMaintance/quotationReply.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
+import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
@@ -43,21 +44,114 @@ class ServiceRequestSuccess extends HomeState {
   ServiceRequestSuccess({required this.serviceListData, required this.message});
 }
 
-class ItemFilterLoading extends HomeState {
+class MachineHandOverServiceRequestListLoading extends HomeState {
   bool isLoading;
-  ItemFilterLoading({required this.isLoading});
+  MachineHandOverServiceRequestListLoading({required this.isLoading});
 }
 
-class ItemFilterFail extends HomeState {
+class MachineHandOverServiceRequestListFail extends HomeState {
   final String? msg;
-  ItemFilterFail({this.msg});
+  MachineHandOverServiceRequestListFail({this.msg});
 }
 
-class ItemFilterSuccess extends HomeState {
-  List<BrandModule> brandListData;
-  ItemFilterSuccess({required this.brandListData,});
+class MachineHandOverServiceRequestListSuccess extends HomeState {
+  List<ServiceRequestModel> serviceListData;
+  String message;
+  MachineHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
 }
 
+class MachineHandOverTaskDetailLoading extends HomeState {
+  bool isLoading;
+  MachineHandOverTaskDetailLoading({required this.isLoading});
+}
+
+class MachineHandOverTaskDetailFail extends HomeState {
+  final String? msg;
+  MachineHandOverTaskDetailFail({this.msg});
+}
+
+class MachineHandOverTaskDetailSuccess extends HomeState {
+  List<HandOverTaskDetailModel> serviceListData;
+  MachineHandOverTaskDetailSuccess({required this.serviceListData,});
+}
+
+class JobWorkHandOverServiceRequestListLoading extends HomeState {
+  bool isLoading;
+  JobWorkHandOverServiceRequestListLoading({required this.isLoading});
+}
+
+class JobWorkHandOverServiceRequestListFail extends HomeState {
+  final String? msg;
+  JobWorkHandOverServiceRequestListFail({this.msg});
+}
+
+class JobWorkHandOverServiceRequestListSuccess extends HomeState {
+  List<JobWorkEnquiryMyTaskModel> serviceListData;
+  String message;
+  JobWorkHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
+}
+
+class TransportHandOverServiceRequestListLoading extends HomeState {
+  bool isLoading;
+  TransportHandOverServiceRequestListLoading({required this.isLoading});
+}
+
+class TransportHandOverServiceRequestListFail extends HomeState {
+  final String? msg;
+  TransportHandOverServiceRequestListFail({this.msg});
+}
+
+class TransportHandOverServiceRequestListSuccess extends HomeState {
+  List<JobWorkEnquiryMyTaskModel> serviceListData;
+  String message;
+  TransportHandOverServiceRequestListSuccess({required this.serviceListData, required this.message});
+}
+
+class AcceptRejectHandoverLoading extends HomeState {
+  bool isLoading;
+  AcceptRejectHandoverLoading({required this.isLoading});
+}
+
+class AcceptRejectHandoverFail extends HomeState {
+  final String? msg;
+  AcceptRejectHandoverFail({this.msg});
+}
+
+class AcceptRejectHandoverSuccess extends HomeState {
+  String message;
+  AcceptRejectHandoverSuccess({required this.message});
+}
+
+
+class BrandFilterLoading extends HomeState {
+  bool isLoading;
+  BrandFilterLoading({required this.isLoading});
+}
+
+class BrandFilterFail extends HomeState {
+  final String? msg;
+  BrandFilterFail({this.msg});
+}
+
+class BrandFilterSuccess extends HomeState {
+  List<FilterModule> brandListData;
+  BrandFilterSuccess({required this.brandListData,});
+}
+
+class CategoryFilterLoading extends HomeState {
+  bool isLoading;
+  CategoryFilterLoading({required this.isLoading});
+}
+
+class CategoryFilterFail extends HomeState {
+  final String? msg;
+  CategoryFilterFail({this.msg});
+}
+
+class CategoryFilterSuccess extends HomeState {
+  List<FilterModule> categoryListData;
+  CategoryFilterSuccess({required this.categoryListData,});
+}
 
 class ServiceRequestDetailLoading extends HomeState {
   bool isLoading;
@@ -224,6 +318,24 @@ class MyTaskTranspotationDetailSuccess extends HomeState {
   MyTaskTranspotationDetailSuccess({required this.transportMyTaskDetail, required this.message});
 }
 
+class TransportQuotationReplyDetailLoading extends HomeState {
+  bool isLoading;
+  TransportQuotationReplyDetailLoading({required this.isLoading});
+}
+class TransportQuotationReplyDetailFail extends HomeState {
+  final String? msg;
+  TransportQuotationReplyDetailFail({this.msg});
+}
+
+class TransportQuotationReplyDetailSuccess extends HomeState {
+  List<VehicleDetails> vehicleDetailsList;
+  List<QuotationCharges> quotationDetailsList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+  TransportQuotationReplyDetailSuccess({required this.vehicleDetailsList,required this.quotationDetailsList,
+    required this.quotationChargesList,required this.quotationMsgList});
+}
+
 class MyTaskJobWorkEnquiryDetailLoading extends HomeState {
   bool isLoading;
   MyTaskJobWorkEnquiryDetailLoading({required this.isLoading});
@@ -306,6 +418,23 @@ class TrackProcssListTransportSuccess extends HomeState {
   TrackProcssListTransportSuccess({required this.trackProgressList,required this.message});
 }
 
+class JobWorkQuotationReplyDetailLoading extends HomeState {
+  bool isLoading;
+  JobWorkQuotationReplyDetailLoading({required this.isLoading});
+}
+class JobWorkQuotationReplyDetailFail extends HomeState {
+  final String? msg;
+  JobWorkQuotationReplyDetailFail({this.msg});
+}
+
+class JobWorkQuotationReplyDetailSuccess extends HomeState {
+  List<QuotationRequiredItems> quotationRequiredItemList;
+  List<QuotationCharges> quotationChargesList;
+  List<CustomerReplyMsg> quotationMsgList;
+
+  JobWorkQuotationReplyDetailSuccess({required this.quotationRequiredItemList,
+    required this.quotationChargesList,required this.quotationMsgList});
+}
 
 //For Job Work Enquiry
 class TrackProcssJWEListLoading extends HomeState {

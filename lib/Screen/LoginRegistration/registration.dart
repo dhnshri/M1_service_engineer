@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
 
 import '../../Bloc/login/login_bloc.dart';
 import '../../Bloc/login/login_event.dart';
@@ -129,6 +130,91 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: Container(
+                                width:
+                                MediaQuery.of(context).size.width * 0.9,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.circular(8.0)),
+                                child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      items: <String>[
+                                        'Machine Maintenance',
+                                        'Job Work Enquiry',
+                                        'Transportation',
+
+                                      ].map((item) =>
+                                          DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                  fontFamily: 'Poppins-Medium',
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                            ),
+                                          ))
+                                          .toList(),
+                                      value: dropdownValueModule,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          dropdownValueModule = value as String;
+                                        });
+                                      },
+                                      buttonHeight: 40,
+                                      buttonWidth: 140,
+                                      itemHeight: 40,
+                                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
+                                      dropdownDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        // color: Colors.redAccent,
+                                      ),
+                                      // itemWidth: 140,
+                                    )
+                                  // DropdownButton<String>(
+                                  //   isExpanded: true,
+                                  //   value: dropdownValue,
+                                  //   icon: Padding(
+                                  //     padding: const EdgeInsets.only(left:100.0),
+                                  //     child: const Icon(Icons.arrow_drop_down_sharp),
+                                  //   ),
+                                  //   iconSize: 24,
+                                  //   elevation: 16,
+                                  //   iconEnabledColor: primaryAppColor,
+                                  //   borderRadius:
+                                  //   BorderRadius.circular(8.0),
+                                  //   style: TextStyle(
+                                  //       color: Colors.black,
+                                  //       fontSize: 16,
+                                  //       fontWeight: FontWeight.normal),
+                                  //   onChanged: (String? newValue) {
+                                  //     setState(() {
+                                  //       dropdownValue = newValue!;
+                                  //     });
+                                  //   },
+                                  //   items: <String>[
+                                  //     'Machine Maintenance',
+                                  //     'Job Work Enquiry',
+                                  //     'Transportation',
+                                  //
+                                  //   ].map<DropdownMenuItem<String>>(
+                                  //           (String value) {
+                                  //         return DropdownMenuItem<String>(
+                                  //           value: value,
+                                  //           child: Center(child: Text(value)),
+                                  //         );
+                                  //       }).toList(),
+                                  // )),
+                                ),
+                              ),
                             ),
                             SizedBox(
                               width:
@@ -524,91 +610,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: Container(
-                                width:
-                                MediaQuery.of(context).size.width * 0.9,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                    BorderRadius.circular(8.0)),
-                                child: DropdownButtonHideUnderline(
-                                    child: DropdownButton2(
-                                      items: <String>[
-                                        'Machine Maintenance',
-                                        'Job Work Enquiry',
-                                        'Transportation',
-
-                                      ].map((item) =>
-                                          DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                  fontFamily: 'Poppins-Medium',
-                                                  fontSize: 15,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500
-                                              ),
-                                            ),
-                                          ))
-                                          .toList(),
-                                      value: dropdownValueModule,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          dropdownValueModule = value as String;
-                                        });
-                                      },
-                                      buttonHeight: 40,
-                                      buttonWidth: 140,
-                                      itemHeight: 40,
-                                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                                      dropdownDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        // color: Colors.redAccent,
-                                      ),
-                                      // itemWidth: 140,
-                                    )
-                                  // DropdownButton<String>(
-                                  //   isExpanded: true,
-                                  //   value: dropdownValue,
-                                  //   icon: Padding(
-                                  //     padding: const EdgeInsets.only(left:100.0),
-                                  //     child: const Icon(Icons.arrow_drop_down_sharp),
-                                  //   ),
-                                  //   iconSize: 24,
-                                  //   elevation: 16,
-                                  //   iconEnabledColor: primaryAppColor,
-                                  //   borderRadius:
-                                  //   BorderRadius.circular(8.0),
-                                  //   style: TextStyle(
-                                  //       color: Colors.black,
-                                  //       fontSize: 16,
-                                  //       fontWeight: FontWeight.normal),
-                                  //   onChanged: (String? newValue) {
-                                  //     setState(() {
-                                  //       dropdownValue = newValue!;
-                                  //     });
-                                  //   },
-                                  //   items: <String>[
-                                  //     'Machine Maintenance',
-                                  //     'Job Work Enquiry',
-                                  //     'Transportation',
-                                  //
-                                  //   ].map<DropdownMenuItem<String>>(
-                                  //           (String value) {
-                                  //         return DropdownMenuItem<String>(
-                                  //           value: value,
-                                  //           child: Center(child: Text(value)),
-                                  //         );
-                                  //       }).toList(),
-                                  // )),
-                                ),
-                              ),
-                            ),
 
                             BlocBuilder<LoginBloc, LoginState>(
                                 builder: (context, signup) {
@@ -671,6 +672,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             }
                                           },
                                           text: 'Register',
+                                          color: ThemeColors.buttonColor,
                                         )
 
                                     ),

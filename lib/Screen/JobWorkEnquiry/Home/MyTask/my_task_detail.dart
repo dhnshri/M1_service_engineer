@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Screen/Chat/chat_listing.dart';
+import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/job_work_enquiry_service_provider_list.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/show_google_map.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
@@ -82,7 +83,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineServiceId: '0',jobWorkServiceId: '13',transportServiceId: '0'));
+    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
     // _homeBloc!.add(OnTrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:widget.myTaskJobWorkEnquiryData.enquiryId.toString()));
     _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
     addressLat = double.parse(21.1458.toString());
@@ -186,7 +187,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                   ExpansionTileCard(
                     initiallyExpanded: true,
                     key: cardA,
-                    title: Text("Basic Info",
+                    title: const Text("Basic Info",
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins-Medium',
@@ -208,7 +209,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Owner's Name:",style: ExpanstionTileLeftDataStyle,),
+                                Text("Company Name:",style: ExpanstionTileLeftDataStyle,),
                                // Text(myTaskData![0]..toString(),style: ExpanstionTileRightDataStyle,),
                               ],
                             ),
@@ -239,7 +240,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                   ExpansionTileCard(
                     initiallyExpanded: true,
                     key: cardB,
-                    title: Text("Item Required",
+                    title: const Text("Item Required",
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Poppins-Medium',
@@ -315,7 +316,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                   ),
                                 ),
                                 SizedBox(height: 5,),
-                                Align(
+                                const Align(
                                   alignment: Alignment.topLeft,
                                   child: Text("Drawing Attachment:",
                                       style: TextStyle(
@@ -329,7 +330,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color: ThemeColors.imageContainerBG
                                     ),
                                     child: Padding(
@@ -341,7 +342,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                             width:200,
                                             child: Text(myTaskData![index].drawingAttachment.toString(),
                                                 overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: ThemeColors.buttonColor,
                                                     fontFamily: 'Poppins-Regular',
                                                     fontSize: 14,
@@ -354,7 +355,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                                   ImageViewerScreen(url: myTaskData![index].drawingAttachment.toString())));
                                             },
                                             child: Container(
-                                              child: Text('View',
+                                              child: const Text('View',
                                                   style: TextStyle(
                                                       color: ThemeColors.buttonColor,
                                                       fontFamily: 'Poppins-Regular',
@@ -370,6 +371,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                 ),
                                 SizedBox(height: 10,),
                                 Container(
+                                  width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black,width: 1),
                                   ),
@@ -390,15 +392,14 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                     ],
                   ),
 
-                  Divider(
-                    // height: 2,
+                  const Divider(
                     thickness: 2.0,
                   ),
 
                   ///Track PRocess
                   trackProgressData!.length <= 0 ? Container():
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
+                  const Padding(
+                    padding: EdgeInsets.all(15.0),
                     child: Text("Track Process",
                         style: TextStyle(fontFamily: 'Poppins-Medium',
                             fontSize: 16,
@@ -423,7 +424,8 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
+                                        MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
+                                          myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,fromHandOver: true,)));
                                   },
                                   child: Container(
                                     // height: 60,
@@ -468,101 +470,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                     ],
                   ) ,
 
-                  // ///Add task Button
-                  // Padding(
-                  //   padding: EdgeInsets.all(15.0),
-                  //   child: Material(
-                  //     elevation: 5,
-                  //     child: Container(
-                  //       height: 60,
-                  //       child: ElevatedButton(
-                  //           style: ButtonStyle(
-                  //             backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
-                  //
-                  //           ),
-                  //           onPressed: (){
-                  //             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen()));
-                  //           },
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                  //               Text("Daily Update Task",
-                  //                 style: TextStyle(fontFamily: 'Poppins-Medium',
-                  //                     fontSize: 16,
-                  //                     fontWeight: FontWeight.w500,
-                  //                     color: Colors.black.withOpacity(0.55)
-                  //                 ),)
-                  //             ],
-                  //           )),
-                  //     ),
-                  //   ),),
-                  //
-                  // ///Mark as Completed Button
-                  // InkWell(
-                  //   onTap: (){
-                  //     // Navigator.of(context).pop();
-                  //     showDialog(
-                  //         context: context,
-                  //         builder: (context) =>  AlertDialog(
-                  //           title: new Text("Are you sure, you want to mark it as complete?"),
-                  //           // content: new Text(""),
-                  //           actions: <Widget>[
-                  //             Row(
-                  //               mainAxisAlignment: MainAxisAlignment.center,
-                  //               children: [
-                  //                 TextButton(
-                  //                     child: new Text("No",style: TextStyle(
-                  //                         color: Colors.black
-                  //                     ),),
-                  //                     onPressed: () {
-                  //                       Navigator.of(context).pop();
-                  //                     }, style: TextButton.styleFrom(
-                  //                     side: BorderSide(
-                  //                         color: ThemeColors.defaultbuttonColor,
-                  //                         width: 1.5)
-                  //                 )
-                  //                 ),
-                  //                 SizedBox(width: 7,),
-                  //                 TextButton(
-                  //                   child: new Text("Yes",style: TextStyle(
-                  //                       color: Colors.white
-                  //                   ),),
-                  //                   onPressed: () {
-                  //                     Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                  //                         BottomNavigation(index: 0,dropValue: 'Job Work Enquiry',)));
-                  //                   },
-                  //                   style: TextButton.styleFrom(
-                  //                       backgroundColor: ThemeColors.defaultbuttonColor
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ],
-                  //         )
-                  //     );            },
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     child: Container(
-                  //       height: 40,
-                  //       width: MediaQuery.of(context).size.width,
-                  //       decoration: BoxDecoration(
-                  //           color: ThemeColors.defaultbuttonColor,
-                  //           borderRadius: BorderRadius.circular(30)),
-                  //       child: Center(child: Text("Mark As Completed",
-                  //           style: TextStyle(fontFamily: 'Poppins-Medium',
-                  //             fontSize: 16,
-                  //             fontWeight: FontWeight.w500,
-                  //             color: Colors.white,
-                  //           ))),
-                  //     ),
-                  //   ),
-                  // ),
-                  //
-                  //
-                  // SizedBox(
-                  //   height: 80,
-                  // ),
+
 
                   ///Add task Button
                   Padding(
@@ -594,51 +502,80 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                       ),
                     ),),
 
-                  ///Mark as Completed Button
+                  ///Assign to Other Button
                   InkWell(
                     onTap: (){
-                      // Navigator.of(context).pop();
-                      AlertDialog(
-                        title: new Text(""),
-                        content: new Text("Are you sure, you want to mark service as completed?"),
-                        actions: <Widget>[
-                          Row(
-                            children: [
-                              TextButton(
-                                child: new Text("No"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              SizedBox(width: 7,),
-                              TextButton(
-                                child: new Text("Yes"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>JobWorkEnquiryServiceProviderListScreen(
+                        myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
-                        height: 40,
+                        height: 50,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             color: ThemeColors.defaultbuttonColor,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(child: Text("Mark As Completed",
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: ThemeColors.defaultbuttonColor,
+                              width: 1,
+                            )),
+                        child: const Center(child: Text("Assign Task to Other",
                             style: TextStyle(fontFamily: 'Poppins-Medium',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                              color: ThemeColors.whiteTextColor,
                             ))),
                       ),
                     ),
                   ),
+
+
+                  // ///Mark as Completed Button
+                  // InkWell(
+                  //   onTap: (){
+                  //     // Navigator.of(context).pop();
+                  //     AlertDialog(
+                  //       title: new Text(""),
+                  //       content: new Text("Are you sure, you want to mark service as completed?"),
+                  //       actions: <Widget>[
+                  //         Row(
+                  //           children: [
+                  //             TextButton(
+                  //               child: new Text("No"),
+                  //               onPressed: () {
+                  //                 Navigator.of(context).pop();
+                  //               },
+                  //             ),
+                  //             SizedBox(width: 7,),
+                  //             TextButton(
+                  //               child: new Text("Yes"),
+                  //               onPressed: () {
+                  //                 Navigator.of(context).pop();
+                  //               },
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     child: Container(
+                  //       height: 50,
+                  //       width: MediaQuery.of(context).size.width,
+                  //       decoration: BoxDecoration(
+                  //           color: ThemeColors.defaultbuttonColor,
+                  //           borderRadius: BorderRadius.circular(30)),
+                  //       child: Center(child: Text("Mark As Completed",
+                  //           style: TextStyle(fontFamily: 'Poppins-Medium',
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //             color: Colors.white,
+                  //           ))),
+                  //     ),
+                  //   ),
+                  // ),
 
 
                   SizedBox(

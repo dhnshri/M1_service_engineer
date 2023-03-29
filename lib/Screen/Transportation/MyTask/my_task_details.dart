@@ -60,20 +60,6 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
   List<TransportMyTaskDetailsModel>? myTaskData = [];
   List<TrackProcessModel>? trackProgressData = [];
 
-
-
-  _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      controller1.complete(controller);
-    });
-  }
-
-  MapType _currentMapType = MapType.normal;
-
   int _currentStep = 0;
   StepperType stepperType = StepperType.vertical;
 
@@ -142,33 +128,13 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnMyTaskTranspotationDetail(userID:'4', machineServiceId:'0',jobWorkServiceId: '0',transportServiceId:'31'));
-    // _homeBloc!.add(OnServiceRequestDetail(userID: '6', machineServiceId: widget.myTaskData.enquiryId.toString(),jobWorkServiceId: '0',transportServiceId: '0'));
-   // _homeBloc!.add(TrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId: widget.myTaskData.transportEnquiryId.toString(),transportEnquiryId: '0',jobWorkEnquiryId: '0'));
-    _homeBloc!.add(TrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '1',jobWorkEnquiryId: '0'));
-    _phoneNumberController.clear();
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
+    _homeBloc!.add(OnMyTaskTranspotationDetail(userID:widget.myTaskData.userId.toString(), machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:widget.myTaskData.enquiryId.toString()));
+    // _homeBloc!.add(OnMyTaskTranspotationDetail(userID:'4', machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:'31'));
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _phoneNumberController.clear();
-
-    // getroleofstudent();
   }
 
 
@@ -182,8 +148,6 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
         leading: InkWell(
             onTap: (){
               Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text(widget.myTaskData.enquiryId.toString(),),
@@ -297,15 +261,14 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ),
                     ],
                   ),
-                  Divider(
-                    // height: 2,
+                  const Divider(
                     thickness: 2.0,
                   ),
-                  ///Item Required
+                  ///Load Details
                   ExpansionTileCard(
                     key: cardB,
                     initiallyExpanded: true,
-                    title: Text("Load Details",
+                    title: const Text("Load Details",
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Poppins-Medium',
@@ -394,6 +357,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
 
                             SizedBox(height: 10,),
                             Container(
+                              width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black,width: 1),
                               ),
@@ -427,127 +391,12 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   ),
 
                   ///Track Process List
-                  trackProgressData!.length <= 0 ? Container():
-                  Column(
-                    // height: MediaQuery.of(context).size.height,
-                    children: [
-                      ListView.builder(
-                          itemCount: trackProgressData!.length,
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (_, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
-                              child: Material(
-                                elevation: 5,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context)=> ProcessDetailTransportScreen(trackProgressData: trackProgressData![index],
-                                          myTaskData: widget.myTaskData,)));
-                                  },
-                                  child: Container(
-                                    // height: 60,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: ListTile(
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(bottom: 8,top: 5),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(trackProgressData![index].heading.toString(),
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w400)),
-                                            Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
-                                              style: TextStyle(color: Colors.red),)
-                                          ],
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(bottom: 8.0),
-                                        child: Text(trackProgressData![index].description.toString(),
-                                            maxLines: 2, overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
-                                            )),
-                                      ),
-                                      trailing: Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,),
-                                      ),
-                                    ),
-                                  ),
-
-                                ),
-                              ),
-                            );
-                          })
-                    ],
-                  ) ,
-                  // Padding(
-                  //   padding: const EdgeInsets.all(15.0),
-                  //   child: Text("Track Process",
-                  //       style: TextStyle(fontFamily: 'Poppins-Medium',
-                  //           fontSize: 16,
-                  //           fontWeight: FontWeight.w500)
-                  //   ),
-                  // ),
-
-                  ///Track Process List
+                  // trackProgressData!.length <= 0 ? Container():
                   // Column(
-                  //   children: [
-                  //     Theme(
-                  //       data: ThemeData(
-                  //         colorScheme: Theme.of(context).colorScheme.copyWith(
-                  //           primary: Colors.red,
-                  //         ),
-                  //       ),
-                  //       child: Stepper(
-                  //           type: stepperType,
-                  //           physics: ScrollPhysics(),
-                  //           currentStep: _currentStep,
-                  //           onStepTapped: (step) => tapped(step),
-                  //           // onStepContinue:  continued,
-                  //           // onStepCancel: cancel,
-                  //           steps: getSteps(),
-                  //         controlsBuilder: (context,_){
-                  //             return Row(
-                  //               mainAxisAlignment: MainAxisAlignment.end,
-                  //               children: [
-                  //               // _currentStep == 3 ? SizedBox():
-                  //                 TextButton(
-                  //                   onPressed: () {
-                  //                     // continued;
-                  //                     setState(() {
-                  //                       if(_currentStep<3) {
-                  //                       _currentStep++;
-                  //                     }
-                  //                   });
-                  //                   },
-                  //                   child: const Text(
-                  //                     'Update',style: TextStyle(
-                  //                       fontSize: 15,
-                  //                       fontFamily: 'Poppins-Medium',
-                  //                       fontWeight: FontWeight.bold
-                  //                   )
-                  //                   ),
-                  //                 ),
-                  //
-                  //               ],
-                  //             );
-                  //         },
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
-                  // Column(
+                  //   // height: MediaQuery.of(context).size.height,
                   //   children: [
                   //     ListView.builder(
-                  //         itemCount: 3,
+                  //         itemCount: trackProgressData!.length,
                   //         physics: NeverScrollableScrollPhysics(),
                   //         shrinkWrap: true,
                   //         itemBuilder: (_, index) {
@@ -558,7 +407,8 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   //               child: GestureDetector(
                   //                 onTap: () {
                   //                   Navigator.push(context,
-                  //                       MaterialPageRoute(builder: (context)=> ProcessDetailScreen()));
+                  //                       MaterialPageRoute(builder: (context)=> ProcessDetailTransportScreen(trackProgressData: trackProgressData![index],
+                  //                         myTaskData: widget.myTaskData,)));
                   //                 },
                   //                 child: Container(
                   //                   // height: 60,
@@ -571,19 +421,18 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   //                       child: Row(
                   //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   //                         children: [
-                  //                           Text('Reached at Pickup Location',
+                  //                           Text(trackProgressData![index].heading.toString(),
                   //                               style: TextStyle(
-                  //
-                  //                                   fontSize: 14,
+                  //                                   fontSize: 18,
                   //                                   fontWeight: FontWeight.w400)),
-                  //                           Text("Process",
+                  //                           Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
                   //                             style: TextStyle(color: Colors.red),)
                   //                         ],
                   //                       ),
                   //                     ),
                   //                     subtitle: Padding(
                   //                       padding: const EdgeInsets.only(bottom: 8.0),
-                  //                       child: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+                  //                       child: Text(trackProgressData![index].description.toString(),
                   //                           maxLines: 2, overflow: TextOverflow.ellipsis,
                   //                           style: TextStyle(
                   //                               fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
@@ -600,39 +449,65 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   //               ),
                   //             ),
                   //           );
-                  //         }),
+                  //         })
                   //   ],
-                  // ),
+                  // ) ,
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text("Track Process",
+                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)
+                    ),
+                  ),
 
-                  ///Add task Button
-                  // Padding(
-                  //   padding: EdgeInsets.all(15.0),
-                  //   child: Material(
-                  //     elevation: 5,
-                  //     child: Container(
-                  //       height: 60,
-                  //       child: ElevatedButton(
-                  //           style: ButtonStyle(
-                  //             backgroundColor: MaterialStateProperty.all(ThemeColors.textFieldBackgroundColor),
-                  //
-                  //           ),
-                  //           onPressed: (){
-                  //             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen ()));
-                  //           },
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
-                  //               Text("Daily Update Task",
-                  //                 style: TextStyle(fontFamily: 'Poppins-Medium',
-                  //                     fontSize: 16,
-                  //                     fontWeight: FontWeight.w500,
-                  //                     color: Colors.black.withOpacity(0.55)
-                  //                 ),)
-                  //             ],
-                  //           )),
-                  //     ),
-                  //   ),),
+                  ///Track Process List
+                  Column(
+                    children: [
+                      Theme(
+                        data: ThemeData(
+                          colorScheme: Theme.of(context).colorScheme.copyWith(
+                            primary: Colors.red,
+                          ),
+                        ),
+                        child: Stepper(
+                            type: stepperType,
+                            physics: ScrollPhysics(),
+                            currentStep: _currentStep,
+                            onStepTapped: (step) => tapped(step),
+                            // onStepContinue:  continued,
+                            // onStepCancel: cancel,
+                            steps: getSteps(),
+                          controlsBuilder: (context,_){
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                // _currentStep == 3 ? SizedBox():
+                                  TextButton(
+                                    onPressed: () {
+                                      // continued;
+                                      setState(() {
+                                        if(_currentStep<3) {
+                                        _currentStep++;
+                                      }
+                                    });
+                                    },
+                                    child: const Text(
+                                      'Update',style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'Poppins-Medium',
+                                        fontWeight: FontWeight.bold
+                                    )
+                                    ),
+                                  ),
+
+                                ],
+                              );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
 
                   SizedBox(
                     height: 20,
@@ -677,10 +552,11 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ),
                     ),
                   ),
-              // Assign other task data
+
+                  ///Assign to Other Button
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen(myTaskData: myTaskData![0],)));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -689,78 +565,22 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             color: ThemeColors.defaultbuttonColor,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(child: Text("Assign to Other",
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: ThemeColors.defaultbuttonColor,
+                              width: 1,
+                            )),
+                        child: const Center(child: Text("Assign Task to Other",
                             style: TextStyle(fontFamily: 'Poppins-Medium',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                              color: ThemeColors.whiteTextColor,
                             ))),
                       ),
                     ),
                   ),
 
 
-                  ///Mark as Completed Button
-                  InkWell(
-                    onTap: (){
-                      // Navigator.of(context).pop();
-                      showDialog(
-                          context: context,
-                          builder: (context) =>  AlertDialog(
-                            title: new Text("Are you sure, you want to mark it as complete?"),
-                            // content: new Text(""),
-                            actions: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                      child: new Text("No",style: TextStyle(
-                                          color: Colors.black
-                                      ),),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      }, style: TextButton.styleFrom(
-                                      side: BorderSide(
-                                          color: ThemeColors.defaultbuttonColor,
-                                          width: 1.5)
-                                  )
-                                  ),
-                                  SizedBox(width: 7,),
-                                  TextButton(
-                                    child: new Text("Yes",style: TextStyle(
-                                        color: Colors.white
-                                    ),),
-                                    onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                          BottomNavigation(index: 0,dropValue: 'Transportation',)));
-                                    },
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: ThemeColors.defaultbuttonColor
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                      );            },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: ThemeColors.defaultbuttonColor,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(child: Text("Mark As Completed",
-                            style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ))),
-                      ),
-                    ),
-                  ),
                   SizedBox(
                     height: 80,
                   )

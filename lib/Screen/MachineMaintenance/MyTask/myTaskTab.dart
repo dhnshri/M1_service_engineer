@@ -32,11 +32,14 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
 
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
-
+  ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   double? _progressValue;
   bool flagSearchResult=false;
   bool _isSearching=false;
+  int offset = 0;
+  int? timePeriod=0;
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -45,8 +48,12 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(MyTaskList(userid: Application.customerLogin!.id.toString(), offset: '0',timePeriod: 0.toString()));
     // _homeBloc!.add(MyTaskList(userid: '6', offset: '0'));
+    getApi();
+  }
+
+  getApi(){
+    _homeBloc!.add(MyTaskList(userid: Application.customerLogin!.id.toString(), offset: '$offset',timePeriod: timePeriod.toString()));
   }
 
   @override
@@ -71,6 +78,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
         myTaskListData.machineName = myTaskList[i].machineName.toString();
         myTaskListData.enquiryId = myTaskList[i].enquiryId;
         myTaskListData.dateAndTime = myTaskList[i].dateAndTime.toString();
+        myTaskListData.taskStatus = myTaskList[i].taskStatus.toString();
 
 
 
@@ -95,6 +103,18 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
 
     // return ListView.builder(
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -317,13 +337,17 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                 _isLoading = state.isLoading;
               }
               if(state is MyTaskListSuccess){
-                myTaskList = state.MyTaskList;
+                // myTaskList = state.MyTaskList;
+                myTaskList.addAll(state.MyTaskList);
+                if(myTaskList!=null){
+                  _loadData=true;
+                }
               }
               if(state is MyTaskListLoadFail){
                 showCustomSnackBar(context,state.msg.toString());
               }
             },
-            child: _isLoading ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
+            child: _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
             Container(
               child: ListView(
                 children: [
@@ -401,6 +425,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
 
                               if(filterResult != null){
                                 myTaskList = filterResult["taskList"];
+                                timePeriod = filterResult["time_period"];
                               }
                             },
                             child: Row(

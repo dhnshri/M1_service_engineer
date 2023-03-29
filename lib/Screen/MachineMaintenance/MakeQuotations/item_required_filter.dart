@@ -36,14 +36,15 @@ class _ItemRequiredFilterScreenState extends State<ItemRequiredFilterScreen> {
   String  brandsBtnType = "Brands";
   int brandsId = 1;
 
-  String  discountBtnType = 'Discount';
-  int discountId = 1;
+  String  categoryBtnType = 'category';
+  int catogoryId = 1;
 
   String ratingBtnType = 'Rating';
   int ratingId = 1;
 
   bool loading = true;
-  List<BrandModule> brandList=[];
+  List<FilterModule> brandList=[];
+  List<FilterModule> categoryList=[];
   HomeBloc? _homeBloc;
   List<ProductDetails>? productDetail = [];
 
@@ -54,7 +55,8 @@ class _ItemRequiredFilterScreenState extends State<ItemRequiredFilterScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(ItemFilter());
+    _homeBloc!.add(BrandFilter());
+    _homeBloc!.add(CategoryFilter());
   }
 
 
@@ -85,7 +87,7 @@ class _ItemRequiredFilterScreenState extends State<ItemRequiredFilterScreen> {
           padding: const EdgeInsets.all(10.0),
           child: FunctionButton(
             onPressed: () async {
-              _homeBloc!.add(ProductList(prodId: '0',offSet: '0',priceId: priceId.toString(),brandId: brandsId.toString()));
+              _homeBloc!.add(ProductList(prodId: '0',offSet: '0',priceId: priceId.toString(),brandId: brandsId.toString(),catId: catogoryId.toString()));
             },
             shape: const RoundedRectangleBorder(
                 borderRadius:
@@ -99,14 +101,24 @@ class _ItemRequiredFilterScreenState extends State<ItemRequiredFilterScreen> {
         body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
-              if(state is ItemFilterLoading){
+              if(state is BrandFilterLoading){
                 loading = state.isLoading;
               }
-              if(state is ItemFilterSuccess){
+              if(state is BrandFilterSuccess){
                 brandList = state.brandListData;
                 // brandList.reversed;
               }
-              if(state is ItemFilterFail){
+              if(state is BrandFilterFail){
+                showCustomSnackBar(context,state.msg.toString(),isError: true);
+              }
+              if(state is CategoryFilterLoading){
+                loading = state.isLoading;
+              }
+              if(state is CategoryFilterSuccess){
+                categoryList = state.categoryListData;
+                // brandList.reversed;
+              }
+              if(state is CategoryFilterFail){
                 showCustomSnackBar(context,state.msg.toString(),isError: true);
               }
               if(state is ProductListLoading){
@@ -114,10 +126,9 @@ class _ItemRequiredFilterScreenState extends State<ItemRequiredFilterScreen> {
               }
               if(state is ProductListSuccess){
                 productDetail = state.productList;
-                Navigator.pop(context,{'brand_id': brandsId.toInt(),'ascending_descending_id': priceId,'product_list':productDetail});
+                Navigator.pop(context,{'brand_id': brandsId.toInt(),'ascending_descending_id': priceId,'product_list':productDetail,'category_id':catogoryId  });
               }
               if(state is ProductListFail){
-                // Fluttertoast.showToast(msg: state.msg.toString());
               }
             },
             child: loading ? ListView(
@@ -231,6 +242,57 @@ class _ItemRequiredFilterScreenState extends State<ItemRequiredFilterScreen> {
                                         );
 
                                       }
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:5.0,bottom: 5.0),
+                            child: Container(
+                              //decoration: BoxDecoration(
+                              // border: Border.all(color: Colors.black12),
+                              // borderRadius: BorderRadius.circular(12),
+                              // ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Column(
+                                  children: [
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text('Category',style:filterHeadingRadiobtnStyle,)),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: categoryList.length,
+                                        padding: EdgeInsets.only(top: 10, bottom: 15),
+                                        itemBuilder: (context, index) {
+                                          return Row(children: [
+                                            Radio(
+                                              value: categoryList[index].categoryId!,
+                                              groupValue: catogoryId,
+                                              onChanged: (val) {
+                                                setState(() {
+                                                  categoryBtnType = categoryList[index].name!;
+                                                  catogoryId = categoryList[index].categoryId!.toInt();
+                                                });
+                                              },
+                                            ),
+                                            Text(
+                                              categoryList[index].name!,
+                                              style:filterRadiobtnStyle,
+                                            ),
+                                          ],
+                                          );
+
+                                        }
                                     ),
                                   ],
                                 ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +10,7 @@ import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Screen/MachineMaintenance/HandOver%20Task%20List/handover_task_list.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestDetails.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/ServiceRequest/serviceRequestFilter.dart';
 import 'package:service_engineer/Utils/application.dart';
@@ -32,20 +34,19 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool flagSearchResult=false;
   bool _isSearching=false;
-
   HomeBloc? _homeBloc;
   List<ServiceRequestModel>? serviceList = [];
+  List<ServiceRequestModel>? handOverServiceList = [];
   ScrollController _scrollController = ScrollController();
   List<ServiceRequestModel> searchResult=[];
-  // final RefreshController _controller = RefreshController(initialRefresh: false);
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   int offset = 0;
-  PagingController<int, ServiceRequestModel>? _pagingController;
-  int? _pageSize;
-  ScrollController? _pagignatedScrollController ;
+  int handoverOffset = 0;
+  int? timeId=0;
+  bool _loadData=false;
 
   @override
   void initState() {
@@ -53,53 +54,20 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: '0'));
-    print(Application.customerLogin!.id.toString());
-    _pagignatedScrollController = new ScrollController(initialScrollOffset: 5.0)
-      ..addListener(_scrollListener);
+    getApi();
+    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+    print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
   }
+
+  getApi(){
+    _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offset.toString()));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     // getroleofstudent();
-  }
-
-  //// ADDING THE SCROLL LISTINER
-  _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      // setState(() {
-      //   print("comes to bottom $isLoading");
-      //   isLoading = true;
-      //
-      //   if (isLoading) {
-      //     print("RUNNING LOAD MORE");
-
-      offset+=10;
-      setProductBlocData(serviceList!,offset);
-      //   }
-      // });
-    }
-  }
-
-  void paginationCall(List<ServiceRequestModel> serviceList){
-    _pageSize=10;
-    _pagingController= PagingController(firstPageKey: 0);
-    //updated on 15/11/2021 for pagination
-    _pagingController!.addPageRequestListener((pageKey) {
-      offset= pageKey;
-      print("pageKey:-"+pageKey.toString());
-      _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: offset.toString()));
-
-    });
-  }
-
-  //for product Listing api
-  void setProductBlocData(List<ServiceRequestModel> serviceList, int offset){
-    _homeBloc!.add(OnServiceRequest(timeId: 0.toString(),offSet: offset.toString()));
-
   }
 
   void _handleSearchStart() {
@@ -136,22 +104,21 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
 
 
   Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
-    _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.position.pixels) {
-        if (!_isLoading) {
-          _isLoading = !_isLoading;
-          // Perform event when user reach at the end of list (e.g. do Api call)
-        }
-      }
-    });
     return ListView.builder(
-      controller: _scrollController,
-       // ..addListener(() {
-       //   if(_scrollController.offset == _scrollController.position.maxScrollExtent){}
-       // }),
+      controller: _scrollController
+        ..addListener(() {
+      if (_scrollController.position.pixels  ==
+          _scrollController.position.maxScrollExtent) {
+        offset++;
+        print("Offser : ${offset}");
+        BlocProvider.of<HomeBloc>(context)
+          ..isFetching = true
+          ..add(getApi());
+        // serviceList.addAll(serviceList);
+      }
+    }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -362,23 +329,80 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     return Scaffold(
       key: _scaffoldKey,
       body: widget.isSwitched?
-      BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
         return BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
               if(state is ServiceRequestLoading){
-                _isLoading = state.isLoading;
+                // _isLoading = state.isLoading;
               }
               if(state is ServiceRequestSuccess){
-                serviceList = state.serviceListData;
+                serviceList!.addAll(state.serviceListData);
+                if(serviceList!=null){
+                  _loadData=true;
+                }
               }
               if(state is ServiceRequestFail){
                 showCustomSnackBar(context,state.msg.toString());
               }
+              if(state is MachineHandOverServiceRequestListLoading){
+                _isLoading = state.isLoading;
+              }
+              if(state is MachineHandOverServiceRequestListSuccess){
+                handOverServiceList = state.serviceListData;
+              }
+              if(state is MachineHandOverServiceRequestListFail){
+                showCustomSnackBar(context,state.msg.toString());
+              }
             },
-            child: _isLoading ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+            child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
             Container(
-              child: ListView(
-                children: [
+              child: Column(
+                children:<Widget> [
+                  const SizedBox(height: 5,),
+                  handOverServiceList!.length > 0 ?
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: ThemeColors.imageContainerBG
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              // width:200,
+                              child: const Text("Task Assigned By Other Service Providers",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      // color: ThemeColors.buttonColor,
+                                      fontFamily: 'Poppins-Regular',
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600
+                                  )),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                  HandOverTaskList()));
+                              },
+                              child: Container(
+                                child: Text('View',
+                                    style: TextStyle(
+                                        color: ThemeColors.buttonColor,
+                                        fontFamily: 'Poppins-Regular',
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    )),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ): Container(),
                   Container(
                     decoration: BoxDecoration(
                         border: Border(
@@ -451,6 +475,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               if(filterResult != null){
                                 print(filterResult);
                                 serviceList = filterResult['serviceList'];
+                                timeId = filterResult['time_id'];
                               }
                             },
                             child: Row(
@@ -471,7 +496,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                   flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
                   buildCustomerEnquiriesList(context, searchResult)
                   :
-                  buildCustomerEnquiriesList(context, serviceList!)
+                  Expanded(child: buildCustomerEnquiriesList(context, serviceList!))
                       : Padding(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: const Center(child: Text("No Data"),),

@@ -82,7 +82,7 @@ class _ServiceRequestFilterScreenState extends State<ServiceRequestFilterScreen>
                     serviceList = state.serviceListData;
                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>
                     //     BottomNavigation(serviceList: serviceList,index: 0,dropValue: Application.customerLogin!.role.toString(),)));
-                    Navigator.pop(context,{"serviceList": serviceList});
+                    Navigator.pop(context,{"serviceList": serviceList,"time_id":machineCategoryId,});
                   }
                   if(state is ServiceRequestFail){
                     showCustomSnackBar(context,state.msg.toString());

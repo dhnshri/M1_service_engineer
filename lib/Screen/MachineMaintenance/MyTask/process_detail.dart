@@ -77,12 +77,13 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Column(
+      floatingActionButton: widget.trackProgressData.status == 1 ? Container():
+      Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderListScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>ServiceProviderListScreen(myTaskData: widget.myTaskData,trackProgressData: widget.trackProgressData,)));
             },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -90,13 +91,17 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                 height: 50,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    color: ThemeColors.defaultbuttonColor,
-                    borderRadius: BorderRadius.circular(30)),
-                child: Center(child: Text("Assign to Other",
+                    color: ThemeColors.whiteTextColor,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: ThemeColors.defaultbuttonColor,
+                      width: 1,
+                    )),
+                child: const Center(child: Text("Assign Task to Other",
                     style: TextStyle(fontFamily: 'Poppins-Medium',
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                      color: ThemeColors.defaultbuttonColor,
                     ))),
               ),
             ),

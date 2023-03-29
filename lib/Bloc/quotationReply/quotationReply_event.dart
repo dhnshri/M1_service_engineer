@@ -40,12 +40,10 @@ class MachineQuotationReplyDetail extends QuotationReplyEvent {
 }
 
 class JobWorkQuotationReplyDetail extends QuotationReplyEvent {
-
   String jobWorkEnquiryId;
   String customerUserId;
 
   JobWorkQuotationReplyDetail({required this.jobWorkEnquiryId,required this.customerUserId});
-
 }
 
 class TransportQuotationReplyDetail extends QuotationReplyEvent {
