@@ -18,6 +18,7 @@ import '../../../Bloc/quotationReply/quotationReply_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_event.dart';
 import '../../../Bloc/quotationReply/quotationReply_state.dart';
 import '../../../Model/Transpotation/quotationReplyModel.dart';
+import '../../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../../Model/quotation_reply_detail_repo.dart';
 import '../../../Widget/app_small_button.dart';
 import '../../../Widget/custom_snackbar.dart';
@@ -27,13 +28,15 @@ import 'ReviceQuotation/quotatio_for_transportation.dart';
 
 
 class QuotationForTransportation extends StatefulWidget {
-  QuotationForTransportation({Key? key,required this.quotationReplyList}) : super(key: key);
   QuotationReplyTransportModel quotationReplyList;
+  QuotationForTransportation({Key? key,required this.quotationReplyList}) : super(key: key);
+
   @override
   State<QuotationForTransportation> createState() => QuotationForTransportationState();
 }
 
 class QuotationForTransportationState extends State<QuotationForTransportation> {
+
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _itemPriceController = TextEditingController();
   bool loading = true;
@@ -43,6 +46,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
   final GlobalKey<ExpansionTileCardState> cardQuotationsTransposation = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardMessage = new GlobalKey();
+
 
   bool value = false;
   QuotationReplyBloc? _quotationReplyBloc;
@@ -63,10 +67,10 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
     //saveDeviceTokenAndId();
     super.initState();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(TransportQuotationReplyDetail(transportEnquiryId: widget.quotationReplyList.enquiryId.toString(),
-        customerUserId: widget.quotationReplyList.userId.toString()));
-    // _quotationReplyBloc!.add(TransportQuotationReplyDetail(transportEnquiryId: '23',
-    //     customerUserId: '5'));
+    // _quotationReplyBloc!.add(TransportQuotationReplyDetail(transportEnquiryId: widget.quotationReplyList.enquiryId.toString(),
+    //     customerUserId: widget.quotationReplyList.userId.toString()));
+    _quotationReplyBloc!.add(TransportQuotationReplyDetail(transportEnquiryId: '2',
+        customerUserId: '5'));
 
   }
 
@@ -161,7 +165,8 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
               }
               if(state is QuotationRevisedSuccess){
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReviceQuotationTransposationScreen ()));
+                    MaterialPageRoute(builder: (context) => ReviceQuotationTransposationScreen( serviceRequestData:widget.quotationReplyList!,quotationChargesList:quotationChargesList,
+                    quotationDetailList:quotationDetailList,quotationMsgList:quotationMsgList,vehicleList:vehicleList,)));
               }
               if(state is QuotationRevisedFail){
                 showCustomSnackBar(context,state.msg.toString());

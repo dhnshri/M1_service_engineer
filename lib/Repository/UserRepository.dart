@@ -86,6 +86,7 @@ class UserRepository {
       'role': role,};
     return await Api.registration(params);
   }
+
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
   //   final params = {"per_page":perPage,
   //     "start_from":startFrom};
@@ -357,7 +358,7 @@ class UserRepository {
   //Fetch Product List
   Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId,String? catId}) async {
     final params = {"user_id":prodId,
-      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId,"category_id":catId};
+      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId};
     return await Api.getProductList(params);
   }
 
@@ -470,31 +471,31 @@ class UserRepository {
   dynamic getRevisedAmount() {
     return UtilPreferences.getString(Preferences.RevisedtotalAmount);
   }
-//
-//
-// ///Save cartCount
-// Future<dynamic> saveCart(CartListRepo cartData) async {
-//   return await UtilPreferences.setString(
-//     Preferences.cart,
-//     jsonEncode(cartData.toJson()),
-//     // cartData.
-//   );
-// }
-//
-// ///Get cart count
-// dynamic getCart() {
-//   return UtilPreferences.getString(Preferences.cart);
-// }
-// // dynamic getProfile() {
-// //   return UtilPreferences.getString(Preferences.profilePic);
-// // }
-//
-//
-//
-// ///Delete Storage
-// Future<dynamic> deleteUser() async {
-//   return await UtilPreferences.remove(Preferences.user);
-// }
+  //
+  //
+  // ///Save cartCount
+  // Future<dynamic> saveCart(CartListRepo cartData) async {
+  //   return await UtilPreferences.setString(
+  //     Preferences.cart,
+  //     jsonEncode(cartData.toJson()),
+  //     // cartData.
+  //   );
+  // }
+  //
+  // ///Get cart count
+  // dynamic getCart() {
+  //   return UtilPreferences.getString(Preferences.cart);
+  // }
+  // // dynamic getProfile() {
+  // //   return UtilPreferences.getString(Preferences.profilePic);
+  // // }
+  //
+  //
+  //
+  // ///Delete Storage
+  // Future<dynamic> deleteUser() async {
+  //   return await UtilPreferences.remove(Preferences.user);
+  // }
 
 
 }

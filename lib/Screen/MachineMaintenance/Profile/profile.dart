@@ -17,8 +17,12 @@ import '../../../../Utils/application.dart';
 import '../../../Bloc/profile/profile_event.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Model/MachineMaintance/machine_maintaince_category_list_model.dart';
+import '../../../Model/MachineMaintance/machine_maintaince_sub_category_list.dart';
 import '../../../Model/education_model.dart';
 import '../../../Model/experience_company_model.dart';
+import '../../../NetworkFunction/fetchMachineMaintainceCategoryList.dart';
+import '../../../NetworkFunction/fetchMachineMaintainceSubCategoryList.dart';
 import '../../../Utils/application.dart';
 import '../../../Widget/custom_snackbar.dart';
 import '../../../image_file.dart';
@@ -34,6 +38,7 @@ class MachineProfileScreen extends StatefulWidget {
   List<ProfileKYCDetails>? profileKycList;
   List<MachineMaintenanceExperiences>? profileMachineExperienceList;
   List<MachineMaintenanceEducations>? profileMachineEducationList;
+
   @override
   _MachineProfileScreenState createState() => _MachineProfileScreenState();
 }
@@ -111,6 +116,9 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   final List<String> quantity = [];
 
   ProfileBloc? _profileBloc;
+  MachineMaintenanceCategoryListModel? catrgoryTypeselected;
+  MachineMaintenanceSubCategoryListModel? subCatrgoryTypeselected;
+
 
 
   @override
@@ -1130,29 +1138,67 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           ),
                         ),
                         ///Category
-                        SizedBox(
-                          // height: deviceHeight,
-                          // width: deviceWidth,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                            //to hide underline
+                            child: FutureBuilder<List<MachineMaintenanceCategoryListModel>>(
+                                future: fetchCategoryList(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<MachineMaintenanceCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData) return Container();
 
-                              CustomMultiSelectField<String>(
-                                decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.arrow_drop_down),
-                                    filled: true,
-                                    fillColor: ThemeColors.textFieldBackgroundColor
-                                ),
-                                title: "Work Category",
-                                items: dataString,
-                                enableAllOptionSelect: true,
-                                onSelectionDone: _onCountriesSelectionComplete,
-                                itemAsString: (item) => item.toString(),
-                              ),
-                            ],
-                          ),
-                        ),
-
+                                  return DropdownButtonHideUnderline(
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          // color: Theme.of(context).dividerColor,
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20.0),
+                                            border: Border.all(
+                                                color: ThemeColors.textFieldBgColor)),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                                          child:
+                                          //updated on 15/06/2021 to change background colour of dropdownbutton
+                                          new Theme(
+                                              data: Theme.of(context)
+                                                  .copyWith(canvasColor: Colors.white),
+                                              child: DropdownButton(
+                                                  items: snapshot.data!
+                                                      .map((categoryname) =>
+                                                      DropdownMenuItem<MachineMaintenanceCategoryListModel>(
+                                                        value: categoryname,
+                                                        child: Text(
+                                                          categoryname.serviceCategoryName.toString(),
+                                                          style: TextStyle(
+                                                              color: Colors.black),
+                                                        ),
+                                                      ))
+                                                      .toList(),
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600),
+                                                  isExpanded: true,
+                                                  hint: Text('Select  Category',
+                                                      style: TextStyle(
+                                                          color: Color(0xFF3F4141))),
+                                                  value: catrgoryTypeselected == null
+                                                      ? catrgoryTypeselected
+                                                      : snapshot.data!
+                                                      .where((i) =>
+                                                  i.serviceCategoryName ==
+                                                      catrgoryTypeselected!
+                                                          .serviceCategoryName)
+                                                      .first as MachineMaintenanceCategoryListModel,
+                                                  onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
+                                                    setState(() {
+                                                      catrgoryTypeselected = categoryname;
+                                                    });
+                                                  })),
+                                        ),
+                                      ));
+                                })),
                         SizedBox(height: 15,),
 
                         Padding(
@@ -1163,28 +1209,67 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           ),
                         ),
                         ///Sub-Category
-                        SizedBox(
-                          // height: deviceHeight,
-                          // width: deviceWidth,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                            //to hide underline
+                            child: FutureBuilder<List<MachineMaintenanceSubCategoryListModel>>(
+                                future: fetchSubCategory(catrgoryTypeselected!=null?catrgoryTypeselected!.id.toString():""),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<MachineMaintenanceSubCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData) return Container();
 
-                              CustomMultiSelectField<String>(
-                                decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.arrow_drop_down),
-                                    filled: true,
-                                    fillColor: ThemeColors.textFieldBackgroundColor
-                                ),
-                                title: "Work Sub-Category",
-                                items: dataString,
-                                enableAllOptionSelect: true,
-                                onSelectionDone: _onCountriesSelectionComplete,
-                                itemAsString: (item) => item.toString(),
-                              ),
-                            ],
-                          ),
-                        ),
+                                  return DropdownButtonHideUnderline(
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          // color: Theme.of(context).dividerColor,
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20.0),
+                                            border: Border.all(
+                                                color: ThemeColors.textFieldBgColor)),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                                          child:
+                                          //updated on 15/06/2021 to change background colour of dropdownbutton
+                                          new Theme(
+                                              data: Theme.of(context)
+                                                  .copyWith(canvasColor: Colors.white),
+                                              child: DropdownButton(
+                                                  items: snapshot.data!
+                                                      .map((categoryname) =>
+                                                      DropdownMenuItem<MachineMaintenanceSubCategoryListModel>(
+                                                        value: categoryname,
+                                                        child: Text(
+                                                          categoryname.serviceSubCategoryName.toString(),
+                                                          style: TextStyle(
+                                                              color: Colors.black),
+                                                        ),
+                                                      ))
+                                                      .toList(),
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600),
+                                                  isExpanded: true,
+                                                  hint: Text('Select Sub Category',
+                                                      style: TextStyle(
+                                                          color: Color(0xFF3F4141))),
+                                                  value: subCatrgoryTypeselected == null
+                                                      ? subCatrgoryTypeselected
+                                                      : snapshot.data!
+                                                      .where((i) =>
+                                                  i.serviceSubCategoryName ==
+                                                      subCatrgoryTypeselected!
+                                                          .serviceSubCategoryName)
+                                                      .first as MachineMaintenanceSubCategoryListModel,
+                                                  onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
+                                                    setState(() {
+                                                      subCatrgoryTypeselected = categoryname;
+                                                    });
+                                                  })),
+                                        ),
+                                      ));
+                                })),
 
                         SizedBox(height: 15,),
 

@@ -83,6 +83,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     ///Machine HandOver Service List
     if (event is MachineHandOverServiceRequestList) {
+    if (event is ItemFilter) {
       ///Notify loading to UI
       yield MachineHandOverServiceRequestListLoading(
         isLoading: false,
@@ -362,6 +363,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is BrandFilter) {
       ///Notify loading to UI
       yield BrandFilterLoading(
+      yield ItemFilterLoading(
         isLoading: false,
       );
 
@@ -525,7 +527,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final TransportTaskHandOverRepo result = await userRepository!
           .fetchTransportTaskHandOverList(
         offSet: event.offSet,
-        vehicleType: event.vehicleType
       );
       print(result);
 
