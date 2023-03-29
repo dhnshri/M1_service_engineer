@@ -236,7 +236,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       color: ThemeColors.defaultbuttonColor,
                       borderRadius: BorderRadius.circular(30)),
                   child: Center(child: Text("Add",
-                      style: TextStyle(fontFamily: 'Poppins-Medium',
+                      style: TextStyle(fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,

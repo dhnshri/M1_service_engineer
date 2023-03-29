@@ -4,6 +4,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
@@ -53,7 +54,7 @@ class _EnquiryQuotationsPreviewScreenState
   double? amount = 0;
   double? amountWithGST = 0;
   double? itemRequiredTotalAmount = 0;
-  double? commission = 10;
+  int? commission = 0;
   HomeBloc? _homeBloc;
   double? grandTotal = 0.0;
 
@@ -64,7 +65,17 @@ class _EnquiryQuotationsPreviewScreenState
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    // TotalAmount();
+    getCommissionApi();
+  }
+
+  getCommissionApi()async{
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
+    then((value) => value);
+    print(com);
+    print(com['data']);
+    commission = com['data'];
+    setState(() {
+    });
   }
 
   TotalAmount(){
@@ -121,7 +132,7 @@ class _EnquiryQuotationsPreviewScreenState
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text(
-          '#102GRDSA36987',
+          '#${widget.requestDetailList![0].jobWorkEnquiryId}',
           style: appBarheadingStyle,
         ),
       ),
@@ -139,7 +150,7 @@ class _EnquiryQuotationsPreviewScreenState
             title: Text("Quotation",
                 style: TextStyle(
                     color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.w500)),
             children: <Widget>[
@@ -266,7 +277,7 @@ class _EnquiryQuotationsPreviewScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("M2 Commission"),
+                        Text("Professional Charges"),
                         Text("₹$commission"),
                       ],
                     ),
@@ -316,13 +327,13 @@ class _EnquiryQuotationsPreviewScreenState
                         Text("Total",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         Text("₹ $grandTotal",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                       ],
@@ -343,7 +354,7 @@ class _EnquiryQuotationsPreviewScreenState
             title: Text("Terms and Conditions",
                 style: TextStyle(
                     color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.w500)),
             children: <Widget>[
@@ -361,7 +372,7 @@ class _EnquiryQuotationsPreviewScreenState
                   const Text("I agree to the terms and conditions.",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 14,
                           fontWeight: FontWeight.w400))
                 ],
@@ -376,7 +387,7 @@ class _EnquiryQuotationsPreviewScreenState
           //   title: Text("Message from Client",
           //       style: TextStyle(
           //           color: Colors.black,
-          //           fontFamily: 'Poppins-Medium',
+          //           fontFamily: 'Poppins',
           //           fontSize: 16,
           //           fontWeight: FontWeight.w500)),
           //   children: <Widget>[

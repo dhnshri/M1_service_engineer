@@ -68,7 +68,7 @@ class _ProcessDetailTransportScreenState extends State<ProcessDetailTransportScr
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(widget.trackProgressData.heading.toString(),
-                  style: TextStyle(fontFamily: 'Poppins-Medium',
+                  style: TextStyle(fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
 
@@ -97,7 +97,7 @@ class _ProcessDetailTransportScreenState extends State<ProcessDetailTransportScr
                     color: ThemeColors.defaultbuttonColor,
                     borderRadius: BorderRadius.circular(30)),
                 child: Center(child: Text("Assign to Other",
-                    style: TextStyle(fontFamily: 'Poppins-Medium',
+                    style: TextStyle(fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
@@ -141,7 +141,7 @@ class _ProcessDetailTransportScreenState extends State<ProcessDetailTransportScr
                         color: ThemeColors.defaultbuttonColor,
                         borderRadius: BorderRadius.circular(30)),
                     child: Center(child: Text("Mark As Complete",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                        style: TextStyle(fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,

@@ -152,7 +152,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                   title: Text("Basic Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -209,7 +209,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                                   overflow: TextOverflow.ellipsis,style:TextStyle(
                                   color: Colors.black,
                                   fontSize: 12,
-                                  fontFamily: 'Poppins-Bold',
+                                  fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
                                 ),),
                               ),
@@ -228,7 +228,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                   title: Text("Machine Information",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -426,7 +426,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                   title: Text("Other Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -489,7 +489,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: ThemeColors.buttonColor,
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400
                                 )),
@@ -503,7 +503,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                               child: Text('View',
                                   style: TextStyle(
                                       color: ThemeColors.buttonColor,
-                                      fontFamily: 'Poppins-Regular',
+                                      fontFamily: 'Poppins',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500
                                   )),

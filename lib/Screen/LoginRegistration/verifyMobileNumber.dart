@@ -205,7 +205,7 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
                                       TextFormField(
                                         controller:_phoneNumberController,
                                         style: TextStyle(
-                                            fontFamily: 'Poppins-Regular',color: Colors.black,fontSize: 15.0,
+                                            fontFamily: 'Poppins',color: Colors.black,fontSize: 15.0,
                                             fontWeight: FontWeight.w500
                                         ),
                                         keyboardType: TextInputType.phone,

@@ -172,7 +172,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   title: Text("Basic Info",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500
                     ),),
@@ -235,7 +235,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                       overflow: TextOverflow.ellipsis,style:const TextStyle(
                                         color: Colors.black,
                                         fontSize: 12,
-                                        fontFamily: 'Poppins-Bold',
+                                        fontFamily: 'Poppins',
                                         fontWeight: FontWeight.bold,
                                       ),),
                                   ),
@@ -290,7 +290,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   title: Text("Machine Information",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -369,7 +369,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                           overflow: TextOverflow.ellipsis,style:TextStyle(
                                             color: Colors.black,
                                             fontSize: 12,
-                                            fontFamily: 'Poppins-Bold',
+                                            fontFamily: 'Poppins',
                                             fontWeight: FontWeight.bold,
                                           ),),
                                       ),
@@ -431,7 +431,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                           overflow: TextOverflow.ellipsis,style:TextStyle(
                                             color: Colors.black,
                                             fontSize: 12,
-                                            fontFamily: 'Poppins-Bold',
+                                            fontFamily: 'Poppins',
                                             fontWeight: FontWeight.bold,
                                           ),),
                                       ),                                    ],
@@ -497,7 +497,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   leading: Text("Other Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -511,10 +511,10 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Priority",style: TextStyle(fontFamily: 'Poppins-Medium',
+                              Text("Priority",style: TextStyle(fontFamily: 'Poppins',
                                 fontSize: 16,
                               )),
-                              Text(myTaskData![0].otherInfoName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
+                              Text(myTaskData![0].otherInfoName.toString(),style: TextStyle(fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                             ],
@@ -523,10 +523,10 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Maintenance Type",style: TextStyle(fontFamily: 'Poppins-Medium',
+                              Text("Maintenance Type",style: TextStyle(fontFamily: 'Poppins',
                                 fontSize: 16,
                               )),
-                              Text(myTaskData![0].serviceCategoryName.toString(),style: TextStyle(fontFamily: 'Poppins-Medium',
+                              Text(myTaskData![0].serviceCategoryName.toString(),style: TextStyle(fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                             ],
@@ -570,7 +570,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: ThemeColors.buttonColor,
-                                                  fontFamily: 'Poppins-Regular',
+                                                  fontFamily: 'Poppins',
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400
                                               )),
@@ -584,7 +584,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                             child: Text('View',
                                                 style: TextStyle(
                                                     color: ThemeColors.buttonColor,
-                                                    fontFamily: 'Poppins-Regular',
+                                                    fontFamily: 'Poppins',
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500
                                                 )),
@@ -618,11 +618,11 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Working Days :",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                          style: TextStyle(fontFamily: 'Poppins',
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
                       Text("4 Days",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                          style: TextStyle(fontFamily: 'Poppins',
                               fontSize: 16,
                               fontWeight: FontWeight.w500))
                     ],
@@ -647,7 +647,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text("Track Process",
-                      style: TextStyle(fontFamily: 'Poppins-Medium',
+                      style: TextStyle(fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500)
                   ),
@@ -698,7 +698,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                       child: Text(trackProgressData![index].description.toString(),
                                           maxLines: 2, overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                              fontFamily: 'Poppins',fontSize: 12,color: Colors.black
                                           )),
                                     ),
                                     trailing: Padding(
@@ -736,7 +736,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                             children: [
                               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
                               Text("Create Task",
-                                style: TextStyle(fontFamily: 'Poppins-Medium',
+                                style: TextStyle(fontFamily: 'Poppins',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black.withOpacity(0.55)
@@ -783,7 +783,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                 //           color: ThemeColors.defaultbuttonColor,
                 //           borderRadius: BorderRadius.circular(30)),
                 //       child: Center(child: Text("Mark As Completed",
-                //           style: TextStyle(fontFamily: 'Poppins-Medium',
+                //           style: TextStyle(fontFamily: 'Poppins',
                 //             fontSize: 16,
                 //             fontWeight: FontWeight.w500,
                 //             color: Colors.white,

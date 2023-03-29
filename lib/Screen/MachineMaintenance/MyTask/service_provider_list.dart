@@ -194,7 +194,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                   TaskData.username.toString(),
                   // "Job Title/Services Name or Any Other Name",
                   style: TextStyle(
-                      fontFamily: 'Poppins-SemiBold',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold
                   ),
@@ -209,7 +209,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                   Text(
                     "Work category:",
                     style: TextStyle(
-                        fontFamily: 'Poppins-SemiBold',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         fontWeight: FontWeight.bold
                     ),
@@ -222,7 +222,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                     child: Text(TaskData.serviceCategoryName.toString(),
                       // "#102GRDSA36987",
                       style: TextStyle(
-                        fontFamily: 'Poppins-Regular',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         // fontWeight: FontWeight.bold
                       ),
@@ -240,7 +240,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                   Text(
                     "Work sub category:",
                     style: TextStyle(
-                        fontFamily: 'Poppins-SemiBold',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         fontWeight: FontWeight.bold
                     ),
@@ -254,7 +254,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                       TaskData.serviceSubCategoryName.toString(),
                       //"Step 1",
                       style: TextStyle(
-                        fontFamily: 'Poppins-Regular',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         // fontWeight: FontWeight.bold
                       ),
@@ -271,7 +271,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                   Text(
                     "Total Experience:",
                     style: TextStyle(
-                        fontFamily: 'Poppins-SemiBold',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         fontWeight: FontWeight.bold
                     ),
@@ -285,7 +285,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                       TaskData.yearOfExperience.toString(),
                       //"Step 1",
                       style: TextStyle(
-                        fontFamily: 'Poppins-Regular',
+                        fontFamily: 'Poppins',
                         fontSize: 12,
                         // fontWeight: FontWeight.bold
                       ),
@@ -393,7 +393,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -408,7 +408,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -421,7 +421,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -438,7 +438,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -451,7 +451,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -468,7 +468,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -481,7 +481,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

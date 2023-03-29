@@ -35,6 +35,9 @@ class _OrderItemsState extends State<OrderItemsScreen> {
   final _searchController = TextEditingController();
   List<OrderList> orderList=[];
   bool _loadData = false;
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<OrderList> searchResult=[];
 
   @override
   void initState() {
@@ -50,6 +53,43 @@ class _OrderItemsState extends State<OrderItemsScreen> {
     // TODO: implement dispose
     super.dispose();
     // getroleofstudent();
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching != null) {
+      for (int i = 0; i < orderList.length; i++) {
+        OrderList orderListData = new OrderList();
+        orderListData.machineEnquiryId = orderList[i].machineEnquiryId;
+        orderListData.orderTrackingStatus = orderList[i].orderTrackingStatus;
+        orderListData.itemName = orderList[i].itemName.toString();
+        orderListData.productImage = orderList[i].productImage.toString();
+        orderListData.cancelOrder = orderList[i].cancelOrder;
+        orderListData.orderPlacedOn = orderList[i].orderPlacedOn;
+
+        if (orderListData.machineEnquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            orderListData.orderTrackingStatus.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            orderListData.itemName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            orderListData.productImage.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            orderListData.cancelOrder.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            orderListData.orderPlacedOn.toString().toLowerCase().contains(searchText.toLowerCase())
+        ) {
+          flagSearchResult=false;
+          searchResult.add(orderListData);
+        }
+      }
+      setState(() {
+        if(searchResult.length==0){
+          flagSearchResult=true;
+        }
+      });
+    }
   }
 
   Widget buildOrderItemsList(BuildContext context, List<OrderList> orderList) {
@@ -87,12 +127,12 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                             Text(
                               "Order Placed On:",
                               style:
-                              TextStyle(fontFamily: 'Poppins-Medium', fontSize: 12),
+                              TextStyle(fontFamily: 'Poppins', fontSize: 12),
                             ),
                             Text(
                               DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(orderList[index].orderPlacedOn.toString())).toString(),
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -103,12 +143,12 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                             Text(
                               "Order ID:",
                               style:
-                              TextStyle(fontFamily: 'Poppins-Medium', fontSize: 12),
+                              TextStyle(fontFamily: 'Poppins', fontSize: 12),
                             ),
                             Text(
                               orderList[index].machineEnquiryId.toString(),
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -195,7 +235,7 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                                 child: Text(
                                   orderList[index].itemName.toString(),
                                   style: TextStyle(
-                                      fontFamily: 'Poppins-SemiBold',
+                                      fontFamily: 'Poppins',
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                   overflow: TextOverflow.ellipsis,
@@ -217,7 +257,7 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                                     child: Text(
                                       'Delivered',
                                       style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
+                                        fontFamily: 'Poppins',
                                         fontSize: 12,
                                         // fontWeight: FontWeight.bold
                                       ),
@@ -238,7 +278,7 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                                     child: Text(
                                       'Cancelled',
                                       style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
+                                        fontFamily: 'Poppins',
                                         fontSize: 12,
                                         // fontWeight: FontWeight.bold
                                       ),
@@ -258,7 +298,7 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                                     child: Text(
                                       'On the way',
                                       style: TextStyle(
-                                        fontFamily: 'Poppins-Regular',
+                                        fontFamily: 'Poppins',
                                         fontSize: 12,
                                         // fontWeight: FontWeight.bold
                                       ),
@@ -296,7 +336,7 @@ class _OrderItemsState extends State<OrderItemsScreen> {
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: () {
-              Navigator.pop(context);
+              // Navigator.pop(context);
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
             },
@@ -350,9 +390,15 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: ThemeColors.bottomNavColor,
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: ThemeColors.textFieldHintColor,
+                              prefixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.search,
+                                  size: 25.0,
+                                  color: ThemeColors.blackColor,
+                                ),
+                                onPressed: () {
+                                  _handleSearchStart();
+                                },
                               ),
                               hintText: "Search all Orders",
                               contentPadding: EdgeInsets.symmetric(
@@ -374,23 +420,9 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                                   borderSide: BorderSide(
                                       width: 0.8, color: ThemeColors.bottomNavColor)),
                             ),
-                            validator: (value) {
-                              Pattern pattern =
-                                  r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
-                              RegExp regex = new RegExp(pattern.toString());
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter GST Number';
-                              } else if (!regex.hasMatch(value)) {
-                                return 'Please enter valid GST Number';
-                              }
-                              return null;
-                            },
                             onChanged: (value) {
-                              // profile.name = value;
-                              setState(() {
-                                // _nameController.text = value;
-                                if (_formKey.currentState!.validate()) {}
-                              });
+                              searchOperation(value);
+
                             },
                           ),
                         ),
@@ -398,7 +430,11 @@ class _OrderItemsState extends State<OrderItemsScreen> {
                     ),
                   ),
                 ),
-                buildOrderItemsList(context,orderList),
+                flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                buildOrderItemsList(context,searchResult):
+                buildOrderItemsList(context,orderList) : Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: const Center(child: Text("No Data"),),),
               ],
             ),
           ) : Center(child: CircularProgressIndicator(),),

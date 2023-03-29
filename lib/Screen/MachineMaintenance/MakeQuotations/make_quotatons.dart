@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
@@ -94,6 +95,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   int? brandId=0;
   int? priceId=0;
   int offset=0;
+  int commision=0;
 
   void _handleSearchStart() {
     setState(() {
@@ -322,7 +324,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins-Medium'
+                fontFamily: 'Poppins'
             ),)),
         SizedBox(height: 5,),
         itemNotAvailabeList.length <= 0? Container():
@@ -373,7 +375,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(itemNotAvailabeList.length <= 0? "Add Items":"Add More",
-                    style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(width: 5,),
@@ -521,7 +523,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                           color: Colors.black,
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: 'Poppins-Medium'
+                                          fontFamily: 'Poppins'
                                       )),
                                     ),
                                     productList[index].cartQuantity != 0 ?
@@ -924,11 +926,13 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             transportChargesController: transportChargesController,
             otherChargesController: otherChargesController,
             handlingChargesController: handlingChargesController,
-            gstChargesController: _gstChargesController),
+            gstChargesController: _gstChargesController,
+            commission: commision,),
         ),
       ];
 
   int total=0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -939,7 +943,17 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     loadApi();
     selectedDate;
     dateofJoiningController.text = DateFormat.yMd('es').format(DateTime.now());
+    getCommissionApi();
   }
+
+  getCommissionApi()async{
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
+    then((value) => value);
+    print(com);
+    print(com['data']);
+    commision = com['data'];
+  }
+
 
   getApi(){
     _homeBloc!.add(ProductList(prodId: '0',offSet: offset.toString(),brandId: brandId.toString(),priceId: priceId.toString(),catId: catId.toString()));
@@ -1627,7 +1641,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   children: [
                     Text("Add Charges",
                         style: TextStyle(
-                            fontFamily: 'Poppins-Bold',
+                            fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w600)),
                     SizedBox(

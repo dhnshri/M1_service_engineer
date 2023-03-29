@@ -215,7 +215,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                       child: Text(
                         serviceListData.machineName!,
                         style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         ),
@@ -230,7 +230,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         Text(
                           "Enquiry ID:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -243,7 +243,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                           child: Text(
                             serviceListData.enquiryId.toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -260,7 +260,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     //     Text(
                     //       "Working Timing:",
                     //       style: TextStyle(
-                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontFamily: 'Poppins',
                     //           fontSize: 12,
                     //           fontWeight: FontWeight.bold
                     //       ),
@@ -273,7 +273,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     //       child: Text(
                     //         "10 AM - 6 PM",
                     //         style: TextStyle(
-                    //           fontFamily: 'Poppins-Regular',
+                    //           fontFamily: 'Poppins',
                     //           fontSize: 12,
                     //           // fontWeight: FontWeight.bold
                     //         ),
@@ -290,7 +290,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         Text(
                           "Date & Time:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -304,7 +304,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                             // serviceListData.dateAndTime!,
                             DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceListData.dateAndTime!.toString())).toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -378,7 +378,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       // color: ThemeColors.buttonColor,
-                                      fontFamily: 'Poppins-Regular',
+                                      fontFamily: 'Poppins',
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600
                                   )),
@@ -392,7 +392,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 child: Text('View',
                                     style: TextStyle(
                                         color: ThemeColors.buttonColor,
-                                        fontFamily: 'Poppins-Regular',
+                                        fontFamily: 'Poppins',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500
                                     )),
@@ -521,21 +521,21 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
           children: [
             Text("Nothing to show",
                 style: TextStyle(
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.bold
                 )),
             SizedBox(height: 5,),
             Text("You are currently",
                 style: TextStyle(
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                 )),
             SizedBox(height: 5,),
 
             Text("offline",
                 style: TextStyle(
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                 )),
           ],
@@ -634,7 +634,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -649,7 +649,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -662,7 +662,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -679,7 +679,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -692,7 +692,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -709,7 +709,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -722,7 +722,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

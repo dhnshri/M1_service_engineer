@@ -3,9 +3,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:service_engineer/Bloc/authentication/authentication_event.dart';
 import 'package:service_engineer/Model/cart_list_repo.dart';
 import 'package:service_engineer/Model/item_not_available_model.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/app_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -56,7 +58,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
   double? oterItemsAmount = 0;
   double? otherItemsAmountWithGST = 0;
   double? otherItemTotalAmount = 0;
-  double? commission = 10;
+  int? commission = 0;
   double? totalAmount= 0;
 
   @override
@@ -65,11 +67,17 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     //saveDeviceTokenAndId();
     super.initState();
     itemRequiredTotalAmount;
-    // setState(() {
-    //   totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
-    //       int.parse(widget.transportChargesController.text.toString()) +
-    //        commission!;
-    // });
+    getCommissionApi();
+  }
+
+  getCommissionApi()async{
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
+    then((value) => value);
+    print(com);
+    print(com['data']);
+    commission = com['data'];
+    setState(() {
+    });
   }
 
   @override
@@ -141,7 +149,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
           title: Text("Item Required",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
           children: <Widget>[
@@ -241,7 +249,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
           title: Text("Other Items( item not available on app)",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
           children: <Widget>[
@@ -348,7 +356,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
           title: Text("Quotation",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
           children: <Widget>[
@@ -413,7 +421,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("M1 Commission"),
+                      Text("Professional Charges"),
                       Text("₹ $commission"),
                     ],
                   ),
@@ -450,7 +458,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
           title: Text("Terms and Conditions",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
           children: <Widget>[
@@ -468,7 +476,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                 const Text("I agree to the terms and conditions.",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w400))
               ],

@@ -235,7 +235,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
           appBar: AppBar(
             title: const Text("Profile",
               style: TextStyle(
-                  fontFamily: 'Poppins-Medium'
+                  fontFamily: 'Poppins'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
@@ -326,7 +326,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                                     children: [
                                       Container(
                                           child:Text(_nameController.text,
-                                            style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                            style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                           )
                                       )
@@ -343,7 +343,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                       const Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text("Owner Details",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -360,7 +360,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Name",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -426,7 +426,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Email",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -497,7 +497,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Phone Number",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -566,7 +566,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Total Year Experience",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -645,7 +645,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                       const Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Text("Address",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -663,7 +663,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Address",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -741,7 +741,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Pin Code",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -812,7 +812,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("City",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -875,7 +875,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("State",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -938,7 +938,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Country",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1021,7 +1021,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text("Vehicle Information",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -1034,14 +1034,14 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 2),
                               child: Text("Vehicle Name",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 2),
                               child: Text("Vehicle Type",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1084,7 +1084,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                                                     child: Container(
                                                       width: MediaQuery.of(context).size.width * 0.4,
                                                       child: Text('${index+1}. ${profileVehicleInfoList![index].vehicleName}',
-                                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
                                                         textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ),
@@ -1092,7 +1092,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                                                   Padding(
                                                     padding: const EdgeInsets.only(right: 10),
                                                     child: Text('${profileVehicleInfoList![index].vehicleType}',
-                                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                      style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
                                                       textAlign: TextAlign.end, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
@@ -1124,7 +1124,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                       const Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Text("Driver Details",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -1137,7 +1137,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Driver Image",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1197,7 +1197,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Name",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1260,7 +1260,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Phone Number",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1328,7 +1328,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Driver License Validity",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1391,7 +1391,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Driver License Number",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1454,7 +1454,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Driver License Image",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -1514,7 +1514,7 @@ class _TransportServiceProviderProfileScreenState extends State<TransportService
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Driver Id Proof",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),

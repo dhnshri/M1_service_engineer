@@ -177,7 +177,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                 'Successfully saved to Download folder',
                   style: TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500
                   )

@@ -7,6 +7,7 @@ import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 
 import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
@@ -367,6 +368,37 @@ class AddToCartFail extends HomeState {
 class AddToCartSuccess extends HomeState {
   String message;
   AddToCartSuccess({required this.message});
+}
+
+class TransportUpdateProcessLoading extends HomeState {
+  bool isLoading;
+  TransportUpdateProcessLoading({required this.isLoading});
+}
+
+class TransportUpdateProcessFail extends HomeState {
+  final String? msg;
+  TransportUpdateProcessFail({this.msg});
+}
+
+class TransportUpdateProcessSuccess extends HomeState {
+  String message;
+  TransportUpdateProcessSuccess({required this.message});
+}
+
+class TransportGetProcessLoading extends HomeState {
+  bool isLoading;
+  TransportGetProcessLoading({required this.isLoading});
+}
+
+class TransportGetProcessFail extends HomeState {
+  final String? msg;
+  TransportGetProcessFail({this.msg});
+}
+
+class TransportGetProcessSuccess extends HomeState {
+  String message;
+  List<TrackDataModel> trackData;
+  TransportGetProcessSuccess({required this.message,required this.trackData});
 }
 
 class CartListLoading extends HomeState {

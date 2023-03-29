@@ -158,7 +158,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               child: Text(
                                 serviceList[index].itemName!,
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,
@@ -174,7 +174,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                 Text(
                                   "Enquiry ID:",
                                   style: TextStyle(
-                                      fontFamily: 'Poppins-SemiBold',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -186,7 +186,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                   child: Text(
                                     serviceList[index].enquiryId.toString(),
                                     style: TextStyle(
-                                      fontFamily: 'Poppins-Regular',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       // fontWeight: FontWeight.bold
                                     ),
@@ -205,7 +205,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                             //     Text(
                             //       "Working Timing:",
                             //       style: TextStyle(
-                            //           fontFamily: 'Poppins-SemiBold',
+                            //           fontFamily: 'Poppins',
                             //           fontSize: 12,
                             //           fontWeight: FontWeight.bold
                             //       ),
@@ -218,7 +218,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                             //       child: Text(
                             //         "10 AM - 6 PM",
                             //         style: TextStyle(
-                            //           fontFamily: 'Poppins-Regular',
+                            //           fontFamily: 'Poppins',
                             //           fontSize: 12,
                             //           // fontWeight: FontWeight.bold
                             //         ),
@@ -237,7 +237,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                 Text(
                                   "Date & Time:",
                                   style: TextStyle(
-                                      fontFamily: 'Poppins-SemiBold',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -253,7 +253,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                             .toString()))
                                         .toString(),
                                     style: TextStyle(
-                                      fontFamily: 'Poppins-Regular',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       // fontWeight: FontWeight.bold
                                     ),
@@ -542,7 +542,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                               overflow: TextOverflow.ellipsis,
@@ -558,7 +558,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -570,7 +570,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -588,7 +588,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -600,7 +600,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -618,7 +618,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -630,7 +630,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

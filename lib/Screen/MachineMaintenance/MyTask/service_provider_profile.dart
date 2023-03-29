@@ -227,7 +227,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
             // leading: Icon(Icons.arrow_back_ios),
             title: Text("Profile",
               style: TextStyle(
-                  fontFamily: 'Poppins-Medium'
+                  fontFamily: 'Poppins'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
@@ -315,10 +315,10 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Hello",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
+                                        style: TextStyle(fontFamily: 'Poppins',fontSize: 16),),
                                       Container(
                                           child:Text(_nameController.text,
-                                            style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                            style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                           )
                                       )
@@ -339,7 +339,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("ID",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -406,7 +406,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Name",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -473,7 +473,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Email",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -543,7 +543,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Phone Number",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -611,7 +611,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("GST Number",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -679,7 +679,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Category",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -743,7 +743,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Sub-Category",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -815,7 +815,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                     Padding(
                                       padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                       child: Text("Year",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -887,7 +887,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                     Padding(
                                       padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                       child: Text("Months",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -1048,7 +1048,7 @@ class _ServiceProviderProfileScreenState extends State<ServiceProviderProfileScr
                                               children: const [
                                                  Text("Add Price for Task."),
                                                   Text("(optional)", style: TextStyle(
-                                                      fontFamily: 'Poppins-SemiBold',
+                                                      fontFamily: 'Poppins',
                                                       fontSize: 10,
                                                   ),)
                                               ],

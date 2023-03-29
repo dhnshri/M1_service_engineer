@@ -212,7 +212,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
                 Text("Enter OTP send to ${widget.phoneNumber}",
                   style: TextStyle(
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 20,
                   color: ThemeColors.whiteTextColor) ,),
                 Padding(
@@ -257,7 +257,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     Text(
                       'Did not received code?',
                         style: TextStyle(
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 15,
                             color: ThemeColors.whiteTextColor)
                     ),
@@ -268,7 +268,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       } : null,
                       child: Text('${'Resend'}${_seconds > 0 ? ' ($_seconds)' : ''}',
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 15,
                               color: ThemeColors.buttonColor,fontWeight: FontWeight.bold)),
                     ),

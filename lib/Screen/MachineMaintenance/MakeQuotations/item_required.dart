@@ -818,7 +818,7 @@ class ItemRequiredState extends State<ItemRequired> {
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins-Medium'
+                fontFamily: 'Poppins'
             ),)),
         SizedBox(height: 5,),
         Container(
@@ -883,7 +883,7 @@ class ItemRequiredState extends State<ItemRequired> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text("Add More",
-                    style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(width: 5,),

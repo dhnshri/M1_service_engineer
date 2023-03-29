@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Screen/Transportation/ServiceRequest/MakeQuotationTransportation/quotation_for.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -49,6 +50,7 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ServiceCallChargesController = TextEditingController();
   final TextEditingController HandlingChargesController = TextEditingController();
+  final TextEditingController gstController = TextEditingController();
 
 
   @override
@@ -79,18 +81,41 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
               //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('Quotation for #102GRDSA36987',style:appBarheadingStyle ,),
+        title: Text('Quotation for #${widget.serviceRequestData.transportEnquiryId}',style:appBarheadingStyle ,),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
         child: FunctionButton(
           onPressed: () async {
-            // Navigator.of(context).push(
-            //     MaterialPageRoute(builder: (context) => QuotationFor()));
-            Navigator.push(context, MaterialPageRoute(builder: (contex)=>
-                QuotationFor(vehicleNameselected:vehicleNameselected,vehicleNumberselected: vehicleNumberselected,vehicleTypeselected: vehicleTypeselected,
-                HandlingChargesController: HandlingChargesController,ServiceCallChargesController: ServiceCallChargesController,dropdownValue4:dropdownValue4,
-                requestDetailList:widget.serviceRequestData,)));
+            if(vehicleNameselected==null){
+              showCustomSnackBar(context,'Please select Vehicle Name.',isError: true);
+            }else if(vehicleTypeselected==null){
+              showCustomSnackBar(context,'Please select Vehicle Type.',isError: true);
+            }else if(vehicleNumberselected==null){
+              showCustomSnackBar(context,'Please select Vehicle Number.',isError: true);
+            }else if(HandlingChargesController.text==""){
+              showCustomSnackBar(context,'Please add Handling Charges.',isError: true);
+            }else if(ServiceCallChargesController.text==""){
+              showCustomSnackBar(context,'Please add Service Charges.',isError: true);
+            }else if(gstController.text==""){
+              showCustomSnackBar(context,'Please add GST Charges.',isError: true);
+            }else
+            {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (contex) => QuotationFor(
+                            vehicleNameselected: vehicleNameselected,
+                            vehicleNumberselected: vehicleNumberselected,
+                            vehicleTypeselected: vehicleTypeselected,
+                            HandlingChargesController:
+                                HandlingChargesController,
+                            ServiceCallChargesController:
+                                ServiceCallChargesController,
+                            gstController: gstController,
+                            requestDetailList: widget.serviceRequestData,
+                          )));
+            }
           },
           shape: const RoundedRectangleBorder(
               borderRadius:
@@ -120,8 +145,8 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               // color: Theme.of(context).dividerColor,
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
+                                color: Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(10.0),
                                 border: Border.all(
                                     color: ThemeColors.textFieldBgColor)),
                             child: Padding(
@@ -168,7 +193,7 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                           ));
                     })),
 
-// For Vehicle Type
+            // For Vehicle Type
             Padding(
                 padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
                 //to hide underline
@@ -183,8 +208,8 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               // color: Theme.of(context).dividerColor,
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
+                                color: Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(10.0),
                                 border: Border.all(
                                     color: ThemeColors.textFieldBgColor)),
                             child: Padding(
@@ -246,8 +271,8 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               // color: Theme.of(context).dividerColor,
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
+                                color: Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(10.0),
                                 border: Border.all(
                                     color: ThemeColors.textFieldBgColor)),
                             child: Padding(
@@ -425,58 +450,123 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Container(
-                width:
-                MediaQuery.of(context).size.width * 0.9,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: Colors.white,
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: gstController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
                     borderRadius:
-                    BorderRadius.circular(8.0)),
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      items: <String>[
-                        'GST',
-                        '12',
-                        '18',
-                        '21'
-
-                      ].map((item) =>
-                          DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                  fontFamily: 'Poppins-Medium',
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500
-                              ),
-                            ),
-                          ))
-                          .toList(),
-                      value: dropdownValue4,
-                      onChanged: (value) {
-                        setState(() {
-                          dropdownValue4 = value as String;
-                        });
-                      },
-                      buttonHeight: 40,
-                      buttonWidth: 140,
-                      itemHeight: 40,
-                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                      dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        // color: Colors.redAccent,
-                      ),
-                      // itemWidth: 140,
-                    )
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'GST Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
                 ),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: 20.0),
+            //   child: Container(
+            //     width:
+            //     MediaQuery.of(context).size.width * 0.9,
+            //     height: 40,
+            //     decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius:
+            //         BorderRadius.circular(8.0)),
+            //     child: DropdownButtonHideUnderline(
+            //         child: DropdownButton2(
+            //           items: <String>[
+            //             'GST',
+            //             '12',
+            //             '18',
+            //             '21'
+            //
+            //           ].map((item) =>
+            //               DropdownMenuItem<String>(
+            //                 value: item,
+            //                 child: Text(
+            //                   item,
+            //                   style: const TextStyle(
+            //                       fontFamily: 'Poppins',
+            //                       fontSize: 15,
+            //                       color: Colors.black,
+            //                       fontWeight: FontWeight.w500
+            //                   ),
+            //                 ),
+            //               ))
+            //               .toList(),
+            //           value: dropdownValue4,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               dropdownValue4 = value as String;
+            //             });
+            //           },
+            //           buttonHeight: 40,
+            //           buttonWidth: 140,
+            //           itemHeight: 40,
+            //           buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+            //           dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
+            //           dropdownDecoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(10),
+            //             // color: Colors.redAccent,
+            //           ),
+            //           // itemWidth: 140,
+            //         )
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -156,7 +156,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                             //   child: Text(
                             //     serviceList[index].enquiryId.toString(),
                             //     style: TextStyle(
-                            //         fontFamily: 'Poppins-SemiBold',
+                            //         fontFamily: 'Poppins',
                             //         fontSize: 16,
                             //         fontWeight: FontWeight.bold),
                             //     overflow: TextOverflow.ellipsis,
@@ -172,7 +172,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                 Text(
                                   "Enquiry ID:",
                                   style: TextStyle(
-                                      fontFamily: 'Poppins-SemiBold',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -181,7 +181,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                   child: Text(
                                     serviceList[index].enquiryId.toString(),
                                     style: TextStyle(
-                                      fontFamily: 'Poppins-Regular',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       // fontWeight: FontWeight.bold
                                     ),
@@ -200,7 +200,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                             //     Text(
                             //       "Working Timing:",
                             //       style: TextStyle(
-                            //           fontFamily: 'Poppins-SemiBold',
+                            //           fontFamily: 'Poppins',
                             //           fontSize: 12,
                             //           fontWeight: FontWeight.bold
                             //       ),
@@ -213,7 +213,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                             //       child: Text(
                             //         "10 AM - 6 PM",
                             //         style: TextStyle(
-                            //           fontFamily: 'Poppins-Regular',
+                            //           fontFamily: 'Poppins',
                             //           fontSize: 12,
                             //           // fontWeight: FontWeight.bold
                             //         ),
@@ -232,7 +232,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                 Text(
                                   "Date & Time:",
                                   style: TextStyle(
-                                      fontFamily: 'Poppins-SemiBold',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -248,7 +248,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                         .toString()))
                                         .toString(),
                                     style: TextStyle(
-                                      fontFamily: 'Poppins-Regular',
+                                      fontFamily: 'Poppins',
                                       fontSize: 12,
                                       // fontWeight: FontWeight.bold
                                     ),
@@ -537,7 +537,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                               overflow: TextOverflow.ellipsis,
@@ -553,7 +553,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -565,7 +565,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -583,7 +583,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -595,7 +595,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -613,7 +613,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -625,7 +625,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

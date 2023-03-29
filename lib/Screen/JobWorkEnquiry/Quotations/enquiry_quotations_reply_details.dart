@@ -2,10 +2,12 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/ReviceQuotations/enquiry_revice_quotations.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/enquiry_quotations_reply.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/app_button.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import '../../../Bloc/quotationReply/quotationReply_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_event.dart';
@@ -86,27 +88,30 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppSmallButton(
-              onPressed: () async {
-                _jobworkQuotationBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId!.toInt(),
-                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Reject',
-              loading: isRejectLoading,
-
-
-            ),
             Flexible(
-              child: AppSmallButton(
+              child: AppButton(
+                onPressed: () async {
+                  _jobworkQuotationBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId!.toInt(),
+                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Reject',
+                loading: loading,
+                color: ThemeColors.whiteTextColor,
+                borderColor: ThemeColors.defaultbuttonColor,textColor: ThemeColors.defaultbuttonColor,
+              ),
+            ),
+            const SizedBox(width:10),
+            Flexible(
+              child: AppButton(
                 onPressed: () async {
                   if(value == true) {
                     _jobworkQuotationBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId!.toInt(),
                         serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
 
-                    }else{
+                  }else{
                     showCustomSnackBar(context,'Please Agree the terms and conditions.'.toString());
                   }
                   },
@@ -114,9 +119,8 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                     borderRadius:
                     BorderRadius.all(Radius.circular(50))),
                 text: 'Revise Quotation',
-                loading: isRevisedLoading,
-
-
+                loading: loading,
+                color: ThemeColors.defaultbuttonColor,
               ),
             ),
           ],
@@ -179,7 +183,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                 title: Text("Item Required",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500
                     )),
@@ -287,7 +291,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                 title: Text("Quotation",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500
                     )),
@@ -336,7 +340,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("M1 Commission"),
+                            Text("Professional Charges"),
                             Text("₹ ${quotationChargesList![0].commission}"),
                           ],
                         ),
@@ -374,14 +378,14 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                             Text("Amount",
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontFamily: 'Poppins-Medium',
+                                    fontFamily: 'Poppins',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500
                                 )),
                             Text("₹ $grandTotal",
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontFamily: 'Poppins-Medium',
+                                    fontFamily: 'Poppins',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500
                                 )),
@@ -403,7 +407,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                 title:  Text("Message from Client",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500
                     )),
@@ -424,7 +428,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                 title:  Text("Terms and Conditions",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500
                     )),
@@ -443,7 +447,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
                       const Text("I agree to the terms and conditions.",
                           style: TextStyle(
                               color: Colors.black,
-                              fontFamily: 'Poppins-Medium',
+                              fontFamily: 'Poppins',
                               fontSize: 14,
                               fontWeight: FontWeight.w400))
                     ],
@@ -471,7 +475,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
       //       leading: Text("Quotation",
       //           style: TextStyle(
       //               color: Colors.black,
-      //               fontFamily: 'Poppins-Medium',
+      //               fontFamily: 'Poppins',
       //               fontSize: 16,
       //               fontWeight: FontWeight.w500
       //           )),
@@ -551,14 +555,14 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
       //                   Text("Total",
       //                       style: TextStyle(
       //                           color: Colors.black,
-      //                           fontFamily: 'Poppins-Medium',
+      //                           fontFamily: 'Poppins',
       //                           fontSize: 16,
       //                           fontWeight: FontWeight.w500
       //                       )),
       //                   Text("₹20000",
       //                       style: TextStyle(
       //                           color: Colors.black,
-      //                           fontFamily: 'Poppins-Medium',
+      //                           fontFamily: 'Poppins',
       //                           fontSize: 16,
       //                           fontWeight: FontWeight.w500
       //                       )),
@@ -577,7 +581,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
       //       leading: Text("Terms and Conditions",
       //           style: TextStyle(
       //               color: Colors.black,
-      //               fontFamily: 'Poppins-Medium',
+      //               fontFamily: 'Poppins',
       //               fontSize: 16,
       //               fontWeight: FontWeight.w500
       //           )),
@@ -593,7 +597,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
       //       leading: Text("Message from Client",
       //           style: TextStyle(
       //               color: Colors.black,
-      //               fontFamily: 'Poppins-Medium',
+      //               fontFamily: 'Poppins',
       //               fontSize: 16,
       //               fontWeight: FontWeight.w500
       //           )),

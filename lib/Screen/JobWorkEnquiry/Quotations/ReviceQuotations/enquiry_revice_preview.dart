@@ -4,6 +4,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_event.dart';
 import 'package:service_engineer/Bloc/home/home_state.dart';
@@ -60,7 +61,7 @@ class _EnquiryReviseQuotationPreviewScreenState
   double? amount = 0;
   double? amountWithGST = 0;
   double? itemRequiredTotalAmount = 0;
-  double? commission = 10;
+  int? commission = 0;
   double? grandTotal = 0.0;
   QuotationReplyBloc? _quotationBloc;
 
@@ -72,7 +73,17 @@ class _EnquiryReviseQuotationPreviewScreenState
     super.initState();
     _phoneNumberController.clear();
     _quotationBloc = BlocProvider.of<QuotationReplyBloc>(this.context);
+    getCommissionApi();
+  }
 
+  getCommissionApi()async{
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
+    then((value) => value);
+    print(com);
+    print(com['data']);
+    commission = com['data'];
+    setState(() {
+    });
   }
 
   @override
@@ -128,7 +139,7 @@ class _EnquiryReviseQuotationPreviewScreenState
             title: Text("Quotation",
                 style: TextStyle(
                     color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.w500)),
             children: <Widget>[
@@ -254,7 +265,7 @@ class _EnquiryReviseQuotationPreviewScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("M2 Commission"),
+                        Text("Professional Charges"),
                         Text("₹$commission"),
                       ],
                     ),
@@ -304,13 +315,13 @@ class _EnquiryReviseQuotationPreviewScreenState
                         Text("Total",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         Text("₹ $grandTotal",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                       ],
@@ -331,7 +342,7 @@ class _EnquiryReviseQuotationPreviewScreenState
             title: Text("Terms and Conditions",
                 style: TextStyle(
                     color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.w500)),
             children: <Widget>[
@@ -349,7 +360,7 @@ class _EnquiryReviseQuotationPreviewScreenState
                   const Text("I agree to the terms and conditions.",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 14,
                           fontWeight: FontWeight.w400))
                 ],
@@ -364,7 +375,7 @@ class _EnquiryReviseQuotationPreviewScreenState
           //   title: Text("Message from Client",
           //       style: TextStyle(
           //           color: Colors.black,
-          //           fontFamily: 'Poppins-Medium',
+          //           fontFamily: 'Poppins',
           //           fontSize: 16,
           //           fontWeight: FontWeight.w500)),
           //   children: <Widget>[

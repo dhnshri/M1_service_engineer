@@ -150,7 +150,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
 
             Text('${length.toString()}',style: const TextStyle(
                 color: Colors.black,
-                fontFamily: 'Poppins-Medium',
+                fontFamily: 'Poppins',
                 fontSize: 16,
                 fontWeight: FontWeight.w400
             )),
@@ -159,7 +159,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("School/Company Name",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -225,7 +225,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Class/Course Name",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -289,7 +289,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Passing Year",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -356,7 +356,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Education Certificate",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -374,7 +374,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
                         // alignment: Alignment.bottomLeft,
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(widget.imageFile!.imagePath == null ? "Add Certificate": widget.imageFile!.imagePath!.split('/').last.toString(),
-                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                            maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -389,7 +389,7 @@ class _EducationFormWidgetState extends State<EducationFormWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4,right: 4),
                           child: Center(child: Text("+Add Image",
-                            style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           )),
                         ),

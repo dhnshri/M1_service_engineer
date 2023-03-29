@@ -108,7 +108,7 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                         children: [
                           Text(
                             'Sign Up As',
-                            style: TextStyle(fontFamily: 'Poppins-SemiBold',fontSize: 25,fontWeight: FontWeight.w600,
+                            style: TextStyle(fontFamily: 'Poppins',fontSize: 25,fontWeight: FontWeight.w600,
                             color: ThemeColors.whiteTextColor),
                           ),
                           SizedBox(
@@ -117,7 +117,7 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                           Text(
                             'Please Select the role to sign up',
                             softWrap: true,
-                            style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16,fontWeight: FontWeight.w400,
+                            style: TextStyle(fontFamily: 'Poppins',fontSize: 16,fontWeight: FontWeight.w400,
                                 color: ThemeColors.whiteTextColor),
                           ),
                           SizedBox(
@@ -148,7 +148,7 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
                                               child: Text(
                                                 item,
                                                 style: const TextStyle(
-                                                  fontFamily: 'Poppins-Medium',
+                                                  fontFamily: 'Poppins',
                                                   fontSize: 15,
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w500

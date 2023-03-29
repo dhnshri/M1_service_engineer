@@ -184,7 +184,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                           TaskData.username.toString(),
                           // "Job Title/Services Name or Any Other Name",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 16,
                               fontWeight: FontWeight.bold
                           ),
@@ -199,7 +199,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                           Text(
                             "Category Id:",
                             style: TextStyle(
-                                fontFamily: 'Poppins-SemiBold',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold
                             ),
@@ -212,7 +212,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                             child: Text(TaskData.enquiryCategoryId.toString(),
                               // "#102GRDSA36987",
                               style: TextStyle(
-                                fontFamily: 'Poppins-Regular',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
                               ),
@@ -230,7 +230,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                           Text(
                             "Category Name:",
                             style: TextStyle(
-                                fontFamily: 'Poppins-SemiBold',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold
                             ),
@@ -244,7 +244,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                               TaskData.enquiryDetailsCategory.toString(),
                               //"Step 1",
                               style: TextStyle(
-                                fontFamily: 'Poppins-Regular',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
                               ),
@@ -261,7 +261,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                       //     Text(
                       //       "Total Experience:",
                       //       style: TextStyle(
-                      //           fontFamily: 'Poppins-SemiBold',
+                      //           fontFamily: 'Poppins',
                       //           fontSize: 12,
                       //           fontWeight: FontWeight.bold
                       //       ),
@@ -275,7 +275,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                       //         TaskData.years.toString(),
                       //         //"Step 1",
                       //         style: TextStyle(
-                      //           fontFamily: 'Poppins-Regular',
+                      //           fontFamily: 'Poppins',
                       //           fontSize: 12,
                       //           // fontWeight: FontWeight.bold
                       //         ),
@@ -383,7 +383,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -398,7 +398,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -411,7 +411,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -428,7 +428,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -441,7 +441,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -458,7 +458,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -471,7 +471,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

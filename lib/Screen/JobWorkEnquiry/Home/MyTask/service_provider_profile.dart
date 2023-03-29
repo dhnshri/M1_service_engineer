@@ -242,7 +242,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
             //     child: Icon(Icons.arrow_back_ios)),
             title: const Text("Profile",
               style: TextStyle(
-                  fontFamily: 'Poppins-Medium'
+                  fontFamily: 'Poppins'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
@@ -335,7 +335,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(_companyNameController.text,
-                                        style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                        style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                         textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )
                                     ],
@@ -351,7 +351,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                       const Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Text("Details",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -364,7 +364,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("ID",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -428,7 +428,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Company Name",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -491,7 +491,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Co-Ordinator Name",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -556,7 +556,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Email",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -626,7 +626,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Phone Number",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -694,7 +694,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("GST Number",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -761,7 +761,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Category",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -825,7 +825,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                               child: Text("Company Profile",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -891,7 +891,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                       const Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Text("Machine List",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -904,14 +904,14 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 5),
                               child: Text("Machine Name",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 0.0, bottom: 5),
                               child: Text("Quantity",
-                                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -950,7 +950,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                                     child: Container(
                                                       width: MediaQuery.of(context).size.width * 0.4,
                                                       child: Text('${machineList[index].machineName}',
-                                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
                                                         textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ),
@@ -958,7 +958,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                                                   Padding(
                                                     padding: const EdgeInsets.only(right: 10),
                                                     child: Text('${machineList[index].quantity}',
-                                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                      style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
                                                       textAlign: TextAlign.end, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
@@ -988,7 +988,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text("Address",
-                          style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -1004,7 +1004,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Address",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1083,7 +1083,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Pin Code",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1149,7 +1149,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("City",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1216,7 +1216,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("State",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1282,7 +1282,7 @@ class _JobWorkServiceProviderProfileState extends State<JobWorkServiceProviderPr
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Country",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),

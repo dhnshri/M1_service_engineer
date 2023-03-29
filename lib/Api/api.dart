@@ -100,6 +100,8 @@ class Api {
   static const String ORDER_LIST="get_order_list";
   static const String ORDER_DETAIL="get_detail_order_list";
   static const String CANCEL_ORDER="cancel_order";
+  static const String TRANSPORT_TRACK_PROCESS="transport_track_progress";
+  static const String GET_TRANSPORT_TRACK_PROCESS="get_transport_track_process";
 
 
   ///Login api
@@ -332,16 +334,16 @@ class Api {
     }
   }
 
-  static Future<dynamic> getFilterList() async {
-    final response = await http.post(
-      Uri.parse(HOST_URL+GET_BRAND_LIST),
-    );
-    if (response.statusCode == 200) {
-      final responseJson = json.decode(response.body);
-      print(responseJson);
-      return FilterRepo.fromJson(responseJson);
-    }
-  }
+  // static Future<dynamic> getFilterList() async {
+  //   final response = await http.post(
+  //     Uri.parse(HOST_URL+GET_BRAND_LIST),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     final responseJson = json.decode(response.body);
+  //     print(responseJson);
+  //     return FilterRepo.fromJson(responseJson);
+  //   }
+  // }
 
   static Future<dynamic> getFilterCategoryList() async {
     final response = await http.post(
@@ -657,6 +659,30 @@ class Api {
   static Future<dynamic> getAddToCart(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+CART_API),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CartRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> transportUpdateTrackProcess(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRANSPORT_TRACK_PROCESS),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CartRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> transportGetTrackProcess(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+GET_TRANSPORT_TRACK_PROCESS),
       body: params,
     );
     if (response.statusCode == 200) {

@@ -223,7 +223,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                       child: Text(
                                         orderDetail[index].itemName.toString(),
                                         style: TextStyle(
-                                            fontFamily: 'Poppins-SemiBold',
+                                            fontFamily: 'Poppins',
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
@@ -239,7 +239,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                         Text(
                                           "Price:",
                                           style: TextStyle(
-                                            fontFamily: 'Poppins-Regular',
+                                            fontFamily: 'Poppins',
                                             fontSize: 12,
                                             // fontWeight: FontWeight.bold
                                           ),
@@ -249,7 +249,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                         Text(
                                           "₹ ${orderDetail[index].rate.toString()}",
                                           style: TextStyle(
-                                              fontFamily: 'Poppins-Regular',
+                                              fontFamily: 'Poppins',
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold
                                           ),
@@ -265,7 +265,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                         Text(
                                           "Order Id:",
                                           style: TextStyle(
-                                            fontFamily: 'Poppins-Regular',
+                                            fontFamily: 'Poppins',
                                             fontSize: 12,
                                             // fontWeight: FontWeight.bold
                                           ),
@@ -275,7 +275,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                         Text(
                                           orderDetail[index].machineEnquiryId.toString(),
                                           style: TextStyle(
-                                              fontFamily: 'Poppins-Regular',
+                                              fontFamily: 'Poppins',
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold
                                           ),
@@ -292,14 +292,14 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                     //   width: MediaQuery.of(context).size.width*0.6,
                                     //   child: descrip != "" ?Text(descrip.toString(),
                                     //     style: TextStyle(
-                                    //         fontFamily: 'Poppins-Regular',
+                                    //         fontFamily: 'Poppins',
                                     //         fontSize: 12,
                                     //         fontWeight: FontWeight.bold
                                     //     ),
                                     //     // overflow: TextOverflow.ellipsis,
                                     //   ): Text("",
                                     //     style: TextStyle(
-                                    //         fontFamily: 'Poppins-Regular',
+                                    //         fontFamily: 'Poppins',
                                     //         fontSize: 12,
                                     //         fontWeight: FontWeight.bold
                                     //     ),
@@ -326,7 +326,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         title: Text("Track",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             )),
@@ -355,7 +355,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         title: Text("Delivery Address",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             )),
@@ -371,7 +371,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                   // Text("Plot 52B, Gandhi layout Jafar Nagar Nagpur 440013 Plot 52B, Gandhi layout Jafar Nagar Nagpur 440013",
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontFamily: 'Poppins-Medium',
+                                        fontFamily: 'Poppins',
                                         fontSize: 14,
                                         // fontWeight: FontWeight.w500
                                       )),
@@ -390,7 +390,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         title: Text("Invoice",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             )),
@@ -490,7 +490,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         title: Text("Quotation",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             )),
@@ -541,7 +541,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("M1 Commission"),
+                                    Text("Professional Charges"),
                                     Text("₹ ${orderDetail[0].commission}"),
                                   ],
                                 ),
@@ -561,14 +561,14 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                     Text("Amount",
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontFamily: 'Poppins-Medium',
+                                            fontFamily: 'Poppins',
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500
                                         )),
                                     Text("₹ $grandTotal",
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontFamily: 'Poppins-Medium',
+                                            fontFamily: 'Poppins',
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500
                                         )),
@@ -589,7 +589,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         title: Text("Terms and Conditions",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             )),
@@ -608,7 +608,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                               const Text("I agree to the terms and conditions.",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
+                                      fontFamily: 'Poppins',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400))
                             ],
@@ -617,7 +617,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         ],
                       ),
 
-                      widget.orderList.orderTrackingStatus != 5 ? Padding(
+                      (widget.orderList.cancelOrder != 1 && widget.orderList.orderTrackingStatus != 5) ? Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: AppButton(
                           onPressed: () async {
@@ -714,7 +714,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
         title: StepperText(
           "Order Placed",textStyle: TextStyle(
           fontSize: 13,
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Poppins',
           fontWeight: FontWeight.w500
         )),
         // subtitle: StepperText("24, Nov 2023"),
@@ -728,7 +728,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
     StepperData(
         title: StepperText("Order is ready for dispatch",textStyle: TextStyle(
             fontSize: 13,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         // subtitle: StepperText("24, Nov 2023"),
@@ -742,7 +742,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
     StepperData(
         title: StepperText("Order is reached your city",textStyle: TextStyle(
             fontSize: 13,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         // subtitle: StepperText("24, Nov 2023"),
@@ -756,7 +756,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
     StepperData(
         title: StepperText("Order is reached your location\nplease verify and recive",textStyle: TextStyle(
             fontSize: 13,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         // subtitle: StepperText("24, Nov 2023"),
@@ -770,7 +770,7 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
     StepperData(
       title: StepperText("Delivered",textStyle: TextStyle(
           fontSize: 13,
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Poppins',
           fontWeight: FontWeight.w500
       )),
       // subtitle: StepperText("24, Nov 2023"),

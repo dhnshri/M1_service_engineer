@@ -218,7 +218,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         myTaskData.machineName.toString(),
                        // "Job Title/Services Name or Any Other Name",
                         style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         ),
@@ -233,7 +233,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         Text(
                           "Enquiry ID:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -247,7 +247,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                             myTaskData.enquiryId.toString(),
                            // "#102GRDSA36987",
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -265,7 +265,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         Text(
                           "Task Status:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -279,7 +279,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                             myTaskData.taskStatus.toString(),
                             //"Step 1",
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -295,7 +295,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                     //     Text(
                     //       "Progress:",
                     //       style: TextStyle(
-                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontFamily: 'Poppins',
                     //           fontSize: 12,
                     //           fontWeight: FontWeight.bold
                     //       ),
@@ -551,7 +551,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -566,7 +566,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -579,7 +579,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -596,7 +596,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -609,7 +609,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -626,7 +626,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -639,7 +639,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

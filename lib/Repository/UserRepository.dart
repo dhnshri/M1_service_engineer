@@ -369,6 +369,19 @@ class UserRepository {
     return await Api.getAddToCart(params);
   }
 
+  ///Transport track process
+  Future<dynamic> transportUpdateTrackProcess({String? serviceUserId,String? transportEnqId, String? reachAtPic,String? loadingComplete,String? onTheWay,String? reachAtDrop}) async {
+    final params = {"service_user_id":serviceUserId, "transport_enquiry_id":transportEnqId,'reached_at_pickup_location':reachAtPic,'loading_completed':loadingComplete,
+      'on_the_way_to_drop_location':onTheWay,'reaches_on_drop_location':reachAtDrop};
+    return await Api.transportUpdateTrackProcess(params);
+  }
+
+  ///Get Transport Troack Process
+  Future<dynamic> transportGetTrackProcess({String? serviceUserId,String? transportEnqId,}) async {
+    final params = {"service_user_id":serviceUserId, "transport_enquiry_id":transportEnqId,};
+    return await Api.transportGetTrackProcess(params);
+  }
+
   //Cart List
   Future<dynamic> fetchCartList({String? userId}) async {
     final params = {"user_id":userId,};

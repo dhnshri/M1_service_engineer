@@ -185,7 +185,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                     title: const Text("Basic Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       ),),
@@ -238,7 +238,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                     title: const Text("Item Required",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -316,7 +316,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                   child: Text("Drawing Attachment:",
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontFamily: 'Poppins-Medium',
+                                          fontFamily: 'Poppins',
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500
                                       )),
@@ -339,7 +339,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     color: ThemeColors.buttonColor,
-                                                    fontFamily: 'Poppins-Regular',
+                                                    fontFamily: 'Poppins',
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400
                                                 )),
@@ -353,7 +353,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                               child: const Text('View',
                                                   style: TextStyle(
                                                       color: ThemeColors.buttonColor,
-                                                      fontFamily: 'Poppins-Regular',
+                                                      fontFamily: 'Poppins',
                                                       fontSize: 14,
                                                       fontWeight: FontWeight.w500
                                                   )),
@@ -396,7 +396,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                   const Padding(
                     padding: EdgeInsets.all(15.0),
                     child: Text("Track Process",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                        style: TextStyle(fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500)
                     ),
@@ -447,7 +447,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                         child: Text(trackProgressData![index].description.toString(),
                                             maxLines: 2, overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                                fontFamily: 'Poppins',fontSize: 12,color: Colors.black
                                             )),
                                       ),
                                       trailing: Padding(
@@ -487,7 +487,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                   //             children: [
                   //               Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
                   //               Text("Create Task",
-                  //                 style: TextStyle(fontFamily: 'Poppins-Medium',
+                  //                 style: TextStyle(fontFamily: 'Poppins',
                   //                     fontSize: 16,
                   //                     fontWeight: FontWeight.w500,
                   //                     color: Colors.black.withOpacity(0.55)
@@ -504,7 +504,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                     title: Text("Item Required",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -677,14 +677,14 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                 Text("Amount",
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontFamily: 'Poppins-Medium',
+                                        fontFamily: 'Poppins',
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500
                                     )),
                                 Text("₹ $grandTotal",
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontFamily: 'Poppins-Medium',
+                                        fontFamily: 'Poppins',
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500
                                     )),
@@ -704,7 +704,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                     title:  Text("Message from Client",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),

@@ -83,31 +83,17 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
-    // _homeBloc!.add(OnTrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:widget.myTaskJobWorkEnquiryData.enquiryId.toString()));
-    _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
-    addressLat = double.parse(21.1458.toString());
-    addressLong = double.parse(79.0882.toString());
-    _lastMapPosition = LatLng(addressLat!, addressLong!);
-
-    _markers.add(Marker(
-        markerId: MarkerId(151.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-            title: "You are here",
-            snippet: "This is a current location snippet",
-            onTap: () {}),
-        onTap: () {},
-        icon: BitmapDescriptor.defaultMarker));
-
+    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.myTaskJobWorkEnquiryData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.myTaskJobWorkEnquiryData.enquiryId.toString(),transportEnquiryId: '0'));
+    // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
+    _homeBloc!.add(OnTrackProcessList(userId: Application.customerLogin!.id.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:widget.myTaskJobWorkEnquiryData.enquiryId.toString()));
+    // _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _phoneNumberController.clear();
-
-    // getroleofstudent();
   }
 
 
@@ -190,7 +176,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                     title: const Text("Basic Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       ),),
@@ -204,13 +190,6 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                               children: [
                                 Text("Company ID",style: ExpanstionTileLeftDataStyle,),
                                 Text(myTaskData![0].id.toString(),style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Company Name:",style: ExpanstionTileLeftDataStyle,),
-                               // Text(myTaskData![0]..toString(),style: ExpanstionTileRightDataStyle,),
                               ],
                             ),
                             Row(
@@ -243,7 +222,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                     title: const Text("Item Required",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -321,7 +300,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                   child: Text("Drawing Attachment:",
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontFamily: 'Poppins-Medium',
+                                          fontFamily: 'Poppins',
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500
                                       )),
@@ -344,7 +323,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     color: ThemeColors.buttonColor,
-                                                    fontFamily: 'Poppins-Regular',
+                                                    fontFamily: 'Poppins',
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400
                                                 )),
@@ -358,7 +337,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                               child: const Text('View',
                                                   style: TextStyle(
                                                       color: ThemeColors.buttonColor,
-                                                      fontFamily: 'Poppins-Regular',
+                                                      fontFamily: 'Poppins',
                                                       fontSize: 14,
                                                       fontWeight: FontWeight.w500
                                                   )),
@@ -401,7 +380,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                   const Padding(
                     padding: EdgeInsets.all(15.0),
                     child: Text("Track Process",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                        style: TextStyle(fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500)
                     ),
@@ -443,7 +422,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.w400)),
                                             Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
-                                              style: TextStyle(color: Colors.red),)
+                                              style: TextStyle(color: trackProgressData![index].status == 0 ? Colors.red: Colors.green),)
                                           ],
                                         ),
                                       ),
@@ -452,7 +431,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                                         child: Text(trackProgressData![index].description.toString(),
                                             maxLines: 2, overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
+                                                fontFamily: 'Poppins',fontSize: 12,color: Colors.black
                                             )),
                                       ),
                                       trailing: Padding(
@@ -492,7 +471,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                               children: [
                                 Icon(Icons.add, color: Colors.black.withOpacity(0.55)),
                                 Text("Create Task",
-                                  style: TextStyle(fontFamily: 'Poppins-Medium',
+                                  style: TextStyle(fontFamily: 'Poppins',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black.withOpacity(0.55)
@@ -521,7 +500,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                               width: 1,
                             )),
                         child: const Center(child: Text("Assign Task to Other",
-                            style: TextStyle(fontFamily: 'Poppins-Medium',
+                            style: TextStyle(fontFamily: 'Poppins',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: ThemeColors.whiteTextColor,
@@ -568,7 +547,7 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
                   //           color: ThemeColors.defaultbuttonColor,
                   //           borderRadius: BorderRadius.circular(30)),
                   //       child: Center(child: Text("Mark As Completed",
-                  //           style: TextStyle(fontFamily: 'Poppins-Medium',
+                  //           style: TextStyle(fontFamily: 'Poppins',
                   //             fontSize: 16,
                   //             fontWeight: FontWeight.w500,
                   //             color: Colors.white,

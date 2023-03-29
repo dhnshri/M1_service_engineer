@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
@@ -134,65 +135,6 @@ class _EnquiryServiceRequestScreenState
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.28,
-                  maxHeight: MediaQuery.of(context).size.width * 0.28,
-                ),
-                child: CachedNetworkImage(
-                  filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
-                  placeholder: (context, url) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                      ),
-                    );
-                  },
-                  imageBuilder: (context, imageProvider) {
-                    return Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                    );
-                  },
-                  errorWidget: (context, url, error) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.error),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -200,19 +142,47 @@ class _EnquiryServiceRequestScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width/1.8,
-                      child: Text(
-                        serviceRequestData.itemName.toString(),
-                        style: TextStyle(
-                          fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width/1.8,
+                    //   child: Text(
+                    //     serviceRequestData.itemName.toString(),
+                    //     style: TextStyle(
+                    //       fontFamily: 'Poppins',
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.bold
+                    //     ),
+                    //     overflow: TextOverflow.ellipsis,
+                    //     maxLines: 2,
+                    //   ),
+                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Item name:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width/9,
+                        // ),
+                        Container(
+                          child: Text(
+                            serviceRequestData.itemName.toString(),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                              // fontWeight: FontWeight.bold
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
                     ),
+
                     SizedBox(height: 4,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,7 +190,7 @@ class _EnquiryServiceRequestScreenState
                         Text(
                           "Enquiry ID:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -232,7 +202,7 @@ class _EnquiryServiceRequestScreenState
                           child: Text(
                             serviceRequestData.enquiryId.toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                           ),
@@ -247,38 +217,9 @@ class _EnquiryServiceRequestScreenState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Item:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/5.3,
-                        // ),
-                        Container(
-                          child: Text(
-                            "Steal Plates",
-                            style: TextStyle(
-                                fontFamily: 'Poppins-Regular',
-                                fontSize: 12,
-                                // fontWeight: FontWeight.bold
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 3,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
                           "Date & Time:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -290,9 +231,9 @@ class _EnquiryServiceRequestScreenState
                         // ),
                         Container(
                           child: Text(
-                            serviceRequestData.dateAndTime.toString(),
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceRequestData.dateAndTime.toString())).toString(),
                             style: TextStyle(
-                                fontFamily: 'Poppins-Regular',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
                             ),
@@ -356,13 +297,14 @@ class _EnquiryServiceRequestScreenState
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              Expanded(
                                 // width:200,
                                 child: const Text("Task Assigned By Other Service Providers",
                                     overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
                                     style: TextStyle(
                                       // color: ThemeColors.buttonColor,
-                                        fontFamily: 'Poppins-Regular',
+                                        fontFamily: 'Poppins',
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600
                                     )),
@@ -376,7 +318,7 @@ class _EnquiryServiceRequestScreenState
                                   child: Text('View',
                                       style: TextStyle(
                                           color: ThemeColors.buttonColor,
-                                          fontFamily: 'Poppins-Regular',
+                                          fontFamily: 'Poppins',
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500
                                       )),
@@ -586,7 +528,7 @@ class _EnquiryServiceRequestScreenState
                             child: Text(
                               "Item Name",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -601,7 +543,7 @@ class _EnquiryServiceRequestScreenState
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -613,7 +555,7 @@ class _EnquiryServiceRequestScreenState
                                 child: Text(
                                   "Enquiry Id",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -630,7 +572,7 @@ class _EnquiryServiceRequestScreenState
                               Text(
                                 "Item:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -642,7 +584,7 @@ class _EnquiryServiceRequestScreenState
                                 child: Text(
                                   "Steal Plates",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -659,7 +601,7 @@ class _EnquiryServiceRequestScreenState
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -673,7 +615,7 @@ class _EnquiryServiceRequestScreenState
                                 child: Text(
                                   "dateAndTime",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

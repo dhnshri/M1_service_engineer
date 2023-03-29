@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
+import 'package:service_engineer/Bloc/home/home_event.dart';
+import 'package:service_engineer/Bloc/home/home_state.dart';
 import 'package:service_engineer/Model/cart_repo.dart';
 import 'package:service_engineer/Model/filter_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
@@ -24,11 +27,9 @@ import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../Model/cart_list_repo.dart';
-import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
 import '../../Model/Transpotation/serviceRequestListModel.dart';
-import 'home_event.dart';
-import 'home_state.dart';
+
 
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -82,46 +83,47 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     ///Machine HandOver Service List
-    if (event is MachineHandOverServiceRequestList) {
-    if (event is ItemFilter) {
-      ///Notify loading to UI
-      yield MachineHandOverServiceRequestListLoading(
-        isLoading: false,
-      );
+    if (event is MachineHandOverServiceRequestList) {  }
 
-      ///Fetch API via repository
-      final ServiceRequestRepo result = await userRepository!
-          .fetchMachineHandOverServiceRequestListList(
-          offSet: event.offSet,
-          timeId: event.timeId,
-          serviceUserId: event.serviceUserId,
-      );
-      print(result);
-
-      ///Case API fail but not have token
-      if (result.success == true) {
-        ///Home API success
-        final Iterable refactorServiceRequestList = result.data! ?? [];
-        final serviceRequestList = refactorServiceRequestList.map((item) {
-          return ServiceRequestModel.fromJson(item);
-        }).toList();
-        print('Service Request List: $serviceRequestList');
-        try {
-          ///Begin start AuthBloc Event AuthenticationSave
-          yield MachineHandOverServiceRequestListLoading(
-            isLoading: true,
-          );
-          yield MachineHandOverServiceRequestListSuccess(serviceListData: serviceRequestList, message: result.msg!);
-        } catch (error) {
-          ///Notify loading to UI
-          yield MachineHandOverServiceRequestListFail(msg: result.msg!);
-        }
-      } else {
-        ///Notify loading to UI
-        yield MachineHandOverServiceRequestListLoading(isLoading: true);
-        yield MachineHandOverServiceRequestListFail(msg: result.msg!);
-      }
-    }
+    // if (event is ItemFilter) {
+    //   ///Notify loading to UI
+    //   yield MachineHandOverServiceRequestListLoading(
+    //     isLoading: false,
+    //   );
+    //
+    //   ///Fetch API via repository
+    //   final ServiceRequestRepo result = await userRepository!
+    //       .fetchMachineHandOverServiceRequestListList(
+    //     offSet: event.offSet,
+    //     timeId: event.timeId,
+    //     serviceUserId: event.serviceUserId,
+    //   );
+    //   print(result);
+    //
+    //   ///Case API fail but not have token
+    //   if (result.success == true) {
+    //     ///Home API success
+    //     final Iterable refactorServiceRequestList = result.data! ?? [];
+    //     final serviceRequestList = refactorServiceRequestList.map((item) {
+    //       return ServiceRequestModel.fromJson(item);
+    //     }).toList();
+    //     print('Service Request List: $serviceRequestList');
+    //     try {
+    //       ///Begin start AuthBloc Event AuthenticationSave
+    //       yield MachineHandOverServiceRequestListLoading(
+    //         isLoading: true,
+    //       );
+    //       yield MachineHandOverServiceRequestListSuccess(serviceListData: serviceRequestList, message: result.msg!);
+    //     } catch (error) {
+    //       ///Notify loading to UI
+    //       yield MachineHandOverServiceRequestListFail(msg: result.msg!);
+    //     }
+    //   } else {
+    //     ///Notify loading to UI
+    //     yield MachineHandOverServiceRequestListLoading(isLoading: true);
+    //     yield MachineHandOverServiceRequestListFail(msg: result.msg!);
+    //   }
+    // }
 
     ///Machine Handover Task Detail
     if (event is MachineHandOverTaskDetail) {
@@ -363,8 +365,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is BrandFilter) {
       ///Notify loading to UI
       yield BrandFilterLoading(
-      yield ItemFilterLoading(
-        isLoading: false,
+      isLoading: false,
       );
 
       ///Fetch API via repository
@@ -563,9 +564,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final MyTaskRepo response = await userRepository!
           .fetchMachineMaintainceMyTaskList(
-          userId: event.userid,
-          offset:event.offset,
-          timePeriod: event.timePeriod,
+        userId: event.userid,
+        offset:event.offset,
+        timePeriod: event.timePeriod,
       );
       print(response);
 
@@ -601,10 +602,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final ServiceRequestDetailRepo result = await userRepository!
           .fetchServiceRequestDetail(
-        userID: event.userID,
-        machineEnquiryId: event.machineEnquiryId,
-        jobWorkEnquiryId: event.jobWorkEnquiryId,
-        transportEnquiryId: event.transportEnquiryId
+          userID: event.userID,
+          machineEnquiryId: event.machineEnquiryId,
+          jobWorkEnquiryId: event.jobWorkEnquiryId,
+          transportEnquiryId: event.transportEnquiryId
       );
       print(result);
 
@@ -800,6 +801,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    ///Transport Quotation Reply Detail
     if (event is TransportQuotationReplyDetail) {
       ///Notify loading to UI
       yield TransportQuotationReplyDetailLoading(
@@ -863,6 +865,79 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
+    ///Transport Update Track Process
+    if (event is TransportUpdateTrackProcess) {
+      ///Notify loading to UI
+      yield TransportUpdateProcessLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final CartRepo result = await userRepository!
+          .transportUpdateTrackProcess(
+          serviceUserId: event.serviceUserID,
+          transportEnqId: event.transportEnquiryId,
+          reachAtPic: event.reachAtPick,
+          loadingComplete: event.loadComplete,
+          onTheWay: event.onWayToDrop,
+          reachAtDrop: event.reachOnDrop,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TransportUpdateProcessLoading(
+            isLoading: true,
+          );
+          yield TransportUpdateProcessSuccess( message: result.msg.toString());
+        } catch (error) {
+          ///Notify loading to UI
+          yield TransportUpdateProcessFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield TransportUpdateProcessFail(msg: result.msg);
+      }
+    }
+
+    ///Transport Get Track Process
+    if (event is TransporGetTrackProcess) {
+      ///Notify loading to UI
+      yield TransportGetProcessLoading(isLoading: false);
+
+      ///Fetch API via repository
+      final CartRepo result = await userRepository!
+          .transportGetTrackProcess(
+        serviceUserId: event.serviceUserID,
+        transportEnqId: event.transportEnquiryId,
+      );
+      print(result);
+
+      ///Case API fail but not have token
+      if (result.success == true) {
+
+        final Iterable refactorTrackData = result.data! ?? [];
+        final trackData = refactorTrackData.map((item) {
+          return TrackDataModel.fromJson(item);
+        }).toList();
+        print('Quotation Reply List: $trackData');
+
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield TransportGetProcessLoading(
+            isLoading: true,
+          );
+          yield TransportGetProcessSuccess(trackData: trackData,message: result.msg.toString());
+        } catch (error) {
+          ///Notify loading to UI
+          yield TransportGetProcessFail(msg: result.msg);
+        }
+      } else {
+        ///Notify loading to UI
+        yield TransportGetProcessFail(msg: result.msg);
+      }
+    }
 
     //Product List
     if (event is ProductList) {
@@ -872,11 +947,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final ProductRepo result = await userRepository!
           .fetchProductList(
-        prodId: event.prodId,
-        offset: event.offSet,
-        brandId: event.brandId,
-        priceId: event.priceId,
-        catId: event.catId
+          prodId: event.prodId,
+          offset: event.offSet,
+          brandId: event.brandId,
+          priceId: event.priceId,
+          catId: event.catId
       );
       print(result);
 
@@ -947,7 +1022,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final CartListRepo result = await userRepository!
           .fetchCartList(
-          userId: event.userId,
+        userId: event.userId,
       );
       print(result);
 
@@ -986,10 +1061,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final TrackProcessRepo result = await userRepository!
           .fetchTrackProgressList(
-        userId: event.userId,
-        machineEnquiryId: event.machineEnquiryId,
-        transportEnquiryId: event.transportEnquiryId,
-        jobWorkWnquiryId: event.jobWorkEnquiryId
+          userId: event.userId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId
       );
       print(result);
 
@@ -1165,13 +1240,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final CreateTaskRepo result = await userRepository!
           .createTask(
-        userId: event.userId,
-        machineEnquiryId: event.machineEnquiryId,
-        transportEnquiryId: event.transportEnquiryId,
-        jobWorkWnquiryId: event.jobWorkEnquiryId,
-        heading: event.heading,
-        description: event.description,
-        status: event.status
+          userId: event.userId,
+          machineEnquiryId: event.machineEnquiryId,
+          transportEnquiryId: event.transportEnquiryId,
+          jobWorkWnquiryId: event.jobWorkEnquiryId,
+          heading: event.heading,
+          description: event.description,
+          status: event.status
       );
       print(result);
 
@@ -1425,8 +1500,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final JobWorkEnquiryServiceRequestRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryList(
-        offSet: event.offSet,
-        timeId: event.timePeriod
+          offSet: event.offSet,
+          timeId: event.timePeriod
       );
       print(result);
 
@@ -1502,8 +1577,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final ServiceRequestTranspotationRepo result = await userRepository!
           .fetchServiceRequestTranspotationList(
-        offSet: event.offSet,
-        timeId: event.timeId
+          offSet: event.offSet,
+          timeId: event.timeId
       );
       print(result);
 
@@ -1540,9 +1615,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final MyTaskTransportationRepo response = await userRepository!
           .fetchTranspotationMyTaskList(
-          userId: event.userid,
-          offset:event.offset,
-          timeId: event.timeId,
+        userId: event.userid,
+        offset:event.offset,
+        timeId: event.timeId,
       );
       print(response);
 
@@ -1613,7 +1688,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-   // Event for Job Work Enquiry send quotation
+    // Event for Job Work Enquiry send quotation
     if (event is JobWorkSendQuotation) {
       ///Notify loading to UI
       yield JobWorkSendQuotationLoading(isLoading: false);
@@ -1733,9 +1808,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
   }
-
-
-  }
   jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
     for (var key in data.keys) {
       request.fields[key] = data[key].toString();
@@ -1744,3 +1816,4 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
 
+}

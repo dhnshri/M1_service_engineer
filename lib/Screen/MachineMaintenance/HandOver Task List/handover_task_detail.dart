@@ -166,7 +166,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                     title: const Text("Machine Information",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -352,7 +352,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                     title: const Text("Task Detail",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -368,7 +368,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                               child: Column(
                                 children: [
                                   Text(handoverTaskData![0].heading.toString(),
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',
+                                      style: TextStyle(fontFamily: 'Poppins',
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500)),
                                 ],
@@ -392,7 +392,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                     title: const Text("Task Amount and Description",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -415,7 +415,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         // color: ThemeColors.buttonColor,
-                                          fontFamily: 'Poppins-Regular',
+                                          fontFamily: 'Poppins',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500
                                       )),
@@ -424,7 +424,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                                   child: Text("₹ ${handoverTaskData![0].price.toString()}",
                                       style: TextStyle(
                                           // color: ThemeColors.buttonColor,
-                                          fontFamily: 'Poppins-Regular',
+                                          fontFamily: 'Poppins',
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500
                                       )),
@@ -442,7 +442,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                           child: Text("Other Information",
                               style: TextStyle(
                                 // color: ThemeColors.buttonColor,
-                                  fontFamily: 'Poppins-Regular',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600
                               )),
@@ -456,7 +456,7 @@ class _HandOverTaskDetailScreenState extends State<HandOverTaskDetailScreen> {
                           child: Text(handoverTaskData![0].description.toString(),
                               style: TextStyle(
                                 // color: ThemeColors.buttonColor,
-                                  fontFamily: 'Poppins-Regular',
+                                  fontFamily: 'Poppins',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500
                               )),

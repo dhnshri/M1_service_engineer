@@ -194,7 +194,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   title: Text("Item Required",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -294,7 +294,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   title: Text("Other Items( item not available on app)",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -391,12 +391,12 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Date & Time",
-                              style: TextStyle(fontFamily: 'Poppins-Medium',
+                              style: TextStyle(fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                           Container(
                             child: Text(DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(quotationRequiredItemList![0].dateAndTime!.toString())).toString(),
-                                style: TextStyle(fontFamily: 'Poppins-Medium',
+                                style: TextStyle(fontFamily: 'Poppins',
                                     fontSize: 15,
                                     color: Colors.black.withOpacity(0.5)
                                 )),
@@ -420,7 +420,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   title: Text("Quotation",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -478,7 +478,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("M1 Commission"),
+                              Text("Professional Charges"),
                               Text("₹ ${quotationChargesList![0].commission}"),
                             ],
                           ),
@@ -498,14 +498,14 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                               Text("Amount",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
+                                      fontFamily: 'Poppins',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500
                                   )),
                               Text("₹ $grandTotal",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
+                                      fontFamily: 'Poppins',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500
                                   )),
@@ -527,7 +527,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   title:  Text("Message from Client",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -548,7 +548,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   title:  Text("Terms and Conditions",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -567,7 +567,7 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                         const Text("I agree to the terms and conditions.",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400))
                       ],

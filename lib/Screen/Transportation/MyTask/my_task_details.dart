@@ -10,10 +10,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/Transpotation/myTaskListModel.dart';
+import 'package:service_engineer/Model/track_model.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/MyTask/process_detail.dart';
 import 'package:service_engineer/Screen/Transportation/MyTask/process_detail_transport_screen.dart';
 import 'package:service_engineer/Screen/Transportation/MyTask/transpotation_service_provider_list.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
+import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -63,25 +65,24 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
   int _currentStep = 0;
   StepperType stepperType = StepperType.vertical;
 
+  int reachAtPick=0;
+  int loadComplete=0;
+  int onTheWay=0;
+  int reachOnDrop=0;
+  List<TrackDataModel> trackData=[];
+
   tapped(int step){
     setState(() => _currentStep = step);
   }
 
-  continued(){
-    _currentStep < 2 ?
-    setState(() => _currentStep += 1): null;
-  }
-  cancel(){
-    _currentStep > 0 ?
-    setState(() => _currentStep -= 1) : null;
-  }
+
 
   List<Step> getSteps(){
     return <Step>[
       Step(
         title: new Text('Reached at pickup location',style: TextStyle(
             fontSize: 15,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         content: SizedBox( ),
@@ -91,7 +92,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
       Step(
         title: new Text('Loading completed',style: TextStyle(
             fontSize: 15,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         content: SizedBox(),
@@ -102,7 +103,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
       Step(
         title: new Text('On the way to drop location',style: TextStyle(
             fontSize: 15,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         content: SizedBox(),
@@ -112,7 +113,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
       Step(
         title: new Text('Reached on drop location',style: TextStyle(
             fontSize: 15,
-            fontFamily: 'Poppins-Medium',
+            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500
         )),
         content: SizedBox(),
@@ -128,8 +129,9 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnMyTaskTranspotationDetail(userID:widget.myTaskData.userId.toString(), machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:widget.myTaskData.enquiryId.toString()));
-    // _homeBloc!.add(OnMyTaskTranspotationDetail(userID:'4', machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:'31'));
+    // _homeBloc!.add(OnMyTaskTranspotationDetail(userID:widget.myTaskData.userId.toString(), machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:widget.myTaskData.enquiryId.toString()));
+    _homeBloc!.add(OnMyTaskTranspotationDetail(userID:'4', machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:'31'));
+    _homeBloc!.add(TransporGetTrackProcess(transportEnquiryId:'31', serviceUserID: '4'));
   }
   @override
   void dispose() {
@@ -137,7 +139,11 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
     super.dispose();
   }
 
-
+  trackApi(){
+    _homeBloc!.add(TransportUpdateTrackProcess(serviceUserID:Application.customerLogin!.id.toString(),
+        transportEnquiryId:widget.myTaskData.enquiryId.toString(),reachAtPick: reachAtPick.toString(),
+        loadComplete: loadComplete.toString(),onWayToDrop: onTheWay.toString(),reachOnDrop: reachOnDrop.toString()));
+  }
 
 
   @override
@@ -202,6 +208,24 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                 if(state is TrackProcssListTransportFail){
                   // Fluttertoast.showToast(msg: state.msg.toString());
                 }
+                if(state is TransportUpdateProcessLoading){
+                  // _isLoading = state.isLoading;
+                }
+                if(state is TransportUpdateProcessSuccess){
+                  showCustomSnackBar(context,state.message.toString(),isError: false);
+                }
+                if(state is TransportUpdateProcessFail){
+                  showCustomSnackBar(context,state.msg.toString(),isError: true);
+                }
+                if(state is TransportGetProcessLoading){
+                  // _isLoading = state.isLoading;
+                }
+                if(state is TransportGetProcessSuccess){
+                  trackData = state.trackData;
+                }
+                if(state is TransportGetProcessFail){
+                  showCustomSnackBar(context,state.msg.toString(),isError: true);
+                }
               },
               child: _isLoading ?myTaskData!.length <=0 ? Center(child: CircularProgressIndicator(),):
               ListView(
@@ -214,7 +238,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                     title:Text("Basic Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       ),),
@@ -271,7 +295,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                     title: const Text("Load Details",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -378,84 +402,11 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                     thickness: 2.0,
                   ),
 
-                  ///Track PRocess
-                  ///Track PRocess
-                  trackProgressData!.length <= 0 ? Container():
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("Track Process",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)
-                    ),
-                  ),
 
-                  ///Track Process List
-                  // trackProgressData!.length <= 0 ? Container():
-                  // Column(
-                  //   // height: MediaQuery.of(context).size.height,
-                  //   children: [
-                  //     ListView.builder(
-                  //         itemCount: trackProgressData!.length,
-                  //         physics: NeverScrollableScrollPhysics(),
-                  //         shrinkWrap: true,
-                  //         itemBuilder: (_, index) {
-                  //           return Padding(
-                  //             padding: const EdgeInsets.only(left: 10.0,bottom: 10,right: 10),
-                  //             child: Material(
-                  //               elevation: 5,
-                  //               child: GestureDetector(
-                  //                 onTap: () {
-                  //                   Navigator.push(context,
-                  //                       MaterialPageRoute(builder: (context)=> ProcessDetailTransportScreen(trackProgressData: trackProgressData![index],
-                  //                         myTaskData: widget.myTaskData,)));
-                  //                 },
-                  //                 child: Container(
-                  //                   // height: 60,
-                  //                   decoration: BoxDecoration(
-                  //                     borderRadius: BorderRadius.circular(20),
-                  //                   ),
-                  //                   child: ListTile(
-                  //                     title: Padding(
-                  //                       padding: const EdgeInsets.only(bottom: 8,top: 5),
-                  //                       child: Row(
-                  //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //                         children: [
-                  //                           Text(trackProgressData![index].heading.toString(),
-                  //                               style: TextStyle(
-                  //                                   fontSize: 18,
-                  //                                   fontWeight: FontWeight.w400)),
-                  //                           Text(trackProgressData![index].status == 0 ? "Process" : "Completed",
-                  //                             style: TextStyle(color: Colors.red),)
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                     subtitle: Padding(
-                  //                       padding: const EdgeInsets.only(bottom: 8.0),
-                  //                       child: Text(trackProgressData![index].description.toString(),
-                  //                           maxLines: 2, overflow: TextOverflow.ellipsis,
-                  //                           style: TextStyle(
-                  //                               fontFamily: 'Poppins-Regular',fontSize: 12,color: Colors.black
-                  //                           )),
-                  //                     ),
-                  //                     trailing: Padding(
-                  //                       padding: const EdgeInsets.only(top: 8.0),
-                  //                       child: Icon(
-                  //                         Icons.arrow_forward_ios,),
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //
-                  //               ),
-                  //             ),
-                  //           );
-                  //         })
-                  //   ],
-                  // ) ,
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text("Track Process",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                        style: TextStyle(fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500)
                     ),
@@ -482,20 +433,40 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                // _currentStep == 3 ? SizedBox():
+                                _currentStep == 3 ? SizedBox():
                                   TextButton(
                                     onPressed: () {
-                                      // continued;
                                       setState(() {
                                         if(_currentStep<3) {
                                         _currentStep++;
+                                        print(_currentStep);
+                                        if(_currentStep == 1){
+                                          reachAtPick = 1;
+                                          loadComplete=0;
+                                          onTheWay=0;
+                                          reachOnDrop=0;
+                                          trackApi();
+                                        }else if(_currentStep == 2){
+                                          reachAtPick = 1;
+                                          loadComplete=1;
+                                          onTheWay=0;
+                                          reachOnDrop=0;
+                                          trackApi();
+                                        }else if(_currentStep == 3){
+                                          reachAtPick = 1;
+                                          loadComplete=1;
+                                          onTheWay=1;
+                                          reachOnDrop=0;
+                                          trackApi();
+                                        }
+
                                       }
                                     });
                                     },
                                     child: const Text(
                                       'Update',style: TextStyle(
                                         fontSize: 15,
-                                        fontFamily: 'Poppins-Medium',
+                                        fontFamily: 'Poppins',
                                         fontWeight: FontWeight.bold
                                     )
                                     ),
@@ -527,7 +498,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             Padding(
                               padding: const EdgeInsets.only(left: 8),
                               child: Text("Upload Receipt Copy",
-                                style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -541,7 +512,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 4,right: 4),
                                   child: Center(child: Text("+Add Image",
-                                    style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                    style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                   )),
                                 ),
@@ -564,14 +535,41 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         height: 50,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            color: ThemeColors.defaultbuttonColor,
+                            color: ThemeColors.whiteTextColor,
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(
                               color: ThemeColors.defaultbuttonColor,
                               width: 1,
                             )),
                         child: const Center(child: Text("Assign Task to Other",
-                            style: TextStyle(fontFamily: 'Poppins-Medium',
+                            style: TextStyle(fontFamily: 'Poppins',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: ThemeColors.defaultbuttonColor,
+                            ))),
+                      ),
+                    ),
+                  ),
+
+                  ///Complete Task
+                  InkWell(
+                    onTap: (){
+                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen(myTaskData: myTaskData![0],)));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: ThemeColors.defaultbuttonColor,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: ThemeColors.defaultbuttonColor,
+                              width: 1,
+                            )),
+                        child: const Center(child: Text("Complete Task",
+                            style: TextStyle(fontFamily: 'Poppins',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: ThemeColors.whiteTextColor,
@@ -579,7 +577,6 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ),
                     ),
                   ),
-
 
                   SizedBox(
                     height: 80,

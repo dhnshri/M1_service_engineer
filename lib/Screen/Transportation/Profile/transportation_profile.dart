@@ -136,23 +136,6 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
   getData()async{
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileVehicleInfoList!.isNotEmpty || widget.profileExperienceList!.isNotEmpty ||
       widget.profileDriverDetailsList!.isNotEmpty){
-      // try {
-      //   // Saved with this method.
-      //   var imageId =
-      //       await ImageDownloader.downloadImage(widget.serviceUserdataList![0].userProfilePic.toString());
-      //   if (imageId == null) {
-      //     return;
-      //   }
-      //   // Below is a method of obtaining saved image information.
-      //   var fileName = await ImageDownloader.findName(imageId);
-      //   var path = await ImageDownloader.findPath(imageId);
-      //   var size = await ImageDownloader.findByteSize(imageId);
-      //   var mimeType = await ImageDownloader.findMimeType(imageId);
-      //   print('filename $fileName');
-      //   print('Path $path');
-      // } on PlatformException catch (error) {
-      //   print(error);
-      // }
       var userProfileFile = await DefaultCacheManager().getSingleFile(widget.serviceUserdataList![0].userProfilePic.toString());
       print(userProfileFile);
       imageFile!.imagePath = userProfileFile.path;
@@ -836,7 +819,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
             ],
             title: Text("Profile",
               style: TextStyle(
-                  fontFamily: 'Poppins-Medium'
+                  fontFamily: 'Poppins'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
@@ -896,10 +879,10 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Hello",
-                                    style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
+                                    style: TextStyle(fontFamily: 'Poppins',fontSize: 16),),
                                   Container(
                                       child:Text(Application.customerLogin!.name == "" ? "" : Application.customerLogin!.name.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                        style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )
                                   )
@@ -916,7 +899,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Owner Details",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -932,7 +915,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Owner Profile",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -949,7 +932,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(imageFile!.imagePath == null ?"Upload Profile" : imageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -964,7 +947,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -982,7 +965,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Name",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1054,7 +1037,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Email",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1125,7 +1108,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Phone Number",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1194,7 +1177,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("GST Number",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1275,7 +1258,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text("Driver Details",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1288,7 +1271,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Driver Profile",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1306,7 +1289,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                   child: Container(
                                     width: MediaQuery.of(context).size.width * 0.4,
                                     child: Text(driverImageFile!.imagePath == null ?"Upload Profile" : driverImageFile!.imagePath!.split('/').last.toString(),
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                      style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                       maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -1321,7 +1304,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 4,right: 4),
                                       child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )),
                                     ),
@@ -1337,7 +1320,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1408,7 +1391,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Phone Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1476,7 +1459,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Driver License Validity",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1544,7 +1527,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Driver License Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1612,7 +1595,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Driver License Image",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1630,7 +1613,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                   child: Container(
                                     width: MediaQuery.of(context).size.width * 0.4,
                                     child: Text(drivingLicenseImageFile!.imagePath == null ?"Upload Driving License" : drivingLicenseImageFile!.imagePath!.split('/').last.toString(),
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                      style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                       maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -1645,7 +1628,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 4,right: 4),
                                       child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )),
                                     ),
@@ -1661,7 +1644,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Driver Id Proof",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1679,7 +1662,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                   child: Container(
                                     width: MediaQuery.of(context).size.width * 0.4,
                                     child: Text(driverIdProofImageFile!.imagePath == null ?"Upload Driver Id Proof" : driverIdProofImageFile!.imagePath!.split('/').last.toString(),
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                      style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                       maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -1694,7 +1677,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 4,right: 4),
                                       child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )),
                                     ),
@@ -1725,7 +1708,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text("Address",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1760,7 +1743,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Location",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                     Icon(Icons.my_location_rounded,color: Colors.red,)
@@ -1775,7 +1758,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Address",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1852,7 +1835,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Pin Code",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1923,7 +1906,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("City",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1994,7 +1977,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("State",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2065,7 +2048,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Country",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2150,7 +2133,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Vehicle Information",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2180,7 +2163,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(vehicleInfoForms.isNotEmpty?"Add More":"Add",
-                              style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
@@ -2222,7 +2205,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Total Experince",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2241,7 +2224,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Years",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -2318,7 +2301,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Months",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -2413,7 +2396,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Experince",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2443,7 +2426,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(expCompanyForms.isNotEmpty?"Add More":"Add",
-                              style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
@@ -2482,7 +2465,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text("Bank Details",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2495,7 +2478,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Bank Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2566,7 +2549,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Account Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2637,7 +2620,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("IFSC Code",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2702,7 +2685,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Branch Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2767,7 +2750,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("UPI ID",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2848,7 +2831,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                   const Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text("KYC",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2858,12 +2841,14 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                     child: Form(
                       // key: _formKey,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Company Name",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           ///Company Name
@@ -2933,8 +2918,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Company Certificate",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           ///Company Certificate
@@ -2951,7 +2936,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(companyCertificateImageFile!.imagePath == null ?"Company Certificate" : companyCertificateImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2966,7 +2951,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2982,8 +2967,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("GST Certificate",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           ///GST Certificate
@@ -3000,7 +2985,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -3015,7 +3000,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -3031,8 +3016,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("PAN Card",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           ///Upload Pan Card
@@ -3049,7 +3034,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -3064,7 +3049,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -3080,8 +3065,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("SHOPACT License",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           ///SHOPACT License
@@ -3098,7 +3083,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -3113,7 +3098,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -3129,8 +3114,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("MSME/Udhyog Aadhar Card",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           ///MSME/Udhyog Aadhar License
@@ -3149,7 +3134,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.4,
                                         child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
-                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           maxLines: 2, overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -3165,7 +3150,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -3175,7 +3160,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                 ],
                               ),
                             ),
-                          )
+                          ),
 
                         ],
                       ),

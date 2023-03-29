@@ -38,7 +38,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     title:  Text(
                       "Notification",
                       style: TextStyle(
-                        fontFamily: 'Poppins-Regular',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
                         // color: ThemeColors.greyTextColor.withOpacity(0.7),
                         // color: Colors.grey,

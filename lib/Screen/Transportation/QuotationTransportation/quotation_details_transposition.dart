@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Screen/Transportation/QuotationTransportation/quotation_reply_transportation.dart';
 import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/Widget/app_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -95,39 +96,47 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppSmallButton(
-              onPressed: () async {
-                _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
-                    serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Reject',
-              loading: isRejectLoading,
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
 
+                  if(value==true) {
+                    _quotationReplyBloc!.add(QuotationReject(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                        serviceUserId: Application.customerLogin!.id!.toInt(),status: 1,transportEnquiryId: 0,JobWorkEnquiryId: 0));
+                  }
+                  else{
+                    showCustomSnackBar(context,'Please agree the terms and condition.');
 
+                  }
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Ignore',
+                loading: loading,
+                color: ThemeColors.whiteTextColor,
+                borderColor: ThemeColors.defaultbuttonColor,textColor: ThemeColors.defaultbuttonColor,
+              ),
             ),
-            SizedBox(width:8),
-            AppSmallButton(
-              onPressed: () async {
-                if(value==true) {
-                  _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
-                      serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
-                }
-                else{
-                  showCustomSnackBar(context,'Please agree the terms and condition.');
+            const SizedBox(width:10),
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
+                  if(value==true) {
+                    _quotationReplyBloc!.add(QuotationRevised(machineEnquiryId: widget.quotationReplyList.enquiryId!.toInt(),
+                        serviceUserId: Application.customerLogin!.id!.toInt(),status: 0,transportEnquiryId: 0,JobWorkEnquiryId: 0));
+                  }
+                  else{
+                    showCustomSnackBar(context,'Please agree the terms and condition.');
 
-                }
-
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Revise Quotation',
-              loading: isRevisedLoading,
-
-
+                  }},
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Revise Quotation',
+                loading: loading,
+                color: ThemeColors.defaultbuttonColor,
+              ),
             ),
           ],
         ),
@@ -184,7 +193,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                   title: Text("Vehicle Details",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -233,7 +242,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                   title: Text("Quotation",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -335,14 +344,14 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("GST Number",
-                              style: TextStyle(fontFamily: 'Poppins-Medium',
+                              style: TextStyle(fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500)),
                           Container(
                             width: MediaQuery.of(context).size.width*0.4,
                             child: Text(vehicleList![0].gstNo=="" ? "" : vehicleList![0].gstNo!.toString(),
                                 maxLines: 2,overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontFamily: 'Poppins-Medium',
+                                style: TextStyle(fontFamily: 'Poppins',
                                     fontSize: 15,
                                     color: Colors.black,
                                   fontWeight: FontWeight.w500
@@ -367,7 +376,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                   title: Text("Quotation",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -385,16 +394,16 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                             ],
                           ),
 
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("M1 Commission"),
+                              Text("Professional Charges"),
                               Text("₹ ${quotationChargesList![0].commission}"),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -410,14 +419,14 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                               Text("Amount",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
+                                      fontFamily: 'Poppins',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500
                                   )),
                               Text("₹ $grandTotal",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontFamily: 'Poppins-Medium',
+                                      fontFamily: 'Poppins',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500
                                   )),
@@ -439,7 +448,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                   title:  Text("Message from Client",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -460,7 +469,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                   title:  Text("Terms and Conditions",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       )),
@@ -479,7 +488,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                         const Text("I agree to the terms and conditions.",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400))
                       ],
@@ -506,7 +515,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //       title:  Text("Vehicle Details",
         //       style: TextStyle(
         //           color: Colors.black,
-        //           fontFamily: 'Poppins-Medium',
+        //           fontFamily: 'Poppins',
         //           fontSize: 16,
         //           fontWeight: FontWeight.w500
         //       ),),
@@ -552,7 +561,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //       title:  Text("Quotations",
         //         style: TextStyle(
         //             color: Colors.black,
-        //             fontFamily: 'Poppins-Medium',
+        //             fontFamily: 'Poppins',
         //             fontSize: 16,
         //             fontWeight: FontWeight.w500
         //         ),),
@@ -625,11 +634,11 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //             children: [
         //               Text("Amount",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 16,
         //                       fontWeight: FontWeight.w600)),
         //               Text("₹20000",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 16,
         //                       fontWeight: FontWeight.w600)),
         //             ],
@@ -638,11 +647,11 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //             children: [
         //               Text("Labour Charge",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 15,
         //                       fontWeight: FontWeight.normal)),
         //               Text("₹ 1500",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 15,
         //                       fontWeight: FontWeight.normal)),
         //             ],
@@ -652,11 +661,11 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //             children: [
         //               Text("Gst amount",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 15,
         //                       fontWeight: FontWeight.normal)),
         //               Text("₹50.00",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 15,
         //                       fontWeight: FontWeight.normal)),
         //             ],
@@ -665,11 +674,11 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //             children: [
         //               Text("Total",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 16,
         //                       fontWeight: FontWeight.w600)),
         //               Text("₹20050.00",
-        //                   style: TextStyle(fontFamily: 'Poppins-Medium',
+        //                   style: TextStyle(fontFamily: 'Poppins',
         //                       fontSize: 16,
         //                       fontWeight: FontWeight.w600)),
         //
@@ -692,7 +701,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         //       title:  Text("Message from Client",
         //         style: TextStyle(
         //             color: Colors.black,
-        //             fontFamily: 'Poppins-Medium',
+        //             fontFamily: 'Poppins',
         //             fontSize: 16,
         //             fontWeight: FontWeight.w500
         //         ),),
