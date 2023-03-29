@@ -17,7 +17,9 @@ import '../../../Bloc/profile/profile_event.dart';
 import '../../../Bloc/profile/profile_state.dart';
 import '../../../Config/image.dart';
 import '../../../Constant/theme_colors.dart';
+import '../../../Model/JobWorkEnquiry/category_list_selected_model.dart';
 import '../../../Model/machine_list_model.dart';
+import '../../../NetworkFunction/fetchJobWorkEnquiryCategoryList.dart';
 import '../../../image_file.dart';
 import '../../LoginRegistration/signUpAs.dart';
 
@@ -48,7 +50,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   UploadCompanyProfileFile? uploadCompanyProfileImageFile;
   File? _uploadUserProfileImage;
   UserProfileImageFile? uploadUserProfileImageFile;
-
+  JobWorkEnquiryCategoryListModel? catrgoryTypeselected;
 
   final _formKey = GlobalKey<FormState>();
   final _addressFormKey = GlobalKey<FormState>();
@@ -1092,60 +1094,67 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           ),
                         ),
                         ///Category
-                        SizedBox(
-                          // height: deviceHeight,
-                          // width: deviceWidth,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-
-                              CustomMultiSelectField<String>(
-                                decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.arrow_drop_down),
-                                    filled: true,
-                                    fillColor: ThemeColors.textFieldBackgroundColor
-                                ),
-                                title: "Category",
-                                items: dataString,
-                                enableAllOptionSelect: true,
-                                onSelectionDone: _onCountriesSelectionComplete,
-                                itemAsString: (item) => item.toString(),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 15,),
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Sub-Category",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        ///Sub-Category
-                        SizedBox(
-                          // height: deviceHeight,
-                          // width: deviceWidth,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                            //to hide underline
+                            child: FutureBuilder<List<JobWorkEnquiryCategoryListModel>>(
+                                future: fetchJWECategoryList(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<JobWorkEnquiryCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData) return Container();
 
-                              CustomMultiSelectField<String>(
-                                decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.arrow_drop_down),
-                                    filled: true,
-                                    fillColor: ThemeColors.textFieldBackgroundColor
-                                ),
-                                title: "Sub-Category",
-                                items: dataString,
-                                enableAllOptionSelect: true,
-                                onSelectionDone: _onCountriesSelectionComplete,
-                                itemAsString: (item) => item.toString(),
-                              ),
-                            ],
-                          ),
-                        ),
+                                  return DropdownButtonHideUnderline(
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          // color: Theme.of(context).dividerColor,
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20.0),
+                                            border: Border.all(
+                                                color: ThemeColors.textFieldBgColor)),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                                          child:
+                                          //updated on 15/06/2021 to change background colour of dropdownbutton
+                                          new Theme(
+                                              data: Theme.of(context)
+                                                  .copyWith(canvasColor: Colors.white),
+                                              child: DropdownButton(
+                                                  items: snapshot.data!
+                                                      .map((categoryname) =>
+                                                      DropdownMenuItem<JobWorkEnquiryCategoryListModel>(
+                                                        value: categoryname,
+                                                        child: Text(
+                                                          categoryname.enquiryDetailsCategory.toString(),
+                                                          style: TextStyle(
+                                                              color: Colors.black),
+                                                        ),
+                                                      ))
+                                                      .toList(),
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600),
+                                                  isExpanded: true,
+                                                  hint: Text('Select  Category',
+                                                      style: TextStyle(
+                                                          color: Color(0xFF3F4141))),
+                                                  value: catrgoryTypeselected == null
+                                                      ? catrgoryTypeselected
+                                                      : snapshot.data!
+                                                      .where((i) =>
+                                                  i.enquiryDetailsCategory ==
+                                                      catrgoryTypeselected!
+                                                          .enquiryDetailsCategory)
+                                                      .first as JobWorkEnquiryCategoryListModel,
+                                                  onChanged: (JobWorkEnquiryCategoryListModel? categoryname) {
+                                                    setState(() {
+                                                      catrgoryTypeselected = categoryname;
+                                                    });
+                                                  })),
+                                        ),
+                                      ));
+                                })),
 
                         SizedBox(height: 15,),
 

@@ -45,12 +45,10 @@ class UserRepository {
     return await Api.login(params);
   }
 
-  Future<dynamic> registration(
-      {String? fullname, String? createPassword, String? reCreatePassword, String? email, String? mobileNo, String? role, String? username}) async {
-  Future<dynamic> fetchMachineDashboardCount({String? serviceUserId}) async {
-    final params = {"service_user_id":serviceUserId};
-    return await Api.getMachineDashboardCount(params);
-  }
+    Future<dynamic> fetchMachineDashboardCount({String? serviceUserId}) async {
+      final params = {"service_user_id": serviceUserId};
+      return await Api.getMachineDashboardCount(params);
+    }
 
   Future<dynamic> fetchJobWorkDashboardCount({String? serviceUserId}) async {
     final params = {"service_user_id":serviceUserId};
@@ -122,10 +120,10 @@ class UserRepository {
     return await Api.getFilterList();
   }
 
-  Future<dynamic> fetchServiceRequestTranspotationList({String? offSet,String? timeId}) async {
-    final params = {"offset":offSet,'time_id':timeId};
-    return await Api.getServiceRequestTranspotationList(params);
-  }
+  // Future<dynamic> fetchServiceRequestTranspotationList({String? offSet,String? timeId}) async {
+  //   final params = {"offset":offSet,'time_id':timeId};
+  //   return await Api.getServiceRequestTranspotationList(params);
+  // }
 
   // Machine Maintaince Quotation Reply
   Future<dynamic> fetchQuotationReplyList({String? offSet,String? userId}) async {
@@ -256,16 +254,16 @@ class UserRepository {
       return await Api.getMyTaskJWEList(params);
     }
     //Fetch Product List
-    Future<dynamic> fetchProductList({String? prodId, String? offset}) async {
-      final params = {"user_id": prodId,
-        "offset": offset};
-      return await Api.getProductList(params);
-    }
-  Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset,String? timeId}) async {
-    final params = {"service_user_id":userId,
-      "offset":offset,'time_id':timeId};
-    return await Api.getMyTaskJWEList(params);
-  }
+    // Future<dynamic> fetchProductList({String? prodId, String? offset}) async {
+    //   final params = {"user_id": prodId,
+    //     "offset": offset};
+    //   return await Api.getProductList(params);
+    // }
+  // Future<dynamic> fetchJobWorkEnquiryMyTaskList({String? userId,String? offset,String? timeId}) async {
+  //   final params = {"service_user_id":userId,
+  //     "offset":offset,'time_id':timeId};
+  //   return await Api.getMyTaskJWEList(params);
+  // }
   //Fetch Product List
   Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId}) async {
     final params = {"user_id":prodId,

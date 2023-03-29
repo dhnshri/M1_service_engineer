@@ -72,6 +72,9 @@ class Api {
   static const String MACHINE_QUOTATION="machine_maintainence_quatation";
   static const String JOBWORK_PROFILE="get_job_work_enquiry_profile";
   static const String VEHICLE_NAME=HOST_URL+"transport_vehicle_name_list";
+  static const String MACHINE_MAINTAINCE_CATEGORY_LIST=HOST_URL+"machine_maintenance_service_category_list";
+  static const String JOB_WORK_ENQUIRY_CATEGORY_LIST=HOST_URL+"job_work_categories_list";
+  static const String MACHINE_MAINTAINCE_SUB_CATEGORY_LIST=HOST_URL+"machine_maintenance_service_sub_category_list";
   static const String VEHICLE_TYPE=HOST_URL+"transport_vehicle_type_list";
   static const String VEHICLE_NUMBER=HOST_URL+"transport_vehicle_number_list";
   static const String TRANSPORT_PROFILE="get_transport_profile";

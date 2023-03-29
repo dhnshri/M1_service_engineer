@@ -301,7 +301,6 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
           .fetchQuotationReplyJWEList(
         offSet: event.offSet,
         userId: event.userId,
-          timeId:event.timeId
       );
       print(result);
 

@@ -45,8 +45,8 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
     //saveDeviceTokenAndId();
     super.initState();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
-    // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '5',offSet: '0'));
+   // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
+     _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '12',offSet: '0'));
   }
 
   @override
