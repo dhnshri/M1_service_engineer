@@ -5,6 +5,8 @@ import 'package:service_engineer/Model/cart_repo.dart';
 import 'package:service_engineer/Model/customer_registration.dart';
 import 'package:service_engineer/Model/dashboard_cound_repo.dart';
 import 'package:service_engineer/Model/filter_repo.dart';
+import 'package:service_engineer/Model/order_list_repo.dart';
+import 'package:service_engineer/Model/order_repo.dart';
 import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reject_revise_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
@@ -92,6 +94,9 @@ class Api {
   static const String MACHINE_TASK_HANDOVER="add_machine_maintenance_assign_task_to_other";
   static const String JOBWORK_TASK_HANDOVER="add_job_work_assign_task_to_other";
   static const String TRANSPORT_TASK_HANDOVER="add_transport_assign_task_to_other";
+  static const String ORDER_LIST="get_order_list";
+  static const String ORDER_DETAIL="get_detail_order_list";
+  static const String CANCEL_ORDER="cancel_order";
 
 
   ///Login api
@@ -129,6 +134,42 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return DashboardCountRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getOrderList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+ORDER_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return OrderListRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> cancelOrder(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CANCEL_ORDER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return OrderListRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getOrderDetail(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+ORDER_DETAIL),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return OrderRepo.fromJson(responseJson);
     }
   }
 

@@ -3,6 +3,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_engineer/Bloc/dashboard/dashboard_bloc.dart';
 import 'package:service_engineer/Bloc/home/home_bloc.dart';
+import 'package:service_engineer/Bloc/order/order_bloc.dart';
 
 import 'Bloc/authentication/authentication_bloc.dart';
 import 'Bloc/login/login_bloc.dart';
@@ -22,9 +23,7 @@ class AppBloc {
   static final quotationReplyBloc = QuotationReplyBloc(userRepository: userRepository);
   static final profileBloc = ProfileBloc(userRepository: userRepository);
   static final dashboardBloc = DashboardBloc(userRepository: userRepository);
-
-
-
+  static final orderBloc = OrderBloc(userRepository: userRepository);
 
 
   static final List<BlocProvider> providers = [
@@ -56,6 +55,9 @@ class AppBloc {
     BlocProvider<DashboardBloc>(
       create: (context) => dashboardBloc,
     ),
+    BlocProvider<OrderBloc>(
+      create: (context) => orderBloc,
+    ),
 
 
   ];
@@ -70,6 +72,7 @@ class AppBloc {
     profileBloc.close();
     quotationReplyBloc.close();
     dashboardBloc.close();
+    orderBloc.close();
   }
 
   ///Singleton factory

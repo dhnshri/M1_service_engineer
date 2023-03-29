@@ -129,7 +129,6 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                   }
                   else{
                     showCustomSnackBar(context,'Please agree the terms and condition.');
-
                   } },
                 shape: const RoundedRectangleBorder(
                     borderRadius:

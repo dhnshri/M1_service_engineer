@@ -50,6 +50,21 @@ class UserRepository {
     return await Api.getMachineDashboardCount(params);
   }
 
+  Future<dynamic> fetchOrderList({String? serviceUserId}) async {
+    final params = {"service_user_id": serviceUserId};
+    return await Api.getOrderList(params);
+  }
+
+  Future<dynamic> cancelOrder({String? serviceUserId,String? machineEnqId}) async {
+    final params = {"service_user_id": serviceUserId,"machine_enquiry_id":machineEnqId};
+    return await Api.cancelOrder(params);
+  }
+
+  Future<dynamic> fetchOrderDetail({String? serviceUserId,String? machineEnquiryId}) async {
+    final params = {"service_user_id": serviceUserId,"machine_enquiry_id":machineEnquiryId};
+    return await Api.getOrderDetail(params);
+  }
+
   Future<dynamic> fetchJobWorkDashboardCount({String? serviceUserId}) async {
     final params = {"service_user_id":serviceUserId};
     return await Api.getJobWorkDashboardCount(params);
