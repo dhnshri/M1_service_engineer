@@ -190,6 +190,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               profileKycList = state.profileKycList;
               profileMachineExperienceList = state.profileMachineExperienceList;
               profileMachineEducationList = state.profileMachineEducationList;
+              // serviceUserdataList!.asMap().containsValue(2);
             }
             if(state is GetMachineProfileFail){
               showCustomSnackBar(context,state.msg.toString(),isError: true);

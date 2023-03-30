@@ -19,34 +19,30 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Bloc/home/home_state.dart';
 
-
-
-
 class ServiceRequestScreen extends StatefulWidget {
   bool isSwitched;
-  ServiceRequestScreen({Key? key,required this.isSwitched}) : super(key: key);
+  ServiceRequestScreen({Key? key, required this.isSwitched}) : super(key: key);
 
   @override
   _ServiceRequestScreenState createState() => _ServiceRequestScreenState();
 }
 
 class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
-
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool _isLoading = true;
-  bool flagSearchResult=false;
-  bool _isSearching=false;
+  bool flagSearchResult = false;
+  bool _isSearching = false;
   HomeBloc? _homeBloc;
   List<ServiceRequestModel>? serviceList = [];
   List<ServiceRequestModel>? handOverServiceList = [];
-  ScrollController _scrollController = ScrollController();
-  List<ServiceRequestModel> searchResult=[];
+  final ScrollController _scrollController = ScrollController();
+  List<ServiceRequestModel> searchResult = [];
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   int offset = 0;
   int handoverOffset = 0;
-  int? timeId=0;
-  bool _loadData=false;
+  int? timeId = 0;
+  bool _loadData = false;
 
   @override
   void initState() {
@@ -55,12 +51,17 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     getApi();
-    _homeBloc!.add(MachineHandOverServiceRequestList(timeId: timeId.toString(),offSet: handoverOffset.toString(),serviceUserId: Application.customerLogin!.id.toString()));
+    _homeBloc!.add(MachineHandOverServiceRequestList(
+        timeId: timeId.toString(),
+        offSet: handoverOffset.toString(),
+        serviceUserId: Application.customerLogin!.id.toString()));
     print("SERVICE USER ID: ${Application.customerLogin!.id.toString()}");
+    // widget.isSwitched = Application.isOnline!;
   }
 
-  getApi(){
-    _homeBloc!.add(OnServiceRequest(timeId: timeId.toString(),offSet: offset.toString()));
+  getApi() {
+    _homeBloc!.add(
+        OnServiceRequest(timeId: timeId.toString(), offSet: offset.toString()));
   }
 
   @override
@@ -81,60 +82,77 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
     if (_isSearching != null) {
       for (int i = 0; i < serviceList!.length; i++) {
         ServiceRequestModel serviceListData = new ServiceRequestModel();
-        serviceListData.machineImg = serviceList![i].machineProblemImg.toString();
+        serviceListData.machineImg =
+            serviceList![i].machineProblemImg.toString();
         serviceListData.machineName = serviceList![i].machineName.toString();
         serviceListData.enquiryId = serviceList![i].enquiryId;
         serviceListData.dateAndTime = serviceList![i].dateAndTime.toString();
 
-        if (serviceListData.machineImg.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            serviceListData.machineName.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            serviceListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            serviceListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
-          flagSearchResult=false;
+        if (serviceListData.machineImg
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            serviceListData.machineName
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            serviceListData.enquiryId
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            serviceListData.dateAndTime
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase())) {
+          flagSearchResult = false;
           searchResult.add(serviceListData);
         }
       }
       setState(() {
-        if(searchResult.length==0){
-          flagSearchResult=true;
+        if (searchResult.length == 0) {
+          flagSearchResult = true;
         }
       });
     }
   }
 
-
-  Widget buildCustomerEnquiriesList(BuildContext context, List<ServiceRequestModel> serviceList) {
+  Widget buildCustomerEnquiriesList(
+      BuildContext context, List<ServiceRequestModel> serviceList) {
     return ListView.builder(
       controller: _scrollController
         ..addListener(() {
-      if (_scrollController.position.pixels  ==
-          _scrollController.position.maxScrollExtent) {
-        offset++;
-        print("Offser : ${offset}");
-        BlocProvider.of<HomeBloc>(context)
-          ..isFetching = true
-          ..add(getApi());
-        // serviceList.addAll(serviceList);
-      }
-    }),
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  InkWell(
-          onTap: (){
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen(serviceRequestData: serviceList[index],)));
-          },
+        return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ServiceRequestDetailsScreen(
+                            serviceRequestData: serviceList[index],
+                          )));
+            },
             child: serviceRequestCard(context, serviceList[index]));
       },
       itemCount: serviceList.length,
     );
   }
 
-  Widget serviceRequestCard(BuildContext context, ServiceRequestModel serviceListData)
-  {
+  Widget serviceRequestCard(
+      BuildContext context, ServiceRequestModel serviceListData) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Card(
@@ -217,13 +235,14 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
                     ),
-                    SizedBox(height: 4,),
+                    SizedBox(
+                      height: 4,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -232,8 +251,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
                         // SizedBox(
                         //   // width: MediaQuery.of(context).size.width/,
@@ -252,7 +270,9 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         )
                       ],
                     ),
-                    SizedBox(height: 3,),
+                    SizedBox(
+                      height: 3,
+                    ),
 
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,7 +302,9 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                     //     )
                     //   ],
                     // ),
-                    SizedBox(height: 3,),
+                    SizedBox(
+                      height: 3,
+                    ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -292,8 +314,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/6.3,
@@ -302,7 +323,10 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
                             // serviceListData.dateAndTime!,
-                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(serviceListData.dateAndTime!.toString())).toString(),
+                            DateFormat('MM-dd-yyyy h:mm a')
+                                .format(DateTime.parse(
+                                    serviceListData.dateAndTime!.toString()))
+                                .toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
@@ -313,7 +337,6 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                         )
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -327,225 +350,270 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      body: widget.isSwitched?
-      BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-        return BlocListener<HomeBloc, HomeState>(
+        key: _scaffoldKey,
+        body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          return BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
-              if(state is ServiceRequestLoading){
+              if (state is ServiceRequestLoading) {
                 // _isLoading = state.isLoading;
               }
-              if(state is ServiceRequestSuccess){
+              if (state is ServiceRequestSuccess) {
                 serviceList!.addAll(state.serviceListData);
-                if(serviceList!=null){
-                  _loadData=true;
+                if (serviceList != null) {
+                  _loadData = true;
                 }
               }
-              if(state is ServiceRequestFail){
-                showCustomSnackBar(context,state.msg.toString());
+              if (state is ServiceRequestFail) {
+                showCustomSnackBar(context, state.msg.toString());
               }
-              if(state is MachineHandOverServiceRequestListLoading){
+              if (state is MachineHandOverServiceRequestListLoading) {
                 _isLoading = state.isLoading;
               }
-              if(state is MachineHandOverServiceRequestListSuccess){
+              if (state is MachineHandOverServiceRequestListSuccess) {
                 handOverServiceList = state.serviceListData;
               }
-              if(state is MachineHandOverServiceRequestListFail){
-                showCustomSnackBar(context,state.msg.toString());
+              if (state is MachineHandOverServiceRequestListFail) {
+                showCustomSnackBar(context, state.msg.toString());
               }
             },
-            child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
-            Container(
-              child: Column(
-                children:<Widget> [
-                  const SizedBox(height: 5,),
-                  handOverServiceList!.length > 0 ?
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: ThemeColors.imageContainerBG
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right:16.0,left: 16.0,bottom: 8.0,top: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              // width:200,
-                              child: const Text("Task Assigned By Other Service Providers",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      // color: ThemeColors.buttonColor,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600
+            child: widget.isSwitched
+                ? _loadData
+                    ? serviceList!.length <= 0
+                        ? Center(
+                            child: Text('No Data'),
+                          )
+                        : Container(
+                            child: Column(
+                              children: <Widget>[
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                handOverServiceList!.length > 0
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  ThemeColors.imageContainerBG),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 16.0,
+                                                left: 16.0,
+                                                bottom: 8.0,
+                                                top: 8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  // width:200,
+                                                  child: const Text(
+                                                      "Task Assigned By Other Service Providers",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          // color: ThemeColors.buttonColor,
+                                                          fontFamily: 'Poppins',
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ),
+                                                InkWell(
+                                                  onTap: () async {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                HandOverTaskList()));
+                                                  },
+                                                  child: Container(
+                                                    child: Text('View',
+                                                        style: TextStyle(
+                                                            color: ThemeColors
+                                                                .buttonColor,
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    bottom: BorderSide(
+                                      width: 0.2,
+                                    ),
                                   )),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                  HandOverTaskList()));
-                              },
-                              child: Container(
-                                child: Text('View',
-                                    style: TextStyle(
-                                        color: ThemeColors.buttonColor,
-                                        fontFamily: 'Poppins',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500
-                                    )),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ): Container(),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 0.2,),
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 10, right: 10, bottom: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              // initialValue: Application.customerLogin!.name.toString(),
-                              controller: _searchController,
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                              style: TextStyle(
-                                fontSize: 18,
-                                height: 1.5,
-                              ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: ThemeColors.bottomNavColor,
-                                prefixIcon: IconButton(
-                                  icon: Icon(
-                                    Icons.search,
-                                    size: 25.0,
-                                    color: ThemeColors.blackColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        left: 10,
+                                        right: 10,
+                                        bottom: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFormField(
+                                            // initialValue: Application.customerLogin!.name.toString(),
+                                            controller: _searchController,
+                                            textAlign: TextAlign.start,
+                                            keyboardType: TextInputType.text,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              height: 1.5,
+                                            ),
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor:
+                                                  ThemeColors.bottomNavColor,
+                                              prefixIcon: IconButton(
+                                                icon: Icon(
+                                                  Icons.search,
+                                                  size: 25.0,
+                                                  color: ThemeColors.blackColor,
+                                                ),
+                                                onPressed: () {
+                                                  _handleSearchStart();
+                                                },
+                                              ),
+                                              hintText: "Search all Orders",
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 15.0),
+                                              hintStyle:
+                                                  TextStyle(fontSize: 15),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(1.0)),
+                                                borderSide: BorderSide(
+                                                    width: 0.8,
+                                                    color: ThemeColors
+                                                        .bottomNavColor),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(1.0)),
+                                                borderSide: BorderSide(
+                                                    width: 0.8,
+                                                    color: ThemeColors
+                                                        .bottomNavColor),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(1.0)),
+                                                  borderSide: BorderSide(
+                                                      width: 0.8,
+                                                      color: ThemeColors
+                                                          .bottomNavColor)),
+                                            ),
+                                            validator: (value) {},
+                                            onChanged: (value) {
+                                              // profile.name = value;
+                                              searchOperation(value);
+                                            },
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            var filterResult = await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ServiceRequestFilterScreen()));
+
+                                            if (filterResult != null) {
+                                              print(filterResult);
+                                              serviceList =
+                                                  filterResult['serviceList'];
+                                              timeId = filterResult['time_id'];
+                                            }
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.filter_list),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text("Filter")
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    _handleSearchStart();
-                                  },
                                 ),
-                                hintText: "Search all Orders",
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15.0),
-                                hintStyle: TextStyle(fontSize: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8, color: ThemeColors.bottomNavColor),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                                  borderSide: BorderSide(
-                                      width: 0.8, color: ThemeColors.bottomNavColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(1.0)),
-                                    borderSide: BorderSide(
-                                        width: 0.8, color: ThemeColors.bottomNavColor)),
-                              ),
-                              validator: (value) {
-
-                              },
-                              onChanged: (value) {
-                                // profile.name = value;
-                                searchOperation(value);
-                              },
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              var filterResult = await Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => ServiceRequestFilterScreen()));
-
-                              if(filterResult != null){
-                                print(filterResult);
-                                serviceList = filterResult['serviceList'];
-                                timeId = filterResult['time_id'];
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(Icons.filter_list),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("Filter")
+                                // _isLoading ?
+                                flagSearchResult == false
+                                    ? (searchResult.length != 0 ||
+                                            _searchController.text.isNotEmpty)
+                                        ? buildCustomerEnquiriesList(
+                                            context, searchResult)
+                                        : Expanded(
+                                            child: buildCustomerEnquiriesList(
+                                                context, serviceList!))
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: const Center(
+                                          child: Text("No Data"),
+                                        ),
+                                      )
+                                // : ShimmerCard()
+                                // : CircularProgressIndicator()
                               ],
                             ),
                           )
-                        ],
-                      ),
+                    : ShimmerCard()
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Nothing to show",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text("You are currently",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16,
+                            )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text("offline",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16,
+                            )),
+                      ],
                     ),
                   ),
-                  // _isLoading ?
-                  flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                  buildCustomerEnquiriesList(context, searchResult)
-                  :
-                  Expanded(child: buildCustomerEnquiriesList(context, serviceList!))
-                      : Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: const Center(child: Text("No Data"),),
-                      )
-                      // : ShimmerCard()
-                  // : CircularProgressIndicator()
-                ],
-              ),
-            ) : ShimmerCard()
 
-          // Center(
-          //   child: CircularProgressIndicator(),
-          // )
-
-        );
-
-
-      })
-      :Center(
-        child: Column(
-          mainAxisAlignment:MainAxisAlignment.center,
-          children: [
-            Text("Nothing to show",
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                )),
-            SizedBox(height: 5,),
-            Text("You are currently",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                )),
-            SizedBox(height: 5,),
-
-            Text("offline",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                )),
-          ],
-        ),
-      ),
-
-    );
+            // Center(
+            //   child: CircularProgressIndicator(),
+            // )
+          );
+        }));
   }
 
-  Widget ShimmerCard(){
+  Widget ShimmerCard() {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
@@ -636,13 +704,14 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold
-                              ),
+                                  fontWeight: FontWeight.bold),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
                           ),
-                          SizedBox(height: 4,),
+                          SizedBox(
+                            height: 4,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -651,8 +720,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
@@ -671,8 +739,9 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               )
                             ],
                           ),
-                          SizedBox(height: 3,),
-
+                          SizedBox(
+                            height: 3,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -681,8 +750,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -701,8 +769,9 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               )
                             ],
                           ),
-                          SizedBox(height: 3,),
-
+                          SizedBox(
+                            height: 3,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -711,8 +780,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -731,7 +799,6 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                               )
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -745,5 +812,4 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
       itemCount: List.generate(8, (index) => index).length,
     );
   }
-
 }

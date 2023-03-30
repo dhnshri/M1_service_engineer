@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Constant/theme_colors.dart';
 import 'package:service_engineer/Model/Transpotation/myTaskListModel.dart';
@@ -16,6 +18,7 @@ import 'package:service_engineer/Screen/Transportation/MyTask/process_detail_tra
 import 'package:service_engineer/Screen/Transportation/MyTask/transpotation_service_provider_list.dart';
 import 'package:service_engineer/Screen/bottom_navbar.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
+import 'package:service_engineer/image_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -70,6 +73,10 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
   int onTheWay=0;
   int reachOnDrop=0;
   List<TrackDataModel> trackData=[];
+  TrackDataModel? getTransportTrackData;
+  final picker = ImagePicker();
+  File? _invoiceImage;
+  GstImageFile? invoiceImageFile;
 
   tapped(int step){
     setState(() => _currentStep = step);
@@ -128,10 +135,11 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    invoiceImageFile = new GstImageFile();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
     // _homeBloc!.add(OnMyTaskTranspotationDetail(userID:widget.myTaskData.userId.toString(), machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:widget.myTaskData.enquiryId.toString()));
     _homeBloc!.add(OnMyTaskTranspotationDetail(userID:'4', machineEnquiryId:'0',jobWorkEnquiryId: '0',transportEnquiryId:'31'));
-    _homeBloc!.add(TransporGetTrackProcess(transportEnquiryId:'31', serviceUserID: '4'));
+    getTrackApi();
   }
   @override
   void dispose() {
@@ -139,12 +147,93 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
     super.dispose();
   }
 
-  trackApi(){
-    _homeBloc!.add(TransportUpdateTrackProcess(serviceUserID:Application.customerLogin!.id.toString(),
-        transportEnquiryId:widget.myTaskData.enquiryId.toString(),reachAtPick: reachAtPick.toString(),
-        loadComplete: loadComplete.toString(),onWayToDrop: onTheWay.toString(),reachOnDrop: reachOnDrop.toString()));
+  _invoiceOpenGallery(BuildContext context) async {
+    final invoiceImage =
+    await picker.getImage(source: ImageSource.camera, imageQuality: 25);
+    invoiceImageFile = new GstImageFile();
+    if (invoiceImage != null) {
+      _invoiceCropImage(invoiceImage);
+    }
+  }
+  // For crop image
+  Future<Null> _invoiceCropImage(PickedFile imageCropped) async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageCropped.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.original,
+        ]
+            : [
+          // CropAspectRatioPreset.square,
+          CropAspectRatioPreset.original,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        )) as File?;
+    if (croppedFile != null) {
+      setState(() {
+        // mImageFile.image = croppedFile;
+        // print(mImageFile.image.path);
+        // state = AppState.cropped;
+        _invoiceImage = croppedFile;
+        invoiceImageFile!.imagePath = _invoiceImage!.path;
+      });
+      // Navigator.pop(context);
+    }
   }
 
+  getTrackApi(){
+    // _homeBloc!.add(TransporGetTrackProcess(transportEnquiryId:widget.myTaskData.enquiryId.toString(), serviceUserID: widget.myTaskData.userId.toString()));
+    _homeBloc!.add(TransporGetTrackProcess(transportEnquiryId:'1', serviceUserID: '1'));
+  }
+
+  trackApi(){
+    // _homeBloc!.add(TransportUpdateTrackProcess(serviceUserID:widget.myTaskData.userId.toString(),
+    //     transportEnquiryId:widget.myTaskData.enquiryId.toString(),reachAtPick: reachAtPick.toString(),
+    //     loadComplete: loadComplete.toString(),onWayToDrop: onTheWay.toString(),reachOnDrop: reachOnDrop.toString()));
+    _homeBloc!.add(TransportUpdateTrackProcess(serviceUserID:'1',
+        transportEnquiryId:'1',reachAtPick: reachAtPick.toString(),
+        loadComplete: loadComplete.toString(),onWayToDrop: onTheWay.toString(),reachOnDrop: reachOnDrop.toString(),invoiceImage: invoiceImageFile!.imagePath.toString()));
+  }
+
+  getTrackData(){
+    if(getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 0 && getTransportTrackData!.onTheWayToDropLocation == 0 &&
+        getTransportTrackData!.reachesOnDropLocation == 0){
+      _currentStep =0;
+      reachAtPick = 1;
+      loadComplete=0;
+      onTheWay=0;
+      reachOnDrop=0;
+    }else if(getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 0 &&
+        getTransportTrackData!.reachesOnDropLocation == 0){
+      _currentStep =1;
+      reachAtPick = 1;
+      loadComplete=1;
+      onTheWay=0;
+      reachOnDrop=0;
+    }else if(getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
+        getTransportTrackData!.reachesOnDropLocation == 0){
+      _currentStep =2;
+      reachAtPick = 1;
+      loadComplete=1;
+      onTheWay=1;
+      reachOnDrop=0;
+    }else if(getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
+        getTransportTrackData!.reachesOnDropLocation == 1){
+      _currentStep =3;
+      reachAtPick = 1;
+      loadComplete=1;
+      onTheWay=1;
+      reachOnDrop=1;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,6 +311,11 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                 }
                 if(state is TransportGetProcessSuccess){
                   trackData = state.trackData;
+                  getTransportTrackData = trackData.last;
+                  getTrackData();
+                  setState(() {
+
+                  });
                 }
                 if(state is TransportGetProcessFail){
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
@@ -485,6 +579,9 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                   ),
 
                   ///Upload Receipt Copy
+                  getTransportTrackData!=null?
+                  (getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
+                      getTransportTrackData!.reachesOnDropLocation == 1) ? Container():
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -497,15 +594,17 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 8),
-                              child: Text("Upload Receipt Copy",
-                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: Text(invoiceImageFile!.imagePath == null ?"Upload Receipt Copy" : invoiceImageFile!.imagePath!.split('/').last.toString(),
+                                  style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
+                                  maxLines: 2, overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                             InkWell(
                               onTap: (){
-                               // _openGallery(context);
-                              },
+                                _invoiceOpenGallery(context);                              },
                               child: Container(
                                 height: 30,
                                 color: ThemeColors.textFieldHintColor.withOpacity(0.3),
@@ -522,9 +621,12 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         ),
                       ),
                     ),
-                  ),
+                  ):Container(),
 
                   ///Assign to Other Button
+                  getTransportTrackData!=null?
+                  (getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
+                      getTransportTrackData!.reachesOnDropLocation == 1) ? Container():
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen(myTaskData: myTaskData![0],)));
@@ -549,13 +651,29 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             ))),
                       ),
                     ),
-                  ),
+                  ):Container(),
 
-                  ///Complete Task
+                  ///Complete Task\
+                  getTransportTrackData!=null?
+              (getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
+                getTransportTrackData!.reachesOnDropLocation == 1) ? Container():
                   InkWell(
                     onTap: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>TransportServiceProviderListScreen(myTaskData: myTaskData![0],)));
-                    },
+                      if(invoiceImageFile!.imagePath == null){
+                        showCustomSnackBar(context,"Upload Invoice",isError: true);
+                      }
+                      else {
+                                            reachAtPick = 1;
+                                            loadComplete = 1;
+                                            onTheWay = 1;
+                                            reachOnDrop = 1;
+                                            trackApi();
+                                            getTrackApi();
+                                            setState(() {
+                                              getTransportTrackData;
+                                            });
+                                          }
+                                        },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
@@ -576,7 +694,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             ))),
                       ),
                     ),
-                  ),
+                  ) :Container(),
 
                   SizedBox(
                     height: 80,

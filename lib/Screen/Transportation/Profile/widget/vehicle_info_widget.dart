@@ -139,11 +139,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -185,11 +185,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -232,11 +232,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',

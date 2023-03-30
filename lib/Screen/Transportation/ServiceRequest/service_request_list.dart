@@ -219,7 +219,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.isSwitched?
+      body:
       BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         return BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
@@ -246,7 +246,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                 showCustomSnackBar(context,state.msg.toString());
               }
             },
-            child: _loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
+            child: widget.isSwitched?_loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
             Container(
               child: ListView(
                 children: [
@@ -263,7 +263,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            Expanded(
                               // width:200,
                               child: const Text("Task Assigned By Other Service Providers",
                                   overflow: TextOverflow.ellipsis,
@@ -391,7 +391,35 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                   )
                 ],
               ),
-            ) : ShimmerCard()
+            ) : ShimmerCard() : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Nothing to show",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("You are currently",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                      )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("offline",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                      )),
+                ],
+              ),
+            ),
+
 
           // Center(
           //   child: CircularProgressIndicator(),
@@ -401,32 +429,6 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
 
 
       })
-          :Center(
-        child: Column(
-          mainAxisAlignment:MainAxisAlignment.center,
-          children: [
-            Text("Nothing to show",
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                )),
-            SizedBox(height: 5,),
-            Text("You are currently",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                )),
-            SizedBox(height: 5,),
-
-            Text("offline",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                )),
-          ],
-        ),
-      ),
 
       );
 

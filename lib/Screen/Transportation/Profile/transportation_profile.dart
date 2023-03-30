@@ -318,11 +318,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -362,11 +362,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -405,11 +405,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -448,11 +448,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -493,11 +493,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -535,11 +535,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -577,11 +577,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -619,11 +619,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -661,11 +661,11 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -799,6 +799,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                     Application.preferences!.remove('user');
+                    Application.preferences!.remove('online');
                     DefaultCacheManager().emptyCache();
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -3246,6 +3247,8 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
                                         experienceCompanyList: expCompanyForms,
 
                                       ));
+                                    }else{
+                                      showCustomSnackBar(context,'Please fill all details.',isError: true);
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(

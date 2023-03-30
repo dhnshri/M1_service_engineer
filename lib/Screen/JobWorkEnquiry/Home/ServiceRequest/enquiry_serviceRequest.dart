@@ -18,7 +18,8 @@ import '../../../../Utils/application.dart';
 import '../../../../Widget/custom_snackbar.dart';
 
 class EnquiryServiceRequestScreen extends StatefulWidget {
-  const EnquiryServiceRequestScreen({Key? key}) : super(key: key);
+  EnquiryServiceRequestScreen({Key? key,required this.isSwitched}) : super(key: key);
+  bool isSwitched;
 
   @override
   _EnquiryServiceRequestScreenState createState() =>
@@ -281,7 +282,8 @@ class _EnquiryServiceRequestScreenState
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _loadData ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
+              child: widget.isSwitched
+                  ?  _loadData ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
               ListView(
                   children: [
                     const SizedBox(height: 5,),
@@ -430,7 +432,34 @@ class _EnquiryServiceRequestScreenState
                       ))),
                   ],
                 )
-              : ShimmerCard()
+              : ShimmerCard(): Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Nothing to show",
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("You are currently",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("offline",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                        )),
+                  ],
+                ),
+              ),
           );
         })
     );

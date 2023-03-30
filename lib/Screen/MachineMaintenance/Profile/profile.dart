@@ -116,7 +116,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   final List<String> quantity = [];
 
   ProfileBloc? _profileBloc;
-  MachineMaintenanceCategoryListModel catrgoryTypeselected=MachineMaintenanceCategoryListModel();
+  MachineMaintenanceCategoryListModel? catrgoryTypeselected;
   MachineMaintenanceSubCategoryListModel? subCatrgoryTypeselected;
 
 
@@ -126,6 +126,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    // catrgoryTypeselected = new MachineMaintenanceCategoryListModel();
+    // subCatrgoryTypeselected = new MachineMaintenanceSubCategoryListModel();
     imageFile = new ImageFile();
     gstImageFile = new GstImageFile();
     panImageFile = new PanImageFile();
@@ -139,14 +141,6 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   getData()async{
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
-      // catrgoryTypeselected!.serviceCategoryName = widget.serviceUserdataList![0].workCatgory.toString();
-      // catrgoryTypeselected!.id = widget.serviceUserdataList![0].categoryId;
-      // subCatrgoryTypeselected!.serviceSubCategoryName = widget.serviceUserdataList![0].workSubCatgory.toString();
-      // subCatrgoryTypeselected!.id = widget.serviceUserdataList![0].subCategoryId;
-      if(catrgoryTypeselected.id==null){
-        catrgoryTypeselected.id =widget.serviceUserdataList![0].categoryId;
-        catrgoryTypeselected.serviceCategoryName = widget.serviceUserdataList![0].workCatgory.toString();
-      }
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
       _nameController.text = widget.serviceUserdataList![0].name.toString();
@@ -341,11 +335,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -383,11 +377,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -425,11 +419,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -467,11 +461,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -509,11 +503,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -624,11 +618,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -663,6 +657,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                   Application.preferences!.remove('user');
+                  Application.preferences!.remove('online');
                   DefaultCacheManager().emptyCache();
                   // _RemoverUser();
                   Navigator.pushAndRemoveUntil(
@@ -1198,12 +1193,68 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                       .first as MachineMaintenanceCategoryListModel,
                                                   onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
                                                     setState(() {
-                                                      catrgoryTypeselected = categoryname!;
+                                                      catrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
+                                                      widget.serviceUserdataList![0].categoryId = categoryname.id;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
+                        widget.serviceUserdataList![0].workCatgory != "" ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].workCatgory}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ) : Container(),
                         SizedBox(height: 15,),
 
                         Padding(
@@ -1269,12 +1320,70 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                       .first as MachineMaintenanceSubCategoryListModel,
                                                   onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
                                                     setState(() {
-                                                      subCatrgoryTypeselected = categoryname!;
+                                                      subCatrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
+                                                      widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
+
+                        widget.serviceUserdataList![0].workSubCatgory != "" ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  // color: msgCount[index]>=10? Colors.blue[400]:
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ) : Container(),
 
                         SizedBox(height: 15,),
 
@@ -2930,8 +3039,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     email: _emailController.text,
                                     mobile: _phoneController.text,
                                     gstNo: _gstController.text,
-                                    catId: '1',
-                                    subCatId: '2',
+                                    catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
+                                    subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
                                     age: _ageController.text,
                                     gender: _genderController.text,
                                     location: _locationController.text,
@@ -2960,7 +3069,9 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         aadharImageFile!.imagePath.toString(),
                                     currentAddress: _locationController.text,
                                   ));
-                                }
+                                }else{
+                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
+                                  }
                               },
                                 style: ElevatedButton.styleFrom(
                                   primary: ThemeColors.defaultbuttonColor,

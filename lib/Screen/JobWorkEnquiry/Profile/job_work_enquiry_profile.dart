@@ -50,7 +50,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   UploadCompanyProfileFile? uploadCompanyProfileImageFile;
   File? _uploadUserProfileImage;
   UserProfileImageFile? uploadUserProfileImageFile;
-  JobWorkEnquiryCategoryListModel catrgoryTypeselected=JobWorkEnquiryCategoryListModel();
+  // JobWorkEnquiryCategoryListModel catrgoryTypeselected=JobWorkEnquiryCategoryListModel();
+  JobWorkEnquiryCategoryListModel? catrgoryTypeselected;
 
   final _formKey = GlobalKey<FormState>();
   final _addressFormKey = GlobalKey<FormState>();
@@ -98,8 +99,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   getData(){
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileMachineList!.isNotEmpty){
 
-      catrgoryTypeselected.id=widget.serviceUserdataList![0].jobCategoryId;
-      catrgoryTypeselected.enquiryDetailsCategory=widget.serviceUserdataList![0].jobCategoryName;
+      // catrgoryTypeselected.id=widget.serviceUserdataList![0].jobCategoryId;
+      // catrgoryTypeselected.enquiryDetailsCategory=widget.serviceUserdataList![0].jobCategoryName;
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
       _coOrdinatorNameController.text = widget.serviceUserdataList![0].coordinateName.toString();
@@ -247,11 +248,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -291,11 +292,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -333,11 +334,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -375,11 +376,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -417,11 +418,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -459,11 +460,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -502,11 +503,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -542,6 +543,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                     Application.preferences!.remove('user');
+                    Application.preferences!.remove('online');
                     // _RemoverUser();
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -1152,12 +1154,69 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                                       .first as JobWorkEnquiryCategoryListModel,
                                                   onChanged: (JobWorkEnquiryCategoryListModel? categoryname) {
                                                     setState(() {
-                                                      catrgoryTypeselected = categoryname!;
+                                                      catrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].jobCategoryName = categoryname!.enquiryDetailsCategory;
+                                                      widget.serviceUserdataList![0].jobCategoryId = categoryname.id;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
+
+                        widget.serviceUserdataList![0].jobCategoryName != "" ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].jobCategoryName}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ) : Container(),
 
                         SizedBox(height: 15,),
 
@@ -1441,21 +1500,21 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                                   ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 6.0),
-                                    child: InkWell(
-                                      onTap: (){
-                                        setState(() {
-                                          // int index1 = machineName
-                                          //     .indexWhere((element) => element.id! == machineName[index].id);
-
-                                          machineList.removeAt(index);
-                                        });
-
-                                      },
-                                      child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(right: 6.0),
+                                  //   child: InkWell(
+                                  //     onTap: (){
+                                  //       setState(() {
+                                  //         // int index1 = machineName
+                                  //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                                  //
+                                  //         machineList.removeAt(index);
+                                  //       });
+                                  //
+                                  //     },
+                                  //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             );
@@ -2267,8 +2326,9 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       email: _emailController.text,
                                       mobile: _phoneController.text,
                                       gstNo: _gstController.text,
-                                      catId: '1',
-                                      subCatId: '2',
+                                      catId: catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].jobCategoryId.toString(),
+                                      // widget.serviceUserdataList![0].jobCategoryName
+                                      subCatId: '1',
                                       userProfilePic:
                                       uploadUserProfileImageFile!.imagePath
                                               .toString(),
@@ -2295,6 +2355,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       addharCardImg:
                                           aadharImageFile!.imagePath.toString(),
                                     ));
+                                  }else{
+                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

@@ -20,8 +20,8 @@ import 'my_task_detail.dart';
 
 
 class EnquiryMyTaskScreen extends StatefulWidget {
-  const EnquiryMyTaskScreen({Key? key}) : super(key: key);
-
+  EnquiryMyTaskScreen({Key? key,required this.isSwitched}) : super(key: key);
+  bool isSwitched;
   @override
   _EnquiryMyTaskScreenState createState() => _EnquiryMyTaskScreenState();
 }
@@ -231,7 +231,8 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _loadData ? myTaskJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
+              child:  widget.isSwitched
+                  ? _loadData ? myTaskJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
@@ -341,7 +342,34 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                           )),
                   ],
                 ),
-              ) : ShimmerCard()
+              ) : ShimmerCard(): Center(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Nothing to show",
+                  style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 5,
+              ),
+              Text("You are currently",
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                  )),
+              SizedBox(
+                height: 5,
+              ),
+              Text("offline",
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                  )),
+            ],
+          ),
+          ),
 
             // Center(
             //   child: CircularProgressIndicator(),

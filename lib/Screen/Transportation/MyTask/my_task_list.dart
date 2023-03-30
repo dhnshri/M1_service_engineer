@@ -27,8 +27,8 @@ import 'my_task_details.dart';
 
 
 class TransportationMyTaskScreen extends StatefulWidget {
-  const TransportationMyTaskScreen({Key? key}) : super(key: key);
-
+  TransportationMyTaskScreen({Key? key,required this.isSwitched}) : super(key: key);
+  bool isSwitched;
   @override
   _TransportationMyTaskScreenState createState() => _TransportationMyTaskScreenState();
 }
@@ -62,9 +62,9 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
 
   getApi(){
     _homeBloc!.add(OnMyTaskTranspotationList(userid:'1', offset: offset.toString(),timeId: timeId.toString()));
-
     // _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -328,7 +328,8 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
+              child: widget.isSwitched
+                  ?  _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
@@ -434,7 +435,34 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                         )),
                   ],
                 ),
-              ) : ShimmerCard()
+              ) : ShimmerCard(): Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Nothing to show",
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("You are currently",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("offline",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                        )),
+                  ],
+                ),
+              ),
 
             // Center(
             //   child: CircularProgressIndicator(),

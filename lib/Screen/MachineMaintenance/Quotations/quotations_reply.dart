@@ -33,11 +33,12 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
   QuotationReplyBloc? _quotationReplyBloc;
   List<QuotationReplyModel> quotationReplyList=[];
-
+  final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
-  bool loading = true;
+  bool _loadData = false;
   bool _isLoading = false;
   double? _progressValue;
+  int offset = 0;
 
   @override
   void initState() {
@@ -45,7 +46,11 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: '0' , userId: Application.customerLogin!.id.toString()));
+    getApi();
+  }
+
+  getApi(){
+    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: offset.toString() , userId: Application.customerLogin!.id.toString()));
   }
 
   @override
@@ -57,8 +62,19 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
   Widget buildQuotationsaReplyList(BuildContext context,List<QuotationReplyModel> quotationReplyList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<QuotationReplyBloc>(context)
+              .add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -185,20 +201,24 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                   _isLoading = state.isLoading;
                 }
                 if(state is QuotationReplySuccess){
-                  quotationReplyList = state.quotationReplyListData;
+                  // quotationReplyList = state.quotationReplyListData;
+                  quotationReplyList.addAll(state.quotationReplyListData);
+                  if (quotationReplyList != null) {
+                    _loadData = true;
+                  }
                 }
                 if(state is QuotationReplyFail){
                   showCustomSnackBar(context,state.msg.toString());
 
                 }
               },
-              child: _isLoading ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: ListView(
-                    children: [
-                      buildQuotationsaReplyList(context, quotationReplyList),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(child: buildQuotationsaReplyList(context, quotationReplyList)),
                     ],
                   ),
                 ),

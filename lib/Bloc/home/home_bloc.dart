@@ -528,6 +528,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final TransportTaskHandOverRepo result = await userRepository!
           .fetchTransportTaskHandOverList(
         offSet: event.offSet,
+        vehicleType: event.vehicleType,
       );
       print(result);
 
@@ -871,16 +872,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield TransportUpdateProcessLoading(isLoading: false);
 
       ///Fetch API via repository
-      final CartRepo result = await userRepository!
-          .transportUpdateTrackProcess(
-          serviceUserId: event.serviceUserID,
-          transportEnqId: event.transportEnquiryId,
-          reachAtPic: event.reachAtPick,
-          loadingComplete: event.loadComplete,
-          onTheWay: event.onWayToDrop,
-          reachAtDrop: event.reachOnDrop,
-      );
-      print(result);
+      // final CartRepo result = await userRepository!
+      //     .transportUpdateTrackProcess(
+      //     serviceUserId: event.serviceUserID,
+      //     transportEnqId: event.transportEnquiryId,
+      //     reachAtPic: event.reachAtPick,
+      //     loadingComplete: event.loadComplete,
+      //     onTheWay: event.onWayToDrop,
+      //     reachAtDrop: event.reachOnDrop,
+      //     invoiceImage: event.invoiceImage,
+      // );
+      // print(result);
+
+
+
+      Map<String, String> params = {
+        "service_user_id":event.serviceUserID,
+        "transport_enquiry_id":event.transportEnquiryId,
+        'reached_at_pickup_location':event.reachAtPick,
+        'loading_completed':event.loadComplete,
+        'on_the_way_to_drop_location':event.onWayToDrop,
+        'reaches_on_drop_location':event.reachOnDrop,
+      };
+
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/transport_track_progress'));
+      // ..fields.addAll(params);
+      if(event.invoiceImage!="null") {
+        var userProfileImgFile = await http.MultipartFile.fromPath(
+            'invoice_img', event.invoiceImage.toString());
+        _request.files.add(userProfileImgFile);
+      }
+
+      _request = jsonToFormData(_request, params);
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      CartRepo result =  CartRepo.fromJson(responseJson);
+      print(result.msg);
 
       ///Case API fail but not have token
       if (result.success == true) {

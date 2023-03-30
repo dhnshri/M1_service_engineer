@@ -10,6 +10,11 @@ class OnSaveUser extends AuthenticationEvent {
   OnSaveUser(this.user);
 }
 
+class OnSaveOnlineOffline extends AuthenticationEvent {
+  final bool isOnline;
+  OnSaveOnlineOffline(this.isOnline);
+}
+
 class OnSaveMaintainenceTotalAmount extends AuthenticationEvent {
    double? totalAmount;
    OnSaveMaintainenceTotalAmount(this.totalAmount);
