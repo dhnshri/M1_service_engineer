@@ -1,8 +1,9 @@
 class ProductRepo {
   bool? success;
   dynamic data;
+  String? msg;
 
-  ProductRepo({this.success, this.data});
+  ProductRepo({this.success, this.data,this.msg});
 
   factory ProductRepo.fromJson(Map<dynamic, dynamic> json) {
     try {
@@ -10,12 +11,14 @@ class ProductRepo {
         success: json['success'],
         // data: json['data'] != null ? new ServiceRequestRepo.fromJson(json['data']) : null,
         data: json['data'],
+        msg: json['msg'],
 
 
       );
     } catch (error) {
       return ProductRepo(
         success: json['success'],
+        msg: json['msg'],
         data: null,
 
       );

@@ -7,22 +7,22 @@ import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 
-import '../../../Model/JobWorkEnquiry/my_task_detail_model.dart';
-import '../../../Model/JobWorkEnquiry/my_task_model.dart';
-import '../../../Model/JobWorkEnquiry/service_request_detail_model.dart';
-import '../../../Model/JobWorkEnquiry/service_request_model.dart';
-import '../../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
-import '../../../Model/JobWorkEnquiry/track_process_report_model.dart';
-import '../../../Model/MachineMaintance/task_hand_over_model.dart';
-import '../../../Model/Transpotation/MyTaskTransportDetailModel.dart';
-import '../../../Model/Transpotation/myTaskListModel.dart';
-import '../../../Model/Transpotation/serviceRequestDetailModel.dart';
-import '../../../Model/Transpotation/serviceRequestListModel.dart';
-import '../../../Model/Transpotation/transport_task_hand_over_model.dart';
-import '../../Model/track_model.dart';
-
+import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
+import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
+import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
+import '../../Model/MachineMaintance/task_hand_over_model.dart';
+import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
+import '../../Model/Transpotation/myTaskListModel.dart';
+import '../../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../../Model/Transpotation/serviceRequestListModel.dart';
+import '../../Model/Transpotation/transport_task_hand_over_model.dart';
+import '../../Model/customer_login.dart';
 
 @immutable
 abstract class HomeState {}
@@ -381,8 +381,8 @@ class TransportUpdateProcessFail extends HomeState {
 }
 
 class TransportUpdateProcessSuccess extends HomeState {
-  String msg;
-  TransportUpdateProcessSuccess({required this.msg});
+  String message;
+  TransportUpdateProcessSuccess({required this.message});
 }
 
 class TransportGetProcessLoading extends HomeState {

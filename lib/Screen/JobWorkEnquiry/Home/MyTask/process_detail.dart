@@ -57,7 +57,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
               Navigator.of(context).pop();
             },
             child: Icon(Icons.arrow_back_ios,)),
-        title: Text(""
+        title: Text("Task Detail"
         ),
         backgroundColor: ThemeColors.backGroundColor,
 
@@ -69,7 +69,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(widget.trackProgressData.heading.toString(),
-                  style: TextStyle(fontFamily: 'Poppins-Medium',
+                  style: TextStyle(fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
 
@@ -93,9 +93,8 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                 }
                 if(state is TaskCompleteSuccess){
                   showCustomSnackBar(context,state.message.toString(),isError: false);
-                  // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>
-                  //     MyTaskDetailsScreen(myTaskData: widget.myTaskData,)));
-
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>
+                      EnquiryMyTaskDetailsScreen(myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
                 }
                 if(state is TaskCompleteFail){
                   showCustomSnackBar(context,state.msg.toString(),isError: true);
@@ -103,8 +102,8 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
               },
               child: InkWell(
                 onTap: (){
-                  _homeBloc!.add(TaskComplete(serviceUserId: widget.trackProgressData.serviceUserId.toString(),machineEnquiryId: widget.trackProgressData.machineEnquiryId.toString(),
-                      transportEnquiryId: '0',jobWorkEnquiryId: '0', dailyTaskId: widget.trackProgressData.id.toString(), status: 1));
+                  _homeBloc!.add(TaskComplete(serviceUserId: widget.trackProgressData.serviceUserId.toString(),machineEnquiryId: '0',
+                      transportEnquiryId: '0',jobWorkEnquiryId: widget.trackProgressData.jobWorkEnquiryId.toString(), dailyTaskId: widget.trackProgressData.id.toString(), status: 1));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -115,7 +114,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                         color: ThemeColors.defaultbuttonColor,
                         borderRadius: BorderRadius.circular(30)),
                     child: Center(child: Text("Mark As Complete",
-                        style: TextStyle(fontFamily: 'Poppins-Medium',
+                        style: TextStyle(fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,

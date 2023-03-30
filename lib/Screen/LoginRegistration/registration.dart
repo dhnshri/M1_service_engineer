@@ -154,7 +154,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             child: Text(
                                               item,
                                               style: const TextStyle(
-                                                  fontFamily: 'Poppins-Medium',
+                                                  fontFamily: 'Poppins',
                                                   fontSize: 15,
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.w500

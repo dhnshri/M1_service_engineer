@@ -183,7 +183,7 @@ class _TransportHandOverTaskDetailScreenState extends State<TransportHandOverTas
                     title:Text("Basic Info",
                       style: TextStyle(
                           color: Colors.black,
-                          fontFamily: 'Poppins-Medium',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w500
                       ),),
@@ -240,7 +240,7 @@ class _TransportHandOverTaskDetailScreenState extends State<TransportHandOverTas
                     title: const Text("Load Details",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -354,7 +354,7 @@ class _TransportHandOverTaskDetailScreenState extends State<TransportHandOverTas
                     title: Text("Quotation",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -480,14 +480,14 @@ class _TransportHandOverTaskDetailScreenState extends State<TransportHandOverTas
                                 Text("Amount",
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontFamily: 'Poppins-Medium',
+                                        fontFamily: 'Poppins',
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500
                                     )),
                                 Text("₹ $grandTotal",
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontFamily: 'Poppins-Medium',
+                                        fontFamily: 'Poppins',
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500
                                     )),
@@ -508,7 +508,7 @@ class _TransportHandOverTaskDetailScreenState extends State<TransportHandOverTas
                     title:  Text("Message from Client",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),

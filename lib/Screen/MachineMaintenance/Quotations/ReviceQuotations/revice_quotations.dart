@@ -274,7 +274,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                                                   color: Colors.black,
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Poppins-Medium'
+                                                  fontFamily: 'Poppins'
                                               )),
                                             ),
                                             widget.quotationRequiredItemList![index].itemQty != 0 ?
@@ -331,7 +331,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins-Medium'
+                fontFamily: 'Poppins'
             ),)),
         SizedBox(height: 5,),
         itemNotAvailabeList.length <= 0? Container():
@@ -382,7 +382,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(itemNotAvailabeList.length <= 0? "Add Items":"Add More",
-                    style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(width: 5,),
@@ -987,7 +987,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
         children: [
           Text('Working Time',style: TextStyle(
               color: Colors.black,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Poppins',
               fontSize: 16,
               fontWeight: FontWeight.w400
           )),
@@ -1053,7 +1053,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
 
           Text('Service/Call Charges',style: TextStyle(
               color: Colors.black,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Poppins',
               fontSize: 16,
               fontWeight: FontWeight.w400
           )),
@@ -1122,7 +1122,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
 
           Text('Handling Charges',style: TextStyle(
               color: Colors.black,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Poppins',
               fontSize: 16,
               fontWeight: FontWeight.w400
           )),
@@ -1191,7 +1191,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
 
           Text('Transport Charges',style: TextStyle(
               color: Colors.black,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Poppins',
               fontSize: 16,
               fontWeight: FontWeight.w400
           )),
@@ -1260,7 +1260,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
 
           Text('GST',style: TextStyle(
               color: Colors.black,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Poppins',
               fontSize: 16,
               fontWeight: FontWeight.w400
           )),

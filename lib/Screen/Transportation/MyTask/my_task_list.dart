@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,8 +27,8 @@ import 'my_task_details.dart';
 
 
 class TransportationMyTaskScreen extends StatefulWidget {
-  const TransportationMyTaskScreen({Key? key}) : super(key: key);
-
+  TransportationMyTaskScreen({Key? key,required this.isSwitched}) : super(key: key);
+  bool isSwitched;
   @override
   _TransportationMyTaskScreenState createState() => _TransportationMyTaskScreenState();
 }
@@ -56,13 +57,14 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
     super.initState();
     _progressValue = 0.5;
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    // _homeBloc!.add(OnMyTaskTranspotationList(userid:'1', offset: offset.toString(),timeId: timeId.toString()));
     getApi();
   }
 
   getApi(){
-    _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
+    _homeBloc!.add(OnMyTaskTranspotationList(userid:'1', offset: offset.toString(),timeId: timeId.toString()));
+    // _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -230,65 +232,6 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.28,
-                  maxHeight: MediaQuery.of(context).size.width * 0.28,
-                ),
-                child: CachedNetworkImage(
-                  filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
-                  placeholder: (context, url) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                      ),
-                    );
-                  },
-                  imageBuilder: (context, imageProvider) {
-                    return Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                    );
-                  },
-                  errorWidget: (context, url, error) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.error),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -296,19 +239,6 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width/1.8,
-                      child: Text(
-                        "Job Title/Services Name or Any Other Name...",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                    ),
                     SizedBox(height: 4,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -316,7 +246,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                         Text(
                           "Enquiry ID:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -328,7 +258,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                           child: Text(
                             myTaskData.enquiryId.toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -342,9 +272,9 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Task Status:",
+                          "Date and Time:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -356,9 +286,9 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                         // ),
                         Container(
                           child: Text(
-                            "Step 1 ( Lorem Ipsum)",
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(myTaskData.dateAndTime.toString())).toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -398,7 +328,8 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                   showCustomSnackBar(context,state.msg.toString());
                 }
               },
-              child: _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
+              child: widget.isSwitched
+                  ?  _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: ListView(
                   children: [
@@ -504,7 +435,34 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                         )),
                   ],
                 ),
-              ) : ShimmerCard()
+              ) : ShimmerCard(): Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Nothing to show",
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("You are currently",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("offline",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 16,
+                        )),
+                  ],
+                ),
+              ),
 
             // Center(
             //   child: CircularProgressIndicator(),
@@ -605,7 +563,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -620,7 +578,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -633,7 +591,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -650,7 +608,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -663,7 +621,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -680,7 +638,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -693,7 +651,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

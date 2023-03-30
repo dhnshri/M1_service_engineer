@@ -176,7 +176,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                           const Text(
                             "Service User Id:",
                             style: TextStyle(
-                                fontFamily: 'Poppins-SemiBold',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold
                             ),
@@ -184,7 +184,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                           Text(
                             TaskData.serviceUser.toString(),
                             style: const TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -200,7 +200,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                           const Text(
                             "Vehicle Name:",
                             style: TextStyle(
-                                fontFamily: 'Poppins-SemiBold',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold
                             ),
@@ -213,7 +213,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                             child: Text(TaskData.vehicleName.toString(),
                               // "#102GRDSA36987",
                               style: const TextStyle(
-                                fontFamily: 'Poppins-Regular',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
                               ),
@@ -231,7 +231,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                           Text(
                             "Vehicle Type:",
                             style: TextStyle(
-                                fontFamily: 'Poppins-SemiBold',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold
                             ),
@@ -245,7 +245,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                               TaskData.vehicleType.toString(),
                               //"Step 1",
                               style: TextStyle(
-                                fontFamily: 'Poppins-Regular',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
                               ),
@@ -262,7 +262,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                           Text(
                             "Total Experience:",
                             style: TextStyle(
-                                fontFamily: 'Poppins-SemiBold',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold
                             ),
@@ -276,7 +276,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                               TaskData.years.toString(),
                               //"Step 1",
                               style: TextStyle(
-                                fontFamily: 'Poppins-Regular',
+                                fontFamily: 'Poppins',
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold
                               ),
@@ -384,7 +384,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -399,7 +399,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -412,7 +412,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -429,7 +429,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -442,7 +442,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -459,7 +459,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -472,7 +472,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

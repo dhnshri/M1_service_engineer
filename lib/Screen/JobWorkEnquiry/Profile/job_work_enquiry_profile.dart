@@ -50,6 +50,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
   UploadCompanyProfileFile? uploadCompanyProfileImageFile;
   File? _uploadUserProfileImage;
   UserProfileImageFile? uploadUserProfileImageFile;
+  // JobWorkEnquiryCategoryListModel catrgoryTypeselected=JobWorkEnquiryCategoryListModel();
   JobWorkEnquiryCategoryListModel? catrgoryTypeselected;
 
   final _formKey = GlobalKey<FormState>();
@@ -97,6 +98,9 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
   getData(){
     if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty || widget.profileMachineList!.isNotEmpty){
+
+      // catrgoryTypeselected.id=widget.serviceUserdataList![0].jobCategoryId;
+      // catrgoryTypeselected.enquiryDetailsCategory=widget.serviceUserdataList![0].jobCategoryName;
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
       _coOrdinatorNameController.text = widget.serviceUserdataList![0].coordinateName.toString();
@@ -244,11 +248,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -288,11 +292,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -330,11 +334,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -372,11 +376,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -414,11 +418,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -456,11 +460,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -499,11 +503,11 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -539,6 +543,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                     Application.preferences!.remove('user');
+                    Application.preferences!.remove('online');
                     // _RemoverUser();
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -559,7 +564,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
             ],
             title: Text("Profile",
               style: TextStyle(
-                  fontFamily: 'Poppins-Medium'
+                  fontFamily: 'Poppins'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
@@ -640,9 +645,9 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Hello",
-                                    style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
+                                    style: TextStyle(fontFamily: 'Poppins',fontSize: 16),),
                                   Text(Application.customerLogin!.name == ""? "": Application.customerLogin!.name.toString(),
-                                    style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                    style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                     textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
                                   )
                                 ],
@@ -658,7 +663,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Details",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -671,7 +676,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("ID",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -742,7 +747,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Company Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -813,7 +818,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Co-Ordinator Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -884,7 +889,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Email",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -954,7 +959,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Phone Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1022,7 +1027,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("GST Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1089,7 +1094,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Category",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1108,8 +1113,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                         width: MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
                                           // color: Theme.of(context).dividerColor,
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20.0),
+                                            color: ThemeColors.textFieldBackgroundColor,
+                                            borderRadius: BorderRadius.circular(5.0),
                                             border: Border.all(
                                                 color: ThemeColors.textFieldBgColor)),
                                         child: Padding(
@@ -1150,18 +1155,75 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                                   onChanged: (JobWorkEnquiryCategoryListModel? categoryname) {
                                                     setState(() {
                                                       catrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].jobCategoryName = categoryname!.enquiryDetailsCategory;
+                                                      widget.serviceUserdataList![0].jobCategoryId = categoryname.id;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
 
+                        widget.serviceUserdataList![0].jobCategoryName != "" ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].jobCategoryName}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ) : Container(),
+
                         SizedBox(height: 15,),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Company Profile",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1179,7 +1241,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                   child: Container(
                                     width: MediaQuery.of(context).size.width * 0.4,
                                     child: Text(uploadCompanyProfileImageFile!.imagePath == null ?"Upload Company Profile" : uploadCompanyProfileImageFile!.imagePath!.split('/').last.toString(),
-                                      style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                      style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                       maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -1194,7 +1256,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 4,right: 4),
                                       child: Center(child: Text("+Add Image",
-                                        style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )),
                                     ),
@@ -1224,7 +1286,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Machine List",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1418,7 +1480,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                                 child: Container(
                                                   width: MediaQuery.of(context).size.width * 0.4,
                                                   child: Text('${machineList[index].machineName}',
-                                                    style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                    style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
                                                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
@@ -1426,7 +1488,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               Padding(
                                                 padding: const EdgeInsets.only(right: 10),
                                                 child: Text('${machineList[index].quantity}',
-                                                  style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black),
+                                                  style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
                                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
@@ -1438,21 +1500,21 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
 
                                   ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 6.0),
-                                    child: InkWell(
-                                      onTap: (){
-                                        setState(() {
-                                          // int index1 = machineName
-                                          //     .indexWhere((element) => element.id! == machineName[index].id);
-
-                                          machineList.removeAt(index);
-                                        });
-
-                                      },
-                                      child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(right: 6.0),
+                                  //   child: InkWell(
+                                  //     onTap: (){
+                                  //       setState(() {
+                                  //         // int index1 = machineName
+                                  //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                                  //
+                                  //         machineList.removeAt(index);
+                                  //       });
+                                  //
+                                  //     },
+                                  //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             );
@@ -1472,7 +1534,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Address",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1507,7 +1569,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Location",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                     Icon(Icons.my_location_rounded,color: Colors.red,)
@@ -1522,7 +1584,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Address",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1600,7 +1662,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Pin Code",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1671,7 +1733,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("City",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1742,7 +1804,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("State",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1813,7 +1875,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Country",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1891,7 +1953,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("KYC",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1906,7 +1968,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Company Name",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1977,7 +2039,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Company Certificate",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -1995,7 +2057,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2010,7 +2072,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2026,7 +2088,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("GST Certificate",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2044,7 +2106,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2059,7 +2121,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2075,7 +2137,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Pan Card",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2093,7 +2155,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2108,7 +2170,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2124,7 +2186,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("SHOPACT License",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2142,7 +2204,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2157,7 +2219,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2173,7 +2235,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("MSME/Udhyog Aadhar Card",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2193,7 +2255,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.4,
                                         child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
-                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           maxLines: 2, overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -2209,7 +2271,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2264,8 +2326,9 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       email: _emailController.text,
                                       mobile: _phoneController.text,
                                       gstNo: _gstController.text,
-                                      catId: '1',
-                                      subCatId: '2',
+                                      catId: catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].jobCategoryId.toString(),
+                                      // widget.serviceUserdataList![0].jobCategoryName
+                                      subCatId: '1',
                                       userProfilePic:
                                       uploadUserProfileImageFile!.imagePath
                                               .toString(),
@@ -2292,6 +2355,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       addharCardImg:
                                           aadharImageFile!.imagePath.toString(),
                                     ));
+                                  }else{
+                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

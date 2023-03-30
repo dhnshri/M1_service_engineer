@@ -4,6 +4,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -30,14 +31,14 @@ class NextQuotationFor extends StatefulWidget {
   VehicleNameModel? vehicleNameselected;
   VehicleTypeModel? vehicleTypeselected;
   VehicleNumberModel? vehicleNumberselected;
-  String dropdownValue4;
   TextEditingController ServiceCallChargesController = TextEditingController();
   TextEditingController HandlingChargesController = TextEditingController();
+  TextEditingController gstChargesController = TextEditingController();
   List<CustomerReplyMsg>? quotationMsgList;
 
   NextQuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
     required this.vehicleNumberselected,required this.HandlingChargesController,
-    required this.ServiceCallChargesController,required this.dropdownValue4,
+    required this.ServiceCallChargesController,required this.gstChargesController,
     required this.requestDetailList,required this.quotationMsgList}) : super(key: key,);
 
   QuotationReplyTransportModel? requestDetailList;
@@ -71,7 +72,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
   final GlobalKey<ExpansionTileCardState> cardQuotationsTransposation = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardQuotations = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardTermsConditionsTransposation = new GlobalKey();
-
+  int commission=0;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -83,7 +84,17 @@ class NextQuotationForState extends State<NextQuotationFor> {
     super.initState();
     // _phoneNumberController.clear();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
+    getCommissionApi();
+  }
 
+  getCommissionApi()async{
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
+    then((value) => value);
+    print(com);
+    print(com['data']);
+    commission = com['data'];
+    setState(() {
+    });
   }
 
   @override
@@ -213,9 +224,8 @@ class NextQuotationForState extends State<NextQuotationFor> {
   Widget build(BuildContext context) {
     int sum = int.parse(widget.ServiceCallChargesController.text) +
         int.parse(widget.HandlingChargesController.text);
-    int commission = 150;
 
-    double totalQuotation = 100/100+(int.parse(widget.dropdownValue4))+sum+commission;
+    double totalQuotation = 100/100+(int.parse(widget.gstChargesController.text))+sum+commission;
 
     String gstNumber = '07AAGFF2194N1Z1';
 
@@ -236,129 +246,104 @@ class NextQuotationForState extends State<NextQuotationFor> {
         child: FunctionButton(
           onPressed: () async {
             // Alertmessage(context);
-            showDialog(
-                context: context,
-                builder: (context) =>  AlertDialog(
-                  title: new Text("Are you sure, you want to send this quotation ?"),
-                  // content: new Text(""),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            child: new Text(
-                              "No",
-                              style: TextStyle(
-                                  color: Colors.black),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            style: TextButton.styleFrom(
-                              fixedSize: const Size(120, 30),
-                              shape:
-                              const RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.all(
-                                      Radius.circular(
-                                          25))),
-                              side: BorderSide(
-                                  color: ThemeColors
-                                      .defaultbuttonColor,
-                                  width: 1.5),
-                            )),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        // TextButton(
-                        //   child: new Text(
-                        //     "Yes",
-                        //     style:
-                        //     TextStyle(color: Colors.white),
-                        //   ),
-                        //   onPressed: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 BottomNavigation(
-                        //                   index: 0,
-                        //                   dropValue:
-                        //                   'Transportation',
-                        //                 )));
-                        //   },
-                        //   style: TextButton.styleFrom(
-                        //     fixedSize: const Size(120, 30),
-                        //     backgroundColor: ThemeColors
-                        //         .defaultbuttonColor,
-                        //     shape:
-                        //     const RoundedRectangleBorder(
-                        //         borderRadius:
-                        //         BorderRadius.all(
-                        //             Radius.circular(
-                        //                 25))),),
-                        //
-                        // ),
-                        BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-                          return BlocListener<HomeBloc, HomeState>(
-                            listener: (context, state) {
-                              if(state is TranspotationSendQuotationSuccess){
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BottomNavigation(
-                                          index: 0,
-                                          dropValue: Application.customerLogin!.role.toString(),
-                                        )));
-                                showCustomSnackBar(context,state.message,isError: false);
-                              }
-                            },
-                            child: TextButton(
+            if(value==true){
+              showDialog(
+                  context: context,
+                  builder: (context) =>  AlertDialog(
+                    title: new Text("Are you sure, you want to send this quotation ?"),
+                    // content: new Text(""),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+                        children: [
+                          TextButton(
                               child: new Text(
-                                "Yes",
-                                style:
-                                TextStyle(color: Colors.white),
+                                "No",
+                                style: TextStyle(
+                                    color: Colors.black),
                               ),
                               onPressed: () {
-                                print("Print Date : ${widget.requestDetailList!}");
-                                _homeBloc!.add(TranspotationSendQuotation(
-                                  service_user_id: Application.customerLogin!.id.toString(),
-                                  transport_enquiry_date: widget.requestDetailList!.dateAndTime.toString(),
-                                  transport_enquiry_id: widget.requestDetailList!.enquiryId.toString(),
-                                  handlingCharges: widget.HandlingChargesController.text == "" ? '0':widget.HandlingChargesController.text,
-                                  serviceCharges: widget.ServiceCallChargesController.text == "" ? '0':widget.ServiceCallChargesController.text,
-                                  vehicleType: widget.vehicleTypeselected.toString(),
-                                  vehicleNumber: widget.vehicleNumberselected.toString(),
-                                  vehicleName: widget.vehicleNameselected.toString(),
-                                  gst_no:gstNumber.toString(),
-                                  commision: commission.toString(),
-                                  total_amount:totalQuotation.toString(),
-                                  gst:widget.dropdownValue4.toString(),
-                                ));
+                                Navigator.of(context).pop();
                               },
                               style: TextButton.styleFrom(
                                 fixedSize: const Size(120, 30),
-                                backgroundColor: ThemeColors
-                                    .defaultbuttonColor,
                                 shape:
                                 const RoundedRectangleBorder(
                                     borderRadius:
                                     BorderRadius.all(
                                         Radius.circular(
-                                            25))),),
+                                            25))),
+                                side: BorderSide(
+                                    color: ThemeColors
+                                        .defaultbuttonColor,
+                                    width: 1.5),
+                              )),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+                            return BlocListener<HomeBloc, HomeState>(
+                              listener: (context, state) {
+                                if(state is TranspotationSendQuotationSuccess){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BottomNavigation(
+                                            index: 0,
+                                            dropValue: Application.customerLogin!.role.toString(),
+                                          )));
+                                  showCustomSnackBar(context,state.message,isError: false);
+                                }
+                              },
+                              child: TextButton(
+                                child: new Text(
+                                  "Yes",
+                                  style:
+                                  TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  print("Print Date : ${widget.requestDetailList!}");
+                                  _homeBloc!.add(TranspotationSendQuotation(
+                                    service_user_id: Application.customerLogin!.id.toString(),
+                                    transport_enquiry_date: widget.requestDetailList!.dateAndTime.toString(),
+                                    transport_enquiry_id: widget.requestDetailList!.enquiryId.toString(),
+                                    handlingCharges: widget.HandlingChargesController.text == "" ? '0':widget.HandlingChargesController.text,
+                                    serviceCharges: widget.ServiceCallChargesController.text == "" ? '0':widget.ServiceCallChargesController.text,
+                                    vehicleType: widget.vehicleTypeselected.toString(),
+                                    vehicleNumber: widget.vehicleNumberselected.toString(),
+                                    vehicleName: widget.vehicleNameselected.toString(),
+                                    gst_no:gstNumber.toString(),
+                                    commision: commission.toString(),
+                                    total_amount:totalQuotation.toString(),
+                                    gst:widget.gstChargesController.text.toString(),
+                                  ));
+                                },
+                                style: TextButton.styleFrom(
+                                  fixedSize: const Size(120, 30),
+                                  backgroundColor: ThemeColors
+                                      .defaultbuttonColor,
+                                  shape:
+                                  const RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(
+                                          Radius.circular(
+                                              25))),),
 
-                            ),
+                              ),
 
-                          );
+                            );
 
 
-                        })
-                      ],
-                    ),
-                  ],
-                )
-            );
+                          })
+                        ],
+                      ),
+                    ],
+                  )
+              );
+            }else{
+              showCustomSnackBar(context,"Accept the Terms And Conditions.",isError: false);
+            }
           },
           shape: const RoundedRectangleBorder(
               borderRadius:
@@ -380,7 +365,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
               initiallyExpanded: true,
               title: Text("Vehicle Details",style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500
               )),
@@ -433,7 +418,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
               initiallyExpanded: true,
               title: Text("Quotations",style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500
               )),
@@ -502,25 +487,25 @@ class NextQuotationForState extends State<NextQuotationFor> {
             Divider(thickness: 2,),
             ///GST
 
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0,top: 16.0),
-              child: Container(
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("GST Number",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                      Text(gstNumber.toString(),
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  )
-              ),
-            ),
-
-            Divider(thickness: 2,),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0,top: 16.0),
+            //   child: Container(
+            //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           Text("GST Number",
+            //               style: TextStyle(fontFamily: 'Poppins',
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w500)),
+            //           Text(gstNumber.toString(),
+            //               style: TextStyle(fontFamily: 'Poppins',
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w500)),
+            //         ],
+            //       )
+            //   ),
+            // ),
+            //
+            // Divider(thickness: 2,),
 
             ///Quotations
             ExpansionTileCard(
@@ -529,7 +514,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
               title: Text("Quotation",
                   style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500
                   )),
@@ -542,24 +527,24 @@ class NextQuotationForState extends State<NextQuotationFor> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Quotation Charges"),
-                          Text('₹${sum.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text('₹ ${sum.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(height: 10,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("M1 Commission"),
-                          Text('₹${commission.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("Professional Charges"),
+                          Text('₹ ${commission.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(height: 10,),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("GST %"),
-                          Text('${widget.dropdownValue4.toString()} %',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("GST "),
+                          Text('₹ ${widget.gstChargesController.text.toString()} ',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
 
@@ -572,14 +557,14 @@ class NextQuotationForState extends State<NextQuotationFor> {
                           Text("Total",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontFamily: 'Poppins-Medium',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500
                               )),
                           Text(totalQuotation.toString(),
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontFamily: 'Poppins-Medium',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500
                               )),
@@ -599,7 +584,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
               title:  Text("Message from Client",
                   style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500
                   )),
@@ -622,7 +607,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
               title: Text("Terms and Conditions",
                   style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500
                   )),
@@ -641,7 +626,7 @@ class NextQuotationForState extends State<NextQuotationFor> {
                     const Text("I agree to the terms and conditions.",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w400))
                   ],

@@ -4,6 +4,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -28,13 +29,14 @@ class QuotationFor extends StatefulWidget {
   VehicleNameModel? vehicleNameselected;
   VehicleTypeModel? vehicleTypeselected;
   VehicleNumberModel? vehicleNumberselected;
-  String dropdownValue4;
+  // String dropdownValue4;
   TextEditingController ServiceCallChargesController = TextEditingController();
   TextEditingController HandlingChargesController = TextEditingController();
+  TextEditingController gstController = TextEditingController();
 
   QuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
     required this.vehicleNumberselected,required this.HandlingChargesController,
-    required this.ServiceCallChargesController,required this.dropdownValue4,
+    required this.ServiceCallChargesController,required this.gstController,
     required this.requestDetailList,}) : super(key: key,);
 
   TransportDetailsModel? requestDetailList;
@@ -59,7 +61,7 @@ class QuotationForState extends State<QuotationFor> {
   var totalValue = 0;
   int prodValue = 15000;
   bool value = false;
-
+  int commission = 0;
   HomeBloc? _homeBloc;
 
   final GlobalKey<ExpansionTileCardState> cardVehicleDetailsTransposation = new GlobalKey();
@@ -79,7 +81,17 @@ class QuotationForState extends State<QuotationFor> {
     super.initState();
    // _phoneNumberController.clear();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
+    getCommissionApi();
+  }
 
+  getCommissionApi()async{
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
+    then((value) => value);
+    print(com);
+    print(com['data']);
+    commission = com['data'];
+    setState(() {
+    });
   }
 
   @override
@@ -209,9 +221,8 @@ class QuotationForState extends State<QuotationFor> {
   Widget build(BuildContext context) {
     int sum = int.parse(widget.ServiceCallChargesController.text) +
         int.parse(widget.HandlingChargesController.text);
-    int commission = 150;
 
-    double totalQuotation = 100/100+(int.parse(widget.dropdownValue4))+sum+commission;
+    double totalQuotation = 100/100+(int.parse(widget.gstController.text))+sum+commission;
 
     String gstNumber = '07AAGFF2194N1Z1';
 
@@ -225,136 +236,141 @@ class QuotationForState extends State<QuotationFor> {
               //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },
             child: Icon(Icons.arrow_back_ios)),
-        title: Text('Quotation for #102GRDSA36987'),
+        title: Text('Quotation for #${widget.requestDetailList!.transportEnquiryId}'),
       ),
       bottomNavigationBar:Padding(
         padding: const EdgeInsets.all(10.0),
         child: FunctionButton(
           onPressed: () async {
            // Alertmessage(context);
-            showDialog(
-                context: context,
-                builder: (context) =>  AlertDialog(
-                  title: new Text("Are you sure, you want to send this quotation ?"),
-                  // content: new Text(""),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            child: new Text(
-                              "No",
-                              style: TextStyle(
-                                  color: Colors.black),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            style: TextButton.styleFrom(
-                              fixedSize: const Size(120, 30),
-                              shape:
-                              const RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.all(
-                                      Radius.circular(
-                                          25))),
-                              side: BorderSide(
-                                  color: ThemeColors
-                                      .defaultbuttonColor,
-                                  width: 1.5),
-                            )),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        // TextButton(
-                        //   child: new Text(
-                        //     "Yes",
-                        //     style:
-                        //     TextStyle(color: Colors.white),
-                        //   ),
-                        //   onPressed: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 BottomNavigation(
-                        //                   index: 0,
-                        //                   dropValue:
-                        //                   'Transportation',
-                        //                 )));
-                        //   },
-                        //   style: TextButton.styleFrom(
-                        //     fixedSize: const Size(120, 30),
-                        //     backgroundColor: ThemeColors
-                        //         .defaultbuttonColor,
-                        //     shape:
-                        //     const RoundedRectangleBorder(
-                        //         borderRadius:
-                        //         BorderRadius.all(
-                        //             Radius.circular(
-                        //                 25))),),
-                        //
-                        // ),
-                        BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-                          return BlocListener<HomeBloc, HomeState>(
-                            listener: (context, state) {
-                              if(state is TranspotationSendQuotationSuccess){
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BottomNavigation(
-                                          index: 0,
-                                          dropValue: Application.customerLogin!.role.toString(),
-                                        )));
-                                showCustomSnackBar(context,state.message,isError: false);
-                              }
-                            },
-                            child: TextButton(
+            if(value==true){
+              showDialog(
+                  context: context,
+                  builder: (context) =>  AlertDialog(
+                    title: new Text("Are you sure, you want to send this quotation ?"),
+                    // content: new Text(""),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+                        children: [
+                          TextButton(
                               child: new Text(
-                                "Yes",
-                                style:
-                                TextStyle(color: Colors.white),
+                                "No",
+                                style: TextStyle(
+                                    color: Colors.black),
                               ),
                               onPressed: () {
-                                print("Print Date : ${widget.requestDetailList!}");
-                                _homeBloc!.add(TranspotationSendQuotation(
-                                  service_user_id: Application.customerLogin!.id.toString(),
-                                  transport_enquiry_date: widget.requestDetailList!.createdAt.toString(),
-                                  transport_enquiry_id: widget.requestDetailList!.transportEnquiryId.toString(),
-                                  handlingCharges: widget.HandlingChargesController.text == "" ? '0':widget.HandlingChargesController.text,
-                                  serviceCharges: widget.ServiceCallChargesController.text == "" ? '0':widget.ServiceCallChargesController.text,
-                                  vehicleType: widget.vehicleTypeselected.toString(),
-                                  vehicleNumber: widget.vehicleNumberselected.toString(),
-                                  vehicleName: widget.vehicleNameselected.toString(),
-                                  gst_no:gstNumber.toString(),
-                                  commision: commission.toString(),
-                                  total_amount:totalQuotation.toString(),
-                                  gst:widget.dropdownValue4.toString(),
-                                ));
+                                Navigator.of(context).pop();
                               },
                               style: TextButton.styleFrom(
                                 fixedSize: const Size(120, 30),
-                                backgroundColor: ThemeColors
-                                    .defaultbuttonColor,
                                 shape:
                                 const RoundedRectangleBorder(
                                     borderRadius:
                                     BorderRadius.all(
                                         Radius.circular(
-                                            25))),),
+                                            25))),
+                                side: BorderSide(
+                                    color: ThemeColors
+                                        .defaultbuttonColor,
+                                    width: 1.5),
+                              )),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          // TextButton(
+                          //   child: new Text(
+                          //     "Yes",
+                          //     style:
+                          //     TextStyle(color: Colors.white),
+                          //   ),
+                          //   onPressed: () {
+                          //     Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) =>
+                          //                 BottomNavigation(
+                          //                   index: 0,
+                          //                   dropValue:
+                          //                   'Transportation',
+                          //                 )));
+                          //   },
+                          //   style: TextButton.styleFrom(
+                          //     fixedSize: const Size(120, 30),
+                          //     backgroundColor: ThemeColors
+                          //         .defaultbuttonColor,
+                          //     shape:
+                          //     const RoundedRectangleBorder(
+                          //         borderRadius:
+                          //         BorderRadius.all(
+                          //             Radius.circular(
+                          //                 25))),),
+                          //
+                          // ),
+                          BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+                            return BlocListener<HomeBloc, HomeState>(
+                              listener: (context, state) {
+                                if(state is TranspotationSendQuotationSuccess){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BottomNavigation(
+                                            index: 0,
+                                            dropValue: Application.customerLogin!.role.toString(),
+                                          )));
+                                  showCustomSnackBar(context,state.message,isError: false);
+                                }
+                              },
+                              child: TextButton(
+                                child: new Text(
+                                  "Yes",
+                                  style:
+                                  TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  print("Print Date : ${widget.requestDetailList!}");
+                                  _homeBloc!.add(TranspotationSendQuotation(
+                                    service_user_id: Application.customerLogin!.id.toString(),
+                                    transport_enquiry_date: widget.requestDetailList!.createdAt.toString(),
+                                    transport_enquiry_id: widget.requestDetailList!.transportEnquiryId.toString(),
+                                    handlingCharges: widget.HandlingChargesController.text == "" ? '0':widget.HandlingChargesController.text,
+                                    serviceCharges: widget.ServiceCallChargesController.text == "" ? '0':widget.ServiceCallChargesController.text,
+                                    vehicleType: widget.vehicleTypeselected.toString(),
+                                    vehicleNumber: widget.vehicleNumberselected.toString(),
+                                    vehicleName: widget.vehicleNameselected.toString(),
+                                    gst_no:gstNumber.toString(),
+                                    commision: commission.toString(),
+                                    total_amount:totalQuotation.toString(),
+                                    gst:widget.gstController.text.toString(),
+                                  ));
+                                },
+                                style: TextButton.styleFrom(
+                                  fixedSize: const Size(120, 30),
+                                  backgroundColor: ThemeColors
+                                      .defaultbuttonColor,
+                                  shape:
+                                  const RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(
+                                          Radius.circular(
+                                              25))),),
 
-                            ),
+                              ),
 
-                          );
+                            );
 
 
-                        })
-                      ],
-                    ),
-                  ],
-                )
-            );
+                          })
+                        ],
+                      ),
+                    ],
+                  )
+              );
+            }else{
+              showCustomSnackBar(context,"Please Agree to Terms And Conditions.",isError: true);
+            }
+
           },
           shape: const RoundedRectangleBorder(
               borderRadius:
@@ -376,7 +392,7 @@ class QuotationForState extends State<QuotationFor> {
               initiallyExpanded: true,
               title: Text("Vehicle Details",style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500
               )),
@@ -429,7 +445,7 @@ class QuotationForState extends State<QuotationFor> {
               initiallyExpanded: true,
               title: Text("Quotations",style: TextStyle(
                 color: Colors.black,
-                fontFamily: 'Poppins-Medium',
+                fontFamily: 'Poppins',
                 fontSize: 16,
                 fontWeight: FontWeight.w500
             )),
@@ -498,25 +514,25 @@ class QuotationForState extends State<QuotationFor> {
             Divider(thickness: 2,),
             ///GST
 
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0,top: 16.0),
-              child: Container(
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("GST Number",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                      Text(gstNumber.toString(),
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  )
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 16.0,left: 16.0,bottom: 16.0,top: 16.0),
+            //   child: Container(
+            //       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           Text("GST Number",
+            //               style: TextStyle(fontFamily: 'Poppins',
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w500)),
+            //           Text(gstNumber.toString(),
+            //               style: TextStyle(fontFamily: 'Poppins',
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w500)),
+            //         ],
+            //       )
+            //   ),
+            // ),
 
-            Divider(thickness: 2,),
+            // Divider(thickness: 2,),
 
             ///Quotations
             ExpansionTileCard(
@@ -525,7 +541,7 @@ class QuotationForState extends State<QuotationFor> {
               title: Text("Quotation",
                   style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500
                   )),
@@ -541,21 +557,21 @@ class QuotationForState extends State<QuotationFor> {
                           Text('₹${sum.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(height: 10,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("M1 Commission"),
+                          Text("Professional Charges"),
                           Text('₹${commission.toString()}',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(height: 10,),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("GST %"),
-                          Text('${widget.dropdownValue4.toString()} %',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("GST "),
+                          Text('${widget.gstController.text.toString()} ₹',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
 
@@ -568,14 +584,14 @@ class QuotationForState extends State<QuotationFor> {
                           Text("Total",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontFamily: 'Poppins-Medium',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500
                               )),
                           Text(totalQuotation.toString(),
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontFamily: 'Poppins-Medium',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500
                               )),
@@ -595,7 +611,7 @@ class QuotationForState extends State<QuotationFor> {
               title: Text("Terms and Conditions",
                 style: TextStyle(
                     color: Colors.black,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.w500
                 )),
@@ -614,7 +630,7 @@ class QuotationForState extends State<QuotationFor> {
                     const Text("I agree to the terms and conditions.",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 14,
                             fontWeight: FontWeight.w400))
                   ],

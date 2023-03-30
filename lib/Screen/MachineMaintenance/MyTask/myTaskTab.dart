@@ -19,7 +19,8 @@ import 'my_task_detail.dart';
 
 
 class MyTaskScreen extends StatefulWidget {
-  const MyTaskScreen({Key? key}) : super(key: key);
+  bool isSwitched;
+  MyTaskScreen({Key? key,required this.isSwitched}) : super(key: key);
 
   @override
   _MyTaskScreenState createState() => _MyTaskScreenState();
@@ -116,7 +117,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
           }
         }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -218,7 +219,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         myTaskData.machineName.toString(),
                        // "Job Title/Services Name or Any Other Name",
                         style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                         ),
@@ -233,7 +234,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         Text(
                           "Enquiry ID:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -247,7 +248,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                             myTaskData.enquiryId.toString(),
                            // "#102GRDSA36987",
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -265,7 +266,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                         Text(
                           "Task Status:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -279,7 +280,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                             myTaskData.taskStatus.toString(),
                             //"Step 1",
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -295,7 +296,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                     //     Text(
                     //       "Progress:",
                     //       style: TextStyle(
-                    //           fontFamily: 'Poppins-SemiBold',
+                    //           fontFamily: 'Poppins',
                     //           fontSize: 12,
                     //           fontWeight: FontWeight.bold
                     //       ),
@@ -347,10 +348,11 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                 showCustomSnackBar(context,state.msg.toString());
               }
             },
-            child: _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
+            child: widget.isSwitched
+                ?_loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
             Container(
-              child: ListView(
-                children: [
+              child: Column(
+                children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
                         border: Border(
@@ -442,14 +444,40 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                       ),
                     ),
                   ),
-                  SingleChildScrollView(child: Container(
-                      child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                        buildCustomerEnquiriesList(searchResult): buildCustomerEnquiriesList(myTaskList) : Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: const Center(child: Text("No Data"),),))),
+                  flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                    buildCustomerEnquiriesList(searchResult): Expanded(child: buildCustomerEnquiriesList(myTaskList)) : Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: const Center(child: Text("No Data"),),),
                 ],
               ),
-            ) : ShimmerCard()
+            ) : ShimmerCard()  : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Nothing to show",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("You are currently",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                      )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("offline",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                      )),
+                ],
+              ),
+            ),
 
           // Center(
           //   child: CircularProgressIndicator(),
@@ -551,7 +579,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -566,7 +594,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -579,7 +607,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -596,7 +624,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -609,7 +637,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -626,7 +654,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -639,7 +667,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

@@ -21,6 +21,7 @@ class PreviewScreen extends StatefulWidget {
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
   TextEditingController gstChargesController = TextEditingController();
+  int commission;
   PreviewScreen(
       {Key? key,
       required this.cartList,
@@ -31,7 +32,8 @@ class PreviewScreen extends StatefulWidget {
       required this.handlingChargesController,
       required this.transportChargesController,
       required this.otherChargesController,
-      required this.gstChargesController})
+      required this.gstChargesController,
+      required this.commission})
       : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
   double? oterItemsAmount = 0;
   double? otherItemsAmountWithGST = 0;
   double? otherItemTotalAmount = 0;
-  double? commission = 10;
+  double? commission = 0;
   double? totalAmount= 0;
 
   @override
@@ -63,11 +65,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    // setState(() {
-    //   totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
-    //       int.parse(widget.transportChargesController.text.toString()) +
-    //        commission!;
-    // });
+    // commission = widget.commission.toDouble();
   }
   
   TotalAmount(){
@@ -83,7 +81,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     totalAmount = itemRequiredTotalAmount! + otherItemTotalAmount! + double.parse(widget.serviceCallChargesController.text) +
         double.parse(widget.transportChargesController.text) + double.parse(widget.handlingChargesController.text) +
-        double.parse(widget.gstChargesController.text) + commission!;
+        double.parse(widget.gstChargesController.text) + widget.commission;
     AppBloc.authBloc.add(OnSaveMaintainenceTotalAmount(totalAmount));
   }
 
@@ -142,7 +140,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 title: Text("Item Required",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500)),
                 children: <Widget>[
@@ -243,7 +241,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 title: Text("Other Items( item not available on app)",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.w500)),
                 children: <Widget>[
@@ -351,7 +349,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
           title: Text("Quotation",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
           children: <Widget>[
@@ -417,8 +415,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("M1 Commission"),
-                      Text("₹ $commission"),
+                      Text("Professional Charges"),
+                      Text("₹ ${widget.commission}"),
                     ],
                   ),
                   SizedBox(
@@ -454,7 +452,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
           title: Text("Terms and Conditions",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Poppins-Medium',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   fontWeight: FontWeight.w500)),
           children: <Widget>[
@@ -472,7 +470,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 const Text("I agree to the terms and conditions.",
                     style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Poppins',
                         fontSize: 14,
                         fontWeight: FontWeight.w400))
               ],

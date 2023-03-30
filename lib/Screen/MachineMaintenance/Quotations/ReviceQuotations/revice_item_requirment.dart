@@ -354,7 +354,7 @@ class ReviceItemRequiredState extends State<ReviceItemRequired> {
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins-Medium'
+                fontFamily: 'Poppins'
             ),)),
         SizedBox(height: 5,),
         Card(

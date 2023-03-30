@@ -122,7 +122,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
 
             Text('${length.toString()}',style: const TextStyle(
                 color: Colors.black,
-                fontFamily: 'Poppins-Medium',
+                fontFamily: 'Poppins',
                 fontSize: 16,
                 fontWeight: FontWeight.w400
             )),
@@ -131,7 +131,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Company Name",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -198,7 +198,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Description",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -281,7 +281,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Worked From",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -355,7 +355,7 @@ class _ExpCompanyFormWidgetState extends State<ExpCompanyFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Worked Till",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),

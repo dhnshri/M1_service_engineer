@@ -10,6 +10,7 @@ import 'package:service_engineer/Model/product_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_detail_repo.dart';
 import 'package:service_engineer/Model/service_request_repo.dart';
+import 'package:service_engineer/Model/track_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
@@ -23,15 +24,23 @@ import '../../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
+import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
+import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
 import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
+import '../../Model/MachineMaintance/myTaskModel.dart';
+import '../../Model/MachineMaintance/task_hand_over_model.dart';
+import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
+import '../../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../../Model/Transpotation/transport_task_hand_over_model.dart';
+import '../../Model/cart_list_repo.dart';
+import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
 import '../../Model/Transpotation/serviceRequestListModel.dart';
-import '../../Model/cart_list_repo.dart';
-import '../../Model/track_model.dart';
-
-
-
+import 'home_event.dart';
+import 'home_state.dart';
 
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -435,6 +444,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ServiceRequestFail(msg: "Error Occured.");
       }
     }
+=========
+>>>>>>>>> Temporary merge branch 2
 
     //Event for Task Hand Over Machine Maintaince
 
@@ -530,6 +541,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final TransportTaskHandOverRepo result = await userRepository!
           .fetchTransportTaskHandOverList(
         offSet: event.offSet,
+        vehicleType: event.vehicleType,
       );
       print(result);
 
@@ -873,16 +885,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield TransportUpdateProcessLoading(isLoading: false);
 
       ///Fetch API via repository
-      final CartRepo result = await userRepository!
-          .transportUpdateTrackProcess(
-          serviceUserId: event.serviceUserID,
-          transportEnqId: event.transportEnquiryId,
-          reachAtPic: event.reachAtPick,
-          loadingComplete: event.loadComplete,
-          onTheWay: event.onWayToDrop,
-          reachAtDrop: event.reachOnDrop,
-      );
-      print(result);
+      // final CartRepo result = await userRepository!
+      //     .transportUpdateTrackProcess(
+      //     serviceUserId: event.serviceUserID,
+      //     transportEnqId: event.transportEnquiryId,
+      //     reachAtPic: event.reachAtPick,
+      //     loadingComplete: event.loadComplete,
+      //     onTheWay: event.onWayToDrop,
+      //     reachAtDrop: event.reachOnDrop,
+      //     invoiceImage: event.invoiceImage,
+      // );
+      // print(result);
+
+
+
+      Map<String, String> params = {
+        "service_user_id":event.serviceUserID,
+        "transport_enquiry_id":event.transportEnquiryId,
+        'reached_at_pickup_location':event.reachAtPick,
+        'loading_completed':event.loadComplete,
+        'on_the_way_to_drop_location':event.onWayToDrop,
+        'reaches_on_drop_location':event.reachOnDrop,
+      };
+
+      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/transport_track_progress'));
+      // ..fields.addAll(params);
+      if(event.invoiceImage!="null") {
+        var userProfileImgFile = await http.MultipartFile.fromPath(
+            'invoice_img', event.invoiceImage.toString());
+        _request.files.add(userProfileImgFile);
+      }
+
+      _request = jsonToFormData(_request, params);
+      var streamResponse = await _request.send();
+      var response = await http.Response.fromStream(streamResponse);
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      CartRepo result =  CartRepo.fromJson(responseJson);
+      print(result.msg);
 
       ///Case API fail but not have token
       if (result.success == true) {
@@ -892,15 +932,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           yield TransportUpdateProcessLoading(
             isLoading: true,
           );
-          //yield TransportUpdateProcessSuccess( msg: result.msg.toString());
-          yield TransportUpdateProcessSuccess( msg:"Success");
+          yield TransportUpdateProcessSuccess( message: result.msg.toString());
         } catch (error) {
           ///Notify loading to UI
-          yield TransportUpdateProcessFail(msg:"Fail");
+          yield TransportUpdateProcessFail(msg: result.msg);
         }
       } else {
         ///Notify loading to UI
-        yield TransportUpdateProcessFail(msg: "Fail");
+        yield TransportUpdateProcessFail(msg: result.msg);
       }
     }
 
@@ -931,17 +970,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           yield TransportGetProcessLoading(
             isLoading: true,
           );
-        //  yield TransportGetProcessSuccess(trackData: trackData,message: result.msg.toString());
-          yield TransportGetProcessSuccess(trackData: trackData,message: result.data);
+          yield TransportGetProcessSuccess(trackData: trackData,message: result.msg.toString());
         } catch (error) {
           ///Notify loading to UI
-         // yield TransportGetProcessFail(msg: result.msg);
-          yield TransportGetProcessFail(msg: result.data);
+          yield TransportGetProcessFail(msg: result.msg);
         }
       } else {
         ///Notify loading to UI
-       // yield TransportGetProcessFail(msg: result.msg);
-        yield TransportGetProcessFail(msg: result.data);
+        yield TransportGetProcessFail(msg: result.msg);
       }
     }
 
@@ -1506,8 +1542,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final JobWorkEnquiryServiceRequestRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryList(
-          offSet: event.offSet,
-          timeId: event.timePeriod
+        offSet: event.offSet,
+        timeId: event.timePeriod
       );
       print(result);
 
@@ -1583,8 +1619,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final ServiceRequestTranspotationRepo result = await userRepository!
           .fetchServiceRequestTranspotationList(
-          offSet: event.offSet,
-          timeId: event.timeId
+        offSet: event.offSet,
+        timeId: event.timeId
       );
       print(result);
 
@@ -1621,9 +1657,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final MyTaskTransportationRepo response = await userRepository!
           .fetchTranspotationMyTaskList(
-        userId: event.userid,
-        offset:event.offset,
-        timeId: event.timeId,
+          userId: event.userid,
+          offset:event.offset,
+          timeId: event.timeId,
       );
       print(response);
 
@@ -1694,7 +1730,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    // Event for Job Work Enquiry send quotation
+   // Event for Job Work Enquiry send quotation
     if (event is JobWorkSendQuotation) {
       ///Notify loading to UI
       yield JobWorkSendQuotationLoading(isLoading: false);

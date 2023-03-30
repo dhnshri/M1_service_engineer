@@ -139,11 +139,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -185,11 +185,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -232,11 +232,11 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -285,7 +285,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
 
             Text('${length.toString()}',style: const TextStyle(
                 color: Colors.black,
-                fontFamily: 'Poppins-Medium',
+                fontFamily: 'Poppins',
                 fontSize: 16,
                 fontWeight: FontWeight.w400
             )),
@@ -294,7 +294,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Vehicle Name",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -359,7 +359,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Vehicle Type",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -422,7 +422,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Chasis Number",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -487,7 +487,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Registration Upto",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -558,7 +558,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Vehicle Number",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -623,7 +623,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Vehicle Image",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -642,7 +642,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                         // alignment: Alignment.bottomLeft,
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(widget.vehicleImageFile!.imagePath == null ? "Upload Vehicle Image": widget.vehicleImageFile!.imagePath!.split('/').last.toString(),
-                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                           maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -657,7 +657,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4,right: 4),
                           child: Center(child: Text("+Add Image",
-                            style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           )),
                         ),
@@ -673,7 +673,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Vehicle RC Image",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -692,7 +692,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                         // alignment: Alignment.bottomLeft,
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(widget.vehicleRCImageFile!.imagePath == null ? "Upload RC Image": widget.vehicleRCImageFile!.imagePath!.split('/').last.toString(),
-                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                           maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -707,7 +707,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4,right: 4),
                           child: Center(child: Text("+Add Image",
-                            style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           )),
                         ),
@@ -723,7 +723,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
               child: Text("Vehicle PUC Image",
-                style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -742,7 +742,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                         // alignment: Alignment.bottomLeft,
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(widget.vehiclePUCImageFile!.imagePath == null ? "Upload PUC Image": widget.vehiclePUCImageFile!.imagePath!.split('/').last.toString(),
-                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                           maxLines: 2, overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -757,7 +757,7 @@ class _VehicleInfFormWidgetState extends State<VehicleInfFormWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 4,right: 4),
                           child: Center(child: Text("+Add Image",
-                            style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           )),
                         ),

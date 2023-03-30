@@ -151,7 +151,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
 
                             Text('Item',style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400
                             )),
@@ -216,7 +216,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                             SizedBox(height: 20,),
                             Text('Quantity',style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400
                             )),
@@ -287,7 +287,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
 
                             Text('Item Rate / Piece',style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400
                             )),
@@ -351,7 +351,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
 
                             Text('Volume',style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400
                             )),
@@ -426,7 +426,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                   ///Transport Charges
                   Text('Transport Charges',style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400
                   )),
@@ -506,7 +506,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                   ///Packing Charges Field
                   Text('Packing Charges',style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400
                   )),
@@ -586,7 +586,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                   ///Testing Charges Field
                   Text('Testing Charges',style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400
                   )),
@@ -660,7 +660,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                   ///CGST Charges
                   Text('CGST',style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400
                   )),
@@ -733,7 +733,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                   ///SGST Charges
                   Text('SGST',style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400
                   )),
@@ -805,7 +805,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                   ///IGST Charges
                   Text('IGST',style: TextStyle(
                       color: Colors.black,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w400
                   )),

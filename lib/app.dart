@@ -78,7 +78,6 @@ class _AppState extends State<App> {
 
           onGenerateRoute: route.generateRoute,
           home:
-          //UserRepository().getPhoneNo() != null? BottomNavigation(index:0,dropValue: role,): SplashScreen()
           BlocBuilder<AuthBloc, AuthenticationState>(
             builder: (context, app) {
 

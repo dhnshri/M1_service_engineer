@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Api/commission_api.dart';
 import 'package:service_engineer/Model/JobWorkEnquiry/service_request_detail_model.dart';
 import 'package:service_engineer/Model/product_model.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Quotations/ReviceQuotations/enquiry_previewQuotation.dart';
@@ -12,6 +13,7 @@ import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuot
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_preview.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_quotations.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/ReviceQuotations/revice_service_charges.dart';
+import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -62,6 +64,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
   List<ItemModel> itemData = List.empty(growable: true);
   List<String>? itemList=[];
   List<String>? volumeList=[];
+  int commission=0;
 
 
   @override
@@ -70,6 +73,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
     //saveDeviceTokenAndId();
     super.initState();
   }
+
 
   @override
   void dispose() {
@@ -96,7 +100,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                   //     MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
                 },
                 child: Icon(Icons.arrow_back_ios)),
-            title: Text('Quotation for #102GRDSA36987'),
+            title: Text('Quotation for #${widget.requestDetailList![0].jobWorkEnquiryId}'),
           ),
           body:SingleChildScrollView(
             child: Padding(
@@ -793,7 +797,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                           children: [
                             Text("Add Charges",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-Bold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600)),
                             SizedBox(

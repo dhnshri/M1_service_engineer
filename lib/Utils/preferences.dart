@@ -6,6 +6,7 @@ class Preferences {
   static String address = 'address';
   static String totalAmount = 'amount';
   static String RevisedtotalAmount = 'revisedamount';
+  static String isOnline = 'online';
   static String cart = 'cart';
   static String language = 'language';
   static String notification = 'notification';

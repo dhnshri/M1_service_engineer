@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:service_engineer/Config/font.dart';
 import 'package:service_engineer/Screen/JobWorkEnquiry/Home/ServiceRequest/enquiry_makeQuotation.dart';
+import 'package:service_engineer/Widget/app_button.dart';
 import 'package:service_engineer/Widget/app_small_button.dart';
 import 'package:service_engineer/Widget/pdf.dart';
 import 'package:service_engineer/Widget/pdfViewer.dart';
@@ -100,22 +101,25 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppSmallButton(
-              onPressed: () async {
-
-              },
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(50))),
-              text: 'Ignore',
-              loading: loading,
-
-
-            ),
-            // SizedBox(width:8),
             Flexible(
-              child: AppSmallButton(
+              child: AppButton(
                 onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(50))),
+                text: 'Ignore',
+                loading: loading,
+                color: ThemeColors.whiteTextColor,
+                borderColor: ThemeColors.defaultbuttonColor,textColor: ThemeColors.defaultbuttonColor,
+              ),
+            ),
+            const SizedBox(width:10),
+            Flexible(
+              child: AppButton(
+                onPressed: () async {
+                  serviceRequestDetailData!.isEmpty ? null:
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen (requestDetailList: serviceRequestDetailData,)));
                 },
@@ -124,8 +128,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                     BorderRadius.all(Radius.circular(50))),
                 text: 'Make Quotation',
                 loading: loading,
-
-
+                color: ThemeColors.defaultbuttonColor,
               ),
             ),
           ],
@@ -155,7 +158,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                     title:  Text("Basic Info",
                         style: TextStyle(
                             color: Colors.black,
-                            fontFamily: 'Poppins-Medium',
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500
                         )),
@@ -205,7 +208,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                         title: Text("Item Required",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Medium',
+                                fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500
                             )),
@@ -253,7 +256,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                       child: Text("Drawing Attachment:",
                                           style: TextStyle(
                                               color: Colors.black,
-                                              fontFamily: 'Poppins-Medium',
+                                              fontFamily: 'Poppins',
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500
                                           )),
@@ -276,7 +279,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: ThemeColors.buttonColor,
-                                                    fontFamily: 'Poppins-Regular',
+                                                    fontFamily: 'Poppins',
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400
                                                 )),
@@ -290,7 +293,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                               child: Text('View',
                                                   style: TextStyle(
                                                       color: ThemeColors.buttonColor,
-                                                      fontFamily: 'Poppins-Regular',
+                                                      fontFamily: 'Poppins',
                                                       fontSize: 14,
                                                       fontWeight: FontWeight.w500
                                                   )),

@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:service_engineer/Bloc/authentication/authentication_event.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/app_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Config/font.dart';
@@ -19,7 +22,7 @@ class MachineMaintenanceHomeScreen extends StatefulWidget {
 
 class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScreen> {
   bool loading = true;
-  bool isSwitched = true;
+  bool isSwitched = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -30,13 +33,20 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-
+    isSwitchOn();
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
 
+  isSwitchOn(){
+    if(Application.isOnline!=null){
+      isSwitched = Application.isOnline!;
+      setState(() {
+      });
+    }
   }
 
   Widget androidSwitch() => Transform.scale(
@@ -48,8 +58,12 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
       inactiveTrackColor: Color(0xffe1d6d6),
       splashRadius: 50.0,
       value: isSwitched,
-      onChanged: (value)=> setState(() =>
-      isSwitched = value),
+      onChanged: (value)=> setState(()
+      {
+      isSwitched = value;
+      AppBloc.authBloc.add(OnSaveOnlineOffline(value));
+      }
+      ),
     ),
   );
 
@@ -92,7 +106,7 @@ class _MachineMaintenanceHomeScreenState extends State<MachineMaintenanceHomeScr
         body: TabBarView(
         children: [
           ServiceRequestScreen(isSwitched: isSwitched),
-          MyTaskScreen()
+          MyTaskScreen(isSwitched: isSwitched)
         ],
       ) ,
     )

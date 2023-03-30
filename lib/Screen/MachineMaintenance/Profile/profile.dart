@@ -126,17 +126,16 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    // catrgoryTypeselected = new MachineMaintenanceCategoryListModel();
+    // subCatrgoryTypeselected = new MachineMaintenanceSubCategoryListModel();
     imageFile = new ImageFile();
     gstImageFile = new GstImageFile();
     panImageFile = new PanImageFile();
     shopActImageFile = new ShopActImageFile();
     aadharImageFile = new AddharImageFile();
     uploadUserProfileImageFile = new UserProfileImageFile();
-    // _iDController.text = Application.customerLogin!.email.toString();
-    // _nameController.text = Application.customerLogin!.name.toString();
-    // _emailController.text = Application.customerLogin!.email.toString();
-    // _phoneController.text = Application.customerLogin!.mobile.toString();
     _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
+
     getData();
   }
 
@@ -336,11 +335,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -378,11 +377,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -420,11 +419,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -462,11 +461,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -504,11 +503,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -619,11 +618,11 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         aspectRatioPresets: Platform.isAndroid
             ? [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ]
             : [
           // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.original,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -658,6 +657,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
                   Application.preferences!.remove('user');
+                  Application.preferences!.remove('online');
                   DefaultCacheManager().emptyCache();
                   // _RemoverUser();
                   Navigator.pushAndRemoveUntil(
@@ -679,7 +679,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
             ],
             title: Text("Profile",
               style: TextStyle(
-                  fontFamily: 'Poppins-Medium'
+                  fontFamily: 'Poppins'
               ),),
             backgroundColor: ThemeColors.backGroundColor,
           ),
@@ -759,10 +759,10 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Hello",
-                                    style: TextStyle(fontFamily: 'Poppins-Regular',fontSize: 16),),
+                                    style: TextStyle(fontFamily: 'Poppins',fontSize: 16),),
                                   Container(
                                       child:Text(Application.customerLogin!.name == ""? "": Application.customerLogin!.name.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                        style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                       )
                                   )
@@ -784,7 +784,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("ID",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -856,7 +856,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -927,7 +927,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Email",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -997,7 +997,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Phone Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1065,7 +1065,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("GST Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1133,7 +1133,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Category",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1152,8 +1152,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         width: MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
                                           // color: Theme.of(context).dividerColor,
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20.0),
+                                            color: ThemeColors.textFieldBackgroundColor,
+                                            borderRadius: BorderRadius.circular(5.0),
                                             border: Border.all(
                                                 color: ThemeColors.textFieldBgColor)),
                                         child: Padding(
@@ -1194,17 +1194,73 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                   onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
                                                     setState(() {
                                                       catrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
+                                                      widget.serviceUserdataList![0].categoryId = categoryname.id;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
+                        widget.serviceUserdataList![0].workCatgory != "" ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].workCatgory}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ) : Container(),
                         SizedBox(height: 15,),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Sub-Category",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1223,8 +1279,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         width: MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
                                           // color: Theme.of(context).dividerColor,
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20.0),
+                                            color: ThemeColors.textFieldBackgroundColor,
+                                            borderRadius: BorderRadius.circular(5.0),
                                             border: Border.all(
                                                 color: ThemeColors.textFieldBgColor)),
                                         child: Padding(
@@ -1265,11 +1321,69 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                   onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
                                                     setState(() {
                                                       subCatrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
+                                                      widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
+
+                        widget.serviceUserdataList![0].workSubCatgory != "" ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  // color: msgCount[index]>=10? Colors.blue[400]:
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ) : Container(),
 
                         SizedBox(height: 15,),
 
@@ -1286,7 +1400,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                   child: Text("Age",
-                                    style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                     textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -1362,7 +1476,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               children: [Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Gender",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1450,7 +1564,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Address",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1483,7 +1597,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Location",
-                                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                     ),
                                     Icon(Icons.my_location_rounded,color: Colors.red,)
@@ -1498,7 +1612,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Current Address",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1576,7 +1690,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Pin Code",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1647,7 +1761,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("City",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1712,7 +1826,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("State",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1777,7 +1891,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Country",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -1854,7 +1968,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Total Experince",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1873,7 +1987,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Year",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -1950,7 +2064,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                                 child: Text("Months",
-                                  style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                                   textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -2046,7 +2160,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Experience in Companies",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2076,7 +2190,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(expCompanyForms.isNotEmpty?"Add More":"Add",
-                              style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
@@ -2114,7 +2228,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Education",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2144,7 +2258,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(educationForms.isNotEmpty?"Add More":"Add",
-                              style: TextStyle(fontFamily: 'Poppins-SemiBold', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(width: 5,),
@@ -2184,7 +2298,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("Bank Details",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2197,7 +2311,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Bank Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2268,7 +2382,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Account Number",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2339,7 +2453,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("IFSC Code",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2404,7 +2518,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Branch Name",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2469,7 +2583,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("UPI Id",
-                            style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -2550,7 +2664,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("KYC",
-                      style: TextStyle(fontFamily: 'Poppins-Medium', fontSize: 18,fontWeight: FontWeight.w500),
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -2565,7 +2679,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Company Name",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2636,7 +2750,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Company Certificate",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2654,7 +2768,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     child: Container(
                                         width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                          maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2669,7 +2783,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2685,7 +2799,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("GST Certificate",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2703,7 +2817,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                          maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2718,7 +2832,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2734,7 +2848,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("Pan Card",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2752,7 +2866,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2767,7 +2881,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2783,7 +2897,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("SHOP ACT License",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2801,7 +2915,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -2816,7 +2930,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2832,7 +2946,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                             child: Text("MSME/Udhyog Aadhar Card",
-                              style: TextStyle(fontFamily: 'Poppins-Regular', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                               textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -2852,7 +2966,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.4,
                                         child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
-                                          style: TextStyle(fontFamily: 'Poppins-Medium',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           maxLines: 2, overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -2868,7 +2982,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 4,right: 4),
                                         child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins-Regular',color: Colors.black.withOpacity(0.5)),
+                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
                                           textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
@@ -2925,8 +3039,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     email: _emailController.text,
                                     mobile: _phoneController.text,
                                     gstNo: _gstController.text,
-                                    catId: '1',
-                                    subCatId: '2',
+                                    catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
+                                    subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
                                     age: _ageController.text,
                                     gender: _genderController.text,
                                     location: _locationController.text,
@@ -2955,7 +3069,9 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         aadharImageFile!.imagePath.toString(),
                                     currentAddress: _locationController.text,
                                   ));
-                                }
+                                }else{
+                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
+                                  }
                               },
                                 style: ElevatedButton.styleFrom(
                                   primary: ThemeColors.defaultbuttonColor,

@@ -99,7 +99,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               yield LogoutFail("error");
             }
 
-// On Registration
+    // On Registration
 
     if (event is OnRegistration) {
       yield CustomerRegistrationLoading();

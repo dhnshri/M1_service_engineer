@@ -86,7 +86,6 @@ class UserRepository {
       'role': role,};
     return await Api.registration(params);
   }
-
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
   //   final params = {"per_page":perPage,
   //     "start_from":startFrom};
@@ -358,7 +357,7 @@ class UserRepository {
   //Fetch Product List
   Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId,String? catId}) async {
     final params = {"user_id":prodId,
-      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId};
+      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId,"category_id":catId};
     return await Api.getProductList(params);
   }
 
@@ -370,9 +369,10 @@ class UserRepository {
   }
 
   ///Transport track process
-  Future<dynamic> transportUpdateTrackProcess({String? serviceUserId,String? transportEnqId, String? reachAtPic,String? loadingComplete,String? onTheWay,String? reachAtDrop}) async {
+  Future<dynamic> transportUpdateTrackProcess({String? serviceUserId,String? transportEnqId, String? reachAtPic,String? loadingComplete,String? onTheWay,
+    String? reachAtDrop,String? invoiceImage}) async {
     final params = {"service_user_id":serviceUserId, "transport_enquiry_id":transportEnqId,'reached_at_pickup_location':reachAtPic,'loading_completed':loadingComplete,
-      'on_the_way_to_drop_location':onTheWay,'reaches_on_drop_location':reachAtDrop};
+      'on_the_way_to_drop_location':onTheWay,'reaches_on_drop_location':reachAtDrop,"invoice_img":invoiceImage};
     return await Api.transportUpdateTrackProcess(params);
   }
 
@@ -480,10 +480,24 @@ class UserRepository {
     );
   }
 
-  ///Get address
+  ///Get revised amount
   dynamic getRevisedAmount() {
     return UtilPreferences.getString(Preferences.RevisedtotalAmount);
   }
+
+  ///Save User Online Offline
+  Future<dynamic> saveIsOnline(bool isLogin) async {
+    return await UtilPreferences.setBool(
+      Preferences.isOnline,
+      isLogin,
+    );
+  }
+
+  ///Get save online value
+  dynamic getOnline() {
+    return UtilPreferences.getBool(Preferences.isOnline);
+  }
+
   //
   //
   // ///Save cartCount

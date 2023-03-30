@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:service_engineer/Bloc/authentication/authentication_event.dart';
+import 'package:service_engineer/Utils/application.dart';
+import 'package:service_engineer/app_bloc.dart';
 import '../../../Config/font.dart';
 import '../../../Widget/common.dart';
 import 'MyTask/myTaskTab.dart';
@@ -26,8 +29,18 @@ class _EnquiryHomeScreenState extends State<EnquiryHomeScreen> {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
+    isSwitchOn();
 
   }
+
+  isSwitchOn(){
+    if(Application.isOnline!=null){
+      isSwitched = Application.isOnline!;
+      setState(() {
+      });
+    }
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -44,8 +57,10 @@ class _EnquiryHomeScreenState extends State<EnquiryHomeScreen> {
       inactiveTrackColor: Color(0xffe1d6d6),
       splashRadius: 50.0,
       value: isSwitched,
-      onChanged: (value)=> setState(() =>
-      isSwitched = value),
+      onChanged: (value)=> setState(() {
+        isSwitched = value;
+        AppBloc.authBloc.add(OnSaveOnlineOffline(value));
+      })
     ),
   );
 
@@ -87,8 +102,8 @@ class _EnquiryHomeScreenState extends State<EnquiryHomeScreen> {
         ),
         body: TabBarView(
         children: [
-          EnquiryServiceRequestScreen(),
-          EnquiryMyTaskScreen()
+          EnquiryServiceRequestScreen(isSwitched: isSwitched),
+          EnquiryMyTaskScreen(isSwitched: isSwitched)
         ],
       ) ,
     )

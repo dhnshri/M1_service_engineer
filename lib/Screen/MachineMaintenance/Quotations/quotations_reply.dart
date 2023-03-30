@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,11 +33,12 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
   QuotationReplyBloc? _quotationReplyBloc;
   List<QuotationReplyModel> quotationReplyList=[];
-
+  final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
-  bool loading = true;
+  bool _loadData = false;
   bool _isLoading = false;
   double? _progressValue;
+  int offset = 0;
 
   @override
   void initState() {
@@ -44,7 +46,11 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
     //saveDeviceTokenAndId();
     super.initState();
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: '0' , userId: Application.customerLogin!.id.toString()));
+    getApi();
+  }
+
+  getApi(){
+    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: offset.toString() , userId: Application.customerLogin!.id.toString()));
   }
 
   @override
@@ -56,8 +62,19 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
 
   Widget buildQuotationsaReplyList(BuildContext context,List<QuotationReplyModel> quotationReplyList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<QuotationReplyBloc>(context)
+              .add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -85,65 +102,6 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.28,
-                  maxHeight: MediaQuery.of(context).size.width * 0.28,
-                ),
-                child: CachedNetworkImage(
-                  filterQuality: FilterQuality.medium,
-                  // imageUrl: Api.PHOTO_URL + widget.users.avatar,
-                  // imageUrl: "https://picsum.photos/250?image=9",
-                  imageUrl: "https://picsum.photos/250?image=9",
-                  placeholder: (context, url) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                      ),
-                    );
-                  },
-                  imageBuilder: (context, imageProvider) {
-                    return Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                    );
-                  },
-                  errorWidget: (context, url, error) {
-                    return Shimmer.fromColors(
-                      baseColor: Theme.of(context).hoverColor,
-                      highlightColor: Theme.of(context).highlightColor,
-                      enabled: true,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.error),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -151,27 +109,13 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      // width: MediaQuery.of(context).size.width/1.8,
-                      child: Text(
-                       "Job Title/Services Name or Any Other Name",
-                        style: TextStyle(
-                            fontFamily: 'Poppins-SemiBold',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                    ),
-                    SizedBox(height: 4,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Enquiry ID:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -184,7 +128,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                           child: Text(
                             quotationReplyData.enquiryId.toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -200,9 +144,9 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Timing:",
+                          "Date and Timing:",
                           style: TextStyle(
-                              fontFamily: 'Poppins-SemiBold',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               fontWeight: FontWeight.bold
                           ),
@@ -213,9 +157,9 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                         Container(
                           // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
-                            quotationReplyData.dateAndTime.toString(),
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(quotationReplyData.dateAndTime.toString())).toString(),
                             style: TextStyle(
-                              fontFamily: 'Poppins-Regular',
+                              fontFamily: 'Poppins',
                               fontSize: 12,
                               // fontWeight: FontWeight.bold
                             ),
@@ -257,20 +201,24 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                   _isLoading = state.isLoading;
                 }
                 if(state is QuotationReplySuccess){
-                  quotationReplyList = state.quotationReplyListData;
+                  // quotationReplyList = state.quotationReplyListData;
+                  quotationReplyList.addAll(state.quotationReplyListData);
+                  if (quotationReplyList != null) {
+                    _loadData = true;
+                  }
                 }
                 if(state is QuotationReplyFail){
                   showCustomSnackBar(context,state.msg.toString());
 
                 }
               },
-              child: _isLoading ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
+              child: _loadData ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: ListView(
-                    children: [
-                      buildQuotationsaReplyList(context, quotationReplyList),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(child: buildQuotationsaReplyList(context, quotationReplyList)),
                     ],
                   ),
                 ),
@@ -374,7 +322,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                             child: Text(
                               '',
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold
                               ),
@@ -389,7 +337,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                               Text(
                                 "Enquiry ID:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -402,7 +350,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -419,7 +367,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                               Text(
                                 "Working Timing:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -432,7 +380,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                                 child: Text(
                                   "10 AM - 6 PM",
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),
@@ -449,7 +397,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                               Text(
                                 "Date & Time:",
                                 style: TextStyle(
-                                    fontFamily: 'Poppins-SemiBold',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold
                                 ),
@@ -462,7 +410,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                                 child: Text(
                                   '',
                                   style: TextStyle(
-                                    fontFamily: 'Poppins-Regular',
+                                    fontFamily: 'Poppins',
                                     fontSize: 12,
                                     // fontWeight: FontWeight.bold
                                   ),

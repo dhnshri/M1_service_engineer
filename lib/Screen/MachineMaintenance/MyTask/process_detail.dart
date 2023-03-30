@@ -64,7 +64,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(widget.trackProgressData.heading.toString(),
-                  style: TextStyle(fontFamily: 'Poppins-Medium',
+                  style: TextStyle(fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
 
@@ -98,7 +98,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                       width: 1,
                     )),
                 child: const Center(child: Text("Assign Task to Other",
-                    style: TextStyle(fontFamily: 'Poppins-Medium',
+                    style: TextStyle(fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: ThemeColors.defaultbuttonColor,
@@ -138,7 +138,7 @@ class _ProcessDetailScreenState extends State<ProcessDetailScreen> {
                           color: ThemeColors.defaultbuttonColor,
                           borderRadius: BorderRadius.circular(30)),
                       child: Center(child: Text("Mark As Complete",
-                          style: TextStyle(fontFamily: 'Poppins-Medium',
+                          style: TextStyle(fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,

@@ -21,18 +21,13 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       ///Notify state AuthenticationBeginCheck
       yield AuthenticationBeginCheck();
       final hasUser = userRepository.getUser();
+      bool isOnline = userRepository.getOnline();
 
-      if (hasUser!=null ) {
+      if (hasUser!=null) {
         ///Getting data from Storage
         final customerModel = CustomerLogin.fromJson(jsonDecode(hasUser));
         print(customerModel);
-        ///Set token network
-        // httpManager.getOption.headers["Authorization"] = "Bearer " + user.token;
-        // httpManager.postOption.headers["Authorization"] =
-        //     "Bearer " + user.token;
-
-        ///Valid token server
-        // final ResultApiModel result = await userRepository.validateToken(); //commented on 17/12/2020
+        Application.isOnline = isOnline;
 
         ///Fetch api success
         if (customerModel.id!=null ) {
@@ -89,17 +84,9 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       ///Save to Storage user via repository
       final savePreferences = await userRepository!.saveTotalAmount(event.totalAmount);
 
-      ///Check result save user
       if (savePreferences) {
-        ///Set token network
-        // httpManager.getOption.headers["Authorization"] =
-        //     "Bearer " + event.user.token;
-        // httpManager.postOption.headers["Authorization"] =
-        //     "Bearer " + event.user.token;
 
-        ///Set user
         Application.totalAmount = event.totalAmount;
-        // UtilPreferences.setString(Preferences.user, Application.user.toString());
 
         ///Notify loading to UI
         if(Application.totalAmount!=null) {
@@ -107,7 +94,6 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
         }else{
           yield AuthenticationFail();
         }
-
 
       } else {
         final String message = "Cannot save user data to storage phone";
@@ -139,6 +125,27 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
           yield AuthenticationFail();
         }
 
+
+      } else {
+        final String message = "Cannot save user data to storage phone";
+        throw Exception(message);
+      }
+    }
+
+    if (event is OnSaveOnlineOffline) {
+      ///Save to Storage user via repository
+      final savePreferences = await userRepository!.saveIsOnline(event.isOnline);
+
+      if (savePreferences) {
+
+        Application.isOnline = event.isOnline;
+
+        ///Notify loading to UI
+        if(Application.isOnline!=null) {
+          yield AuthenticationSuccess();
+        }else{
+          yield AuthenticationFail();
+        }
 
       } else {
         final String message = "Cannot save user data to storage phone";

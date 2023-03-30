@@ -108,13 +108,13 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                           children: [
                             Text(totalServiceDone!=null ? totalServiceDone.toString() : "0",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold
                               ),),
                             Text("Total Service Done",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-Regular',
+                                  fontFamily: 'Poppins',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),),
@@ -122,7 +122,7 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                             Text('Total Service Done',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold
                               ),)
@@ -143,13 +143,13 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                           children: [
                             Text(totalEarning!=null ? "\u{20B9} ${totalEarning.toString()}" : "\u{20B9} 0",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold
                               ),),
                             Text("Total Earning",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-Regular',
+                                  fontFamily: 'Poppins',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),),
@@ -157,7 +157,7 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                             Text('Total Earning',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold
                               ),)
@@ -178,13 +178,13 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                           children: [
                             Text(totalPaymentPending!=null ? totalPaymentPending.toString() : "0",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold
                               ),),
                             Text("Payment Pending",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-Regular',
+                                  fontFamily: 'Poppins',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),),
@@ -192,7 +192,7 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                             Text('Payment Pending',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold
                               ),)
@@ -213,13 +213,13 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                           children: [
                             Text(totalPaymentReceived!=null ? totalPaymentReceived.toString() : "0",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold
                               ),),
                             Text("Received Payments",
                               style: TextStyle(
-                                  fontFamily: 'Poppins-Regular',
+                                  fontFamily: 'Poppins',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),),
@@ -227,7 +227,7 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
                             Text('Received Payments',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'Poppins-SemiBold',
+                                  fontFamily: 'Poppins',
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold
                               ),)

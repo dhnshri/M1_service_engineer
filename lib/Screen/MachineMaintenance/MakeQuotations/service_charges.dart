@@ -642,7 +642,7 @@ class _ServiceChargesScreenState extends State<ServiceChargesScreen > {
                 children: [
                   Text("Add Charges",
                       style: TextStyle(
-                          fontFamily: 'Poppins-Bold',
+                          fontFamily: 'Poppins',
                           fontSize: 14,
                           fontWeight: FontWeight.w600
                       )),
