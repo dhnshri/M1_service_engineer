@@ -519,7 +519,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             type: stepperType,
                             physics: ScrollPhysics(),
                             currentStep: _currentStep,
-                            onStepTapped: (step) => tapped(step),
+                            // onStepTapped: (step) => tapped(step),
                             // onStepContinue:  continued,
                             // onStepCancel: cancel,
                             steps: getSteps(),
@@ -622,6 +622,49 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                       ),
                     ),
                   ):Container(),
+                  ///Complete Task\
+                  getTransportTrackData!=null?
+                  (getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
+                      getTransportTrackData!.reachesOnDropLocation == 1) ? Container():
+                  InkWell(
+                    onTap: (){
+                      if(invoiceImageFile!.imagePath == null){
+                        showCustomSnackBar(context,"Upload Invoice",isError: true);
+                      }
+                      else {
+                        reachAtPick = 1;
+                        loadComplete = 1;
+                        onTheWay = 1;
+                        reachOnDrop = 1;
+                        trackApi();
+                        getTrackApi();
+                        setState(() {
+                          getTransportTrackData;
+                        });
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: ThemeColors.whiteTextColor,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: ThemeColors.defaultbuttonColor,
+                              width: 1,
+                            )),
+                        child: const Center(child: Text("Complete Task",
+                            style: TextStyle(fontFamily: 'Poppins',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: ThemeColors.defaultbuttonColor,
+                            ))),
+                      ),
+                    ),
+                  ) :Container(),
+
 
                   ///Assign to Other Button
                   getTransportTrackData!=null?
@@ -637,7 +680,7 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                         height: 50,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                            color: ThemeColors.whiteTextColor,
+                            color: ThemeColors.defaultbuttonColor,
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(
                               color: ThemeColors.defaultbuttonColor,
@@ -647,54 +690,13 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             style: TextStyle(fontFamily: 'Poppins',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: ThemeColors.defaultbuttonColor,
+                              color: ThemeColors.whiteTextColor,
                             ))),
                       ),
                     ),
                   ):Container(),
 
-                  ///Complete Task\
-                  getTransportTrackData!=null?
-              (getTransportTrackData!.reachedAtPickupLocation == 1 && getTransportTrackData!.loadingCompleted == 1 && getTransportTrackData!.onTheWayToDropLocation == 1 &&
-                getTransportTrackData!.reachesOnDropLocation == 1) ? Container():
-                  InkWell(
-                    onTap: (){
-                      if(invoiceImageFile!.imagePath == null){
-                        showCustomSnackBar(context,"Upload Invoice",isError: true);
-                      }
-                      else {
-                                            reachAtPick = 1;
-                                            loadComplete = 1;
-                                            onTheWay = 1;
-                                            reachOnDrop = 1;
-                                            trackApi();
-                                            getTrackApi();
-                                            setState(() {
-                                              getTransportTrackData;
-                                            });
-                                          }
-                                        },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: ThemeColors.defaultbuttonColor,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                              color: ThemeColors.defaultbuttonColor,
-                              width: 1,
-                            )),
-                        child: const Center(child: Text("Complete Task",
-                            style: TextStyle(fontFamily: 'Poppins',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: ThemeColors.whiteTextColor,
-                            ))),
-                      ),
-                    ),
-                  ) :Container(),
+
 
                   SizedBox(
                     height: 80,
