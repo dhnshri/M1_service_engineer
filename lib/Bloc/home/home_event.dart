@@ -103,6 +103,22 @@ class OnMyTaskTranspotationDetail extends HomeEvent {
 
 }
 
+class TransportUpdateTrackProcess extends HomeEvent {
+
+  String serviceUserID,transportEnquiryId,reachAtPick,loadComplete,onWayToDrop,reachOnDrop;
+
+  TransportUpdateTrackProcess({required this.serviceUserID,required this.reachAtPick, required this.loadComplete, required this.transportEnquiryId,
+    required this.onWayToDrop,required this.reachOnDrop});
+
+}
+
+class TransporGetTrackProcess extends HomeEvent {
+
+  String serviceUserID,transportEnquiryId;
+
+  TransporGetTrackProcess({required this.serviceUserID,required this.transportEnquiryId,});
+}
+
 class TransportQuotationReplyDetail extends HomeEvent {
   String transportEnquiryId;
   String customerUserId;

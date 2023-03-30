@@ -50,6 +50,21 @@ class UserRepository {
     return await Api.getMachineDashboardCount(params);
   }
 
+  Future<dynamic> fetchOrderList({String? serviceUserId}) async {
+    final params = {"service_user_id": serviceUserId};
+    return await Api.getOrderList(params);
+  }
+
+  Future<dynamic> cancelOrder({String? serviceUserId,String? machineEnqId}) async {
+    final params = {"service_user_id": serviceUserId,"machine_enquiry_id":machineEnqId};
+    return await Api.cancelOrder(params);
+  }
+
+  Future<dynamic> fetchOrderDetail({String? serviceUserId,String? machineEnquiryId}) async {
+    final params = {"service_user_id": serviceUserId,"machine_enquiry_id":machineEnquiryId};
+    return await Api.getOrderDetail(params);
+  }
+
   Future<dynamic> fetchJobWorkDashboardCount({String? serviceUserId}) async {
     final params = {"service_user_id":serviceUserId};
     return await Api.getJobWorkDashboardCount(params);
@@ -354,6 +369,19 @@ class UserRepository {
     return await Api.getAddToCart(params);
   }
 
+  ///Transport track process
+  Future<dynamic> transportUpdateTrackProcess({String? serviceUserId,String? transportEnqId, String? reachAtPic,String? loadingComplete,String? onTheWay,String? reachAtDrop}) async {
+    final params = {"service_user_id":serviceUserId, "transport_enquiry_id":transportEnqId,'reached_at_pickup_location':reachAtPic,'loading_completed':loadingComplete,
+      'on_the_way_to_drop_location':onTheWay,'reaches_on_drop_location':reachAtDrop};
+    return await Api.transportUpdateTrackProcess(params);
+  }
+
+  ///Get Transport Troack Process
+  Future<dynamic> transportGetTrackProcess({String? serviceUserId,String? transportEnqId,}) async {
+    final params = {"service_user_id":serviceUserId, "transport_enquiry_id":transportEnqId,};
+    return await Api.transportGetTrackProcess(params);
+  }
+
   //Cart List
   Future<dynamic> fetchCartList({String? userId}) async {
     final params = {"user_id":userId,};
@@ -456,31 +484,31 @@ class UserRepository {
   dynamic getRevisedAmount() {
     return UtilPreferences.getString(Preferences.RevisedtotalAmount);
   }
-//
-//
-// ///Save cartCount
-// Future<dynamic> saveCart(CartListRepo cartData) async {
-//   return await UtilPreferences.setString(
-//     Preferences.cart,
-//     jsonEncode(cartData.toJson()),
-//     // cartData.
-//   );
-// }
-//
-// ///Get cart count
-// dynamic getCart() {
-//   return UtilPreferences.getString(Preferences.cart);
-// }
-// // dynamic getProfile() {
-// //   return UtilPreferences.getString(Preferences.profilePic);
-// // }
-//
-//
-//
-// ///Delete Storage
-// Future<dynamic> deleteUser() async {
-//   return await UtilPreferences.remove(Preferences.user);
-// }
+  //
+  //
+  // ///Save cartCount
+  // Future<dynamic> saveCart(CartListRepo cartData) async {
+  //   return await UtilPreferences.setString(
+  //     Preferences.cart,
+  //     jsonEncode(cartData.toJson()),
+  //     // cartData.
+  //   );
+  // }
+  //
+  // ///Get cart count
+  // dynamic getCart() {
+  //   return UtilPreferences.getString(Preferences.cart);
+  // }
+  // // dynamic getProfile() {
+  // //   return UtilPreferences.getString(Preferences.profilePic);
+  // // }
+  //
+  //
+  //
+  // ///Delete Storage
+  // Future<dynamic> deleteUser() async {
+  //   return await UtilPreferences.remove(Preferences.user);
+  // }
 
 
 }

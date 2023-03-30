@@ -4,17 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:service_engineer/Model/quotation_reject_revise_repo.dart';
 import 'package:service_engineer/Model/quotation_reply_detail_repo.dart';
-
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
-
-import '../../Model/JobWorkEnquiry/my_task_model.dart';
 import '../../Model/JobWorkEnquiry/quotation_reply.dart';
-import '../../Model/JobWorkEnquiry/service_request_model.dart';
-import '../../Model/MachineMaintance/myTaskModel.dart';
 import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/quotationReplyModel.dart';
-import '../home/home_bloc.dart';
 import 'quotationReply_event.dart';
 import 'quotationReply_state.dart';
 
@@ -599,5 +593,10 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
     }
   }
 
-
+  jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
+    for (var key in data.keys) {
+      request.fields[key] = data[key].toString();
+    }
+    return request;
+  }
 }

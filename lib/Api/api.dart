@@ -12,26 +12,27 @@ import 'package:service_engineer/Model/service_request_repo.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'dart:convert';
 
-import '../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
-import '../Model/JobWorkEnquiry/my_task_detail_model.dart';
-import '../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
-import '../Model/JobWorkEnquiry/track_process_report_model.dart';
-import '../Model/MachineMaintance/task_hand_over_model.dart';
-import '../Model/Transpotation/MyTaskTransportDetailModel.dart';
-import '../Model/Transpotation/serviceRequestDetailModel.dart';
-import '../Model/Transpotation/transport_task_hand_over_model.dart';
-import '../Model/cart_list_repo.dart';
-import '../Model/JobWorkEnquiry/my_task_model.dart';
-import '../Model/JobWorkEnquiry/quotation_reply.dart';
-import '../Model/JobWorkEnquiry/service_request_model.dart';
-import '../Model/MachineMaintance/quotationReply.dart';
-import '../Model/Transpotation/myTaskListModel.dart';
-import '../Model/Transpotation/quotationReplyModel.dart';
-import '../Model/Transpotation/serviceRequestListModel.dart';
-import '../Model/customer_login.dart';
-import '../Model/profile_repo.dart';
-import '../Model/quotation_reply_detail_repo.dart';
-
+import '../../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
+import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
+import '../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../Model/JobWorkEnquiry/quotation_reply.dart';
+import '../../Model/JobWorkEnquiry/service_request_model.dart';
+import '../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
+import '../../Model/JobWorkEnquiry/track_process_report_model.dart';
+import '../../Model/MachineMaintance/quotationReply.dart';
+import '../../Model/MachineMaintance/task_hand_over_model.dart';
+import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
+import '../../Model/Transpotation/myTaskListModel.dart';
+import '../../Model/Transpotation/quotationReplyModel.dart';
+import '../../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../../Model/Transpotation/serviceRequestListModel.dart';
+import '../../Model/Transpotation/transport_task_hand_over_model.dart';
+import '../../Model/cart_list_repo.dart';
+import '../../Model/customer_login.dart';
+import '../../Model/profile_repo.dart';
+import '../../Model/quotation_reply_detail_repo.dart';
+import '../Model/order_list_repo.dart';
+import '../Model/order_repo.dart';
 
 
 class Api {
@@ -95,6 +96,11 @@ class Api {
   static const String MACHINE_TASK_HANDOVER="add_machine_maintenance_assign_task_to_other";
   static const String JOBWORK_TASK_HANDOVER="add_job_work_assign_task_to_other";
   static const String TRANSPORT_TASK_HANDOVER="add_transport_assign_task_to_other";
+  static const String ORDER_LIST="get_order_list";
+  static const String ORDER_DETAIL="get_detail_order_list";
+  static const String CANCEL_ORDER="cancel_order";
+  static const String TRANSPORT_TRACK_PROCESS="transport_track_progress";
+  static const String GET_TRANSPORT_TRACK_PROCESS="get_transport_track_process";
 
 
   ///Login api
@@ -132,6 +138,42 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return DashboardCountRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getOrderList(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+ORDER_LIST),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return OrderListRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> cancelOrder(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+CANCEL_ORDER),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return OrderListRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getOrderDetail(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+ORDER_DETAIL),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return OrderRepo.fromJson(responseJson);
     }
   }
 
@@ -291,31 +333,31 @@ class Api {
     }
   }
 
-  static Future<dynamic> getFilterList() async {
-    final response = await http.post(
-      Uri.parse(HOST_URL+GET_BRAND_LIST),
-    );
-    if (response.statusCode == 200) {
-      final responseJson = json.decode(response.body);
-      print(responseJson);
-      return FilterRepo.fromJson(responseJson);
-    }
-  }
-
-  static Future<dynamic> getFilterList() async {
-    final response = await http.post(
-      Uri.parse(HOST_URL+GET_BRAND_LIST),
-    );
-    if (response.statusCode == 200) {
-      final responseJson = json.decode(response.body);
-      print(responseJson);
-      return FilterRepo.fromJson(responseJson);
-    }
-  }
+  // static Future<dynamic> getFilterList() async {
+  //   final response = await http.post(
+  //     Uri.parse(HOST_URL+GET_BRAND_LIST),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     final responseJson = json.decode(response.body);
+  //     print(responseJson);
+  //     return FilterRepo.fromJson(responseJson);
+  //   }
+  // }
 
   static Future<dynamic> getFilterCategoryList() async {
     final response = await http.post(
       Uri.parse(HOST_URL+FILTER_CATEGORY_LIST),
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return FilterRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getFilterList() async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+GET_BRAND_LIST),
     );
     if (response.statusCode == 200) {
       final responseJson = json.decode(response.body);
@@ -616,6 +658,30 @@ class Api {
   static Future<dynamic> getAddToCart(params) async {
     final response = await http.post(
       Uri.parse(HOST_URL+CART_API),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CartRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> transportUpdateTrackProcess(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+TRANSPORT_TRACK_PROCESS),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return CartRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> transportGetTrackProcess(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+GET_TRANSPORT_TRACK_PROCESS),
       body: params,
     );
     if (response.statusCode == 200) {
