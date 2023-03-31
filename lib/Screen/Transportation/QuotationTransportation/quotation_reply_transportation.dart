@@ -10,6 +10,7 @@ import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../Bloc/home/home_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_event.dart';
 import '../../../Bloc/quotationReply/quotationReply_state.dart';
@@ -36,8 +37,11 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
   bool loading = true;
   QuotationReplyBloc? _quotationReplyBloc;
   List<QuotationReplyTransportModel> quotationReplyList=[];
+  ScrollController _scrollController = ScrollController();
+  int offset = 0;
 
   bool _isLoading = false;
+  bool _loadData= false;
   double? _progressValue;
 
   @override
@@ -45,9 +49,15 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
+   _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
+    getApi();
    // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
-     _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '12',offSet: '0'));
+
+  }
+
+  getApi(){
+    _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '12',offSet: '0'));
+    // _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
 
   @override
@@ -59,8 +69,20 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
 
   Widget buildQuotationsaReplyList(List<QuotationReplyTransportModel> quotationReplyList ) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels  ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
@@ -265,23 +287,28 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
             return BlocListener<QuotationReplyBloc, QuotationReplyState>(
                 listener: (context, state) {
                   if(state is QuotationReplyTransportLoading){
-                    _isLoading = state.isLoading;
+                  //  _isLoading = state.isLoading;
                   }
                   if(state is QuotationReplyTransportSuccess){
                     quotationReplyList = state.quotationReplyTransportListData;
+                    if(quotationReplyList!=null){
+                      _loadData=true;
+                    }
                   }
                   if(state is QuotationReplyTransportFail){
                     showCustomSnackBar(context,state.msg.toString());
 
                   }
                 },
-                child: _isLoading ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
-           Container(
+                child: _isLoading
+                    ? quotationReplyList.length <= 0
+                    ? Center(child: Text('No Data'),)
+                    : Container(
              child: Padding(
                padding: const EdgeInsets.all(10.0),
-               child: ListView(
+               child: Column(
                  children: [
-                   buildQuotationsaReplyList(quotationReplyList),
+                   Expanded(child: buildQuotationsaReplyList(quotationReplyList)),
                  ],
                ),
              ),

@@ -284,7 +284,7 @@ class _EnquiryServiceRequestScreenState
               },
               child: widget.isSwitched
                   ?  _loadData ? serviceJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
-              ListView(
+              Column(
                   children: [
                     const SizedBox(height: 5,),
                     handOverServiceList!.length > 0 ?
@@ -425,8 +425,8 @@ class _EnquiryServiceRequestScreenState
                     SingleChildScrollView(child:
                       Container(child:
                       flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                      buildJobWorkEnquiriesList(searchResult) :
-                      buildJobWorkEnquiriesList(serviceJobWorkEnquiryList): Padding(
+                      Expanded(child:buildJobWorkEnquiriesList(searchResult)) :
+                      Expanded(child:buildJobWorkEnquiriesList(serviceJobWorkEnquiryList)): Padding(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: const Center(child: Text("No Data"),),
                       ))),

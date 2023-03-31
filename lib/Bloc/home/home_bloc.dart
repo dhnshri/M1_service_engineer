@@ -444,8 +444,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ServiceRequestFail(msg: "Error Occured.");
       }
     }
-=========
->>>>>>>>> Temporary merge branch 2
+
 
     //Event for Task Hand Over Machine Maintaince
 
