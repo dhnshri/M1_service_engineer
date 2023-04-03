@@ -41,7 +41,6 @@ class PreviewScreen extends StatefulWidget {
 }
 
 class _PreviewScreenState extends State<PreviewScreen> {
-
   bool loading = true;
   bool value = false;
 
@@ -58,7 +57,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
   double? otherItemsAmountWithGST = 0;
   double? otherItemTotalAmount = 0;
   double? commission = 0;
-  double? totalAmount= 0;
+  double? totalAmount = 0;
 
   @override
   void initState() {
@@ -67,25 +66,27 @@ class _PreviewScreenState extends State<PreviewScreen> {
     super.initState();
     // commission = widget.commission.toDouble();
   }
-  
-  TotalAmount(){
-    if(widget.serviceCallChargesController.text==""){
+
+  TotalAmount() {
+    if (widget.serviceCallChargesController.text == "") {
       widget.serviceCallChargesController.text = "0";
     }
-    if(widget.transportChargesController.text==""){
+    if (widget.transportChargesController.text == "") {
       widget.transportChargesController.text = "0";
     }
-    if(widget.handlingChargesController.text==""){
+    if (widget.handlingChargesController.text == "") {
       widget.handlingChargesController.text = "0";
     }
 
-    totalAmount = itemRequiredTotalAmount! + otherItemTotalAmount! + double.parse(widget.serviceCallChargesController.text) +
-        double.parse(widget.transportChargesController.text) + double.parse(widget.handlingChargesController.text) +
-        double.parse(widget.gstChargesController.text) + widget.commission;
+    totalAmount = itemRequiredTotalAmount! +
+        otherItemTotalAmount! +
+        double.parse(widget.serviceCallChargesController.text) +
+        double.parse(widget.transportChargesController.text) +
+        double.parse(widget.handlingChargesController.text) +
+        double.parse(widget.gstChargesController.text) +
+        widget.commission;
     AppBloc.authBloc.add(OnSaveMaintainenceTotalAmount(totalAmount));
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -95,8 +96,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     // getroleofstudent();
   }
 
-
-  DataRow _getItemRequiredDataRow(CartListModel? cartData,index) {
+  DataRow _getItemRequiredDataRow(CartListModel? cartData, index) {
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
@@ -111,7 +111,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
     );
   }
 
-  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData,index) {
+  DataRow _getOtherItemRequiredDataRow(
+      ItemNotAvailableModel? itemNotAvailableData, index) {
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
@@ -125,7 +126,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500)),
                 children: <Widget>[
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -174,29 +173,31 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           ),
                         ],
                         rows: List.generate(widget.cartList!.length, (index) {
-                          int itemIndex = index+1;
-                          amount = int.parse(widget.cartList![index].discountPrice
-                                  .toString()) * 100/100+int.parse(widget.cartList![index].gst.toString());
+                          int itemIndex = index + 1;
+                          amount = int.parse(widget
+                                      .cartList![index].discountPrice
+                                      .toString()) *
+                                  100 /
+                                  100 +
+                              int.parse(widget.cartList![index].gst.toString());
                           amountWithGST = amount! *
                               int.parse(widget.cartList![index].qty.toString());
                           itemRequiredTotalAmount = widget.cartList!
                               .map((item) =>
-                          double.parse(amountWithGST.toString())
-                          )
+                                  double.parse(amountWithGST.toString()))
                               .reduce((value, current) => value + current);
-                          WidgetsBinding.instance.addPostFrameCallback((_){
-                            if(widget.gstChargesController.text!=""){
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (widget.gstChargesController.text != "") {
                               TotalAmount();
-
                             }
                           });
 
-                          return _getItemRequiredDataRow(widget.cartList![index],itemIndex);
+                          return _getItemRequiredDataRow(
+                              widget.cartList![index], itemIndex);
                         }),
                       ),
                     ],
                   ),
-
                   Container(
                     decoration: const BoxDecoration(
                       color: Color(0xffFFE4E5),
@@ -221,6 +222,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "(+gst)",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
                                 width: 15,
                               ),
                               Text(
@@ -235,7 +243,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   ),
                 ],
               ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         // Others Items
         widget.itemNotAvailableList.isEmpty
             ? Container()
@@ -249,52 +259,58 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500)),
                 children: <Widget>[
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-
                     children: [
                       DataTable(
                         headingRowHeight: 40,
                         headingRowColor: MaterialStateColor.resolveWith(
-                                (states) => Color(0xffE47273)),
+                            (states) => Color(0xffE47273)),
                         columnSpacing: 15.0,
-                          columns:const [
-                            DataColumn(
-                              label: Expanded(child: Text('S no')),
-                            ),
-                            DataColumn(
-                              label: Text('Item Name'),
-                            ),
-                            DataColumn(
-                              label: Text('QTY'),
-                            ),
-                            DataColumn(
-                              label: Text('Rate'),
-                            ),
-                            DataColumn(
-                              label: Text('Amount'),
-                            ),
-                          ],
-                          rows: List.generate(widget.itemNotAvailableList.length, (index) {
-                            int itemIndex=index+1;
-                            oterItemsAmount = double.parse(
-                                widget.itemNotAvailableList[index].rate.toString()) *
-                                100/100+int.parse(widget.itemNotAvailableList[index].gst.toString());
+                        columns: const [
+                          DataColumn(
+                            label: Expanded(child: Text('S no')),
+                          ),
+                          DataColumn(
+                            label: Text('Item Name'),
+                          ),
+                          DataColumn(
+                            label: Text('QTY'),
+                          ),
+                          DataColumn(
+                            label: Text('Rate'),
+                          ),
+                          DataColumn(
+                            label: Text('Amount'),
+                          ),
+                        ],
+                        rows: List.generate(widget.itemNotAvailableList.length,
+                            (index) {
+                          int itemIndex = index + 1;
+                          oterItemsAmount = double.parse(widget
+                                      .itemNotAvailableList[index].rate
+                                      .toString()) *
+                                  100 /
+                                  100 +
+                              int.parse(widget.itemNotAvailableList[index].gst
+                                  .toString());
 
-                            otherItemsAmountWithGST = oterItemsAmount! * int.parse(widget.itemNotAvailableList[index].quantity.toString());
+                          otherItemsAmountWithGST = oterItemsAmount! *
+                              int.parse(widget
+                                  .itemNotAvailableList[index].quantity
+                                  .toString());
 
-
-                            otherItemTotalAmount = widget.itemNotAvailableList
-                                .map((item) =>
-                                double.parse(otherItemsAmountWithGST.toString()))
-                                .reduce((value, current) => value + current);
-                            if(widget.gstChargesController.text!=""){
-                              TotalAmount();
-
-                            }
-                            return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index],itemIndex);
-                          }),),
+                          otherItemTotalAmount = widget.itemNotAvailableList
+                              .map((item) => double.parse(
+                                  otherItemsAmountWithGST.toString()))
+                              .reduce((value, current) => value + current);
+                          if (widget.gstChargesController.text != "") {
+                            TotalAmount();
+                          }
+                          return _getOtherItemRequiredDataRow(
+                              widget.itemNotAvailableList[index], itemIndex);
+                        }),
+                      ),
                     ],
                   ),
                   // buildOtherItemsList(),
@@ -372,9 +388,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       Row(
                         children: [
                           Text("Total Items charges"),
-                          SizedBox(width: 2,),
-                          Text("(Item + Other Items)",style: TextStyle(fontSize: 12),),
-
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            "(Item + Other Items)",
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ],
                       ),
                       Text(

@@ -21,17 +21,16 @@ import '../../../Widget/app_button.dart';
 import '../../../Widget/custom_snackbar.dart';
 import '../../../Widget/function_button.dart';
 
-
-
 class EnquiryQuotationsReplyScreen extends StatefulWidget {
   const EnquiryQuotationsReplyScreen({Key? key}) : super(key: key);
 
   @override
-  _EnquiryQuotationsReplyScreenState createState() => _EnquiryQuotationsReplyScreenState();
+  _EnquiryQuotationsReplyScreenState createState() =>
+      _EnquiryQuotationsReplyScreenState();
 }
 
-class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScreen> {
-
+class _EnquiryQuotationsReplyScreenState
+    extends State<EnquiryQuotationsReplyScreen> {
   final _formKey = GlobalKey<FormState>();
   bool loading = true;
   QuotationReplyBloc? _quotationReplyBloc;
@@ -39,10 +38,11 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
   final _searchController = TextEditingController();
   double? _progressValue;
   bool _isLoading = false;
-  bool flagSearchResult=false;
-  bool _isSearching=false;
-  List<QuotationReplyJobWorkEnquiryModel> searchResult=[];
-
+  bool flagSearchResult = false;
+  bool _isSearching = false;
+  List<QuotationReplyJobWorkEnquiryModel> searchResult = [];
+  int offset = 0;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -51,9 +51,16 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
     super.initState();
     _progressValue = 0.5;
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _quotationReplyBloc!.add(OnQuotationReplyJWEList(offSet: '0',userId: Application.customerLogin!.id.toString(),timeId: '0'));
-
+    getApi();
   }
+
+  getApi() {
+    _quotationReplyBloc!.add(OnQuotationReplyJWEList(
+        offSet: offset.toString(),
+        userId: Application.customerLogin!.id.toString(),
+        timeId: '0'));
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -71,50 +78,83 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
     searchResult.clear();
     if (_isSearching != null) {
       for (int i = 0; i < quotationReplyJobWorkEnquiryList.length; i++) {
-        QuotationReplyJobWorkEnquiryModel quotationListData = new QuotationReplyJobWorkEnquiryModel();
+        QuotationReplyJobWorkEnquiryModel quotationListData =
+            new QuotationReplyJobWorkEnquiryModel();
         quotationListData.id = quotationReplyJobWorkEnquiryList[i].id;
-        quotationListData.dateAndTime = quotationReplyJobWorkEnquiryList[i].dateAndTime.toString();
-        quotationListData.enquiryId = quotationReplyJobWorkEnquiryList[i].enquiryId;
+        quotationListData.dateAndTime =
+            quotationReplyJobWorkEnquiryList[i].dateAndTime.toString();
+        quotationListData.enquiryId =
+            quotationReplyJobWorkEnquiryList[i].enquiryId;
         quotationListData.userId = quotationReplyJobWorkEnquiryList[i].userId;
 
-        if (quotationListData.id.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            quotationListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            quotationListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
-            quotationListData.userId.toString().toLowerCase().contains(searchText.toLowerCase()) ) {
-          flagSearchResult=false;
+        if (quotationListData.id
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            quotationListData.dateAndTime
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            quotationListData.enquiryId
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            quotationListData.userId
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase())) {
+          flagSearchResult = false;
           searchResult.add(quotationListData);
         }
       }
       setState(() {
-        if(searchResult.length==0){
-          flagSearchResult=true;
+        if (searchResult.length == 0) {
+          flagSearchResult = true;
         }
       });
     }
   }
 
-  Widget buildQuotationsaReplyList(List<QuotationReplyJobWorkEnquiryModel> quotationReplyJobWorkEnquiryList) {
-
+  Widget buildQuotationsaReplyList(
+      List<QuotationReplyJobWorkEnquiryModel>
+          quotationReplyJobWorkEnquiryList) {
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<QuotationReplyBloc>(context).add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>EnquiryQuotationsReplyDetailsScreen(quotationReplyJobWorkEnquiryList: quotationReplyJobWorkEnquiryList[index],)));
+        return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EnquiryQuotationsReplyDetailsScreen(
+                            quotationReplyJobWorkEnquiryList:
+                                quotationReplyJobWorkEnquiryList[index],
+                          )));
             },
-            child: quotationsaReplyCard(context,quotationReplyJobWorkEnquiryList[index]));
+            child: quotationsaReplyCard(
+                context, quotationReplyJobWorkEnquiryList[index]));
       },
       itemCount: quotationReplyJobWorkEnquiryList.length,
     );
   }
 
-  Widget quotationsaReplyCard(BuildContext context,QuotationReplyJobWorkEnquiryModel quotationReplyJobWorkEnquiryData)
-  {
+  Widget quotationsaReplyCard(BuildContext context,
+      QuotationReplyJobWorkEnquiryModel quotationReplyJobWorkEnquiryData) {
     return Container(
-      width: MediaQuery.of(context).size.width ,
+      width: MediaQuery.of(context).size.width,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0.0),
@@ -131,7 +171,6 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -140,15 +179,15 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
                         // ),
                         Container(
                           child: Text(
-                            quotationReplyJobWorkEnquiryData.enquiryId.toString(),
+                            quotationReplyJobWorkEnquiryData.enquiryId
+                                .toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
@@ -159,8 +198,9 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                         )
                       ],
                     ),
-                    SizedBox(height: 3,),
-
+                    SizedBox(
+                      height: 3,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -169,15 +209,18 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/5.3,
                         // ),
                         Container(
                           child: Text(
-                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(quotationReplyJobWorkEnquiryData.dateAndTime.toString())).toString(),
+                            DateFormat('MM-dd-yyyy h:mm a')
+                                .format(DateTime.parse(
+                                    quotationReplyJobWorkEnquiryData.dateAndTime
+                                        .toString()))
+                                .toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
@@ -188,7 +231,6 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                         )
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -199,132 +241,161 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: InkWell(
-              onTap: (){
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
-              },
-              child: Icon(Icons.arrow_back_ios)),
-          title: Text('Quotation Reply',),
-        ),
-          body:BlocBuilder<QuotationReplyBloc, QuotationReplyState>(builder: (context, state) {
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: InkWell(
+                onTap: () {
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
+                },
+                child: Icon(Icons.arrow_back_ios)),
+            title: Text(
+              'Quotation Reply',
+            ),
+          ),
+          body: BlocBuilder<QuotationReplyBloc, QuotationReplyState>(
+              builder: (context, state) {
             return BlocListener<QuotationReplyBloc, QuotationReplyState>(
                 listener: (context, state) {
-                  if(state is QuotationReplyJWELoading){
+                  if (state is QuotationReplyJWELoading) {
                     _isLoading = state.isLoading;
                   }
-                  if(state is QuotationReplyJWESuccess){
-                    quotationReplyJobWorkEnquiryList = state.quotationReplyJWEListData;
+                  if (state is QuotationReplyJWESuccess) {
+                    quotationReplyJobWorkEnquiryList =
+                        state.quotationReplyJWEListData;
                   }
-                  if(state is QuotationReplyJWEFail){
-                    showCustomSnackBar(context,state.msg.toString());
+                  if (state is QuotationReplyJWEFail) {
+                    showCustomSnackBar(context, state.msg.toString());
                   }
                 },
-                child: _isLoading ? quotationReplyJobWorkEnquiryList.length <= 0 ? Center(child: Text('No Data'),):
-                Container(
-                  child: ListView(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(width: 0.2,),
-                            )
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, left: 10, right: 10, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  // initialValue: Application.customerLogin!.name.toString(),
-                                  controller: _searchController,
-                                  textAlign: TextAlign.start,
-                                  keyboardType: TextInputType.text,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    height: 1.5,
+                child: _isLoading
+                    ? quotationReplyJobWorkEnquiryList.length <= 0
+                        ? Center(
+                            child: Text('No Data'),
+                          )
+                        : Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    bottom: BorderSide(
+                                      width: 0.2,
+                                    ),
+                                  )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        left: 10,
+                                        right: 10,
+                                        bottom: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFormField(
+                                            // initialValue: Application.customerLogin!.name.toString(),
+                                            controller: _searchController,
+                                            textAlign: TextAlign.start,
+                                            keyboardType: TextInputType.text,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              height: 1.5,
+                                            ),
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor:
+                                                  ThemeColors.bottomNavColor,
+                                              prefixIcon: IconButton(
+                                                icon: Icon(
+                                                  Icons.search,
+                                                  size: 25.0,
+                                                  color: ThemeColors.blackColor,
+                                                ),
+                                                onPressed: () {
+                                                  _handleSearchStart();
+                                                },
+                                              ),
+                                              hintText: "Search all Orders",
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 15.0),
+                                              hintStyle:
+                                                  TextStyle(fontSize: 15),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(1.0)),
+                                                borderSide: BorderSide(
+                                                    width: 0.8,
+                                                    color: ThemeColors
+                                                        .bottomNavColor),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(1.0)),
+                                                borderSide: BorderSide(
+                                                    width: 0.8,
+                                                    color: ThemeColors
+                                                        .bottomNavColor),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(1.0)),
+                                                  borderSide: BorderSide(
+                                                      width: 0.8,
+                                                      color: ThemeColors
+                                                          .bottomNavColor)),
+                                            ),
+                                            validator: (value) {},
+                                            onChanged: (value) {
+                                              searchOperation(value);
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: ThemeColors.bottomNavColor,
-                                    prefixIcon: IconButton(
-                                      icon: Icon(
-                                        Icons.search,
-                                        size: 25.0,
-                                        color: ThemeColors.blackColor,
-                                      ),
-                                      onPressed: () {
-                                        _handleSearchStart();
-                                      },
-                                    ),
-                                    hintText: "Search all Orders",
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 15.0),
-                                    hintStyle: TextStyle(fontSize: 15),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(1.0)),
-                                      borderSide: BorderSide(
-                                          width: 0.8, color: ThemeColors.bottomNavColor),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(1.0)),
-                                      borderSide: BorderSide(
-                                          width: 0.8, color: ThemeColors.bottomNavColor),
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
-                                        borderSide: BorderSide(
-                                            width: 0.8,
-                                            color: ThemeColors.bottomNavColor)),
-                                  ),
-                                  validator: (value) {
-                                  },
-                                  onChanged: (value) {
-                                    searchOperation(value);
-
-                                  },
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SingleChildScrollView(child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                      buildQuotationsaReplyList(searchResult):
-                      buildQuotationsaReplyList(quotationReplyJobWorkEnquiryList): Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: const Center(child: Text("No Data"),),
-                      )
-                      ),
-                    ],
-                  ),
-                ) : ShimmerCard()
+                                flagSearchResult == false
+                                    ? (searchResult.length != 0 ||
+                                            _searchController.text.isNotEmpty)
+                                        ? Expanded(
+                                            child: buildQuotationsaReplyList(
+                                                searchResult),
+                                          )
+                                        : Expanded(
+                                            child: buildQuotationsaReplyList(
+                                                quotationReplyJobWorkEnquiryList),
+                                          )
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: const Center(
+                                          child: Text("No Data"),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                          )
+                    : ShimmerCard()
 
-              // Center(
-              //   child: CircularProgressIndicator(),
-              // )
+                // Center(
+                //   child: CircularProgressIndicator(),
+                // )
 
-            );
-
-
-          })
-
-      ),
+                );
+          })),
     );
   }
-  Widget ShimmerCard(){
+
+  Widget ShimmerCard() {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
@@ -415,13 +486,14 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold
-                              ),
+                                  fontWeight: FontWeight.bold),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
                           ),
-                          SizedBox(height: 4,),
+                          SizedBox(
+                            height: 4,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -430,8 +502,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
@@ -450,8 +521,9 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                               )
                             ],
                           ),
-                          SizedBox(height: 3,),
-
+                          SizedBox(
+                            height: 3,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -460,8 +532,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -480,8 +551,9 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                               )
                             ],
                           ),
-                          SizedBox(height: 3,),
-
+                          SizedBox(
+                            height: 3,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -490,8 +562,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -510,7 +581,6 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                               )
                             ],
                           ),
-
                         ],
                       ),
                     ),

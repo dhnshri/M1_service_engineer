@@ -179,6 +179,29 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
       });
   }
 
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  String? _hour, _minute, _time, _am;
+  TextEditingController _timeController = TextEditingController();
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null)
+      setState(() {
+        selectedTime = picked;
+
+        _hour = selectedTime.hour.toString();
+        _minute = selectedTime.minute.toString();
+        _am = selectedTime.format(context).toString();
+        // _time = _hour + ':' + _minute + ' ' + am;
+        _time = _am;
+        workingTimeController.text = _time!;
+        print(picked);
+      });
+  }
+
   var mainHeight, mainWidth;
 
   int itemNo = 0;
@@ -206,7 +229,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
   DataRow _buildItemRequiredList(
       ItemNotAvailableModel? itemNotAvailabeList, index) {
-    int itemIndex = index+1;
+    int itemIndex = index + 1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
@@ -312,20 +335,19 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
         _loadData
             ? Container(
                 height: 350,
-                child: Column(
-                    children: <Widget>[
-                      flagSearchResult == false
-                          ? (searchResult.length != 0 ||
-                                  _searchController.text.isNotEmpty)
-                              ? Expanded(child: ProdductList(context, searchResult))
-                              : Expanded(child: ProdductList(context, productList))
-                          : Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: const Center(
-                                child: Text("No Data"),
-                              ),
-                            )
-                    ]),
+                child: Column(children: <Widget>[
+                  flagSearchResult == false
+                      ? (searchResult.length != 0 ||
+                              _searchController.text.isNotEmpty)
+                          ? Expanded(child: ProdductList(context, searchResult))
+                          : Expanded(child: ProdductList(context, productList))
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: const Center(
+                            child: Text("No Data"),
+                          ),
+                        )
+                ]),
               )
             : Center(
                 child: CircularProgressIndicator(),
@@ -1144,7 +1166,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                   showCustomSnackBar(
                                       context, 'Please add working time.',
                                       isError: true);
-                                } else if (itemNotAvailabeList==null) {
+                                } else if (itemNotAvailabeList == null) {
                                   showCustomSnackBar(
                                       context, 'Please add items.',
                                       isError: true);
@@ -1164,7 +1186,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                           transportChargesController.text,
                                       itemList: cartList!,
                                       itemNotAvailableList: itemNotAvailabeList,
-                                      commission: '10',
+                                      commission: commision.toString(),
                                       // machineEnquiryDate: widget.serviceRequestData!.createdAt.toString(),
                                       machineEnquiryDate: DateTime.parse(widget
                                               .serviceRequestData!.createdAt
@@ -1263,61 +1285,68 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
       child: Column(
         children: [
           ///Working Time Field
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: 60,
-            child: TextFormField(
-              controller: workingTimeController,
-              keyboardType: TextInputType.number,
-              // maxLength: 10,
-              cursorColor: primaryAppColor,
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 1.0,
-                  ),
-                ),
-                fillColor: Color(0xffF5F5F5),
-                filled: true,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
+          InkWell(
+            onTap: () {
+              _selectTime(context);
+            },
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: workingTimeController,
+                keyboardType: TextInputType.number,
+                enabled: false,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: const BorderSide(
                       color: Colors.white,
                       width: 1.0,
-                    )),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
+                    ),
                   ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide:
+                        const BorderSide(color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'Working Time',
+                  contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
                 ),
-                hintText: 'Working Time',
-                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-                hintStyle: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500),
+                onChanged: (val) {
+                  setState(() {
+                    workingTimeValue = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
               ),
-              onChanged: (val) {
-                setState(() {
-                  workingTimeValue = val;
-                  // _phoneNumberController.text = val;
-                });
-              },
             ),
           ),
 

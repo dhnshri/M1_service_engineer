@@ -12,7 +12,6 @@ import 'package:service_engineer/app_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
-
 class RevisedQuotationPreviewScreen extends StatefulWidget {
   List<ItemNotAvailableModel>? cartList = [];
   List<ItemNotAvailableModel> itemNotAvailableList = [];
@@ -25,30 +24,30 @@ class RevisedQuotationPreviewScreen extends StatefulWidget {
   TextEditingController gstChargesController = TextEditingController();
   RevisedQuotationPreviewScreen(
       {Key? key,
-        required this.cartList,
-        required this.itemNotAvailableList,
-        required this.workingTimeController,
-        required this.dateofJoiningController,
-        required this.serviceCallChargesController,
-        required this.handlingChargesController,
-        required this.transportChargesController,
-        required this.otherChargesController,
-        required this.gstChargesController})
+      required this.cartList,
+      required this.itemNotAvailableList,
+      required this.workingTimeController,
+      required this.dateofJoiningController,
+      required this.serviceCallChargesController,
+      required this.handlingChargesController,
+      required this.transportChargesController,
+      required this.otherChargesController,
+      required this.gstChargesController})
       : super(key: key);
 
   @override
-  _RevisedQuotationPreviewScreenState createState() => _RevisedQuotationPreviewScreenState();
+  _RevisedQuotationPreviewScreenState createState() =>
+      _RevisedQuotationPreviewScreenState();
 }
 
-class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewScreen> {
-
+class _RevisedQuotationPreviewScreenState
+    extends State<RevisedQuotationPreviewScreen> {
   bool loading = true;
   bool value = false;
 
-
   final GlobalKey<ExpansionTileCardState> cardItemRequired = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardOtherItemRequired =
-  new GlobalKey();
+      new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardQuotations = new GlobalKey();
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
 
@@ -59,7 +58,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
   double? otherItemsAmountWithGST = 0;
   double? otherItemTotalAmount = 0;
   int? commission = 0;
-  double? totalAmount= 0;
+  double? totalAmount = 0;
 
   @override
   void initState() {
@@ -70,14 +69,14 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     getCommissionApi();
   }
 
-  getCommissionApi()async{
-    var com = await fetchCommision(Application.customerLogin!.id.toString(),Application.customerLogin!.role.toString()).
-    then((value) => value);
+  getCommissionApi() async {
+    var com = await fetchCommision(Application.customerLogin!.id.toString(),
+            Application.customerLogin!.role.toString())
+        .then((value) => value);
     print(com);
     print(com['data']);
     commission = com['data'];
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -87,19 +86,22 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     // getroleofstudent();
   }
 
-  TotalAmount(){
-    totalAmount = int.parse(widget.serviceCallChargesController.text.toString()) + itemRequiredTotalAmount! + otherItemTotalAmount! +
-        int.parse(widget.transportChargesController.text.toString()) +
-        commission! + int.parse(widget.handlingChargesController.text.toString()) + int.parse(widget.gstChargesController.text.toString());
+  TotalAmount() {
+    totalAmount =
+        int.parse(widget.serviceCallChargesController.text.toString()) +
+            itemRequiredTotalAmount! +
+            otherItemTotalAmount! +
+            int.parse(widget.transportChargesController.text.toString()) +
+            commission! +
+            int.parse(widget.handlingChargesController.text.toString()) +
+            int.parse(widget.gstChargesController.text.toString());
     AppBloc.authBloc.add(OnSaveMaintainenceRevisedTotalAmount(totalAmount));
 
-    setState(() {
-
-    });
+    setState(() {});
   }
 
-  DataRow _getItemRequiredDataRow(ItemNotAvailableModel? cartData,index) {
-    int itemIndex = index+1;
+  DataRow _getItemRequiredDataRow(ItemNotAvailableModel? cartData, index) {
+    int itemIndex = index + 1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
@@ -114,8 +116,9 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     );
   }
 
-  DataRow _getOtherItemRequiredDataRow(ItemNotAvailableModel? itemNotAvailableData,index) {
-    int itemIndex = index+1;
+  DataRow _getOtherItemRequiredDataRow(
+      ItemNotAvailableModel? itemNotAvailableData, index) {
+    int itemIndex = index + 1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
@@ -130,9 +133,6 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -144,200 +144,225 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
         widget.cartList!.isEmpty
             ? Container()
             : ExpansionTileCard(
-          key: cardItemRequired,
-          initiallyExpanded: true,
-          title: Text("Item Required",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500)),
-          children: <Widget>[
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DataTable(
-                  headingRowHeight: 40,
-                  headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => Color(0xffE47273)),
-                  columnSpacing: 15.0,
-                  columns: const [
-                    DataColumn(
-                      label: Expanded(child: Text('S no')),
-                    ),
-                    DataColumn(
-                      label: Text('Item Name'),
-                    ),
-                    DataColumn(
-                      label: Text('QTY'),
-                    ),
-                    DataColumn(
-                      label: Text('Rate'),
-                    ),
-                    DataColumn(
-                      label: Text('Amount'),
-                    ),
-                  ],
-                  rows: List.generate(widget.cartList!.length, (index) {
-
-                    amount = int.parse(widget.cartList![index].rate
-                        .toString()) * 100/100+int.parse(widget.cartList![index].gst.toString());
-                    amountWithGST = amount! *
-                        int.parse(widget.cartList![index].quantity.toString());
-                    setState((){
-                      itemRequiredTotalAmount = widget.cartList!
-                          .map((item) =>
-                          double.parse(amountWithGST.toString())
-                      ).reduce((value, current) => value + current);
-                    });
-                    // print(itemRequiredTotalAmount);
-                    WidgetsBinding.instance.addPostFrameCallback((_){
-                        TotalAmount();
-                    });
-                    return _getItemRequiredDataRow(widget.cartList![index],index);
-                  }),
-                ),
-              ],
-            ),
-
-            Container(
-              decoration: const BoxDecoration(
-                color: Color(0xffFFE4E5),
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.black,
-                    width: 1.0,
+                key: cardItemRequired,
+                initiallyExpanded: true,
+                title: Text("Item Required",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500)),
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      DataTable(
+                        headingRowHeight: 40,
+                        headingRowColor: MaterialStateColor.resolveWith(
+                            (states) => Color(0xffE47273)),
+                        columnSpacing: 15.0,
+                        columns: const [
+                          DataColumn(
+                            label: Expanded(child: Text('S no')),
+                          ),
+                          DataColumn(
+                            label: Text('Item Name'),
+                          ),
+                          DataColumn(
+                            label: Text('QTY'),
+                          ),
+                          DataColumn(
+                            label: Text('Rate'),
+                          ),
+                          DataColumn(
+                            label: Text('Amount'),
+                          ),
+                        ],
+                        rows: List.generate(widget.cartList!.length, (index) {
+                          amount = int.parse(
+                                      widget.cartList![index].rate.toString()) *
+                                  100 /
+                                  100 +
+                              int.parse(widget.cartList![index].gst.toString());
+                          amountWithGST = amount! *
+                              int.parse(
+                                  widget.cartList![index].quantity.toString());
+                          setState(() {
+                            itemRequiredTotalAmount = widget.cartList!
+                                .map((item) =>
+                                    double.parse(amountWithGST.toString()))
+                                .reduce((value, current) => value + current);
+                          });
+                          // print(itemRequiredTotalAmount);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            TotalAmount();
+                          });
+                          return _getItemRequiredDataRow(
+                              widget.cartList![index], index);
+                        }),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, right: 30.0, bottom: 8.0),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xffFFE4E5),
+                      border: Border(
+                        top: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Total",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        SizedBox(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, right: 30.0, bottom: 8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Total",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "(+gst)",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "₹ ${itemRequiredTotalAmount}",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "₹ ${itemRequiredTotalAmount}",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+        SizedBox(
+          height: 5,
         ),
-        SizedBox(height: 5,),
         // Others Items
         widget.itemNotAvailableList.isEmpty
             ? Container()
             : ExpansionTileCard(
-          key: cardOtherItemRequired,
-          initiallyExpanded: true,
-          title: Text("Other Items( item not available on app)",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500)),
-          children: <Widget>[
+                key: cardOtherItemRequired,
+                initiallyExpanded: true,
+                title: Text("Other Items( item not available on app)",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500)),
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      DataTable(
+                        headingRowHeight: 40,
+                        headingRowColor: MaterialStateColor.resolveWith(
+                            (states) => Color(0xffE47273)),
+                        columnSpacing: 15.0,
+                        columns: const [
+                          DataColumn(
+                            label: Expanded(child: Text('S no')),
+                          ),
+                          DataColumn(
+                            label: Text('Item Name'),
+                          ),
+                          DataColumn(
+                            label: Text('QTY'),
+                          ),
+                          DataColumn(
+                            label: Text('Rate'),
+                          ),
+                          DataColumn(
+                            label: Text('Amount'),
+                          ),
+                        ],
+                        rows: List.generate(widget.itemNotAvailableList.length,
+                            (index) {
+                          oterItemsAmount = double.parse(widget
+                                      .itemNotAvailableList[index].rate
+                                      .toString()) *
+                                  100 /
+                                  100 +
+                              int.parse(widget.itemNotAvailableList[index].gst
+                                  .toString());
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+                          otherItemsAmountWithGST = oterItemsAmount! *
+                              int.parse(widget
+                                  .itemNotAvailableList[index].quantity
+                                  .toString());
 
-              children: [
-                DataTable(
-                  headingRowHeight: 40,
-                  headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => Color(0xffE47273)),
-                  columnSpacing: 15.0,
-                  columns:const [
-                    DataColumn(
-                      label: Expanded(child: Text('S no')),
-                    ),
-                    DataColumn(
-                      label: Text('Item Name'),
-                    ),
-                    DataColumn(
-                      label: Text('QTY'),
-                    ),
-                    DataColumn(
-                      label: Text('Rate'),
-                    ),
-                    DataColumn(
-                      label: Text('Amount'),
-                    ),
-                  ],
-                  rows: List.generate(widget.itemNotAvailableList.length, (index) {
-                    oterItemsAmount = double.parse(
-                        widget.itemNotAvailableList[index].rate.toString()) *
-                        100/100+int.parse(widget.itemNotAvailableList[index].gst.toString());
-
-                    otherItemsAmountWithGST = oterItemsAmount! * int.parse(widget.itemNotAvailableList[index].quantity.toString());
-
-
-                    otherItemTotalAmount = widget.itemNotAvailableList
-                        .map((item) =>
-                        double.parse(otherItemsAmountWithGST.toString()))
-                        .reduce((value, current) => value + current);
-                    WidgetsBinding.instance.addPostFrameCallback((_){
-                      TotalAmount();
-                    });
-                    return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index],index);
-                  }),),
-              ],
-            ),
-            // buildOtherItemsList(),
-            Container(
-              decoration: const BoxDecoration(
-                color: Color(0xffFFE4E5),
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.black,
-                    width: 1.0,
+                          otherItemTotalAmount = widget.itemNotAvailableList
+                              .map((item) => double.parse(
+                                  otherItemsAmountWithGST.toString()))
+                              .reduce((value, current) => value + current);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            TotalAmount();
+                          });
+                          return _getOtherItemRequiredDataRow(
+                              widget.itemNotAvailableList[index], index);
+                        }),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, right: 40.0, bottom: 8.0),
+                  // buildOtherItemsList(),
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xffFFE4E5),
+                      border: Border(
+                        top: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Total",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        SizedBox(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, right: 30.0, bottom: 8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Total",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "(+gst)",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "₹ $otherItemTotalAmount",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "₹ $otherItemTotalAmount",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
         // Date and Time
         // Padding(
         //   padding: const EdgeInsets.only(
@@ -365,7 +390,7 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
           children: <Widget>[
             Padding(
               padding:
-              const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 8.0),
+                  const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 8.0),
               child: Column(
                 children: [
                   Row(
@@ -374,9 +399,13 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                       Row(
                         children: [
                           Text("Total Items charges"),
-                          SizedBox(width: 2,),
-                          Text("(Item + Other Items)",style: TextStyle(fontSize: 12),),
-
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            "(Item + Other Items)",
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ],
                       ),
                       Text(
@@ -385,7 +414,8 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                   ),
                   SizedBox(
                     height: 10,
-                  ),                  Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Service charge"),
