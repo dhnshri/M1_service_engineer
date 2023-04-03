@@ -33,19 +33,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/src/material/date_picker.dart';
 
-
 class MachineRevisedQuotationScreen extends StatefulWidget {
   List<QuotationRequiredItems>? quotationRequiredItemList;
   List<QuotationRequiredItems>? quotationOtherItemList;
-  List<QuotationCharges>? quotationChargesList;  QuotationReplyModel quotationReplyList;
-  MachineRevisedQuotationScreen({Key? key,required this.quotationRequiredItemList,required this.quotationOtherItemList, required this.quotationChargesList,
-    required this.quotationReplyList}) : super(key: key);
+  List<QuotationCharges>? quotationChargesList;
+  QuotationReplyModel quotationReplyList;
+  MachineRevisedQuotationScreen(
+      {Key? key,
+      required this.quotationRequiredItemList,
+      required this.quotationOtherItemList,
+      required this.quotationChargesList,
+      required this.quotationReplyList})
+      : super(key: key);
 
   @override
-  _MachineRevisedQuotationScreenState createState() => _MachineRevisedQuotationScreenState();
+  _MachineRevisedQuotationScreenState createState() =>
+      _MachineRevisedQuotationScreenState();
 }
 
-class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationScreen> {
+class _MachineRevisedQuotationScreenState
+    extends State<MachineRevisedQuotationScreen> {
   int _currentStep = 0;
   bool loading = true;
   final _formKey = GlobalKey<FormState>();
@@ -87,26 +94,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
 
   QuotationReplyBloc? _quotationBloc;
   List<ProductDetails>? productDetail = [];
-  List<CartListModel>? cartList=[];
-
-
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        // initialDate: selectedDate,
-        initialDate: selectedDate == null ? DateTime.now() : selectedDate,
-        initialDatePickerMode: DatePickerMode.day,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
-    if (picked != null)
-      setState(() {
-        selectedDate = picked;
-        if (selectedDate != null) {
-          dateofJoiningController.text =
-              DateFormat.yMd('es').format(selectedDate);
-        }
-      });
-  }
+  List<CartListModel>? cartList = [];
 
   var mainHeight, mainWidth;
 
@@ -116,12 +104,13 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
 
   onAdd() {
     setState(() {
-      ItemNotAvailableModel _contactModel = ItemNotAvailableModel(id: itemNotAvailabeList.length);
+      ItemNotAvailableModel _contactModel =
+          ItemNotAvailableModel(id: itemNotAvailabeList.length);
 
-      double amount = int.parse(_rateController.text) * 100/100+int.parse(_gstController.text);
+      double amount = int.parse(_rateController.text) * 100 / 100 +
+          int.parse(_gstController.text);
 
-      double amountWithGST = amount *
-          int.parse(_quantityController.text);
+      double amountWithGST = amount * int.parse(_quantityController.text);
 
       itemNotAvailabeList.add(ItemNotAvailableModel(
           id: itemNotAvailabeList.length,
@@ -129,20 +118,20 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
           quantity: _quantityController.text,
           amount: amountWithGST.toString(),
           rate: _rateController.text,
-          gst: _gstController.text
-      ));
+          gst: _gstController.text));
     });
   }
 
-
-  DataRow _buildItemRequiredList(ItemNotAvailableModel? itemNotAvailabeList,index) {
+  DataRow _buildItemRequiredList(
+      ItemNotAvailableModel? itemNotAvailabeList, index) {
+    int itemIndex = index + 1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
       }),
       cells: <DataCell>[
-        DataCell(Text(itemNotAvailabeList!.id.toString())),
-        DataCell(Text(itemNotAvailabeList.itemName.toString())),
+        DataCell(Text(itemIndex.toString())),
+        DataCell(Text(itemNotAvailabeList!.itemName.toString())),
         DataCell(Text(itemNotAvailabeList.quantity.toString())),
         DataCell(Text('₹${itemNotAvailabeList.rate.toString()}')),
         // DataCell(Text('₹${amount.toString()}')),
@@ -150,18 +139,15 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
     );
   }
 
-
-
   ///Item Required Widget
   Widget ItemRequired(BuildContext context) {
     mainHeight = MediaQuery.of(context).size.height;
     mainWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-
         Container(
           // height: 350,
-          child:SingleChildScrollView(
+          child: SingleChildScrollView(
             child: ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -169,8 +155,8 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
               itemCount: widget.quotationRequiredItemList!.length,
               padding: EdgeInsets.only(top: 10, bottom: 15),
               itemBuilder: (context, index) {
-                return  Padding(
-                    padding: const EdgeInsets.only(bottom:8.0),
+                return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
                     child: Card(
                         elevation: 1,
                         child: ListTile(
@@ -178,11 +164,14 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                             filterQuality: FilterQuality.medium,
                             // imageUrl: Api.PHOTO_URL + widget.users.avatar,
                             // imageUrl: "https://picsum.photos/250?image=9",
-                            imageUrl: widget.quotationRequiredItemList![index].prodImg.toString(),
+                            imageUrl: widget
+                                .quotationRequiredItemList![index].prodImg
+                                .toString(),
                             placeholder: (context, url) {
                               return Shimmer.fromColors(
                                 baseColor: Theme.of(context).hoverColor,
-                                highlightColor: Theme.of(context).highlightColor,
+                                highlightColor:
+                                    Theme.of(context).highlightColor,
                                 enabled: true,
                                 child: Container(
                                   height: 80,
@@ -210,7 +199,8 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                             errorWidget: (context, url, error) {
                               return Shimmer.fromColors(
                                 baseColor: Theme.of(context).hoverColor,
-                                highlightColor: Theme.of(context).highlightColor,
+                                highlightColor:
+                                    Theme.of(context).highlightColor,
                                 enabled: true,
                                 child: Container(
                                   height: 80,
@@ -224,189 +214,264 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                               );
                             },
                           ),
-                          title: Column(
+                          title: Column(children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(widget.quotationRequiredItemList![index].itemName.toString(),style:itemRequiredCardHeading,),
-                                        // Text("ID: ${widget.quotationRequiredItemList![index].id.toString()}",style: itemRequiredCardSubtitle),
-                                        Text("₹ ${widget.quotationRequiredItemList![index].rate.toString()}",style:itemRequiredCardSubtitle),
-                                      ],
-
+                                    Text(
+                                      widget.quotationRequiredItemList![index]
+                                          .itemName
+                                          .toString(),
+                                      style: itemRequiredCardHeading,
                                     ),
-
-                                    Flexible(
-                                      child: Container(
-                                        height: 40,
-                                        // width: 110,
-                                        width: MediaQuery.of(context).size.width*0.266,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.black),
-                                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            widget.quotationRequiredItemList![index].itemQty != 0?
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.remove_circle,
-                                                color: Colors.grey,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  if (widget.quotationRequiredItemList![index].itemQty! > 0) {
-                                                    widget.quotationRequiredItemList![index].itemQty = widget.quotationRequiredItemList![index].itemQty! - 1;
-                                                    // _quotationBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
-                                                    // loadApi();
-                                                    itemList[index].quantity = widget.quotationRequiredItemList![index].itemQty.toString();
-                                                    print(itemList);
-
-                                                  }
-                                                });
-                                              },
-                                            ):Padding(
-                                              padding: const EdgeInsets.only(left:20.0),
-                                              child: const Text('Add',style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Poppins'
-                                              )),
-                                            ),
-                                            widget.quotationRequiredItemList![index].itemQty != 0 ?
-                                            Text(
-                                              widget.quotationRequiredItemList![index].itemQty.toString(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 18),
-                                            ): SizedBox(),
-                                            Expanded(
-                                              child: IconButton(
+                                    // Text("ID: ${widget.quotationRequiredItemList![index].id.toString()}",style: itemRequiredCardSubtitle),
+                                    Text(
+                                        "₹ ${widget.quotationRequiredItemList![index].rate.toString()}",
+                                        style: itemRequiredCardSubtitle),
+                                  ],
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    height: 40,
+                                    // width: 110,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.266,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        widget.quotationRequiredItemList![index]
+                                                    .itemQty !=
+                                                0
+                                            ? IconButton(
+                                                icon: Icon(
+                                                  Icons.remove_circle,
+                                                  color: Colors.grey,
+                                                ),
                                                 onPressed: () {
                                                   setState(() {
-
-                                                    if(widget.quotationRequiredItemList![index].itemQty! <= widget.quotationRequiredItemList![index].productQty!){
-                                                      if( widget.quotationRequiredItemList![index].productQty! > 0){
-                                                        widget.quotationRequiredItemList![index].itemQty = widget.quotationRequiredItemList![index].itemQty! + 1;
-                                                        itemList[index].quantity = widget.quotationRequiredItemList![index].itemQty.toString();
-
-                                                      }else{
-                                                        showCustomSnackBar(context,'Quantity is not available.',isError: true);
-                                                      }
-
-                                                    }else{
-                                                      showCustomSnackBar(context,'Quantity is not available.',isError: true);
+                                                    if (widget
+                                                            .quotationRequiredItemList![
+                                                                index]
+                                                            .itemQty! >
+                                                        0) {
+                                                      widget
+                                                          .quotationRequiredItemList![
+                                                              index]
+                                                          .itemQty = widget
+                                                              .quotationRequiredItemList![
+                                                                  index]
+                                                              .itemQty! -
+                                                          1;
+                                                      // _quotationBloc!.add(AddToCart(prodId: productList[index].id.toString(),userId: Application.customerLogin!.id.toString(),quantity: productList[index].cartQuantity.toString()));
+                                                      // loadApi();
+                                                      itemList[index].quantity =
+                                                          widget
+                                                              .quotationRequiredItemList![
+                                                                  index]
+                                                              .itemQty
+                                                              .toString();
+                                                      print(itemList);
                                                     }
                                                   });
                                                 },
-                                                icon: Icon(
-                                                  Icons.add_circle,
-                                                  color: ThemeColors.baseThemeColor,
-                                                ),
+                                              )
+                                            : Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 20.0),
+                                                child: const Text('Add',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Poppins')),
                                               ),
+                                        widget.quotationRequiredItemList![index]
+                                                    .itemQty !=
+                                                0
+                                            ? Text(
+                                                widget
+                                                    .quotationRequiredItemList![
+                                                        index]
+                                                    .itemQty
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 18),
+                                              )
+                                            : SizedBox(),
+                                        Expanded(
+                                          child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                if (widget
+                                                        .quotationRequiredItemList![
+                                                            index]
+                                                        .itemQty! <=
+                                                    widget
+                                                        .quotationRequiredItemList![
+                                                            index]
+                                                        .productQty!) {
+                                                  if (widget
+                                                          .quotationRequiredItemList![
+                                                              index]
+                                                          .productQty! >
+                                                      0) {
+                                                    widget
+                                                        .quotationRequiredItemList![
+                                                            index]
+                                                        .itemQty = widget
+                                                            .quotationRequiredItemList![
+                                                                index]
+                                                            .itemQty! +
+                                                        1;
+                                                    itemList[index].quantity =
+                                                        widget
+                                                            .quotationRequiredItemList![
+                                                                index]
+                                                            .itemQty
+                                                            .toString();
+                                                  } else {
+                                                    showCustomSnackBar(context,
+                                                        'Quantity is not available.',
+                                                        isError: true);
+                                                  }
+                                                } else {
+                                                  showCustomSnackBar(context,
+                                                      'Quantity is not available.',
+                                                      isError: true);
+                                                }
+                                              });
+                                            },
+                                            icon: Icon(
+                                              Icons.add_circle,
+                                              color: ThemeColors.baseThemeColor,
                                             ),
-                                          ],
+                                          ),
                                         ),
-
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ]
-                          ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ]),
                         )));
               },
             ),
           ),
         ),
-        SizedBox(height: 15,),
-        itemNotAvailabeList.length <= 0? Container():
-        Align(
-            alignment: Alignment.topLeft,
-            child: Text("Add Items not available in list here.",style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins'
-            ),)),
-        SizedBox(height: 5,),
-        itemNotAvailabeList.length <= 0? Container():
-
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DataTable(
-              headingRowHeight: 40,
-              headingRowColor: MaterialStateColor.resolveWith(
-                      (states) => Color(0xffE47273)),
-              columnSpacing: 15.0,
-              columns: const [
-                DataColumn(
-                  label: Expanded(child: Text('S no')),
-                ),
-                DataColumn(
-                  label: Text('Item Name'),
-                ),
-                DataColumn(
-                  label: Text('QTY'),
-                ),
-                DataColumn(
-                  label: Text('Rate'),
-                ),
-              ],
-              rows: List.generate(itemNotAvailabeList.length, (index) {
-                return _buildItemRequiredList(itemNotAvailabeList[index],index);
-              }),
-            ),
-          ],
+        SizedBox(
+          height: 15,
         ),
-
-        SizedBox(height: 7,),
-        SizedBox(width: 5,),
+        itemNotAvailabeList.length <= 0
+            ? Container()
+            : Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Add Items not available in list here.",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins'),
+                )),
+        SizedBox(
+          height: 5,
+        ),
+        itemNotAvailabeList.length <= 0
+            ? Container()
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DataTable(
+                    headingRowHeight: 40,
+                    headingRowColor: MaterialStateColor.resolveWith(
+                        (states) => Color(0xffE47273)),
+                    columnSpacing: 15.0,
+                    columns: const [
+                      DataColumn(
+                        label: Expanded(child: Text('S no')),
+                      ),
+                      DataColumn(
+                        label: Text('Item Name'),
+                      ),
+                      DataColumn(
+                        label: Text('QTY'),
+                      ),
+                      DataColumn(
+                        label: Text('Rate'),
+                      ),
+                    ],
+                    rows: List.generate(itemNotAvailabeList.length, (index) {
+                      return _buildItemRequiredList(
+                          itemNotAvailabeList[index], index);
+                    }),
+                  ),
+                ],
+              ),
+        SizedBox(
+          height: 7,
+        ),
+        SizedBox(
+          width: 5,
+        ),
         InkWell(
-          onTap: (){
+          onTap: () {
             //AddOtherCharges();
             AddItemNotAvailable(context);
-
           },
-          child:  Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(),
+
               ///Add More
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(itemNotAvailabeList.length <= 0? "Add Items":"Add More",
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
-                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                  Text(
+                    itemNotAvailabeList.length <= 0 ? "Add Items" : "Add More",
+                    style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(width: 5,),
+                  SizedBox(
+                    width: 5,
+                  ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       // AddOtherCharges();
                       AddItemNotAvailable(context);
                     },
                     child: CircleAvatar(
                       backgroundColor: ThemeColors.redTextColor,
-                      child: Icon(Icons.add,color: Colors.white,),
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   )
                 ],
               ),
-
             ],
           ),
-
         )
       ],
     );
   }
-
 
   ///Item which are added manualy widget
   AddItemNotAvailable(BuildContext context) {
@@ -425,8 +490,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: SizedBox(
-                    width:
-                    MediaQuery.of(context).size.width * 0.8,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     height: 60,
                     child: TextFormField(
                       controller: _itemNameController,
@@ -435,16 +499,14 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                       cursorColor: primaryAppColor,
                       decoration: InputDecoration(
                         disabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1.0,
                           ),
                         ),
                         errorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: const BorderSide(
                             color: Colors.red,
                             width: 1.0,
@@ -453,29 +515,26 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                         fillColor: Colors.white,
                         filled: true,
                         focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 1.0),
                         ),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8.0),
                             borderSide: const BorderSide(
                               color: Colors.black,
                               width: 1.0,
                             )),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1.0,
                           ),
                         ),
                         hintText: 'Item Name',
-                        contentPadding: const EdgeInsets.fromLTRB(
-                            20.0, 20.0, 0.0, 0.0),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                         hintStyle: GoogleFonts.poppins(
                             color: Colors.grey,
                             fontSize: 12.0,
@@ -483,15 +542,14 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                       ),
                       onChanged: (val) {
                         setState(() {
-                          if ( _formKey.currentState!.validate()) {}
+                          if (_formKey.currentState!.validate()) {}
                         });
                       },
                     ),
                   ),
                 ),
                 SizedBox(
-                  width:
-                  MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
                   child: TextFormField(
                     controller: _quantityController,
@@ -500,16 +558,14 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     cursorColor: primaryAppColor,
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.red,
                           width: 1.0,
@@ -518,29 +574,26 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                       fillColor: Colors.white,
                       filled: true,
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                            color: Colors.black, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 1.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1.0,
                           )),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
                       hintText: 'Quantity',
-                      contentPadding: const EdgeInsets.fromLTRB(
-                          20.0, 20.0, 0.0, 0.0),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                       hintStyle: GoogleFonts.poppins(
                           color: Colors.grey,
                           fontSize: 12.0,
@@ -548,14 +601,13 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     ),
                     onChanged: (val) {
                       setState(() {
-                        if ( _formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {}
                       });
                     },
                   ),
                 ),
                 SizedBox(
-                  width:
-                  MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
                   child: TextFormField(
                     controller: _rateController,
@@ -564,16 +616,14 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     cursorColor: primaryAppColor,
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.red,
                           width: 1.0,
@@ -582,29 +632,26 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                       fillColor: Colors.white,
                       filled: true,
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                            color: Colors.black, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 1.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1.0,
                           )),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
                       hintText: 'Rate',
-                      contentPadding: const EdgeInsets.fromLTRB(
-                          20.0, 20.0, 0.0, 0.0),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                       hintStyle: GoogleFonts.poppins(
                           color: Colors.grey,
                           fontSize: 12.0,
@@ -612,14 +659,13 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     ),
                     onChanged: (val) {
                       setState(() {
-                        if ( _formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {}
                       });
                     },
                   ),
                 ),
                 SizedBox(
-                  width:
-                  MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
                   child: TextFormField(
                     controller: _gstController,
@@ -628,16 +674,14 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     cursorColor: primaryAppColor,
                     decoration: InputDecoration(
                       disabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.red,
                           width: 1.0,
@@ -646,29 +690,26 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                       fillColor: Colors.white,
                       filled: true,
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                            color: Colors.black, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 1.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           borderSide: const BorderSide(
                             color: Colors.black,
                             width: 1.0,
                           )),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                         borderSide: const BorderSide(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
                       hintText: 'Add GST',
-                      contentPadding: const EdgeInsets.fromLTRB(
-                          20.0, 20.0, 0.0, 0.0),
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                       hintStyle: GoogleFonts.poppins(
                           color: Colors.grey,
                           fontSize: 12.0,
@@ -676,15 +717,13 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     ),
                     onChanged: (val) {
                       setState(() {
-                        if ( _formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {}
                       });
                     },
                   ),
                 ),
-
                 Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 40.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
                     child: AppButton(
                       onPressed: () async {
                         onAdd();
@@ -694,70 +733,88 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                         _gstController.clear();
                         _quantityController.clear();
                         Navigator.of(context).pop();
-                        showCustomSnackBar(context,'Item Added Successfully',isError: false);
-
+                        showCustomSnackBar(context, 'Item Added Successfully',
+                            isError: false);
                       },
                       shape: const RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(50))),
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
                       text: 'Add Product',
                       loading: loading,
-
-
-                    )
-                ),
-
+                      color: ThemeColors.buttonColor,
+                    )),
               ],
             ),
           );
-
         });
   }
 
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  String? _hour, _minute, _time, _am;
+  TextEditingController _timeController = TextEditingController();
 
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null)
+      setState(() {
+        selectedTime = picked;
 
+        _hour = selectedTime.hour.toString();
+        _minute = selectedTime.minute.toString();
+        _am = selectedTime.format(context).toString();
+        // _time = _hour + ':' + _minute + ' ' + am;
+        _time = _am;
+        workingTimeController.text = _time!;
+        print(picked);
+      });
+  }
 
   List<Step> stepList() => [
-    Step(
-      state: _currentStep <= 0 ? StepState.editing : StepState.complete,
-      // state: _currentStep <= 0 ? Icon(Icons.circle): StepState.complete,
-      isActive: _currentStep >= 0,
-      title: Text(
-        'Service Charges',
-        style: StepperHeadingStyle,
-      ),
-      content: ServiceCharges(context),
-    ),
-    Step(
-      state: _currentStep <= 1 ? StepState.editing : StepState.complete,
-      isActive: _currentStep >= 1,
-      title: Text(
-        'Item Required',
-        style: StepperHeadingStyle,
-      ),
-      content: ItemRequired(context),
-      // ItemRequired(context),
-    ),
-    ///Preview
-    Step(
-      state: StepState.complete,
-      isActive: _currentStep >= 2,
-      title: Text(
-        'Preview',
-        style: StepperHeadingStyle,
-      ),
-      content: RevisedQuotationPreviewScreen(cartList: itemList,itemNotAvailableList: itemNotAvailabeList,
-          workingTimeController: workingTimeController,
-          dateofJoiningController: dateofJoiningController,
-          serviceCallChargesController: serviceCallChargesController,
-          transportChargesController: transportChargesController,
-          otherChargesController: otherChargesController,
-          handlingChargesController: handlingChargesController,
-          gstChargesController: gstChargesController),
-    ),
-  ];
+        Step(
+          state: _currentStep <= 0 ? StepState.editing : StepState.complete,
+          // state: _currentStep <= 0 ? Icon(Icons.circle): StepState.complete,
+          isActive: _currentStep >= 0,
+          title: Text(
+            'Service Charges',
+            style: StepperHeadingStyle,
+          ),
+          content: ServiceCharges(context),
+        ),
+        Step(
+          state: _currentStep <= 1 ? StepState.editing : StepState.complete,
+          isActive: _currentStep >= 1,
+          title: Text(
+            'Item Required',
+            style: StepperHeadingStyle,
+          ),
+          content: ItemRequired(context),
+          // ItemRequired(context),
+        ),
 
-  int total=0;
+        ///Preview
+        Step(
+          state: StepState.complete,
+          isActive: _currentStep >= 2,
+          title: Text(
+            'Preview',
+            style: StepperHeadingStyle,
+          ),
+          content: RevisedQuotationPreviewScreen(
+              cartList: itemList,
+              itemNotAvailableList: itemNotAvailabeList,
+              workingTimeController: workingTimeController,
+              dateofJoiningController: dateofJoiningController,
+              serviceCallChargesController: serviceCallChargesController,
+              transportChargesController: transportChargesController,
+              otherChargesController: otherChargesController,
+              handlingChargesController: handlingChargesController,
+              gstChargesController: gstChargesController),
+        ),
+      ];
+
+  int total = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -768,30 +825,38 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
     getData();
   }
 
-  getData(){
-    workingTimeController.text = widget.quotationRequiredItemList![0].workingTime.toString();
-    serviceCallChargesController.text = widget.quotationChargesList![0].serviceCharge.toString();
-    handlingChargesController.text = widget.quotationChargesList![0].handlingCharge.toString();
-    transportChargesController.text = widget.quotationChargesList![0].transportCharge.toString();
+  getData() {
+    workingTimeController.text =
+        widget.quotationRequiredItemList![0].workingTime.toString();
+    serviceCallChargesController.text =
+        widget.quotationChargesList![0].serviceCharge.toString();
+    handlingChargesController.text =
+        widget.quotationChargesList![0].handlingCharge.toString();
+    transportChargesController.text =
+        widget.quotationChargesList![0].transportCharge.toString();
     gstChargesController.text = widget.quotationChargesList![0].gst.toString();
     int itemIndex = 0;
-    for(int i = 0; i < widget.quotationOtherItemList!.length ; i++) {
+    for (int i = 0; i < widget.quotationOtherItemList!.length; i++) {
       itemIndex = itemIndex + 1;
       itemNotAvailabeList.add(ItemNotAvailableModel(
-          id: i, itemName: widget.quotationOtherItemList![i].itemName,rate: widget.quotationOtherItemList![i].rate.toString(),
-          quantity: widget.quotationOtherItemList![i].itemQty.toString(),gst: widget.quotationOtherItemList![i].gst.toString(),
+          id: i,
+          itemName: widget.quotationOtherItemList![i].itemName,
+          rate: widget.quotationOtherItemList![i].rate.toString(),
+          quantity: widget.quotationOtherItemList![i].itemQty.toString(),
+          gst: widget.quotationOtherItemList![i].gst.toString(),
           amount: widget.quotationOtherItemList![i].amount.toString()));
     }
-    for(int i = 0; i < widget.quotationRequiredItemList!.length ; i++) {
+    for (int i = 0; i < widget.quotationRequiredItemList!.length; i++) {
       itemList.add(ItemNotAvailableModel(
-          id: widget.quotationRequiredItemList![i].id, itemName: widget.quotationRequiredItemList![i].itemName,rate: widget.quotationRequiredItemList![i].rate.toString(),
-          quantity: widget.quotationRequiredItemList![i].itemQty.toString(),gst: widget.quotationRequiredItemList![i].gst.toString(),
+          id: widget.quotationRequiredItemList![i].id,
+          itemName: widget.quotationRequiredItemList![i].itemName,
+          rate: widget.quotationRequiredItemList![i].rate.toString(),
+          quantity: widget.quotationRequiredItemList![i].itemQty.toString(),
+          gst: widget.quotationRequiredItemList![i].gst.toString(),
           amount: widget.quotationRequiredItemList![i].amount.toString()));
       cartList!.add(CartListModel());
     }
   }
-
-
 
   @override
   void dispose() {
@@ -822,159 +887,169 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
               style: appBarheadingStyle,
             ),
           ),
-          body: BlocBuilder<QuotationReplyBloc, QuotationReplyState>(builder: (context, state) {
+          body: BlocBuilder<QuotationReplyBloc, QuotationReplyState>(
+              builder: (context, state) {
             return BlocListener<QuotationReplyBloc, QuotationReplyState>(
               listener: (context, state) {
-                if(state is MacineSendQuotationReplySuccess){
+                if (state is MacineSendQuotationReplySuccess) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BottomNavigation(
-                            index: 0,
-                            dropValue: Application.customerLogin!.role.toString(),
-                          )));
-                  showCustomSnackBar(context,state.message,isError: false);
+                                index: 0,
+                                dropValue:
+                                    Application.customerLogin!.role.toString(),
+                              )));
+                  showCustomSnackBar(context, state.message, isError: false);
                 }
-                if(state is MachineSendQuotationReplyFail){
+                if (state is MachineSendQuotationReplyFail) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BottomNavigation(
-                            index: 0,
-                            dropValue: Application.customerLogin!.role.toString(),
-                          )));
-                  showCustomSnackBar(context,state.msg.toString(),isError: false);
+                                index: 0,
+                                dropValue:
+                                    Application.customerLogin!.role.toString(),
+                              )));
+                  showCustomSnackBar(context, state.msg.toString(),
+                      isError: false);
                 }
               },
               child: isCompleted
                   ? AlertDialog(
-                title:
-                new Text("Are you sure, you want to send this quotation ?"),
-                // content: new Text(""),
-                actions: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          child: new Text(
-                            "No",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          style: TextButton.styleFrom(
-                              side: BorderSide(
-                                  color: ThemeColors.defaultbuttonColor,
-                                  width: 1.5))),
-                      SizedBox(
-                        width: 7,
-                      ),
-                      TextButton(
-                        child: new Text(
-                          "Yes",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          if(workingTimeController.text == ""){
-                            showCustomSnackBar(context,'Please add working time.',isError: true);
-                          }else {
-                            _quotationBloc!.add(MachineSendQuotationReply(
-                                serviceUserId: Application.customerLogin!.id
-                                    .toString(),
-                                workingTime: workingTimeController.text,
-                                dateOfJoining: DateTime.now().toString(),
-                                serviceCharge: serviceCallChargesController
-                                    .text,
-                                handlingCharge: handlingChargesController.text,
-                                transportCharge: transportChargesController
-                                    .text,
-                                itemList: itemList,
-                                itemNotAvailableList: itemNotAvailabeList,
-                                commission: '10',
-                                // machineEnquiryDate: widget.serviceRequestData!.createdAt.toString(),
-                                machineEnquiryDate: DateTime.parse(
-                                    widget.quotationRequiredItemList![0].dateAndTime
-                                        .toString()).toString(),
-                                machineEnquiryId: widget.quotationRequiredItemList![0].machineEnquiryId!
-                                    .toInt(),
-                                totalAmount: Application.revisedTotalAmount.toString(),
-                            ));
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                            backgroundColor: ThemeColors.defaultbuttonColor),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-                  : Stepper(
-                physics: ScrollPhysics(),
-                type: StepperType.horizontal,
-                currentStep: _currentStep,
-                steps: stepList(),
-                controlsBuilder:
-                    (BuildContext context, ControlsDetails controls) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        if (_currentStep != 0)
-                          StepperButton(
-                            onPressed: () async {
-                              if (_currentStep == 0) {
-                                return;
-                              }
-
-                              setState(() {
-                                _currentStep -= 1;
-                              });
-                            },
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                            text: 'Back',
-                            loading: loading,
-                          ),
-                        StepperButton(
-                          onPressed: () async {
-                            final isLastStep =
-                                _currentStep == stepList().length - 1;
-                            if(_currentStep == 0){
-                              if(workingTimeController.text == ""){
-                                showCustomSnackBar(context,'Please add working time.',isError: true);
-                              }
-                            }
-                            if (isLastStep) {
-                              setState(() {
-                                isCompleted = true;
-                              });
-                            } else {
-                              setState(() {
-                                _currentStep += 1;
-                              });
-                            }
-                          },
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(50))),
-                          text: 'Next',
-                          loading: loading,
+                      title: new Text(
+                          "Are you sure, you want to send this quotation ?"),
+                      // content: new Text(""),
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                                child: new Text(
+                                  "No",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: TextButton.styleFrom(
+                                    side: BorderSide(
+                                        color: ThemeColors.defaultbuttonColor,
+                                        width: 1.5))),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            TextButton(
+                              child: new Text(
+                                "Yes",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                if (workingTimeController.text == "") {
+                                  showCustomSnackBar(
+                                      context, 'Please add working time.',
+                                      isError: true);
+                                } else {
+                                  _quotationBloc!.add(MachineSendQuotationReply(
+                                    serviceUserId: Application.customerLogin!.id
+                                        .toString(),
+                                    workingTime: workingTimeController.text,
+                                    dateOfJoining: DateTime.now().toString(),
+                                    serviceCharge:
+                                        serviceCallChargesController.text,
+                                    handlingCharge:
+                                        handlingChargesController.text,
+                                    transportCharge:
+                                        transportChargesController.text,
+                                    itemList: itemList,
+                                    itemNotAvailableList: itemNotAvailabeList,
+                                    commission: '10',
+                                    // machineEnquiryDate: widget.serviceRequestData!.createdAt.toString(),
+                                    machineEnquiryDate: DateTime.parse(widget
+                                            .quotationRequiredItemList![0]
+                                            .dateAndTime
+                                            .toString())
+                                        .toString(),
+                                    machineEnquiryId: widget
+                                        .quotationRequiredItemList![0]
+                                        .machineEnquiryId!
+                                        .toInt(),
+                                    totalAmount: Application.revisedTotalAmount
+                                        .toString(),
+                                  ));
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      ThemeColors.defaultbuttonColor),
+                            ),
+                          ],
                         ),
                       ],
+                    )
+                  : Stepper(
+                      physics: ScrollPhysics(),
+                      type: StepperType.horizontal,
+                      currentStep: _currentStep,
+                      steps: stepList(),
+                      controlsBuilder:
+                          (BuildContext context, ControlsDetails controls) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              if (_currentStep != 0)
+                                StepperButton(
+                                  onPressed: () async {
+                                    if (_currentStep == 0) {
+                                      return;
+                                    }
+
+                                    setState(() {
+                                      _currentStep -= 1;
+                                    });
+                                  },
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50))),
+                                  text: 'Back',
+                                  loading: loading,
+                                ),
+                              StepperButton(
+                                onPressed: () async {
+                                  final isLastStep =
+                                      _currentStep == stepList().length - 1;
+                                  if (_currentStep == 0) {
+                                    if (workingTimeController.text == "") {
+                                      showCustomSnackBar(
+                                          context, 'Please add working time.',
+                                          isError: true);
+                                    }
+                                  }
+                                  if (isLastStep) {
+                                    setState(() {
+                                      isCompleted = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      _currentStep += 1;
+                                    });
+                                  }
+                                },
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50))),
+                                text: 'Next',
+                                loading: loading,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-
             );
-
-
-          })
-
-      ),
+          })),
     );
   }
 
@@ -985,19 +1060,98 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Working Time',style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 16,
-              fontWeight: FontWeight.w400
-          )),
-          SizedBox(height: 5,),
+          Text('Working Time',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
+
           ///Working Time Field
+          InkWell(
+            onTap: () {
+              _selectTime(context);
+            },
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: workingTimeController,
+                keyboardType: TextInputType.number,
+                enabled: false,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide:
+                        const BorderSide(color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'Working Time',
+                  contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    workingTimeValue = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
+              ),
+            ),
+          ),
+
+          Text('Service/Call Charges',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
+
+          ///Service/Call Charges Field
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: 60,
             child: TextFormField(
-              controller: workingTimeController,
+              controller: serviceCallChargesController,
               keyboardType: TextInputType.number,
               // maxLength: 10,
               cursorColor: primaryAppColor,
@@ -1035,77 +1189,8 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                     width: 1.0,
                   ),
                 ),
-                hintText: 'Working Time',
-                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
-                hintStyle: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500),
-              ),
-              onChanged: (val) {
-                setState(() {
-                  workingTimeValue = val;
-                  // _phoneNumberController.text = val;
-                });
-              },
-            ),
-          ),
-
-          Text('Service/Call Charges',style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 16,
-              fontWeight: FontWeight.w400
-          )),
-          SizedBox(height: 5,),
-
-          ///Service/Call Charges Field
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: 60,
-            child: TextFormField(
-              controller: serviceCallChargesController,
-              keyboardType: TextInputType.number,
-              // maxLength: 10,
-              cursorColor: primaryAppColor,
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 1.0,
-                  ),
-                ),
-                fillColor: Color(0xffF5F5F5),
-                filled: true,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                      color: Colors.white, width: 1.0),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: const BorderSide(
-                      color: Colors.white,
-                      width: 1.0,
-                    )),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: const BorderSide(
-                    color: Colors.white,
-                    width: 1.0,
-                  ),
-                ),
                 hintText: 'Service/Call Charges',
-                contentPadding:
-                const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                 hintStyle: GoogleFonts.poppins(
                     color: Colors.grey,
                     fontSize: 12.0,
@@ -1120,13 +1205,15 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
             ),
           ),
 
-          Text('Handling Charges',style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 16,
-              fontWeight: FontWeight.w400
-          )),
-          SizedBox(height: 5,),
+          Text('Handling Charges',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
 
           ///Handling Charges Field
           SizedBox(
@@ -1156,8 +1243,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 filled: true,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                      color: Colors.white, width: 1.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -1173,8 +1259,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                   ),
                 ),
                 hintText: 'Handling Charges',
-                contentPadding:
-                const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                 hintStyle: GoogleFonts.poppins(
                     color: Colors.grey,
                     fontSize: 12.0,
@@ -1189,13 +1274,15 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
             ),
           ),
 
-          Text('Transport Charges',style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 16,
-              fontWeight: FontWeight.w400
-          )),
-          SizedBox(height: 5,),
+          Text('Transport Charges',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
 
           ///Transport Charges Field
           SizedBox(
@@ -1225,8 +1312,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 filled: true,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                      color: Colors.white, width: 1.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -1242,8 +1328,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                   ),
                 ),
                 hintText: 'Transport Charges',
-                contentPadding:
-                const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                 hintStyle: GoogleFonts.poppins(
                     color: Colors.grey,
                     fontSize: 12.0,
@@ -1258,13 +1343,15 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
             ),
           ),
 
-          Text('GST',style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 16,
-              fontWeight: FontWeight.w400
-          )),
-          SizedBox(height: 5,),
+          Text('GST',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
 
           ///GST Field
           SizedBox(
@@ -1294,8 +1381,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                 filled: true,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                      color: Colors.white, width: 1.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -1311,8 +1397,7 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
                   ),
                 ),
                 hintText: 'GST',
-                contentPadding:
-                const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                 hintStyle: GoogleFonts.poppins(
                     color: Colors.grey,
                     fontSize: 12.0,
@@ -1329,16 +1414,8 @@ class _MachineRevisedQuotationScreenState extends State<MachineRevisedQuotationS
           SizedBox(
             height: 20,
           ),
-
         ],
       ),
     );
   }
-
-
 }
-
-
-
-
-

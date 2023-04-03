@@ -53,6 +53,11 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
     _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
     _quotationReplyBloc!.add(OnQuotationReplyJWEList(offSet: '0',userId: Application.customerLogin!.id.toString(),timeId: '0'));
 
+  getApi() {
+    _quotationReplyBloc!.add(OnQuotationReplyJWEList(
+        offSet: offset.toString(),
+        userId: Application.customerLogin!.id.toString(),
+        timeId: '0'));
   }
   @override
   void dispose() {
@@ -96,6 +101,16 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
   Widget buildQuotationsaReplyList(List<QuotationReplyJobWorkEnquiryModel> quotationReplyJobWorkEnquiryList) {
 
     return ListView.builder(
+      controller: _scrollController
+        ..addListener(() {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            offset++;
+            print("Offser : ${offset}");
+            BlocProvider.of<QuotationReplyBloc>(context).add(getApi());
+            // serviceList.addAll(serviceList);
+          }
+        }),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -105,7 +120,8 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>EnquiryQuotationsReplyDetailsScreen(quotationReplyJobWorkEnquiryList: quotationReplyJobWorkEnquiryList[index],)));
             },
-            child: quotationsaReplyCard(context,quotationReplyJobWorkEnquiryList[index]));
+            child: quotationsaReplyCard(
+                context, quotationReplyJobWorkEnquiryList[index]));
       },
       itemCount: quotationReplyJobWorkEnquiryList.length,
     );
