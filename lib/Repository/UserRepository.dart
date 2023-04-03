@@ -86,7 +86,6 @@ class UserRepository {
       'role': role,};
     return await Api.registration(params);
   }
-
   // Future<dynamic> fetchCategory({String? perPage, String? startFrom}) async {
   //   final params = {"per_page":perPage,
   //     "start_from":startFrom};
@@ -358,7 +357,7 @@ class UserRepository {
   //Fetch Product List
   Future<dynamic> fetchProductList({String? prodId,String? offset,String? brandId,String? priceId,String? catId}) async {
     final params = {"user_id":prodId,
-      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId};
+      "offset":offset,"brand_id":brandId,"ascending_descending_id":priceId,"category_id":catId};
     return await Api.getProductList(params);
   }
 

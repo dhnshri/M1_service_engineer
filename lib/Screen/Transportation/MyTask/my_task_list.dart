@@ -56,7 +56,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
     //saveDeviceTokenAndId();
     super.initState();
     _progressValue = 0.5;
-    _homeBloc = BlocProvider.of<HomeBloc>(context);
+   _homeBloc = BlocProvider.of<HomeBloc>(context);
     getApi();
   }
 
@@ -315,7 +315,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
           return BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
                 if(state is MyTaskTranspotationLoading){
-                  _isLoading = state.isLoading;
+                 // _isLoading = state.isLoading;
                 }
                 if(state is MyTaskTranspotationListSuccess){
                   // myTaskList = state.MyTaskList;
@@ -331,7 +331,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
               child: widget.isSwitched
                   ?  _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
               Container(
-                child: ListView(
+                child: Column(
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -428,8 +428,8 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                         child:
                         Container(
                           child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                          buildTransportationMyTaskList(searchResult):
-                          buildTransportationMyTaskList(myTaskList) : Padding(
+                          Expanded(child:buildTransportationMyTaskList(searchResult)):
+                          Expanded(child: buildTransportationMyTaskList(myTaskList)) : Padding(
                             padding: const EdgeInsets.only(top: 20.0),
                             child: const Center(child: Text("No Data"),),)
                         )),

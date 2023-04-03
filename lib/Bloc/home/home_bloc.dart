@@ -14,6 +14,15 @@ import 'package:service_engineer/Model/track_model.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 
+import '../../../Model/JobWorkEnquiry/my_task_detail_model.dart';
+import '../../../Model/JobWorkEnquiry/my_task_model.dart';
+import '../../../Model/JobWorkEnquiry/service_request_detail_model.dart';
+import '../../../Model/JobWorkEnquiry/task_hand_over_jwe_model.dart';
+import '../../../Model/MachineMaintance/myTaskModel.dart';
+import '../../../Model/MachineMaintance/task_hand_over_model.dart';
+import '../../../Model/Transpotation/MyTaskTransportDetailModel.dart';
+import '../../../Model/Transpotation/serviceRequestDetailModel.dart';
+import '../../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../Model/JobWorkEnquiry/daily_Task_Add_model.dart';
 import '../../Model/JobWorkEnquiry/my_task_detail_model.dart';
 import '../../Model/JobWorkEnquiry/my_task_model.dart';
@@ -27,9 +36,11 @@ import '../../Model/Transpotation/MyTaskTransportDetailModel.dart';
 import '../../Model/Transpotation/serviceRequestDetailModel.dart';
 import '../../Model/Transpotation/transport_task_hand_over_model.dart';
 import '../../Model/cart_list_repo.dart';
+import '../../Model/MachineMaintance/quotationReply.dart';
 import '../../Model/Transpotation/myTaskListModel.dart';
 import '../../Model/Transpotation/serviceRequestListModel.dart';
-
+import 'home_event.dart';
+import 'home_state.dart';
 
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -433,6 +444,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield ServiceRequestFail(msg: "Error Occured.");
       }
     }
+
 
     //Event for Task Hand Over Machine Maintaince
 
@@ -1529,8 +1541,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final JobWorkEnquiryServiceRequestRepo result = await userRepository!
           .fetchServiceRequestJobWorkEnquiryList(
-          offSet: event.offSet,
-          timeId: event.timePeriod
+        offSet: event.offSet,
+        timeId: event.timePeriod
       );
       print(result);
 
@@ -1606,8 +1618,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final ServiceRequestTranspotationRepo result = await userRepository!
           .fetchServiceRequestTranspotationList(
-          offSet: event.offSet,
-          timeId: event.timeId
+        offSet: event.offSet,
+        timeId: event.timeId
       );
       print(result);
 
@@ -1644,9 +1656,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ///Fetch API via repository
       final MyTaskTransportationRepo response = await userRepository!
           .fetchTranspotationMyTaskList(
-        userId: event.userid,
-        offset:event.offset,
-        timeId: event.timeId,
+          userId: event.userid,
+          offset:event.offset,
+          timeId: event.timeId,
       );
       print(response);
 
@@ -1717,7 +1729,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
 
-    // Event for Job Work Enquiry send quotation
+   // Event for Job Work Enquiry send quotation
     if (event is JobWorkSendQuotation) {
       ///Notify loading to UI
       yield JobWorkSendQuotationLoading(isLoading: false);

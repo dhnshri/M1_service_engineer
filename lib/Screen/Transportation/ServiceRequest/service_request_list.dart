@@ -111,7 +111,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
               ..add(getApi());
             // serviceList.addAll(serviceList);
           }
-        }),
+        }),          
       shrinkWrap: true,
       physics: ScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -224,7 +224,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
         return BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
               if(state is ServiceRequestTranspotationLoading){
-                _isLoading = state.isLoading;
+               // _isLoading = state.isLoading;
               }
               if(state is ServiceRequestTranspotationSuccess){
                 // serviceList = state.serviceListData;
@@ -246,9 +246,11 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                 showCustomSnackBar(context,state.msg.toString());
               }
             },
-            child: widget.isSwitched?_loadData ? serviceList!.length <= 0 ? Center(child: Text('No Data'),):
-            Container(
-              child: ListView(
+            child: widget.isSwitched
+                ? _loadData ? serviceList!.length <= 0
+                ? Center(child: Text('No Data'),)
+                : Container(
+              child: Column(
                 children: [
                   const SizedBox(height: 5,),
                   handOverServiceList!.length > 0 ?
@@ -383,8 +385,8 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                   ),
                   // _isLoading ?
                   flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
-                  buildTransportationList(context, searchResult):
-                  buildTransportationList(context, serviceList!)
+                  Expanded(child: buildTransportationList(context, searchResult)):
+                  Expanded(child:buildTransportationList(context, serviceList!))
                       : Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: const Center(child: Text("No Data"),),
