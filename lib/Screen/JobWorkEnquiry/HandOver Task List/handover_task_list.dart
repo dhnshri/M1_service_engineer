@@ -18,6 +18,7 @@ import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Bloc/home/home_state.dart';
+import '../../../Config/font.dart';
 
 class JobWorkHandOverTaskList extends StatefulWidget {
   JobWorkHandOverTaskList({
@@ -173,10 +174,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               children: [
                                 Text(
                                   "Enquiry ID:",
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
+                                  style: ExpanstionLeftDataStyle,
                                 ),
                                 // SizedBox(
                                 //   // width: MediaQuery.of(context).size.width/,
@@ -236,10 +234,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               children: [
                                 Text(
                                   "Date & Time:",
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
+                                  style: ExpanstionLeftDataStyle,
                                 ),
                                 // SizedBox(
                                 //   width: MediaQuery.of(context).size.width/6.3,

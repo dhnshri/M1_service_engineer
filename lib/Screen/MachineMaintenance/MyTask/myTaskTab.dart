@@ -233,12 +233,13 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
+                          // style: TextStyle(
+                          //     fontFamily: 'Poppins',
+                          //     fontSize: 12,
+                          //     fontWeight: FontWeight.bold
+                      style: ExpanstionLeftDataStyle,
                           ),
-                        ),
+
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
                         // ),
@@ -265,11 +266,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                       children: [
                         Text(
                           "Task Status:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/11,

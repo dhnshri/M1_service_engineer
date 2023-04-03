@@ -426,11 +426,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
                             children: [
                               Text(
                                 "Enquiry ID:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
@@ -456,11 +452,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
                             children: [
                               Text(
                                 "Working Timing:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -486,11 +478,7 @@ class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTra
                             children: [
                               Text(
                                 "Date & Time:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,

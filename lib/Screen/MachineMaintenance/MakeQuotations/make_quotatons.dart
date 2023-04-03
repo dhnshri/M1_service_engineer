@@ -468,8 +468,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                         highlightColor: Theme.of(context).highlightColor,
                         enabled: true,
                         child: Container(
-                          height: 80,
-                          width: 80,
+                          height: 90,
+                          width: 70,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
@@ -479,8 +479,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     },
                     imageBuilder: (context, imageProvider) {
                       return Container(
-                        height: 80,
-                        width: 80,
+                        height: 90,
+                        width: 70,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
@@ -529,7 +529,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           child: Container(
                             height: 40,
                             // width: 110,
-                            width: MediaQuery.of(context).size.width * 0.266,
+                            width: MediaQuery.of(context).size.width * 0.5,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.black),
                               borderRadius:
@@ -569,7 +569,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                       )
                                     : Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 20.0),
+                                            const EdgeInsets.only(left: 10.0),
                                         child: const Text('Add',
                                             style: TextStyle(
                                                 color: Colors.black,

@@ -233,31 +233,31 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Price:",
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 12,
-                                            // fontWeight: FontWeight.bold
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        SizedBox(width: 4,),
-                                        Text(
-                                          "₹ ${orderDetail[index].rate.toString()}",
-                                          style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(height: 5,),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text(
+                                    //       "Price:",
+                                    //       style: TextStyle(
+                                    //         fontFamily: 'Poppins',
+                                    //         fontSize: 12,
+                                    //         // fontWeight: FontWeight.bold
+                                    //       ),
+                                    //       overflow: TextOverflow.ellipsis,
+                                    //     ),
+                                    //     SizedBox(width: 4,),
+                                    //     Text(
+                                    //       "₹ ${orderDetail[index].rate.toString()}",
+                                    //       style: TextStyle(
+                                    //           fontFamily: 'Poppins',
+                                    //           fontSize: 12,
+                                    //           fontWeight: FontWeight.bold
+                                    //       ),
+                                    //       overflow: TextOverflow.ellipsis,
+                                    //     )
+                                    //   ],
+                                    // ),
+                                    // SizedBox(height: 5,),
 
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -383,204 +383,204 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
                         ],
                       ) :Container(),
 
-                      ///Invoice
-                      ExpansionTileCard(
-                        key: invoice,
-                        initiallyExpanded: true,
-                        title: Text("Invoice",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Poppins',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                            )),
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-
-                              children: [
-                                DataTable(
-                                  headingRowHeight: 40,
-                                  headingRowColor: MaterialStateColor.resolveWith(
-                                          (states) => Color(0xffE47273)),
-                                  columnSpacing: 15.0,
-                                  columns:const [
-                                    DataColumn(
-                                      label: Expanded(child: Text('S no')),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Item Name'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('QTY'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Rate'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('Amount'),
-                                    ),
-                                  ],
-                                  rows: List.generate(orderDetail.length, (index) {
-                                    int itemNo = index+1;
-                                    itemRequiredTotal = orderDetail
-                                        .map((item) => double.parse(item.amount.toString()))
-                                        .reduce((value, current) => value + current);
-                                    WidgetsBinding.instance.addPostFrameCallback((_){
-
-                                      TotalAmount();
-                                    });
-
-                                    return _getItemRequiredDataRow(orderDetail[index],itemNo);
-                                  }),),
-                              ],
-                            ),
-
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0xffFFE4E5),
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0, right: 40.0, bottom: 8.0),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Total",
-                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "₹ $itemRequiredTotal",
-                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-
-                      ///Quotation
-                      ExpansionTileCard(
-                        key: cardQuotations,
-                        initiallyExpanded: true,
-                        // finalPadding: const EdgeInsets.only(bottom: 0.0),
-                        title: Text("Quotation",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Poppins',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500
-                            )),
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0,left: 10.0, bottom: 8.0),
-                            child: Column(
-                              children: [
-                                Divider(thickness: 1,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total Items charges"),
-                                    Text("₹ ${itemRequiredTotal + itemOthersTotal}"),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Service charge"),
-                                    Text("₹ ${orderDetail[0].serviceCharge}"),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Transport charges"),
-                                    Text("₹ ${orderDetail[0].transportCharge}"),
-                                  ],
-                                ),
-
-                                SizedBox(height: 10,),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Handling charges"),
-                                    Text("₹ ${orderDetail[0].handlingCharge}"),
-                                  ],
-                                ),
-
-                                SizedBox(height: 10,),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Professional Charges"),
-                                    Text("₹ ${orderDetail[0].commission}"),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("GST "),
-                                    Text("₹ ${orderDetail[0].gst}"),
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Amount",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'Poppins',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500
-                                        )),
-                                    Text("₹ $grandTotal",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'Poppins',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-
-
-                        ],
-                      ),
+                      // ///Invoice
+                      // ExpansionTileCard(
+                      //   key: invoice,
+                      //   initiallyExpanded: true,
+                      //   title: Text("Invoice",
+                      //       style: TextStyle(
+                      //           color: Colors.black,
+                      //           fontFamily: 'Poppins',
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.w500
+                      //       )),
+                      //   children: <Widget>[
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.stretch,
+                      //
+                      //         children: [
+                      //           DataTable(
+                      //             headingRowHeight: 40,
+                      //             headingRowColor: MaterialStateColor.resolveWith(
+                      //                     (states) => Color(0xffE47273)),
+                      //             columnSpacing: 15.0,
+                      //             columns:const [
+                      //               DataColumn(
+                      //                 label: Expanded(child: Text('S no')),
+                      //               ),
+                      //               DataColumn(
+                      //                 label: Text('Item Name'),
+                      //               ),
+                      //               DataColumn(
+                      //                 label: Text('QTY'),
+                      //               ),
+                      //               DataColumn(
+                      //                 label: Text('Rate'),
+                      //               ),
+                      //               DataColumn(
+                      //                 label: Text('Amount'),
+                      //               ),
+                      //             ],
+                      //             rows: List.generate(orderDetail.length, (index) {
+                      //               int itemNo = index+1;
+                      //               itemRequiredTotal = orderDetail
+                      //                   .map((item) => double.parse(item.amount.toString()))
+                      //                   .reduce((value, current) => value + current);
+                      //               WidgetsBinding.instance.addPostFrameCallback((_){
+                      //
+                      //                 TotalAmount();
+                      //               });
+                      //
+                      //               return _getItemRequiredDataRow(orderDetail[index],itemNo);
+                      //             }),),
+                      //         ],
+                      //       ),
+                      //
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10),
+                      //       child: Container(
+                      //         decoration: const BoxDecoration(
+                      //           color: Color(0xffFFE4E5),
+                      //           border: Border(
+                      //             top: BorderSide(
+                      //               color: Colors.black,
+                      //               width: 1.0,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         child: Row(
+                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //           children: [
+                      //             SizedBox(),
+                      //             Padding(
+                      //               padding: const EdgeInsets.only(
+                      //                   top: 8.0, right: 40.0, bottom: 8.0),
+                      //               child: Row(
+                      //                 children: [
+                      //                   Text(
+                      //                     "Total",
+                      //                     style: TextStyle(fontWeight: FontWeight.bold),
+                      //                   ),
+                      //                   SizedBox(
+                      //                     width: 15,
+                      //                   ),
+                      //                   Text(
+                      //                     "₹ $itemRequiredTotal",
+                      //                     style: TextStyle(fontWeight: FontWeight.bold),
+                      //                   )
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //
+                      //   ],
+                      // ),
+                      //
+                      // ///Quotation
+                      // ExpansionTileCard(
+                      //   key: cardQuotations,
+                      //   initiallyExpanded: true,
+                      //   // finalPadding: const EdgeInsets.only(bottom: 0.0),
+                      //   title: Text("Quotation",
+                      //       style: TextStyle(
+                      //           color: Colors.black,
+                      //           fontFamily: 'Poppins',
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.w500
+                      //       )),
+                      //   children: <Widget>[
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(right: 10.0,left: 10.0, bottom: 8.0),
+                      //       child: Column(
+                      //         children: [
+                      //           Divider(thickness: 1,),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("Total Items charges"),
+                      //               Text("₹ ${itemRequiredTotal + itemOthersTotal}"),
+                      //             ],
+                      //           ),
+                      //           SizedBox(height: 10,),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("Service charge"),
+                      //               Text("₹ ${orderDetail[0].serviceCharge}"),
+                      //             ],
+                      //           ),
+                      //           SizedBox(height: 10,),
+                      //
+                      //
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("Transport charges"),
+                      //               Text("₹ ${orderDetail[0].transportCharge}"),
+                      //             ],
+                      //           ),
+                      //
+                      //           SizedBox(height: 10,),
+                      //
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("Handling charges"),
+                      //               Text("₹ ${orderDetail[0].handlingCharge}"),
+                      //             ],
+                      //           ),
+                      //
+                      //           SizedBox(height: 10,),
+                      //
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("Professional Charges"),
+                      //               Text("₹ ${orderDetail[0].commission}"),
+                      //             ],
+                      //           ),
+                      //           SizedBox(height: 10,),
+                      //
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("GST "),
+                      //               Text("₹ ${orderDetail[0].gst}"),
+                      //             ],
+                      //           ),
+                      //           Divider(),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text("Amount",
+                      //                   style: TextStyle(
+                      //                       color: Colors.black,
+                      //                       fontFamily: 'Poppins',
+                      //                       fontSize: 16,
+                      //                       fontWeight: FontWeight.w500
+                      //                   )),
+                      //               Text("₹ $grandTotal",
+                      //                   style: TextStyle(
+                      //                       color: Colors.black,
+                      //                       fontFamily: 'Poppins',
+                      //                       fontSize: 16,
+                      //                       fontWeight: FontWeight.w500
+                      //                   )),
+                      //             ],
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     )
+                      //
+                      //
+                      //   ],
+                      // ),
 
                       ///Terms And Conditions
                       ExpansionTileCard(

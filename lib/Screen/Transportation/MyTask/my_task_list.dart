@@ -194,7 +194,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Enquiry ID:",style: serviceRequestSubHeadingStyle,),
+                  Text("Enquiry ID:",style:ExpanstionLeftDataStyle,),
                   Text(myTaskData.enquiryId.toString(),style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
                 ],
               ),
@@ -245,11 +245,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
@@ -273,11 +269,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                       children: [
                         Text(
                           "Date and Time:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                           overflow: TextOverflow.ellipsis,
 
                         ),

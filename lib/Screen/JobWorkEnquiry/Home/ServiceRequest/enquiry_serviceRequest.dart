@@ -13,6 +13,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../Bloc/home/home_bloc.dart';
 import '../../../../Bloc/home/home_event.dart';
 import '../../../../Bloc/home/home_state.dart';
+import '../../../../Config/font.dart';
 import '../../../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../../../Utils/application.dart';
 import '../../../../Widget/custom_snackbar.dart';
@@ -161,11 +162,8 @@ class _EnquiryServiceRequestScreenState
                       children: [
                         Text(
                           "Item name:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                  style: ExpanstionLeftDataStyle,
+
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
@@ -190,11 +188,8 @@ class _EnquiryServiceRequestScreenState
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                      style: ExpanstionLeftDataStyle,
+
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
@@ -219,11 +214,7 @@ class _EnquiryServiceRequestScreenState
                       children: [
                         Text(
                           "Date & Time:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                           overflow: TextOverflow.ellipsis,
 
                         ),

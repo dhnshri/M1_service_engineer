@@ -344,14 +344,6 @@ class _TransportationMyTaskDetailsScreenState extends State<TransportationMyTask
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Company Name:",style: ExpanstionTileLeftDataStyle,),
-                                Text("",style: ExpanstionTileRightDataStyle,),
-                              ],
-                            ),
-                            SizedBox(height: 5,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
                                 Text("Email ID:",style: ExpanstionTileLeftDataStyle,),
                                 Text(myTaskData![0].email.toString(),style: ExpanstionTileRightDataStyle,),
                               ],

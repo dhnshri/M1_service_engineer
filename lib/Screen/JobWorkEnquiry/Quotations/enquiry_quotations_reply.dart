@@ -137,11 +137,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
@@ -166,11 +162,7 @@ class _EnquiryQuotationsReplyScreenState extends State<EnquiryQuotationsReplyScr
                       children: [
                         Text(
                           "Date and Time:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/5.3,
