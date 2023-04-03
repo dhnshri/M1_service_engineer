@@ -206,13 +206,14 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
 
   DataRow _buildItemRequiredList(
       ItemNotAvailableModel? itemNotAvailabeList, index) {
+    int itemIndex = index+1;
     return DataRow(
       color: MaterialStateColor.resolveWith((states) {
         return Color(0xffFFE4E5); //make tha magic!
       }),
       cells: <DataCell>[
-        DataCell(Text(itemNotAvailabeList!.id.toString())),
-        DataCell(Text(itemNotAvailabeList.itemName.toString())),
+        DataCell(Text(itemIndex.toString())),
+        DataCell(Text(itemNotAvailabeList!.itemName.toString())),
         DataCell(Text(itemNotAvailabeList.quantity.toString())),
         DataCell(Text('₹${itemNotAvailabeList.rate.toString()}')),
         // DataCell(Text('₹${amount.toString()}')),
@@ -1142,6 +1143,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                 if (workingTimeController.text == "") {
                                   showCustomSnackBar(
                                       context, 'Please add working time.',
+                                      isError: true);
+                                } else if (itemNotAvailabeList==null) {
+                                  showCustomSnackBar(
+                                      context, 'Please add items.',
                                       isError: true);
                                 } else {
                                   _homeBloc!.add(SendQuotation(

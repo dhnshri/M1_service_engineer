@@ -292,6 +292,9 @@ class _RevisedQuotationPreviewScreenState extends State<RevisedQuotationPreviewS
                         .map((item) =>
                         double.parse(otherItemsAmountWithGST.toString()))
                         .reduce((value, current) => value + current);
+                    WidgetsBinding.instance.addPostFrameCallback((_){
+                      TotalAmount();
+                    });
                     return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index],index);
                   }),),
               ],

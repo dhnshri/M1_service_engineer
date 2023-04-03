@@ -83,6 +83,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
         double.parse(widget.transportChargesController.text) + double.parse(widget.handlingChargesController.text) +
         double.parse(widget.gstChargesController.text) + widget.commission;
     AppBloc.authBloc.add(OnSaveMaintainenceTotalAmount(totalAmount));
+    setState(() {
+
+    });
   }
 
   @override
@@ -184,6 +187,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           WidgetsBinding.instance.addPostFrameCallback((_){
                             if(widget.gstChargesController.text!=""){
                               TotalAmount();
+
                             }
                           });
 
@@ -285,6 +289,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                 .map((item) =>
                                 double.parse(otherItemsAmountWithGST.toString()))
                                 .reduce((value, current) => value + current);
+                            if(widget.gstChargesController.text!=""){
+                              TotalAmount();
+
+                            }
                             return _getOtherItemRequiredDataRow(widget.itemNotAvailableList[index],itemIndex);
                           }),),
                     ],
