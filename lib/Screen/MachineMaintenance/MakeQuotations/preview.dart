@@ -338,6 +338,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "(+gst)",
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
                                 width: 15,
                               ),
                               Text(
