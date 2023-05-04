@@ -115,7 +115,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
               child: AppButton(
                 onPressed: () async {
                   serviceRequestData!.isEmpty ? null:
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => MakeQuotationScreen (serviceRequestData: serviceRequestData![0],)));
                   },
                 shape: const RoundedRectangleBorder(
@@ -496,7 +496,7 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
                           ),
                           InkWell(
                             onTap: () async {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                   ImageViewerScreen(url: serviceRequestData![0].machineProblemImg![index])));
                             },
                             child: Container(

@@ -911,7 +911,7 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                                 showCustomSnackBar(context,'Please add IGST.',isError: true);
                               }
                               else if(itemList!.length == widget.requestDetailList!.length){
-                                Navigator.push(context, MaterialPageRoute(builder: (contex)=>
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (contex)=>
                                     EnquiryQuotationsPreviewScreen(requestDetailList: widget.requestDetailList,itemRateController: itemRateController,
                                       cgstController: cgstController,igstController: igstController,packingController: packingController,
                                       sgstController: sgstController,testingChargesController: testingChargesController,transportController: transportController,

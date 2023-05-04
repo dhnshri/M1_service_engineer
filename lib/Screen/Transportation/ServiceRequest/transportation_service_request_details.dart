@@ -117,7 +117,7 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
             Flexible(
               child: AppButton(
                 onPressed: () async {
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) =>
                           MakeQuotationTransposationScreen(serviceRequestData:serviceRequestData![0])));
                 },

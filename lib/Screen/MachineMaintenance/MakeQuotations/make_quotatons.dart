@@ -1096,7 +1096,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   // _cartLoading = state.isLoading;
                 }
                 if (state is SendQuotationSuccess) {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BottomNavigation(

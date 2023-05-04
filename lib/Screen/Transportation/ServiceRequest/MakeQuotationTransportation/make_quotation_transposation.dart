@@ -101,7 +101,7 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
               showCustomSnackBar(context,'Please add GST Charges.',isError: true);
             }else
             {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (contex) => QuotationFor(

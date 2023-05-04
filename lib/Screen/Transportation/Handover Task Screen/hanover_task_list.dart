@@ -125,7 +125,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => TransportHandOverTaskDetailScreen(handoverTaskData: serviceList[index],)));
             },
             child: Container(
@@ -387,7 +387,7 @@ class _TransportHandOverTaskListState extends State<TransportHandOverTaskList> {
                             ),
                             InkWell(
                               onTap: () async {
-                                var filterResult = await Navigator.push(
+                                var filterResult = await Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>

@@ -123,7 +123,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => MyTaskDetailsScreen(myTaskData: myTaskList[index],)));
             },
             child: myTaskCard(context,myTaskList[index]));
@@ -418,7 +418,7 @@ class _MyTaskScreenState extends State<MyTaskScreen> {
                           ),
                           InkWell(
                             onTap: ()async {
-                              var filterResult = await Navigator.push(context,
+                              var filterResult = await Navigator.pushReplacement(context,
                                   MaterialPageRoute(builder: (context) =>
                                       MyTaskFilterScreen()));
 

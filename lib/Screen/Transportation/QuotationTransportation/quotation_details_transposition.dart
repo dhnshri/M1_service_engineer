@@ -173,7 +173,7 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                 isRevisedLoading = state.isLoading;
               }
               if(state is QuotationRevisedSuccess){
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => ReviceQuotationTransposationScreen( serviceRequestData:widget.quotationReplyList!,quotationChargesList:quotationChargesList,
                     quotationDetailList:quotationDetailList,quotationMsgList:quotationMsgList,vehicleList:vehicleList,)));
               }

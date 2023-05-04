@@ -120,7 +120,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
               child: AppButton(
                 onPressed: () async {
                   serviceRequestDetailData!.isEmpty ? null:
-                  Navigator.push(context,
+                  Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => EnquiryMakeQuotationScreen (requestDetailList: serviceRequestDetailData,)));
                 },
                 shape: const RoundedRectangleBorder(
@@ -286,7 +286,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
                                           ),
                                           InkWell(
                                             onTap: () async {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                                   ImageViewerScreen(url: serviceRequestDetailData![index].drawingAttachment.toString())));
                                             },
                                             child: Container(

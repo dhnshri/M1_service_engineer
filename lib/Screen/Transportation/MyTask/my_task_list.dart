@@ -121,7 +121,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
       itemBuilder: (context, index) {
         return  InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => TransportationMyTaskDetailsScreen(myTaskData:myTaskList[index])));
             },
 
@@ -394,7 +394,7 @@ class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen>
                             ),
                             InkWell(
                               onTap: () async {
-                               var filterResult = await Navigator.push(context,
+                               var filterResult = await Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) =>
                                         MyTaskTransportationFilterScreen()));
                                if(filterResult != null){

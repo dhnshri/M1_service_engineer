@@ -133,7 +133,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => JobWorkHandOverTaskDetailScreen(handoverTaskData: serviceList[index],)));
             },
             child: Container(
@@ -392,7 +392,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                       ),
                                       InkWell(
                                         onTap: () async {
-                                          var filterResult = await Navigator.push(
+                                          var filterResult = await Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>

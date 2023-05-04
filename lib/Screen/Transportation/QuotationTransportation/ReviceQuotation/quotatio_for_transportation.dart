@@ -125,7 +125,7 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
             }else if(_gstChargesController.text==""){
               showCustomSnackBar(context,'Please add GST Charges.',isError: true);
             }else {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (contex) => NextQuotationFor(

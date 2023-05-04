@@ -286,7 +286,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                     List<Location> locations = await locationFromAddress(myTaskData![index].cityName.toString());
                                     print(locations);
                                     if(locations!=null) {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -346,7 +346,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                           ),
                                           InkWell(
                                             onTap: () async {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                                   ImageViewerScreen(url: myTaskData![index].drawingAttachment.toString())));
                                             },
                                             child: Container(
@@ -418,7 +418,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                 elevation: 5,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context,
+                                    Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
                                           myTaskJobWorkEnquiryData: widget.handoverTaskData,fromHandOver: false,)));
                                   },

@@ -312,7 +312,7 @@ class QuotationForState extends State<QuotationFor> {
                             return BlocListener<HomeBloc, HomeState>(
                               listener: (context, state) {
                                 if(state is TranspotationSendQuotationSuccess){
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => BottomNavigation(

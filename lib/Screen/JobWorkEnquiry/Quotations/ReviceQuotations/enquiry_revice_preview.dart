@@ -447,7 +447,7 @@ class _EnquiryReviseQuotationPreviewScreenState
                                             listener: (context, state) {
                                               if (state
                                                   is JobWorkSendRevisedQuotationSuccess) {
-                                                Navigator.push(
+                                                Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>

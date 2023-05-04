@@ -139,7 +139,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ServiceRequestDetailsScreen(
@@ -415,7 +415,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                                 ),
                                                 InkWell(
                                                   onTap: () async {
-                                                    Navigator.push(
+                                                    Navigator.pushReplacement(
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
@@ -522,7 +522,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            var filterResult = await Navigator.push(
+                                            var filterResult = await Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>

@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // add your code here.
 
                 Timer.periodic(const Duration(seconds: 10), (timer) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: state.userModel.role.toString(),)));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> BottomNavigation(index: 0,dropValue: state.userModel.role.toString(),)));
                   showCustomSnackBar(context,'Login Successfully',isError: false);
                   timer.cancel();
                 });
@@ -342,7 +342,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 14),
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).push(
+                                    Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(builder: (context) => RegistrationScreen(dropValue:dropdownValue ,)));
                                   })
                             ],

@@ -175,7 +175,7 @@ class _MachineRevisedQuotationScreenState
                                 enabled: true,
                                 child: Container(
                                   height: 80,
-                                  width: 80,
+                                  width: 70,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(8),
@@ -186,7 +186,7 @@ class _MachineRevisedQuotationScreenState
                             imageBuilder: (context, imageProvider) {
                               return Container(
                                 height: 80,
-                                width: 80,
+                                width: 70,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: imageProvider,
@@ -892,14 +892,15 @@ class _MachineRevisedQuotationScreenState
             return BlocListener<QuotationReplyBloc, QuotationReplyState>(
               listener: (context, state) {
                 if (state is MacineSendQuotationReplySuccess) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomNavigation(
-                                index: 0,
-                                dropValue:
-                                    Application.customerLogin!.role.toString(),
-                              )));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigation(index: 0,dropValue: Application.customerLogin!.role.toString(),)));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => BottomNavigation(
+                  //               index: 0,
+                  //               dropValue:
+                  //                   Application.customerLogin!.role.toString(),
+                  //             )));
                   showCustomSnackBar(context, state.message, isError: false);
                 }
                 if (state is MachineSendQuotationReplyFail) {

@@ -175,6 +175,7 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
         "items_not_available": jsonEncode(itemNotAvalList),
         "commission": event.commission,
         "machine_enquiry_date": event.machineEnquiryDate,
+        "total_amount":event.totalAmount,
         // 'machine_enquiry_id': event.machineEnquiryId,
       };
 

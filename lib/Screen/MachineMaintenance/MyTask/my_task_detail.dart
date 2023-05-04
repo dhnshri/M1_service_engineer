@@ -123,7 +123,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                   Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>chatListing()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>chatListing()));
               },
             ),
             SizedBox(width: 8,),
@@ -248,7 +248,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                               List<Location> locations = await locationFromAddress(myTaskData![0].location.toString());
                               print(locations);
                               if(locations!=null) {
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
@@ -577,7 +577,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                                 ImageViewerScreen(url: myTaskData![0].machineProblemImg![index])));
                                           },
                                           child: Container(
@@ -669,7 +669,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
                               elevation: 5,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context,
+                                  Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
                                       myTaskData: widget.myTaskData,)));
                                 },
@@ -729,7 +729,7 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
 
                           ),
                           onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen(myTaskData: widget.myTaskData,)));
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AddTaskScreen(myTaskData: widget.myTaskData,)));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

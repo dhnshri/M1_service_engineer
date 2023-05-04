@@ -106,9 +106,15 @@ class _EnquiryMyTaskDetailsScreenState extends State<EnquiryMyTaskDetailsScreen>
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+            //  Navigator.of(context).pop();
+             // Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BottomNavigation(
+                        index: 0,
+                        dropValue: Application.customerLogin!.role.toString(),
+                      )));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text(widget.myTaskJobWorkEnquiryData.enquiryId.toString(),),

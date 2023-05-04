@@ -1762,6 +1762,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         "igst": event.igst,
         "commission": event.commission,
         "itemslist": jsonEncode(itemList),
+        "total_amount":event.totalAmount,
         // 'machine_enquiry_id': event.machineEnquiryId,
       };
 

@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,10 +8,8 @@ import 'package:service_engineer/Bloc/profile/profile_state.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 import 'package:mime/mime.dart';
 import '../../Model/profile_model.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../Model/profile_repo.dart';

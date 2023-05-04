@@ -903,7 +903,7 @@ class _EnquiryReviseQuotationScreenState extends State<EnquiryReviseQuotationScr
                                 showCustomSnackBar(context,'Please add new volume for all.',isError: true);
                               }
                               else if(itemList!.length == widget.quotationRequiredItemList!.length){
-                                Navigator.push(context, MaterialPageRoute(builder: (contex)=>
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (contex)=>
                                     EnquiryReviseQuotationPreviewScreen(requestDetailList: widget.quotationRequiredItemList,itemRateController: itemRateController,
                                       cgstController: cgstController,igstController: igstController,packingController: packingController,
                                       sgstController: sgstController,testingChargesController: testingChargesController,transportController: transportController,

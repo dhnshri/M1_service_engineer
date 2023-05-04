@@ -81,7 +81,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => TransportServiceProviderProfileScreen(handOverListData: handOverList[index],myTaskData: widget.myTaskData,)));
             },
             child: TaskHandOverCard(context,handOverList[index]));
@@ -522,7 +522,7 @@ class _TransportServiceProviderListScreenState extends State<TransportServicePro
                   Icons.messenger,color: ThemeColors.whiteTextColor,size: 30,
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>chatListing()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>chatListing()));
                 },
               ),
               SizedBox(width: 8,),

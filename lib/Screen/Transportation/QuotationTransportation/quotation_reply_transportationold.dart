@@ -22,25 +22,26 @@ import '../../../Widget/custom_snackbar.dart';
 import '../../../Widget/function_button.dart';
 import '../../bottom_navbar.dart';
 
+
+
 class QuotationsReplyTransportationScreen extends StatefulWidget {
   const QuotationsReplyTransportationScreen({Key? key}) : super(key: key);
 
   @override
-  _QuotationsReplyTransportationScreenState createState() =>
-      _QuotationsReplyTransportationScreenState();
+  _QuotationsReplyTransportationScreenState createState() => _QuotationsReplyTransportationScreenState();
 }
 
-class _QuotationsReplyTransportationScreenState
-    extends State<QuotationsReplyTransportationScreen> {
+class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTransportationScreen> {
+
   final _formKey = GlobalKey<FormState>();
   bool loading = true;
   QuotationReplyBloc? _quotationReplyBloc;
-  List<QuotationReplyTransportModel> quotationReplyList = [];
+  List<QuotationReplyTransportModel> quotationReplyList=[];
   ScrollController _scrollController = ScrollController();
   int offset = 0;
 
   bool _isLoading = false;
-  bool _loadData = false;
+  bool _loadData= false;
   double? _progressValue;
 
   @override
@@ -48,14 +49,14 @@ class _QuotationsReplyTransportationScreenState
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
+   _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
     getApi();
-    // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
+   // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
+
   }
 
-  getApi() {
-    _quotationReplyBloc!.add(
-        OnQuotationReplyTranspotationList(service_user_id: '12', offSet: '0'));
+  getApi(){
+    _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '12',offSet: '0'));
     // _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
 
@@ -66,16 +67,17 @@ class _QuotationsReplyTransportationScreenState
     // getroleofstudent();
   }
 
-  Widget buildQuotationsaReplyList(
-      List<QuotationReplyTransportModel> quotationReplyList) {
+  Widget buildQuotationsaReplyList(List<QuotationReplyTransportModel> quotationReplyList ) {
     return ListView.builder(
       controller: _scrollController
         ..addListener(() {
-          if (_scrollController.position.pixels ==
+          if (_scrollController.position.pixels  ==
               _scrollController.position.maxScrollExtent) {
             offset++;
             print("Offser : ${offset}");
-            BlocProvider.of<QuotationReplyBloc>(context).add(getApi());
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
             // serviceList.addAll(serviceList);
           }
         }),
@@ -86,13 +88,9 @@ class _QuotationsReplyTransportationScreenState
       itemBuilder: (context, index) {
         //return  quotationsReplyCardNew(quotationReplyList[index]);
         return InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => QuotationForTransportation(
-                            quotationReplyList: quotationReplyList[index],
-                          )));
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => QuotationForTransportation(quotationReplyList: quotationReplyList[index],)));
             },
             child: quotationsReplyCardNew(quotationReplyList[index]));
       },
@@ -100,10 +98,9 @@ class _QuotationsReplyTransportationScreenState
     );
   }
 
-  Widget quotationsReplyCardNew(
-      QuotationReplyTransportModel quotationReplyData) {
+  Widget quotationsReplyCardNew(QuotationReplyTransportModel quotationReplyData) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width ,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0.0),
@@ -120,9 +117,7 @@ class _QuotationsReplyTransportationScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 4,
-                    ),
+                    SizedBox(height: 4,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -131,7 +126,8 @@ class _QuotationsReplyTransportationScreenState
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
@@ -149,9 +145,7 @@ class _QuotationsReplyTransportationScreenState
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 3,
-                    ),
+                    SizedBox(height: 3,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -160,18 +154,17 @@ class _QuotationsReplyTransportationScreenState
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold
+                          ),
                           overflow: TextOverflow.ellipsis,
+
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/12.5,
                         // ),
                         Container(
                           child: Text(
-                            DateFormat('MM-dd-yyyy h:mm a')
-                                .format(DateTime.parse(
-                                    quotationReplyData.dateAndTime.toString()))
-                                .toString(),
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(quotationReplyData.dateAndTime.toString())).toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
@@ -192,9 +185,10 @@ class _QuotationsReplyTransportationScreenState
     );
   }
 
-  Widget quotationsaReplyCard(QuotationReplyTransportModel quotationReplyData) {
+  Widget quotationsaReplyCard(QuotationReplyTransportModel quotationReplyData)
+  {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom:8.0),
       child: Card(
         elevation: 1,
         child: ListTile(
@@ -250,40 +244,24 @@ class _QuotationsReplyTransportationScreenState
           ),
           title: Column(
             children: [
-              Text(
-                "Title/Services Name or Any Other Name...",
-                style: serviceRequestHeadingStyle,
-              ),
+              Text("Title/Services Name or Any Other Name...",style: serviceRequestHeadingStyle,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Enquiry ID:",
-                    style: serviceRequestSubHeadingStyle,
-                  ),
-                  Text(
-                    "#102GRDSA36987",
-                    style: serviceRequestSubHeadingStyle.copyWith(
-                        fontWeight: FontWeight.normal),
-                  )
+                  Text("Enquiry ID:",style: serviceRequestSubHeadingStyle,),
+                  Text("#102GRDSA36987",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Timings:",
-                    style: serviceRequestSubHeadingStyle,
-                  ),
-                  Text(
-                    "10AM - 6PM",
-                    style: serviceRequestSubHeadingStyle.copyWith(
-                        fontWeight: FontWeight.normal),
-                  )
+                  Text("Timings:",style: serviceRequestSubHeadingStyle,),
+                  Text("10AM - 6PM",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
                 ],
               ),
             ],
           ),
+
         ),
       ),
     );
@@ -293,67 +271,59 @@ class _QuotationsReplyTransportationScreenState
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
-                },
-                child: Icon(Icons.arrow_back_ios)),
-            title: Text(
-              'Quotation Reply',
-            ),
-          ),
-          body: BlocBuilder<QuotationReplyBloc, QuotationReplyState>(
-              builder: (context, state) {
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: InkWell(
+              onTap: (){
+                Navigator.pop(context);
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
+              },
+              child: Icon(Icons.arrow_back_ios)),
+          title: Text('Quotation Reply',),
+        ),
+         body:
+         BlocBuilder<QuotationReplyBloc, QuotationReplyState>(builder: (context, state) {
             return BlocListener<QuotationReplyBloc, QuotationReplyState>(
                 listener: (context, state) {
-                  if (state is QuotationReplyTransportLoading) {
-                    //  _isLoading = state.isLoading;
+                  if(state is QuotationReplyTransportLoading){
+                  //  _isLoading = state.isLoading;
                   }
-                  if (state is QuotationReplyTransportSuccess) {
-                    // quotationReplyList = state.quotationReplyTransportListData;
-                    quotationReplyList
-                        .addAll(state.quotationReplyTransportListData);
-                    if (quotationReplyList != null) {
-                      _loadData = true;
+                  if(state is QuotationReplyTransportSuccess){
+                    quotationReplyList = state.quotationReplyTransportListData;
+                    if(quotationReplyList!=null){
+                      _loadData=true;
                     }
                   }
-                  if (state is QuotationReplyTransportFail) {
-                    showCustomSnackBar(context, state.msg.toString());
+                  if(state is QuotationReplyTransportFail){
+                    showCustomSnackBar(context,state.msg.toString());
+
                   }
                 },
-                child: _loadData
+                child: _isLoading
                     ? quotationReplyList.length <= 0
-                        ? Center(
-                            child: Text('No Data'),
-                          )
-                        : Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                      child: buildQuotationsaReplyList(
-                                          quotationReplyList)),
-                                ],
-                              ),
-                            ),
-                          )
-                    : ShimmerCard()
+                    ? Center(child: Text('No Data'),)
+                    : Container(
+             child: Padding(
+               padding: const EdgeInsets.all(10.0),
+               child: Column(
+                 children: [
+                   Expanded(child: buildQuotationsaReplyList(quotationReplyList)),
+                 ],
+               ),
+             ),
+           ) : ShimmerCard()
 
-                // Center(
-                //   child: CircularProgressIndicator(),
-                // )
+              // Center(
+              //   child: CircularProgressIndicator(),
+              // )
 
-                );
-          })),
+            );
+          })
+      ),
     );
   }
-
-  Widget ShimmerCard() {
+  Widget ShimmerCard(){
     return ListView.builder(
       scrollDirection: Axis.vertical,
       // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
@@ -444,23 +414,19 @@ class _QuotationsReplyTransportationScreenState
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold
+                              ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
+                          SizedBox(height: 4,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "Enquiry ID:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
@@ -479,18 +445,14 @@ class _QuotationsReplyTransportationScreenState
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 3,
-                          ),
+                          SizedBox(height: 3,),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "Working Timing:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -509,18 +471,14 @@ class _QuotationsReplyTransportationScreenState
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 3,
-                          ),
+                          SizedBox(height: 3,),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "Date & Time:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -539,6 +497,7 @@ class _QuotationsReplyTransportationScreenState
                               )
                             ],
                           ),
+
                         ],
                       ),
                     ),
