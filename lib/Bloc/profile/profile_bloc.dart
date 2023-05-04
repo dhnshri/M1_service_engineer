@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,17 +16,12 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../Model/profile_repo.dart';
 
-
-
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({this.userRepository}) : super(InitialProfileState());
   final UserRepository? userRepository;
 
-
   @override
   Stream<ProfileState> mapEventToState(event) async* {
-
-
     //Update Profile for Machine Maintanence
     if (event is UpdateProfile) {
       ///Notify loading to UI
@@ -40,30 +32,35 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var expCompanyList = [];
       var educationList = [];
 
-      for(int j = 0; j < event.experienceCompanyList.length; j++){
-        var innerObj ={};
-        innerObj["company_name"] = event.experienceCompanyList[j].expCompanyModel!.companyName;
-        innerObj["job_post"] = event.experienceCompanyList[j].expCompanyModel!.jobPost;
-        innerObj["description"] = event.experienceCompanyList[j].expCompanyModel!.desciption;
-        innerObj["work_from"] = event.experienceCompanyList[j].expCompanyModel!.fromYear;
-        innerObj["work_till"] = event.experienceCompanyList[j].expCompanyModel!.tillYear;
+      for (int j = 0; j < event.experienceCompanyList.length; j++) {
+        var innerObj = {};
+        innerObj["company_name"] =
+            event.experienceCompanyList[j].expCompanyModel!.companyName;
+        innerObj["job_post"] =
+            event.experienceCompanyList[j].expCompanyModel!.jobPost;
+        innerObj["description"] =
+            event.experienceCompanyList[j].expCompanyModel!.desciption;
+        innerObj["work_from"] =
+            event.experienceCompanyList[j].expCompanyModel!.fromYear;
+        innerObj["work_till"] =
+            event.experienceCompanyList[j].expCompanyModel!.tillYear;
         expCompanyList.add(innerObj);
       }
 
-
       List<MultipartFile>? files;
 
-      for(int j = 0; j < event.educationList.length; j++){
-        var innerObj ={};
-        innerObj["school_name"] = event.educationList[j].educationModel!.schoolName;
-        innerObj["course_name"] = event.educationList[j].educationModel!.courseName ;
-        innerObj["passing_year"] = event.educationList[j].educationModel!.passYear ;
+      for (int j = 0; j < event.educationList.length; j++) {
+        var innerObj = {};
+        innerObj["school_name"] =
+            event.educationList[j].educationModel!.schoolName;
+        innerObj["course_name"] =
+            event.educationList[j].educationModel!.courseName;
+        innerObj["passing_year"] =
+            event.educationList[j].educationModel!.passYear;
         // innerObj["certificate"] = event.educationList[j].educationModel!.certificateImg;
         // innerObj["certificate"] = multipartFile;
         educationList.add(innerObj);
-
       }
-
 
       var gstCertFile = await http.MultipartFile.fromPath(
           'gst_certificate', event.gstCertificateImg.toString());
@@ -85,11 +82,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       Map<String, String> params = {
         "full_name": event.fullName.toString(),
-        "email":event.email,
-        "mobile":event.mobile,
-        "gst_no":event.gstNo,
-        "work_category_id":event.catId,
-        "work_sub_category_id":event.subCatId,
+        "email": event.email,
+        "mobile": event.mobile,
+        "gst_no": event.gstNo,
+        "work_category_id": event.catId,
+        "work_sub_category_id": event.subCatId,
         "age": event.age,
         "gender": event.gender,
         "location": event.location,
@@ -112,8 +109,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         "certificate[]": files.toString()
       };
 
-
-      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/add_machine_maintainence_profile'));
+      http.MultipartRequest _request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+              'http://mone.ezii.live/service_engineer/add_machine_maintainence_profile'));
       // ..fields.addAll(params);
       _request.files.add(companyCertiFile);
       _request.files.add(gstCertFile);
@@ -122,18 +121,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       _request.files.add(aadharFile);
       _request.files.add(userProfileImgFile);
 
-      List<http.MultipartFile> imageUploadReqListSingle = <http.MultipartFile>[];
+      List<http.MultipartFile> imageUploadReqListSingle =
+          <http.MultipartFile>[];
 
-      for(int j = 0; j < event.educationList.length; j++) {
+      for (int j = 0; j < event.educationList.length; j++) {
         final mimeTypeDataProfile = lookupMimeType(
-            event.educationList[j].educationModel!.certificateImg
-                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+                event.educationList[j].educationModel!.certificateImg
+                    .toString(),
+                headerBytes: [0xFF, 0xD8])!
+            .split('/');
         //initialize multipart request
         //attach the file in the request
-        final certi = await http.MultipartFile.fromPath(
-            'certificate[]', event.educationList[j].imageFile!.imagePath.toString(),
-            contentType: MediaType(
-                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+        final certi = await http.MultipartFile.fromPath('certificate[]',
+            event.educationList[j].imageFile!.imagePath.toString(),
+            contentType:
+                MediaType(mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
 
         imageUploadReqListSingle.add(certi);
       }
@@ -146,12 +148,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result =  ProfileRepo.fromJson(responseJson);
+      ProfileRepo result = ProfileRepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
       if (result.success == true) {
-
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield UpdateProfileLoading(
@@ -161,8 +162,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         } catch (error) {
           ///Notify loading to UI
           yield UpdateProfileLoading(
-                      isLoading: true,
-                    );
+            isLoading: true,
+          );
           yield UpdateProfileFail(msg: result.msg.toString());
         }
       } else {
@@ -179,20 +180,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
 
       ///Fetch API via repository
-      final JobWorkProfileRepo result = await userRepository!
-          .geMachineProfile(
-          serviceUserId: event.serviceUserId,
-          roleId: event.roleId
-      );
+      final JobWorkProfileRepo result = await userRepository!.geMachineProfile(
+          serviceUserId: event.serviceUserId, roleId: event.roleId);
       print(result);
 
-
       if (result.success == true) {
-
         final profileData = result.profileData['ServiceUserData'];
         print(profileData);
+
         ///For Service User Data
-        final Iterable refactorUserProfileDataList = result.profileData['ServiceUserData'] ?? [];
+        final Iterable refactorUserProfileDataList =
+            result.profileData['ServiceUserData'] ?? [];
         final userDetailsList = refactorUserProfileDataList.map((item) {
           return ServiceUserData.fromJson(item);
         }).toList();
@@ -200,22 +198,27 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         //
         ///For Kyc Details
-        final Iterable refactorProfileKYCDetailsList = result.profileData!['ProfileBankDetails'] ?? [];
+        final Iterable refactorProfileKYCDetailsList =
+            result.profileData!['ProfileBankDetails'] ?? [];
         final profileKycDetailsList = refactorProfileKYCDetailsList.map((item) {
           return ProfileKYCDetails.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileKycDetailsList');
         //
         ///For Machine Maintainance Experience
-        final Iterable refactorProfileMachineEcperienceList = result.profileData!['MachineMaintenanceExperiences'] ?? [];
-        final profileMachineExperienceList = refactorProfileMachineEcperienceList.map((item) {
+        final Iterable refactorProfileMachineEcperienceList =
+            result.profileData!['MachineMaintenanceExperiences'] ?? [];
+        final profileMachineExperienceList =
+            refactorProfileMachineEcperienceList.map((item) {
           return MachineMaintenanceExperiences.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileMachineExperienceList');
 
         ///Education Details
-        final Iterable refactorProfileMachineEducationList = result.profileData!['MachineMaintenanceEducations'] ?? [];
-        final profileMachineEducationList = refactorProfileMachineEducationList.map((item) {
+        final Iterable refactorProfileMachineEducationList =
+            result.profileData!['MachineMaintenanceEducations'] ?? [];
+        final profileMachineEducationList =
+            refactorProfileMachineEducationList.map((item) {
           return MachineMaintenanceEducations.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileMachineEducationList');
@@ -225,8 +228,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           yield GetMachineProfileLoading(
             isLoading: true,
           );
-          yield GetMachineProfileSuccess(serviceUserdataList: userDetailsList,profileKycList: profileKycDetailsList,
-                  profileMachineEducationList: profileMachineEducationList,profileMachineExperienceList: profileMachineExperienceList);
+          yield GetMachineProfileSuccess(
+              serviceUserdataList: userDetailsList,
+              profileKycList: profileKycDetailsList,
+              profileMachineEducationList: profileMachineEducationList,
+              profileMachineExperienceList: profileMachineExperienceList);
         } catch (error) {
           ///Notify loading to UI
           yield GetMachineProfileFail(msg: result.msg.toString());
@@ -246,20 +252,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
 
       ///Fetch API via repository
-      final TrackProcessRepo result = await userRepository!
-          .machineTaskHandOver(
-          serviceUserId: event.serviceUserId,
-          machineEnqId: event.machineEnquiryId,
-          dailyTaskId: event.dailyTaskId,
-          description: event.description,
-          price: event.price,
+      final TrackProcessRepo result = await userRepository!.machineTaskHandOver(
+        serviceUserId: event.serviceUserId,
+        machineEnqId: event.machineEnquiryId,
+        dailyTaskId: event.dailyTaskId,
+        description: event.description,
+        price: event.price,
       );
       print(result);
 
-
       if (result.success == true) {
-
-
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield MachineTaskHandoverLoading(
@@ -284,18 +286,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
 
       ///Fetch API via repository
-      final TrackProcessRepo result = await userRepository!
-          .jobWorkTaskHandOver(
+      final TrackProcessRepo result = await userRepository!.jobWorkTaskHandOver(
         serviceUserId: event.serviceUserId,
         jobWorkEnqId: event.jobWorkEnquiryId,
         description: event.description,
       );
       print(result);
 
-
       if (result.success == true) {
-
-
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield JobWorkTaskHandoverLoading(
@@ -320,18 +318,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
 
       ///Fetch API via repository
-      final TrackProcessRepo result = await userRepository!
-          .transportTaskHandOver(
+      final TrackProcessRepo result =
+          await userRepository!.transportTaskHandOver(
         serviceUserId: event.serviceUserId,
         transportEnqId: event.transportEnquiryId,
         description: event.description,
       );
       print(result);
 
-
       if (result.success == true) {
-
-
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield JobWorkTaskHandoverLoading(
@@ -348,7 +343,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
 
-
     /// Update Profile for Job Work Enquiry
     if (event is UpdateJobWorkProfile) {
       ///Notify loading to UI
@@ -358,19 +352,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       var machineList = [];
 
-      for(int j = 0; j < event.machineList.length; j++){
-        var innerObj ={};
+      for (int j = 0; j < event.machineList.length; j++) {
+        var innerObj = {};
         innerObj["machine_name"] = event.machineList[j].machineName;
         innerObj["quantity"] = event.machineList[j].quantity;
         machineList.add(innerObj);
       }
 
-
       // var companyProfileImg = await http.MultipartFile.fromBytes('company_profile_pic', await File.fromUri(Uri.parse(event.companyProfilePic.toString())).readAsBytes(), contentType: new MediaType('image', 'jpeg'));
       // var _base64 = base64Encode(event.companyProfilePic);
 
       var companyProfileImg = await http.MultipartFile.fromPath(
-          'company_profile_pic', event.companyProfilePic.toString(),);
+        'company_profile_pic',
+        event.companyProfilePic.toString(),
+      );
 
       var gstCertFile = await http.MultipartFile.fromPath(
           'gst_certificate', event.gstCertificateImg.toString());
@@ -393,11 +388,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       Map<String, String> params = {
         "company_name": event.companyName.toString(),
         "coordinate_name": event.coOrdinateName.toString(),
-        "email":event.email,
-        "mobile":event.mobile,
-        "gst_no":event.gstNo,
-        "category_id":event.catId,
-        "sub_category_id":event.subCatId,
+        "email": event.email,
+        "mobile": event.mobile,
+        "gst_no": event.gstNo,
+        "category_id": event.catId,
+        "sub_category_id": event.subCatId,
         "location": event.location,
         "current_address": event.location,
         "pincode": event.pincode,
@@ -406,11 +401,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         "country": event.country,
         "company_name": event.companyName.toString(),
         "machine_list": jsonEncode(machineList),
-        "service_user_id":event.serviceUserId,
+        "service_user_id": event.serviceUserId,
       };
 
-
-      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/add_job_work_enquiry_profile'));
+      http.MultipartRequest _request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+              'http://mone.ezii.live/service_engineer/add_job_work_enquiry_profile'));
       // ..fields.addAll(params);
       _request.files.add(companyCertiFile);
       _request.files.add(gstCertFile);
@@ -425,12 +422,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result =  ProfileRepo.fromJson(responseJson);
+      ProfileRepo result = ProfileRepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
       if (result.success == true) {
-
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield UpdateJobWorkProfileLoading(
@@ -459,20 +455,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
 
       ///Fetch API via repository
-      final JobWorkProfileRepo result = await userRepository!
-          .geJobWorkProfile(
-          serviceUserId: event.serviceUserId,
-          roleId: event.roleId
-      );
+      final JobWorkProfileRepo result = await userRepository!.geJobWorkProfile(
+          serviceUserId: event.serviceUserId, roleId: event.roleId);
       print(result);
 
-
       if (result.success == true) {
-
         final profileData = result.profileData['ServiceUserData'];
         print(profileData);
+
         ///For Service User Data
-        final Iterable refactorUserProfileDataList = result.profileData['ServiceUserData'] ?? [];
+        final Iterable refactorUserProfileDataList =
+            result.profileData['ServiceUserData'] ?? [];
         final userDetailsList = refactorUserProfileDataList.map((item) {
           return ServiceUserData.fromJson(item);
         }).toList();
@@ -480,26 +473,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         //
         ///For Quotation Charges
-        final Iterable refactorProfileKYCDetailsList = result.profileData!['ProfileKYCDetails'] ?? [];
+        final Iterable refactorProfileKYCDetailsList =
+            result.profileData!['ProfileKYCDetails'] ?? [];
         final profileKycDetailsList = refactorProfileKYCDetailsList.map((item) {
           return ProfileKYCDetails.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileKycDetailsList');
         //
         ///For Quotation Charges
-        final Iterable refactorProfileMachineList = result.profileData!['JobWorkMachineList'] ?? [];
+        final Iterable refactorProfileMachineList =
+            result.profileData!['JobWorkMachineList'] ?? [];
         final profileMachineList = refactorProfileMachineList.map((item) {
           return JobWorkMachineList.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileMachineList');
-
 
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield GetJobWorkProfileLoading(
             isLoading: true,
           );
-          yield GetJobWorkProfileSuccess(serviceUserdataList: userDetailsList,profileKycList: profileKycDetailsList,profileMachineList: profileMachineList);
+          yield GetJobWorkProfileSuccess(
+              serviceUserdataList: userDetailsList,
+              profileKycList: profileKycDetailsList,
+              profileMachineList: profileMachineList);
         } catch (error) {
           ///Notify loading to UI
           yield GetJobWorkProfileFail(msg: result.msg.toString());
@@ -511,7 +508,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     }
 
-
     /// Update Profile for Transport
     if (event is UpdateTransportProfile) {
       ///Notify loading to UI
@@ -521,24 +517,33 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       var expCompanyList = [];
 
-      for(int j = 0; j < event.experienceCompanyList.length; j++){
-        var innerObj ={};
-        innerObj["company_name"] = event.experienceCompanyList[j].expCompanyModel!.companyName;
-        innerObj["description"] = event.experienceCompanyList[j].expCompanyModel!.desciption;
-        innerObj["work_from"] = event.experienceCompanyList[j].expCompanyModel!.fromYear;
-        innerObj["work_till"] = event.experienceCompanyList[j].expCompanyModel!.tillYear;
+      for (int j = 0; j < event.experienceCompanyList.length; j++) {
+        var innerObj = {};
+        innerObj["company_name"] =
+            event.experienceCompanyList[j].expCompanyModel!.companyName;
+        innerObj["description"] =
+            event.experienceCompanyList[j].expCompanyModel!.desciption;
+        innerObj["work_from"] =
+            event.experienceCompanyList[j].expCompanyModel!.fromYear;
+        innerObj["work_till"] =
+            event.experienceCompanyList[j].expCompanyModel!.tillYear;
         expCompanyList.add(innerObj);
       }
 
       var vehicleInfoList = [];
 
-      for(int j = 0; j < event.vehicleInfoList.length; j++){
-        var innerObj ={};
-        innerObj["vehicle_name"] = event.vehicleInfoList[j].vehicleInfoModel!.vehicleName;
-        innerObj["vehicle_type"] = event.vehicleInfoList[j].vehicleInfoModel!.vehicleType;
-        innerObj["chassis_number"] = event.vehicleInfoList[j].vehicleInfoModel!.chasisNumber;
-        innerObj["registration_upto"] = event.vehicleInfoList[j].vehicleInfoModel!.registrationUpto;
-        innerObj["vehicle_number"] = event.vehicleInfoList[j].vehicleInfoModel!.vehicleNumber;
+      for (int j = 0; j < event.vehicleInfoList.length; j++) {
+        var innerObj = {};
+        innerObj["vehicle_name"] =
+            event.vehicleInfoList[j].vehicleInfoModel!.vehicleName;
+        innerObj["vehicle_type"] =
+            event.vehicleInfoList[j].vehicleInfoModel!.vehicleType;
+        innerObj["chassis_number"] =
+            event.vehicleInfoList[j].vehicleInfoModel!.chasisNumber;
+        innerObj["registration_upto"] =
+            event.vehicleInfoList[j].vehicleInfoModel!.registrationUpto;
+        innerObj["vehicle_number"] =
+            event.vehicleInfoList[j].vehicleInfoModel!.vehicleNumber;
         vehicleInfoList.add(innerObj);
       }
 
@@ -571,9 +576,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       Map<String, String> params = {
         "full_name": event.ownerName.toString(),
-        "email":event.email,
-        "mobile":event.mobile,
-        "gst_no":event.gstNo,
+        "email": event.email,
+        "mobile": event.mobile,
+        "gst_no": event.gstNo,
         "location": event.location,
         "current_address": event.location,
         "pincode": event.pinCode,
@@ -594,11 +599,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         "driving_licence_number": event.driverLicenseNumber,
         "experience": jsonEncode(expCompanyList),
         "VehicleInformation": jsonEncode(vehicleInfoList),
-        "service_user_id":event.serviceUserId,
+        "service_user_id": event.serviceUserId,
       };
 
-
-      http.MultipartRequest _request = http.MultipartRequest('POST', Uri.parse('http://mone.ezii.live/service_engineer/add_transport_profile'));
+      http.MultipartRequest _request = http.MultipartRequest(
+          'POST',
+          Uri.parse(
+              'http://mone.ezii.live/service_engineer/add_transport_profile'));
       // ..fields.addAll(params);
       _request.files.add(companyCertiFile);
       _request.files.add(gstCertFile);
@@ -694,48 +701,58 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       /// Upload Multiple Vehicle Images
       List<http.MultipartFile> vehicleImageList = <http.MultipartFile>[];
-      for(int j = 0; j < event.vehicleInfoList.length; j++) {
+      for (int j = 0; j < event.vehicleInfoList.length; j++) {
         final mimeTypeDataProfile = lookupMimeType(
-            event.vehicleInfoList[j].vehicleImageModel!.vehicleImage
-                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+                event.vehicleInfoList[j].vehicleImageModel!.vehicleImage
+                    .toString(),
+                headerBytes: [0xFF, 0xD8])!
+            .split('/');
         //initialize multipart request
         //attach the file in the request
-        final certi = await http.MultipartFile.fromPath(
-            'vehicle_images[]', event.vehicleInfoList[j].vehicleImageModel!.vehicleImage.toString(),
-            contentType: MediaType(
-                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+        final certi = await http.MultipartFile.fromPath('vehicle_images[]',
+            event.vehicleInfoList[j].vehicleImageModel!.vehicleImage.toString(),
+            contentType:
+                MediaType(mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
 
         vehicleImageList.add(certi);
       }
 
       /// Upload Multiple Vehicle RC Images
       List<http.MultipartFile> vehicleRCImageList = <http.MultipartFile>[];
-      for(int j = 0; j < event.vehicleInfoList.length; j++) {
+      for (int j = 0; j < event.vehicleInfoList.length; j++) {
         final mimeTypeDataProfile = lookupMimeType(
-            event.vehicleInfoList[j].vehicleRCImageModel!.vehicleRCImage
-                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+                event.vehicleInfoList[j].vehicleRCImageModel!.vehicleRCImage
+                    .toString(),
+                headerBytes: [0xFF, 0xD8])!
+            .split('/');
         //initialize multipart request
         //attach the file in the request
         final certi = await http.MultipartFile.fromPath(
-            'upload_rcs[]', event.vehicleInfoList[j].vehicleRCImageModel!.vehicleRCImage.toString(),
-            contentType: MediaType(
-                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+            'upload_rcs[]',
+            event.vehicleInfoList[j].vehicleRCImageModel!.vehicleRCImage
+                .toString(),
+            contentType:
+                MediaType(mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
 
         vehicleRCImageList.add(certi);
       }
 
       /// Upload Multiple Vehicle PUC Images
       List<http.MultipartFile> vehiclePUCImageList = <http.MultipartFile>[];
-      for(int j = 0; j < event.vehicleInfoList.length; j++) {
+      for (int j = 0; j < event.vehicleInfoList.length; j++) {
         final mimeTypeDataProfile = lookupMimeType(
-            event.vehicleInfoList[j].vehiclePUCImageModel!.vehiclePUCImage
-                .toString(), headerBytes: [0xFF, 0xD8])!.split('/');
+                event.vehicleInfoList[j].vehiclePUCImageModel!.vehiclePUCImage
+                    .toString(),
+                headerBytes: [0xFF, 0xD8])!
+            .split('/');
         //initialize multipart request
         //attach the file in the request
         final certi = await http.MultipartFile.fromPath(
-            'upload_pocs[]', event.vehicleInfoList[j].vehiclePUCImageModel!.vehiclePUCImage.toString(),
-            contentType: MediaType(
-                mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
+            'upload_pocs[]',
+            event.vehicleInfoList[j].vehiclePUCImageModel!.vehiclePUCImage
+                .toString(),
+            contentType:
+                MediaType(mimeTypeDataProfile[0], mimeTypeDataProfile[1]));
 
         vehiclePUCImageList.add(certi);
       }
@@ -749,12 +766,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result =  ProfileRepo.fromJson(responseJson);
+      ProfileRepo result = ProfileRepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
       if (result.success == true) {
-
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield UpdateTransportProfileLoading(
@@ -785,18 +801,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       ///Fetch API via repository
       final JobWorkProfileRepo result = await userRepository!
           .geTransportProfile(
-          serviceUserId: event.serviceUserId,
-          roleId: event.roleId
-      );
+              serviceUserId: event.serviceUserId, roleId: event.roleId);
       print(result);
 
-
       if (result.success == true) {
-
         final profileData = result.profileData['ServiceUserData'];
         print(profileData);
+
         ///For Service User Data
-        final Iterable refactorUserProfileDataList = result.profileData['ServiceUserData'] ?? [];
+        final Iterable refactorUserProfileDataList =
+            result.profileData['ServiceUserData'] ?? [];
         final userDetailsList = refactorUserProfileDataList.map((item) {
           return ServiceUserData.fromJson(item);
         }).toList();
@@ -804,41 +818,50 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         //
         ///For Bank Data
-        final Iterable refactorProfileKYCDetailsList = result.profileData!['ProfileBankDetails'] ?? [];
+        final Iterable refactorProfileKYCDetailsList =
+            result.profileData!['ProfileBankDetails'] ?? [];
         final profileKycDetailsList = refactorProfileKYCDetailsList.map((item) {
           return ProfileKYCDetails.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileKycDetailsList');
         //
         ///For Driver Detail
-        final Iterable refactorProfileDriverDetailsList = result.profileData!['DriverProfileDetails'] ?? [];
-        final profileDriverDetailsList = refactorProfileDriverDetailsList.map((item) {
+        final Iterable refactorProfileDriverDetailsList =
+            result.profileData!['DriverProfileDetails'] ?? [];
+        final profileDriverDetailsList =
+            refactorProfileDriverDetailsList.map((item) {
           return DriverProfileDetails.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileDriverDetailsList');
 
         ///For Vehicle Information
-        final Iterable refactorProfileVehicleInfoList = result.profileData!['ProfileVehicleInformation'] ?? [];
-        final profileVehicleInfoList = refactorProfileVehicleInfoList.map((item) {
+        final Iterable refactorProfileVehicleInfoList =
+            result.profileData!['ProfileVehicleInformation'] ?? [];
+        final profileVehicleInfoList =
+            refactorProfileVehicleInfoList.map((item) {
           return ProfileVehicleInformation.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileVehicleInfoList');
 
         ///For Vehicle Information
-        final Iterable refactorProfileExperienceList = result.profileData!['TransportProfileExperience'] ?? [];
+        final Iterable refactorProfileExperienceList =
+            result.profileData!['TransportProfileExperience'] ?? [];
         final profileExperienceList = refactorProfileExperienceList.map((item) {
           return TransportProfileExperience.fromJson(item);
         }).toList();
         print('Quotation Reply List: $profileExperienceList');
-
 
         try {
           ///Begin start AuthBloc Event AuthenticationSave
           yield GetTransportProfileLoading(
             isLoading: true,
           );
-          yield GetTransportProfileSuccess(serviceUserdataList: userDetailsList,profileKycList: profileKycDetailsList,
-                  profileDriverDetailsList: profileDriverDetailsList,profileVehicleInfoList: profileVehicleInfoList, profileExperienceList: profileExperienceList);
+          yield GetTransportProfileSuccess(
+              serviceUserdataList: userDetailsList,
+              profileKycList: profileKycDetailsList,
+              profileDriverDetailsList: profileDriverDetailsList,
+              profileVehicleInfoList: profileVehicleInfoList,
+              profileExperienceList: profileExperienceList);
         } catch (error) {
           ///Notify loading to UI
           yield GetTransportProfileFail(msg: result.msg.toString());
@@ -849,15 +872,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield GetTransportProfileFail(msg: result.msg.toString());
       }
     }
-
   }
+
   jsonToFormData(http.MultipartRequest request, Map<String, dynamic> data) {
     for (var key in data.keys) {
       request.fields[key] = data[key].toString();
     }
     return request;
   }
- }
+}
+
 class MultipartBody {
   String key;
   XFile file;
