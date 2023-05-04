@@ -1,26 +1,31 @@
-
-
 import '../../image_file.dart';
 
 abstract class LoginEvent {}
 
 class OnLogin extends LoginEvent {
+  var username, password;
 
-  var username,password;
-
-  OnLogin({this.username,this.password});
-
+  OnLogin({this.username, this.password});
 }
 
 class OnRegistration extends LoginEvent {
+  String fullname,
+      email,
+      mobileNo,
+      createPassword,
+      reCreatePassword,
+      role,
+      username;
 
-var fullname,email,mobileNo,createPassword,reCreatePassword,role,username;
-
-OnRegistration({this.fullname,this.email,this.createPassword,this.mobileNo,this.reCreatePassword,this.role,this.username});
-
+  OnRegistration(
+      {required this.fullname,
+      required this.email,
+      required this.createPassword,
+      required this.mobileNo,
+      required this.reCreatePassword,
+      required this.role,
+      required this.username});
 }
-
-
 
 class OnLogout extends LoginEvent {
   OnLogout();

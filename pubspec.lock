@@ -42,7 +42,7 @@ packages:
       name: barcode
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.3"
+    version: "2.1.0"
   bloc:
     dependency: transitive
     description:
@@ -916,7 +916,7 @@ packages:
       name: pdf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.8.4"
+    version: "3.6.4"
   pedantic:
     dependency: transitive
     description:
@@ -1000,7 +1000,14 @@ packages:
       name: qr
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "2.1.0"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   quiver:
     dependency: transitive
     description:

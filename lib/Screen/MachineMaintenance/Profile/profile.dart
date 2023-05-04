@@ -708,7 +708,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     radius: 50,
                                     backgroundColor: ThemeColors.greyBackgrounColor,
                                     child: ClipOval(
-                                      child: new SizedBox(
+                                      child:  SizedBox(
                                           width: 150.0,
                                           height: 150.0,
                                           child:
