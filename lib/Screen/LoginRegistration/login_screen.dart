@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: TextFormField(
                                       controller: _textPhoneNumberController,
                                       keyboardType: TextInputType.text,
-                                      maxLength: 10,
+                                     // maxLength: 10,
                                       cursorColor: primaryAppColor,
                                       decoration: InputDecoration(
                                         disabledBorder: OutlineInputBorder(
@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: TextFormField(
                                       controller: _textPasswordController,
                                       keyboardType: TextInputType.text,
-                                      maxLength: 10,
+                                      //maxLength: 10,
                                       cursorColor: primaryAppColor,
                                       decoration: InputDecoration(
                                         disabledBorder: OutlineInputBorder(

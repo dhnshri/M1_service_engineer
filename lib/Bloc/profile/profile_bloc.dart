@@ -430,7 +430,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           yield UpdateJobWorkProfileLoading(
             isLoading: true,
           );
-          yield UpdateJobWorkProfileSuccess(message: result.msg.toString());
+          yield UpdateJobWorkProfileSuccess(msg: result.msg.toString());
         } catch (error) {
           ///Notify loading to UI
           yield UpdateJobWorkProfileLoading(

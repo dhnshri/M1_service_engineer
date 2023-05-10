@@ -52,7 +52,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     // TODO: implement initState
     super.initState();
     _userLoginBloc = BlocProvider.of<LoginBloc>(context);
-    loading;
+   // loading;
   }
 
   @override
@@ -217,7 +217,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: TextFormField(
                                 controller: _fullNameController,
                                 keyboardType: TextInputType.text,
-                                maxLength: 10,
+                                //maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
                                   disabledBorder: OutlineInputBorder(
@@ -275,7 +275,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               child: TextFormField(
                                 controller: _userNameController,
                                 keyboardType: TextInputType.text,
-                                maxLength: 10,
+                               // maxLength: 10,
                                 cursorColor: primaryAppColor,
                                 decoration: InputDecoration(
                                   disabledBorder: OutlineInputBorder(
@@ -616,11 +616,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             Fluttertoast.showToast(
                                                 msg:
                                                     "Please enter mobile number");
+                                          } else if ( _fullNameController.text ==
+                                              "") {
+                                            Fluttertoast.showToast(
+                                                msg: "Please enter FullName");
                                           } else if (_userNameController.text ==
                                               "") {
                                             Fluttertoast.showToast(
                                                 msg: "Please enter Username");
-                                          } else if (_emailIdController.text ==
+                                          }else if (_createPasswordController.text ==
+                                              "") {
+                                            Fluttertoast.showToast(
+                                                msg: "Please create password");
+                                          }
+                                          else if (_reEnterPasswordController.text ==
+                                              "") {
+                                            Fluttertoast.showToast(
+                                                msg: "Please re-enter password");
+                                          }
+                                          else if (_emailIdController.text ==
                                               "") {
                                             Fluttertoast.showToast(
                                                 msg: "Please enter email");

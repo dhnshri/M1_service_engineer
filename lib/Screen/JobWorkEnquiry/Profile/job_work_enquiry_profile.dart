@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -606,11 +607,14 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           )
-                                            : Image.network(
-                                            uploadUserProfileImageFile!.imagePath!,
-                                          fit: BoxFit.fill,
-                                        )
-
+                                        //     : Image.network(
+                                        //     uploadUserProfileImageFile!.imagePath!,
+                                        //   fit: BoxFit.fill,
+                                        // )
+                                         : Image.file(
+                                      File(uploadUserProfileImageFile!.imagePath.toString()),
+                                fit: BoxFit.fill,
+                              )
                                       ),
                                     ),
                                   ),
@@ -2111,6 +2115,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       ),
                                     ),
                                   ),
+
                                   InkWell(
                                     onTap: (){
                                       _gstCertificateOpenGallery(context);
@@ -2303,7 +2308,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                             loading = state.isLoading;
                           }
                           if(state is UpdateJobWorkProfileSuccess){
-                            showCustomSnackBar(context,state.message,isError: false);
+                            showCustomSnackBar(context,state.msg,isError: false);
                           }
                           if(state is UpdateJobWorkProfileFail){
                             showCustomSnackBar(context,state.msg.toString(),isError: true);
@@ -2315,6 +2320,16 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  // if(_companyNameController.text ||){
+                                  //   Fluttertoast.showToast(msg: "Please update profile image");
+                                  // }
+                                  // else if(_textColorcontroller==null){
+                                  //   Fluttertoast.showToast(msg: "Please select category");
+                                  // }else if(_textModelcontroller==null){
+                                  //   Fluttertoast.showToast(msg: "Please select sub category");
+                                  // }else if(_textWarrantycontroller==null){
+                                  //   Fluttertoast.showToast(msg: "Please select sub sub category");
+                                  // }
                                   if(_formKey.currentState!.validate()) {
                                     _profileBloc!.add(UpdateJobWorkProfile(
                                       serviceUserId: Application
@@ -2326,7 +2341,12 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       email: _emailController.text,
                                       mobile: _phoneController.text,
                                       gstNo: _gstController.text,
-                                      catId: catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].jobCategoryId.toString(),
+                                      catId: catrgoryTypeselected!.id == null
+                                          ? widget.serviceUserdataList![0].jobCategoryId.toString()
+                                          :catrgoryTypeselected!.id.toString(),
+
+                                          // ?catrgoryTypeselected!.id.toString()
+                                          // :widget.serviceUserdataList![0].jobCategoryId.toString(),
                                       // widget.serviceUserdataList![0].jobCategoryName
                                       subCatId: '1',
                                       userProfilePic:

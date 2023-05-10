@@ -8,12 +8,12 @@ class ProfileRepo {
     try {
       return ProfileRepo(
         success: json['success'],
-        msg: json['data'],
+        msg: json['msg'],
       );
     } catch (error) {
       return ProfileRepo(
         success: json['success'],
-        msg: json['data'],
+        msg: json['msg'],
       );
     }
   }

@@ -1049,9 +1049,16 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             backgroundColor: Colors.white,
             leading: InkWell(
                 onTap: () {
-                  Navigator.of(context).pop();
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+                 // Navigator.of(context).pop();
+                 //  Navigator.push(context,
+                 //      MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen(serviceRequestData:widget.serviceRequestData![0])));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BottomNavigation(
+                            index: 0,
+                            dropValue: Application.customerLogin!.role.toString(),
+                          )));
                 },
                 child: Icon(Icons.arrow_back_ios)),
             title: Text(
