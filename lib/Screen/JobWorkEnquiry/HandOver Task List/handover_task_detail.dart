@@ -63,8 +63,8 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
-    // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
+   // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
+    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
     // _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
     _homeBloc!.add(OnTrackProcessList(userId:widget.handoverTaskData.userId.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString()));
     // _homeBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13', customerUserId: '100'));

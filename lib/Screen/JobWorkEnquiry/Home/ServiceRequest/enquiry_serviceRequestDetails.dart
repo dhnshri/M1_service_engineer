@@ -70,6 +70,7 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
+    //_homeBloc!.add(OnServiceRequestJobWorkEnquiryDetail(userID:widget.serviceRequestData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
     _homeBloc!.add(OnServiceRequestJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
 
   }

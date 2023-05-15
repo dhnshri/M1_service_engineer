@@ -140,7 +140,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   }
 
   getData()async{
-    if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
+    if(widget.serviceUserdataList!.isNotEmpty && widget.profileKycList!.isNotEmpty ){
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
       _nameController.text = widget.serviceUserdataList![0].name.toString();
@@ -775,7 +775,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                     ),
                   ),
 
-                  ///User Data
+                  //User Data
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
@@ -1131,59 +1131,148 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
 
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          padding: const EdgeInsets.only(left: 0.0, bottom:5),
                           child: Text("Category",
                             style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        ///Category
+                        // ///Category
+                        // Padding(
+                        //     padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                        //     //to hide underline
+                        //     child: FutureBuilder<List<MachineMaintenanceCategoryListModel>>(
+                        //         future: fetchCategoryList(),
+                        //         builder: (BuildContext context,
+                        //             AsyncSnapshot<List<MachineMaintenanceCategoryListModel>> snapshot) {
+                        //           if (!snapshot.hasData) return Container();
+                        //
+                        //           return DropdownButtonHideUnderline(
+                        //               child: Container(
+                        //                 width: MediaQuery.of(context).size.width,
+                        //                 decoration: BoxDecoration(
+                        //                   // color: Theme.of(context).dividerColor,
+                        //                     color: ThemeColors.textFieldBackgroundColor,
+                        //                     borderRadius: BorderRadius.circular(5.0),
+                        //                     border: Border.all(
+                        //                         color: ThemeColors.textFieldBgColor)),
+                        //                 child: Padding(
+                        //                   padding: EdgeInsets.only(
+                        //                       left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                        //                   child:
+                        //                   //updated on 15/06/2021 to change background colour of dropdownbutton
+                        //                   new Theme(
+                        //                       data: Theme.of(context)
+                        //                           .copyWith(canvasColor: Colors.white),
+                        //                       child: DropdownButton(
+                        //                           items: snapshot.data!
+                        //                               .map((categoryname) =>
+                        //                               DropdownMenuItem<MachineMaintenanceCategoryListModel>(
+                        //                                 value: categoryname,
+                        //                                 child: Text(
+                        //                                   categoryname.serviceCategoryName.toString(),
+                        //                                   style: TextStyle(
+                        //                                       color: Colors.black),
+                        //                                 ),
+                        //                               ))
+                        //                               .toList(),
+                        //                           style: TextStyle(
+                        //                               color: Colors.black,
+                        //                               fontWeight: FontWeight.w600),
+                        //                           isExpanded: true,
+                        //                           hint: Text('Select  Category',
+                        //                               style: TextStyle(
+                        //                                   color: Color(0xFF3F4141))),
+                        //                           value: catrgoryTypeselected == null
+                        //                               ? catrgoryTypeselected
+                        //                               : snapshot.data!
+                        //                               .where((i) =>
+                        //                           i.serviceCategoryName ==
+                        //                               catrgoryTypeselected!
+                        //                                   .serviceCategoryName)
+                        //                               .first as MachineMaintenanceCategoryListModel,
+                        //                           onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
+                        //                             setState(() {
+                        //                               catrgoryTypeselected = categoryname;
+                        //                               // widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
+                        //                               // widget.serviceUserdataList![0].categoryId = categoryname.id;
+                        //                             });
+                        //                           })),
+                        //                 ),
+                        //               ));
+                        //         })),
+                        //for category
                         Padding(
-                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                            padding: EdgeInsets.only(
+                                top: 4.0, bottom: 0.0),
                             //to hide underline
                             child: FutureBuilder<List<MachineMaintenanceCategoryListModel>>(
                                 future: fetchCategoryList(),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<MachineMaintenanceCategoryListModel>> snapshot) {
-                                  if (!snapshot.hasData) return Container();
+                                    AsyncSnapshot<List<
+                                        MachineMaintenanceCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData)
+                                    return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
+                                        margin: EdgeInsets.only(
+                                          top: 15.0,
+                                        ),
                                         decoration: BoxDecoration(
-                                          // color: Theme.of(context).dividerColor,
-                                            color: ThemeColors.textFieldBackgroundColor,
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            border: Border.all(
-                                                color: ThemeColors.textFieldBgColor)),
+                                          // border: Border.all(color: Theme.of(context).unselectedWidgetColor.withOpacity(0.5)),
+                                          border: Border.all(
+                                              color: Color(
+                                                  0xFFF5F5F5)),
+                                          // color: Theme.of(context).cardColor,
+                                          color: Color(0xFFF5F5F5),
+                                          borderRadius: BorderRadius
+                                              .circular(5),
+                                        ),
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                                              left: 15.0,
+                                              top: 0.0,
+                                              right: 5.0,
+                                              bottom: 0.0),
                                           child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
                                           new Theme(
                                               data: Theme.of(context)
-                                                  .copyWith(canvasColor: Colors.white),
+                                                  .copyWith(
+                                                  canvasColor: Colors
+                                                      .white),
                                               child: DropdownButton(
-                                                  items: snapshot.data!
-                                                      .map((categoryname) =>
-                                                      DropdownMenuItem<MachineMaintenanceCategoryListModel>(
-                                                        value: categoryname,
+                                                  items: snapshot
+                                                      .data!
+                                                      .map((
+                                                      category) =>
+                                                      DropdownMenuItem<
+                                                          MachineMaintenanceCategoryListModel>(
+                                                        value: category,
                                                         child: Text(
-                                                          categoryname.serviceCategoryName.toString(),
+                                                          category
+                                                              .serviceCategoryName
+                                                              .toString(),
                                                           style: TextStyle(
-                                                              color: Colors.black),
+                                                              color: Colors
+                                                                  .black),
                                                         ),
                                                       ))
                                                       .toList(),
                                                   style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w600),
+                                                      color: Colors
+                                                          .black,
+                                                      fontWeight: FontWeight
+                                                          .w600),
                                                   isExpanded: true,
-                                                  hint: Text('Select  Category',
+                                                  hint: Text(
+                                                      'Select Category',
                                                       style: TextStyle(
-                                                          color: Color(0xFF3F4141))),
-                                                  value: catrgoryTypeselected == null
+                                                          color: Color(
+                                                              0xFF3F4141))),
+                                                  value: catrgoryTypeselected ==
+                                                      null
                                                       ? catrgoryTypeselected
                                                       : snapshot.data!
                                                       .where((i) =>
@@ -1191,126 +1280,236 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                       catrgoryTypeselected!
                                                           .serviceCategoryName)
                                                       .first as MachineMaintenanceCategoryListModel,
-                                                  onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
+                                                  onChanged: (
+                                                      MachineMaintenanceCategoryListModel? category) {
+                                                    subCatrgoryTypeselected =
+                                                    null;
                                                     setState(() {
-                                                      catrgoryTypeselected = categoryname;
-                                                      widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
-                                                      widget.serviceUserdataList![0].categoryId = categoryname.id;
+                                                      catrgoryTypeselected =
+                                                          category;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
-                        widget.serviceUserdataList![0].workCatgory != "" ?
+                        // widget.serviceUserdataList![0].workCatgory != ""
+                        //     ?
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 10.0,top: 10),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Container(
+                        //           // height: 40,
+                        //           // width: MediaQuery.of(context).size.width/1.3,
+                        //           margin: EdgeInsets.all(2),
+                        //           child:Container(
+                        //             // height: 40,
+                        //             color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                        //             child: Padding(
+                        //               padding: const EdgeInsets.all(4.0),
+                        //               child: Row(
+                        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //                 children: [
+                        //                   Padding(
+                        //                     padding: const EdgeInsets.only(left: 3),
+                        //                     child: Container(
+                        //                       width: MediaQuery.of(context).size.width * 0.4,
+                        //                       child: Text('${widget.serviceUserdataList![0].workCatgory}',
+                        //                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                        //                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           )
+                        //
+                        //       ),
+                        //
+                        //       // Padding(
+                        //       //   padding: const EdgeInsets.only(right: 6.0),
+                        //       //   child: InkWell(
+                        //       //     onTap: (){
+                        //       //       setState(() {
+                        //       //         // int index1 = machineName
+                        //       //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                        //       //
+                        //       //         machineList.removeAt(index);
+                        //       //       });
+                        //       //
+                        //       //     },
+                        //       //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                        //       //   ),
+                        //       // ),
+                        //     ],
+                        //   ),
+                        // )
+                        //     : Container(),
+                        SizedBox(height: 7,),
+
                         Padding(
-                          padding: const EdgeInsets.only(left: 10.0,top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  // height: 40,
-                                  // width: MediaQuery.of(context).size.width/1.3,
-                                  margin: EdgeInsets.all(2),
-                                  child:Container(
-                                    // height: 40,
-                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 3),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: Text('${widget.serviceUserdataList![0].workCatgory}',
-                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
-                                    ),
-                                  )
-
-                              ),
-
-                              // Padding(
-                              //   padding: const EdgeInsets.only(right: 6.0),
-                              //   child: InkWell(
-                              //     onTap: (){
-                              //       setState(() {
-                              //         // int index1 = machineName
-                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                              //
-                              //         machineList.removeAt(index);
-                              //       });
-                              //
-                              //     },
-                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ) : Container(),
-                        SizedBox(height: 15,),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 5),
                           child: Text("Sub-Category",
                             style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         ///Sub-Category
+                        // Padding(
+                        //     padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                        //     //to hide underline
+                        //     child: FutureBuilder<List<MachineMaintenanceSubCategoryListModel>>(
+                        //         future: fetchSubCategory(catrgoryTypeselected!=null?catrgoryTypeselected!.id.toString():""),
+                        //         builder: (BuildContext context,
+                        //             AsyncSnapshot<List<MachineMaintenanceSubCategoryListModel>> snapshot) {
+                        //           if (!snapshot.hasData) return Container();
+                        //
+                        //           return DropdownButtonHideUnderline(
+                        //               child: Container(
+                        //                 width: MediaQuery.of(context).size.width,
+                        //                 decoration: BoxDecoration(
+                        //                   // color: Theme.of(context).dividerColor,
+                        //                     color: ThemeColors.textFieldBackgroundColor,
+                        //                     borderRadius: BorderRadius.circular(5.0),
+                        //                     border: Border.all(
+                        //                         color: ThemeColors.textFieldBgColor)),
+                        //                 child: Padding(
+                        //                   padding: EdgeInsets.only(
+                        //                       left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                        //                   child:
+                        //                   //updated on 15/06/2021 to change background colour of dropdownbutton
+                        //                   new Theme(
+                        //                       data: Theme.of(context)
+                        //                           .copyWith(canvasColor: Colors.white),
+                        //                       child: DropdownButton(
+                        //                           items: snapshot.data!
+                        //                               .map((categoryname) =>
+                        //                               DropdownMenuItem<MachineMaintenanceSubCategoryListModel>(
+                        //                                 value: categoryname,
+                        //                                 child: Text(
+                        //                                   categoryname.serviceSubCategoryName.toString(),
+                        //                                   style: TextStyle(
+                        //                                       color: Colors.black),
+                        //                                 ),
+                        //                               ))
+                        //                               .toList(),
+                        //                           style: TextStyle(
+                        //                               color: Colors.black,
+                        //                               fontWeight: FontWeight.w600),
+                        //                           isExpanded: true,
+                        //                           hint: Text('Select Sub Category',
+                        //                               style: TextStyle(
+                        //                                   color: Color(0xFF3F4141))),
+                        //                           value: subCatrgoryTypeselected == null
+                        //                               ? subCatrgoryTypeselected
+                        //                               : snapshot.data!
+                        //                               .where((i) =>
+                        //                           i.serviceSubCategoryName ==
+                        //                               subCatrgoryTypeselected!
+                        //                                   .serviceSubCategoryName)
+                        //                               .first as MachineMaintenanceSubCategoryListModel,
+                        //                           onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
+                        //                             setState(() {
+                        //                               subCatrgoryTypeselected = categoryname;
+                        //                               widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
+                        //                               widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
+                        //                             });
+                        //                           })),
+                        //                 ),
+                        //               ));
+                        //         })),
+                        //for subcategory
                         Padding(
-                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                            padding: EdgeInsets.only(
+                                top: 4.0, bottom: 0.0),
                             //to hide underline
                             child: FutureBuilder<List<MachineMaintenanceSubCategoryListModel>>(
-                                future: fetchSubCategory(catrgoryTypeselected!=null?catrgoryTypeselected!.id.toString():""),
+                                future: fetchSubCategory(
+                                    catrgoryTypeselected != null
+                                        ? catrgoryTypeselected!.id
+                                        .toString()
+                                        : ""),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<MachineMaintenanceSubCategoryListModel>> snapshot) {
-                                  if (!snapshot.hasData) return Container();
+                                    AsyncSnapshot<List<
+                                        MachineMaintenanceSubCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData)
+                                    return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
+                                        margin: EdgeInsets.only(
+                                          top: 15.0,
+                                        ),
                                         decoration: BoxDecoration(
-                                          // color: Theme.of(context).dividerColor,
-                                            color: ThemeColors.textFieldBackgroundColor,
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            border: Border.all(
-                                                color: ThemeColors.textFieldBgColor)),
+                                          // border: Border.all(color: Theme.of(context).unselectedWidgetColor.withOpacity(0.5)),
+                                          border: Border.all(
+                                              color: Color(
+                                                  0xFFF5F5F5)),
+                                          // color: Theme.of(context).cardColor,
+                                          color: Color(0xFFF5F5F5),
+                                          borderRadius: BorderRadius
+                                              .circular(5),
+                                        ),
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                                              left: 15.0,
+                                              top: 0.0,
+                                              right: 5.0,
+                                              bottom: 0.0),
                                           child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
-                                          new Theme(
+                                          Theme(
                                               data: Theme.of(context)
-                                                  .copyWith(canvasColor: Colors.white),
+                                                  .copyWith(
+                                                  canvasColor: Colors
+                                                      .white),
                                               child: DropdownButton(
-                                                  items: snapshot.data!
-                                                      .map((categoryname) =>
-                                                      DropdownMenuItem<MachineMaintenanceSubCategoryListModel>(
-                                                        value: categoryname,
-                                                        child: Text(
-                                                          categoryname.serviceSubCategoryName.toString(),
+                                                  items: snapshot
+                                                      .data!
+                                                      .map((
+                                                      subcategory) =>
+                                                      DropdownMenuItem<
+                                                          MachineMaintenanceSubCategoryListModel>(
+                                                        value: subcategory,
+                                                        child: subcategory
+                                                            .serviceSubCategoryName ==
+                                                            "Select Category"
+                                                            ?
+                                                        Text(
+                                                          subcategory
+                                                              .serviceSubCategoryName
+                                                              .toString(),
                                                           style: TextStyle(
-                                                              color: Colors.black),
+                                                              color: Colors
+                                                                  .red),
+                                                        )
+                                                            :
+                                                        Text(
+                                                          subcategory
+                                                              .serviceSubCategoryName
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black),
                                                         ),
                                                       ))
                                                       .toList(),
                                                   style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w600),
+                                                      color: Colors
+                                                          .black,
+                                                      fontWeight: FontWeight
+                                                          .w600),
                                                   isExpanded: true,
-                                                  hint: Text('Select Sub Category',
+                                                  hint: Text(
+                                                      'Select Sub Category',
                                                       style: TextStyle(
-                                                          color: Color(0xFF3F4141))),
-                                                  value: subCatrgoryTypeselected == null
+                                                          color: Color(
+                                                              0xFF3F4141))),
+                                                  value: subCatrgoryTypeselected ==
+                                                      null
                                                       ? subCatrgoryTypeselected
                                                       : snapshot.data!
                                                       .where((i) =>
@@ -1318,72 +1517,76 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                       subCatrgoryTypeselected!
                                                           .serviceSubCategoryName)
                                                       .first as MachineMaintenanceSubCategoryListModel,
-                                                  onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
+                                                  onChanged: (
+                                                      MachineMaintenanceSubCategoryListModel? subCategory) {
+                                                    // subsubcategoryModelselected =
+                                                    // null;
                                                     setState(() {
-                                                      subCatrgoryTypeselected = categoryname;
-                                                      widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
-                                                      widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
+                                  subCatrgoryTypeselected =
+                                                          subCategory;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
 
-                        widget.serviceUserdataList![0].workSubCatgory != "" ?
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0,top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  // height: 40,
-                                  // width: MediaQuery.of(context).size.width/1.3,
-                                  margin: EdgeInsets.all(2),
-                                  // color: msgCount[index]>=10? Colors.blue[400]:
-                                  child:Container(
-                                    // height: 40,
-                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 3),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
-                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
-                                    ),
-                                  )
-
-                              ),
-
-                              // Padding(
-                              //   padding: const EdgeInsets.only(right: 6.0),
-                              //   child: InkWell(
-                              //     onTap: (){
-                              //       setState(() {
-                              //         // int index1 = machineName
-                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                              //
-                              //         machineList.removeAt(index);
-                              //       });
-                              //
-                              //     },
-                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ) : Container(),
+                        // widget.serviceUserdataList![0].workSubCatgory != ""
+                        //     ?
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 10.0,top: 10),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Container(
+                        //           // height: 40,
+                        //           // width: MediaQuery.of(context).size.width/1.3,
+                        //           margin: EdgeInsets.all(2),
+                        //           // color: msgCount[index]>=10? Colors.blue[400]:
+                        //           child:Container(
+                        //             // height: 40,
+                        //             color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                        //             child: Padding(
+                        //               padding: const EdgeInsets.all(4.0),
+                        //               child: Row(
+                        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //                 children: [
+                        //                   Padding(
+                        //                     padding: const EdgeInsets.only(left: 3),
+                        //                     child: Container(
+                        //                       width: MediaQuery.of(context).size.width * 0.4,
+                        //                       child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
+                        //                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                        //                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           )
+                        //
+                        //       ),
+                        //
+                        //       // Padding(
+                        //       //   padding: const EdgeInsets.only(right: 6.0),
+                        //       //   child: InkWell(
+                        //       //     onTap: (){
+                        //       //       setState(() {
+                        //       //         // int index1 = machineName
+                        //       //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                        //       //
+                        //       //         machineList.removeAt(index);
+                        //       //       });
+                        //       //
+                        //       //     },
+                        //       //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                        //       //   ),
+                        //       // ),
+                        //     ],
+                        //   ),
+                        // ) ,
+                            // : Container(),
 
                         SizedBox(height: 15,),
 
@@ -2172,11 +2375,12 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       children: [
 
                         expCompanyForms.isNotEmpty
-                        ? Column(
+                        ?
+                        Column(
                           children: [
                             ListView.builder(
-                               // itemCount: expCompanyForms.length,
-                              itemCount:4,
+                                itemCount: expCompanyForms.length,
+                             // itemCount:4,
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (_, index) {

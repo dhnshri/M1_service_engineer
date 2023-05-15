@@ -216,6 +216,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               height: 60,
                               child: TextFormField(
                                 controller: _fullNameController,
+
                                 keyboardType: TextInputType.text,
                                 //maxLength: 10,
                                 cursorColor: primaryAppColor,
@@ -617,9 +618,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                 msg:
                                                     "Please enter mobile number");
                                           } else if ( _fullNameController.text ==
-                                              "") {
+                                              "" || !RegExp(r'^[a-z A-Z]+$').hasMatch(_fullNameController.text)) {
                                             Fluttertoast.showToast(
-                                                msg: "Please enter FullName");
+                                                msg: "Please enter Correct Name");
                                           } else if (_userNameController.text ==
                                               "") {
                                             Fluttertoast.showToast(

@@ -62,15 +62,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         AppBloc.authBloc.add(OnSaveUser(user));
         try {
           ///Begin start AuthBloc Event AuthenticationSave
-
           yield LoginSuccess(userModel: user, message: "Login Successfully");
         } catch (error) {
           ///Notify loading to UI
-          yield LoginFail(msg: "Login Fail");
+          yield LoginFail(msg: "Please Enter Correct Username and Password");
         }
       } else {
         ///Notify loading to UI
-        yield LoginFail(msg: "Login Fail");
+        yield LoginFail(msg: "Please Enter Correct Username and Password");
       }
     }
 
