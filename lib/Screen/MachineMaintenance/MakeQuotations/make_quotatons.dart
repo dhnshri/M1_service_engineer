@@ -71,6 +71,9 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   final TextEditingController _rateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
+  final TextEditingController _cgstController = TextEditingController();
+  final TextEditingController _sgstController = TextEditingController();
+  //final TextEditingController _gstController = TextEditingController();
   final TextEditingController _gstChargesController = TextEditingController();
   final _searchController = TextEditingController();
   ScrollController _scrollController = ScrollController();

@@ -33,6 +33,7 @@ import '../../Model/cart_list_repo.dart';
 import '../../Model/customer_login.dart';
 import '../../Model/profile_repo.dart';
 import '../../Model/quotation_reply_detail_repo.dart';
+import '../Model/forgot_password_model.dart';
 import '../Model/order_list_repo.dart';
 import '../Model/order_repo.dart';
 
@@ -94,6 +95,7 @@ class Api {
   static const String MACHINE_DASHBOARD_COUNT="machine_maintenance_dashboard_count";
   static const String JOBWORK_DASHBOARD_COUNT="job_work_dashboard_count";
   static const String TRANSPORT_DASHBOARD_COUNT="transport_dashboard_count";
+  static const String FORGOT_PASSWORD="service_forget_password";
   static const String FILTER_CATEGORY_LIST="get_category_list";
   static const String MACHINE_TASK_HANDOVER="add_machine_maintenance_assign_task_to_other";
   static const String JOBWORK_TASK_HANDOVER="add_job_work_assign_task_to_other";
@@ -128,7 +130,12 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return RegistrationRepo.fromJson(responseJson);
-    }
+    }else
+      {
+        final responseJson = json.decode(response.body);
+        print(responseJson);
+        return RegistrationRepo.fromJson(responseJson);
+      }
   }
 
   static Future<dynamic> getMachineDashboardCount(params) async {
@@ -200,6 +207,18 @@ class Api {
       final responseJson = json.decode(response.body);
       print(responseJson);
       return DashboardCountRepo.fromJson(responseJson);
+    }
+  }
+
+  static Future<dynamic> getForgotPassword(params) async {
+    final response = await http.post(
+      Uri.parse(HOST_URL+FORGOT_PASSWORD),
+      body: params,
+    );
+    if (response.statusCode == 200) {
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      return ForgotPasswordRepo.fromJson(responseJson);
     }
   }
 

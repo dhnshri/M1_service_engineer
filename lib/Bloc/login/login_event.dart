@@ -30,3 +30,9 @@ class OnRegistration extends LoginEvent {
 class OnLogout extends LoginEvent {
   OnLogout();
 }
+
+class OnForgotPassword extends LoginEvent {
+  String email;
+
+  OnForgotPassword({required this.email});
+}

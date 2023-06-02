@@ -1292,62 +1292,62 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         ),
                                       ));
                                 })),
-                        // widget.serviceUserdataList![0].workCatgory != ""
-                        //     ?
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 10.0,top: 10),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Container(
-                        //           // height: 40,
-                        //           // width: MediaQuery.of(context).size.width/1.3,
-                        //           margin: EdgeInsets.all(2),
-                        //           child:Container(
-                        //             // height: 40,
-                        //             color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                        //             child: Padding(
-                        //               padding: const EdgeInsets.all(4.0),
-                        //               child: Row(
-                        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //                 children: [
-                        //                   Padding(
-                        //                     padding: const EdgeInsets.only(left: 3),
-                        //                     child: Container(
-                        //                       width: MediaQuery.of(context).size.width * 0.4,
-                        //                       child: Text('${widget.serviceUserdataList![0].workCatgory}',
-                        //                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                        //                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //
-                        //                 ],
-                        //               ),
-                        //             ),
-                        //           )
-                        //
-                        //       ),
-                        //
-                        //       // Padding(
-                        //       //   padding: const EdgeInsets.only(right: 6.0),
-                        //       //   child: InkWell(
-                        //       //     onTap: (){
-                        //       //       setState(() {
-                        //       //         // int index1 = machineName
-                        //       //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                        //       //
-                        //       //         machineList.removeAt(index);
-                        //       //       });
-                        //       //
-                        //       //     },
-                        //       //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                        //       //   ),
-                        //       // ),
-                        //     ],
-                        //   ),
-                        // )
-                        //     : Container(),
+                        widget.serviceUserdataList![0].workCatgory != ""
+                            ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].workCatgory}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        )
+                            : Container(),
                         SizedBox(height: 7,),
 
                         Padding(
@@ -1530,63 +1530,63 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       ));
                                 })),
 
-                        // widget.serviceUserdataList![0].workSubCatgory != ""
-                        //     ?
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 10.0,top: 10),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Container(
-                        //           // height: 40,
-                        //           // width: MediaQuery.of(context).size.width/1.3,
-                        //           margin: EdgeInsets.all(2),
-                        //           // color: msgCount[index]>=10? Colors.blue[400]:
-                        //           child:Container(
-                        //             // height: 40,
-                        //             color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                        //             child: Padding(
-                        //               padding: const EdgeInsets.all(4.0),
-                        //               child: Row(
-                        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //                 children: [
-                        //                   Padding(
-                        //                     padding: const EdgeInsets.only(left: 3),
-                        //                     child: Container(
-                        //                       width: MediaQuery.of(context).size.width * 0.4,
-                        //                       child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
-                        //                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                        //                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //
-                        //                 ],
-                        //               ),
-                        //             ),
-                        //           )
-                        //
-                        //       ),
-                        //
-                        //       // Padding(
-                        //       //   padding: const EdgeInsets.only(right: 6.0),
-                        //       //   child: InkWell(
-                        //       //     onTap: (){
-                        //       //       setState(() {
-                        //       //         // int index1 = machineName
-                        //       //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                        //       //
-                        //       //         machineList.removeAt(index);
-                        //       //       });
-                        //       //
-                        //       //     },
-                        //       //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                        //       //   ),
-                        //       // ),
-                        //     ],
-                        //   ),
-                        // ) ,
-                        // : Container(),
+                        widget.serviceUserdataList![0].workSubCatgory != ""
+                            ?
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0,top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  // height: 40,
+                                  // width: MediaQuery.of(context).size.width/1.3,
+                                  margin: EdgeInsets.all(2),
+                                  // color: msgCount[index]>=10? Colors.blue[400]:
+                                  child:Container(
+                                    // height: 40,
+                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 3),
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
+                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  )
+
+                              ),
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(right: 6.0),
+                              //   child: InkWell(
+                              //     onTap: (){
+                              //       setState(() {
+                              //         // int index1 = machineName
+                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                              //
+                              //         machineList.removeAt(index);
+                              //       });
+                              //
+                              //     },
+                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        )
+                        : Container(),
 
                         SizedBox(height: 15,),
 
@@ -3376,6 +3376,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         .button!
                                         .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
                                   ) : Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
+                                      //: Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
 
                                 ),
                               )),

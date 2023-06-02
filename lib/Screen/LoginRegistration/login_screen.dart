@@ -20,6 +20,7 @@ import '../../Widget/app_button.dart';
 import '../../Widget/app_dialogs.dart';
 import '../JobWorkEnquiry/Home/home.dart';
 import '../bottom_navbar.dart';
+import 'forgot_password.dart';
 
 class LoginScreen extends StatefulWidget {
   final String? dropValue;
@@ -320,6 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 14),
                                   ),
                                   onPressed: () {
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ForgotPasswordScreen()));
                                     // Navigator.push(
                                     //         context,
                                     //         MaterialPageRoute(

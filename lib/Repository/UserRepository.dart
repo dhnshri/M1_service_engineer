@@ -83,6 +83,11 @@ class UserRepository {
     return await Api.getTransportDashboardCount(params);
   }
 
+  Future<dynamic> fetchForgotPassword({String? email}) async {
+    final params = {"email": email};
+    return await Api.getForgotPassword(params);
+  }
+
   Future<dynamic> registration(
       {String? fullname,
       String? createPassword,

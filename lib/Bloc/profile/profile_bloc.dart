@@ -36,6 +36,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             event.experienceCompanyList[j].expCompanyModel!.companyName;
         // innerObj["job_post"] =
         //     event.experienceCompanyList[j].expCompanyModel!.jobPost;
+        innerObj["job_post"] =
+            "service";
         innerObj["description"] =
             event.experienceCompanyList[j].expCompanyModel!.desciption;
         innerObj["work_from"] =
@@ -100,8 +102,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         "upi_id": event.upiId,
         "branch_name": event.bankName,
         "company_name": event.companyName,
+       // "job_post": jsonEncode(expCompanyList),
         "experience_companies": jsonEncode(expCompanyList),
-        // "educations": jsonEncode(educationList),
+       // "educations": jsonEncode(educationList),
         "educations": jsonEncode(educationList),
         "service_user_id": event.serviceUserId,
         // "certificate[]": files.toString()
@@ -146,7 +149,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result = ProfileRepo.fromJson(responseJson);
+      //ProfileRepo result = ProfileRepo.fromJson(responseJson);
+      ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
@@ -764,8 +768,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result = ProfileRepo.fromJson(responseJson);
-    //  ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
+     // ProfileRepo result = ProfileRepo.fromJson(responseJson);
+     ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
