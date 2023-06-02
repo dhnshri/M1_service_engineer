@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -775,6 +774,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       ),
                     ),
                   ),
+
                   //User Data
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
@@ -3232,138 +3232,50 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    if (educationForms.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please fill Education Forms");
-                                    }
-                                    else if (_nameController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter Name");
-                                    } else if (_emailController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter email");
-                                    }else if (_phoneController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter Phone Number");
-                                    }else if (_gstController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter GST number");
-                                    }else if (catrgoryTypeselected == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please Select Category");
-                                    }else if (subCatrgoryTypeselected == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please Select Sub Category");
-                                    }else if (_ageController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter Age");
-                                    }else if (_genderController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter gender");
-                                    }else if (_locationController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter location");
-                                    }else if (_pinCodeController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter pincode");
-                                    }else if (_cityController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter city");
-                                    }else if (_stateController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter state");
-                                    }else if (_yearsController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter year of experience");
-                                    }else if (_monthsController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter month of experience");
-                                    }else if (expCompanyForms.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please fill experience company forms");
-                                    }else if (educationForms.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please fill education forms");
-                                    }else if ( _bankNameController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter bank name");
-                                    }else if ( _accountNumberController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter account number");
-                                    }else if ( _iFSCCodeController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter IFSC Code");
-                                    }else if ( _branchNameController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter branch name");
-                                    }else if ( _upiIdController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter UPI id");
-                                    }else if (imageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Company Certificate");
-                                    }else if (gstImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload gst Certificate");
-                                    }else if (panImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Pancard Certificate");
-                                    }else if (shopActImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Shop Act Image File Certificate");
-                                    }else if (aadharImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Aadhar Card Certificate");
-                                    }
-                                     else{
-                                    // if (_formKey.currentState!.validate()) {
-                                        _profileBloc!.add(UpdateProfile(
-                                          certificate: educationForms,
-                                          serviceUserId: Application.customerLogin!.id
-                                              .toString(),
-                                          fullName: _nameController.text,
-                                          email: _emailController.text,
-                                          mobile: _phoneController.text,
-                                          gstNo: _gstController.text,
-                                          // catId:catrgoryTypeselected!.id.toString(),
-                                          // subCatId:subCatrgoryTypeselected!.serviceCategoryId.toString(),
-                                          catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
-                                          subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
-                                          age: _ageController.text,
-                                          gender: _genderController.text,
-                                          location: _locationController.text,
-                                          pincode: _pinCodeController.text,
-                                          city: _cityController.text,
-                                          state: _stateController.text,
-                                          yearOfExp: _yearsController.text,
-                                          monthOfExp: _monthsController.text,
-                                          experienceCompanyList: expCompanyForms,
-                                          educationList: educationForms,
-                                          bankName: _bankNameController.text,
-                                          accountNo: _accountNumberController.text,
-                                          ifscCode: _iFSCCodeController.text,
-                                          branchName: _branchNameController.text,
-                                          upiId: _upiIdController.text,
-                                          companyName: _companyNameController.text,
-                                          companyCertificateImg:
-                                          imageFile!.imagePath.toString(),
-                                          gstCertificateImg:
-                                          gstImageFile!.imagePath.toString(),
-                                          panCardImg:
-                                          panImageFile!.imagePath.toString(),
-                                          shopActLicenseImg:
-                                          shopActImageFile!.imagePath.toString(),
-                                          addharCardImg:
-                                          aadharImageFile!.imagePath.toString(),
-                                          currentAddress: _locationController.text,
-                                        ));
-                                     // }
-                                    //  else{
-                                    // showCustomSnackBar(context,'Please fill all details.',isError: true);
-                                    // }
-
-                                    }
-
+                                    // if(_formKey.currentState!.validate()) {
+                                    _profileBloc!.add(UpdateProfile(
+                                      certificate: educationForms,
+                                      serviceUserId: Application.customerLogin!.id
+                                          .toString(),
+                                      fullName: _nameController.text,
+                                      email: _emailController.text,
+                                      mobile: _phoneController.text,
+                                      gstNo: _gstController.text,
+                                      catId:catrgoryTypeselected!.id.toString(),
+                                      subCatId:subCatrgoryTypeselected!.serviceCategoryId.toString(),
+                                      //  catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
+                                      // subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
+                                      age: _ageController.text,
+                                      gender: _genderController.text,
+                                      location: _locationController.text,
+                                      pincode: _pinCodeController.text,
+                                      city: _cityController.text,
+                                      state: _stateController.text,
+                                      yearOfExp: _yearsController.text,
+                                      monthOfExp: _monthsController.text,
+                                      experienceCompanyList: expCompanyForms,
+                                      educationList: educationForms,
+                                      bankName: _bankNameController.text,
+                                      accountNo: _accountNumberController.text,
+                                      ifscCode: _iFSCCodeController.text,
+                                      branchName: _branchNameController.text,
+                                      upiId: _upiIdController.text,
+                                      companyName: _companyNameController.text,
+                                      companyCertificateImg:
+                                      imageFile!.imagePath.toString(),
+                                      gstCertificateImg:
+                                      gstImageFile!.imagePath.toString(),
+                                      panCardImg:
+                                      panImageFile!.imagePath.toString(),
+                                      shopActLicenseImg:
+                                      shopActImageFile!.imagePath.toString(),
+                                      addharCardImg:
+                                      aadharImageFile!.imagePath.toString(),
+                                      currentAddress: _locationController.text,
+                                    ));
+                                    // }else{
+                                    //     showCustomSnackBar(context,'Please fill all details.',isError: true);
+                                    //   }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: ThemeColors.defaultbuttonColor,

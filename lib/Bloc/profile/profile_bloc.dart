@@ -34,8 +34,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         var innerObj = {};
         innerObj["company_name"] =
             event.experienceCompanyList[j].expCompanyModel!.companyName;
-        innerObj["job_post"] =
-            event.experienceCompanyList[j].expCompanyModel!.jobPost;
+        // innerObj["job_post"] =
+        //     event.experienceCompanyList[j].expCompanyModel!.jobPost;
         innerObj["description"] =
             event.experienceCompanyList[j].expCompanyModel!.desciption;
         innerObj["work_from"] =
@@ -104,7 +104,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         // "educations": jsonEncode(educationList),
         "educations": jsonEncode(educationList),
         "service_user_id": event.serviceUserId,
-        "certificate[]": files.toString()
+        // "certificate[]": files.toString()
       };
 
       http.MultipartRequest _request = http.MultipartRequest(
@@ -420,7 +420,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result = ProfileRepo.fromJson(responseJson);
+      ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
@@ -765,6 +765,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final responseJson = json.decode(response.body);
       print(responseJson);
       ProfileRepo result = ProfileRepo.fromJson(responseJson);
+    //  ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
