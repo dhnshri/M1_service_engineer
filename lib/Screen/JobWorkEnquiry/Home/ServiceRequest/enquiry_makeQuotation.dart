@@ -369,6 +369,184 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
 
                   SizedBox(height: 20,),
 
+                  ///CGST Charges
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.8,
+                    height: 60,
+                    child: TextFormField(
+                      // initialValue: Application.customerLogin!.name.toString(),
+                      controller: cgstController,
+                      textAlign: TextAlign.start,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 1.5,
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: ThemeColors.textFieldBackgroundColor,
+                        hintText: "Add CGST",
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 15.0),
+                        hintStyle: TextStyle(fontSize: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor),
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(1.0)),
+                            borderSide: BorderSide(
+                                width: 0.8,
+                                color: ThemeColors.textFieldBackgroundColor)),
+                      ),
+                      validator: (value) {
+
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter CGST Charges';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        // profile.name = value;
+                        setState(() {
+                          // _nameController.text = value;
+                          if (_formKey.currentState!.validate()) {}
+                        });
+                      },
+                    ),
+                  ),
+
+                  ///SGST Charges
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.8,
+                    height: 60,
+                    child: TextFormField(
+                      // initialValue: Application.customerLogin!.name.toString(),
+                      controller: sgstController,
+                      textAlign: TextAlign.start,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 1.5,
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: ThemeColors.textFieldBackgroundColor,
+                        hintText: "Add SGST",
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 15.0),
+                        hintStyle: TextStyle(fontSize: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor),
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(1.0)),
+                            borderSide: BorderSide(
+                                width: 0.8,
+                                color: ThemeColors.textFieldBackgroundColor)),
+                      ),
+                      validator: (value) {
+
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter SGST Charges';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        // profile.name = value;
+                        setState(() {
+                          // _nameController.text = value;
+                          if (_formKey.currentState!.validate()) {}
+                        });
+                      },
+                    ),
+                  ),
+
+                  ///IGST Charges
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.8,
+                    height: 60,
+                    child: TextFormField(
+                      // initialValue: Application.customerLogin!.name.toString(),
+                      controller: igstController,
+                      textAlign: TextAlign.start,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 1.5,
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: ThemeColors.textFieldBackgroundColor,
+                        hintText: "Add IGST",
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 15.0),
+                        hintStyle: TextStyle(fontSize: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(1.0)),
+                          borderSide: BorderSide(
+                              width: 0.8,
+                              color: ThemeColors.textFieldBackgroundColor),
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(1.0)),
+                            borderSide: BorderSide(
+                                width: 0.8,
+                                color: ThemeColors.textFieldBackgroundColor)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter IGST Charges';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        // profile.name = value;
+                        setState(() {
+                          // _nameController.text = value;
+                          if (_formKey.currentState!.validate()) {}
+                        });
+                      },
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+
                   transportValue
                       ? Column(
                     children: [
@@ -608,183 +786,6 @@ class _EnquiryMakeQuotationScreenState extends State<EnquiryMakeQuotationScreen>
                     ],
                   )
                       : Container(),
-
-                  ///CGST Charges
-                  SizedBox(
-                    // width: MediaQuery.of(context).size.width * 0.8,
-                    height: 60,
-                    child: TextFormField(
-                      // initialValue: Application.customerLogin!.name.toString(),
-                      controller: cgstController,
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontSize: 18,
-                        height: 1.5,
-                      ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: ThemeColors.textFieldBackgroundColor,
-                        hintText: "Add CGST",
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 15.0),
-                        hintStyle: TextStyle(fontSize: 15),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(1.0)),
-                          borderSide: BorderSide(
-                              width: 0.8,
-                              color: ThemeColors.textFieldBackgroundColor
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(1.0)),
-                          borderSide: BorderSide(
-                              width: 0.8,
-                              color: ThemeColors.textFieldBackgroundColor),
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(1.0)),
-                            borderSide: BorderSide(
-                                width: 0.8,
-                                color: ThemeColors.textFieldBackgroundColor)),
-                      ),
-                      validator: (value) {
-
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter CGST Charges';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        // profile.name = value;
-                        setState(() {
-                          // _nameController.text = value;
-                          if (_formKey.currentState!.validate()) {}
-                        });
-                      },
-                    ),
-                  ),
-
-                  ///SGST Charges
-                  SizedBox(
-                    // width: MediaQuery.of(context).size.width * 0.8,
-                    height: 60,
-                    child: TextFormField(
-                      // initialValue: Application.customerLogin!.name.toString(),
-                      controller: sgstController,
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontSize: 18,
-                        height: 1.5,
-                      ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: ThemeColors.textFieldBackgroundColor,
-                        hintText: "Add SGST",
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 15.0),
-                        hintStyle: TextStyle(fontSize: 15),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(1.0)),
-                          borderSide: BorderSide(
-                              width: 0.8,
-                              color: ThemeColors.textFieldBackgroundColor
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(1.0)),
-                          borderSide: BorderSide(
-                              width: 0.8,
-                              color: ThemeColors.textFieldBackgroundColor),
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(1.0)),
-                            borderSide: BorderSide(
-                                width: 0.8,
-                                color: ThemeColors.textFieldBackgroundColor)),
-                      ),
-                      validator: (value) {
-
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter SGST Charges';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        // profile.name = value;
-                        setState(() {
-                          // _nameController.text = value;
-                          if (_formKey.currentState!.validate()) {}
-                        });
-                      },
-                    ),
-                  ),
-
-                  ///IGST Charges
-                   SizedBox(
-                     // width: MediaQuery.of(context).size.width * 0.8,
-                     height: 60,
-                     child: TextFormField(
-                       // initialValue: Application.customerLogin!.name.toString(),
-                       controller: igstController,
-                       textAlign: TextAlign.start,
-                       keyboardType: TextInputType.number,
-                       style: TextStyle(
-                         fontSize: 18,
-                         height: 1.5,
-                       ),
-                       decoration: InputDecoration(
-                         filled: true,
-                         fillColor: ThemeColors.textFieldBackgroundColor,
-                         hintText: "Add IGST",
-                         contentPadding: EdgeInsets.symmetric(
-                             vertical: 10.0, horizontal: 15.0),
-                         hintStyle: TextStyle(fontSize: 15),
-                         enabledBorder: OutlineInputBorder(
-                           borderRadius:
-                           BorderRadius.all(Radius.circular(1.0)),
-                           borderSide: BorderSide(
-                               width: 0.8,
-                               color: ThemeColors.textFieldBackgroundColor
-                           ),
-                         ),
-                         focusedBorder: OutlineInputBorder(
-                           borderRadius:
-                           BorderRadius.all(Radius.circular(1.0)),
-                           borderSide: BorderSide(
-                               width: 0.8,
-                               color: ThemeColors.textFieldBackgroundColor),
-                         ),
-                         border: OutlineInputBorder(
-                             borderRadius:
-                             BorderRadius.all(Radius.circular(1.0)),
-                             borderSide: BorderSide(
-                                 width: 0.8,
-                                 color: ThemeColors.textFieldBackgroundColor)),
-                       ),
-                       validator: (value) {
-                         if (value == null || value.isEmpty) {
-                           return 'Please enter IGST Charges';
-                         }
-                         return null;
-                       },
-                       onChanged: (value) {
-                         // profile.name = value;
-                         setState(() {
-                           // _nameController.text = value;
-                           if (_formKey.currentState!.validate()) {}
-                         });
-                       },
-                     ),
-                   ),
-
 
                   ///Speed Dial Button
                   Row(

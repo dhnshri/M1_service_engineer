@@ -223,7 +223,9 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                                   double.parse(quotationDetailList![0].serviceCharge.toString());
 
                               grandTotal = quotationChargesTotal + double.parse(quotationChargesList![0].commission.toString()) +
-                                  double.parse(quotationChargesList![0].gst.toString());
+                                  double.parse(quotationChargesList![0].cgst.toString())+
+                                  double.parse(quotationChargesList![0].sgst.toString())+
+                                  double.parse(quotationChargesList![0].igst.toString());
 
                               return _getVehicleDataRow(vehicleList![index],itemNo);
                             }),),
@@ -408,8 +410,26 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("GST "),
-                              Text("₹ ${quotationChargesList![0].gst}"),
+                              Text("CGST "),
+                              Text("₹ ${quotationChargesList![0].cgst}"),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("SGST "),
+                              Text("₹ ${quotationChargesList![0].sgst}"),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("IGST "),
+                              Text("₹ ${quotationChargesList![0].igst}"),
                             ],
                           ),
                           Divider(),

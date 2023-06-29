@@ -32,12 +32,19 @@ class QuotationFor extends StatefulWidget {
   // String dropdownValue4;
   TextEditingController ServiceCallChargesController = TextEditingController();
   TextEditingController HandlingChargesController = TextEditingController();
-  TextEditingController gstController = TextEditingController();
+ // TextEditingController gstController = TextEditingController();
+  TextEditingController cgstController = TextEditingController();
+  TextEditingController sgstController = TextEditingController();
+  TextEditingController igstController = TextEditingController();
 
   QuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
     required this.vehicleNumberselected,required this.HandlingChargesController,
-    required this.ServiceCallChargesController,required this.gstController,
-    required this.requestDetailList,}) : super(key: key,);
+    required this.ServiceCallChargesController,
+    required this.cgstController,
+    required this.sgstController,
+    required this.igstController,
+    required this.requestDetailList,
+  }) : super(key: key,);
 
   TransportDetailsModel? requestDetailList;
 
@@ -222,7 +229,8 @@ class QuotationForState extends State<QuotationFor> {
     int sum = int.parse(widget.ServiceCallChargesController.text) +
         int.parse(widget.HandlingChargesController.text);
 
-    double totalQuotation = 100/100+(int.parse(widget.gstController.text))+sum+commission;
+    double totalQuotation = 100/100+(int.parse(widget.cgstController.text))+(int.parse(widget.sgstController.text))
+        +(int.parse(widget.igstController.text))+sum+commission;
 
     String gstNumber = '07AAGFF2194N1Z1';
 
@@ -342,7 +350,9 @@ class QuotationForState extends State<QuotationFor> {
                                     gst_no:gstNumber.toString(),
                                     commision: commission.toString(),
                                     total_amount:totalQuotation.toString(),
-                                    gst:widget.gstController.text.toString(),
+                                    cgst:widget.cgstController.text.toString(),
+                                    sgst:widget.sgstController.text.toString(),
+                                    igst:widget.igstController.text.toString(),
                                   ));
                                 },
                                 style: TextButton.styleFrom(
@@ -570,8 +580,26 @@ class QuotationForState extends State<QuotationFor> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("GST "),
-                          Text('${widget.gstController.text.toString()} ₹',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("CGST "),
+                          Text('${widget.cgstController.text.toString()} ₹',style: TextStyle(fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("SGST "),
+                          Text('${widget.sgstController.text.toString()} ₹',style: TextStyle(fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("IGST "),
+                          Text('${widget.igstController.text.toString()} ₹',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
 

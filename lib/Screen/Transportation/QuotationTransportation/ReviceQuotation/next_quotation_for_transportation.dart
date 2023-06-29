@@ -33,13 +33,22 @@ class NextQuotationFor extends StatefulWidget {
   VehicleNumberModel? vehicleNumberselected;
   TextEditingController ServiceCallChargesController = TextEditingController();
   TextEditingController HandlingChargesController = TextEditingController();
-  TextEditingController gstChargesController = TextEditingController();
+  TextEditingController cgstChargesController = TextEditingController();
+  TextEditingController sgstChargesController = TextEditingController();
+  TextEditingController igstChargesController = TextEditingController();
   List<CustomerReplyMsg>? quotationMsgList;
 
-  NextQuotationFor({Key? key,required this.vehicleNameselected,required this.vehicleTypeselected,
-    required this.vehicleNumberselected,required this.HandlingChargesController,
-    required this.ServiceCallChargesController,required this.gstChargesController,
-    required this.requestDetailList,required this.quotationMsgList}) : super(key: key,);
+  NextQuotationFor({Key? key,
+    required this.vehicleNameselected,
+    required this.vehicleTypeselected,
+    required this.vehicleNumberselected,
+    required this.HandlingChargesController,
+    required this.ServiceCallChargesController,
+    required this.cgstChargesController,
+    required this.sgstChargesController,
+    required this.igstChargesController,
+    required this.requestDetailList,
+    required this.quotationMsgList}) : super(key: key,);
 
   QuotationReplyTransportModel? requestDetailList;
 
@@ -225,7 +234,9 @@ class NextQuotationForState extends State<NextQuotationFor> {
     int sum = int.parse(widget.ServiceCallChargesController.text) +
         int.parse(widget.HandlingChargesController.text);
 
-    double totalQuotation = 100/100+(int.parse(widget.gstChargesController.text))+sum+commission;
+    double totalQuotation = 100/100 +(int.parse(widget.cgstChargesController.text))
+        +(int.parse(widget.sgstChargesController.text))
+        +(int.parse(widget.igstChargesController.text))+sum+commission;
 
     String gstNumber = '07AAGFF2194N1Z1';
 
@@ -316,7 +327,9 @@ class NextQuotationForState extends State<NextQuotationFor> {
                                     gst_no:gstNumber.toString(),
                                     commision: commission.toString(),
                                     total_amount:totalQuotation.toString(),
-                                    gst:widget.gstChargesController.text.toString(),
+                                    cgst:widget.cgstChargesController.text.toString(),
+                                    sgst:widget.sgstChargesController.text.toString(),
+                                    igst:widget.igstChargesController.text.toString(),
                                   ));
                                 },
                                 style: TextButton.styleFrom(
@@ -543,8 +556,26 @@ class NextQuotationForState extends State<NextQuotationFor> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("GST "),
-                          Text('₹ ${widget.gstChargesController.text.toString()} ',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("CGST "),
+                          Text('₹ ${widget.cgstChargesController.text.toString()} ',style: TextStyle(fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("SGST "),
+                          Text('₹ ${widget.sgstChargesController.text.toString()} ',style: TextStyle(fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("IGST "),
+                          Text('₹ ${widget.igstChargesController.text.toString()} ',style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
 

@@ -57,14 +57,18 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
   final TextEditingController _serviceCallChargesController = TextEditingController();
   final TextEditingController _clientMessageController = TextEditingController();
   final TextEditingController _handlingChargesController = TextEditingController();
-  final TextEditingController _gstChargesController = TextEditingController();
+  final TextEditingController _cgstChargesController = TextEditingController();
+  final TextEditingController _sgstChargesController = TextEditingController();
+  final TextEditingController _igstChargesController = TextEditingController();
    final GlobalKey<ExpansionTileCardState> cardMessage = new GlobalKey();
 
   getData()
   {
     _serviceCallChargesController.text = widget.quotationDetailList![0].serviceCharge.toString();
     _handlingChargesController.text = widget.quotationDetailList![0].handlingCharge.toString();
-    _gstChargesController.text = widget.quotationChargesList![0].gst.toString();
+    _cgstChargesController.text = widget.quotationChargesList![0].cgst.toString();
+    _sgstChargesController.text = widget.quotationChargesList![0].sgst.toString();
+    _igstChargesController.text = widget.quotationChargesList![0].igst.toString();
   //  _clientMessageController.text = widget.quotationMsgList![0].message.toString();
     //vehicleNameselected!.vehicleName= widget.vehicleList![0].vehicleName.toString();
     //getVehicleNameData();
@@ -122,8 +126,12 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
               showCustomSnackBar(context,'Please add Handling Charges.',isError: true);
             }else if(_serviceCallChargesController.text==""){
               showCustomSnackBar(context,'Please add Service Charges.',isError: true);
-            }else if(_gstChargesController.text==""){
-              showCustomSnackBar(context,'Please add GST Charges.',isError: true);
+            }else if(_cgstChargesController.text==""){
+              showCustomSnackBar(context,'Please add CGST Charges.',isError: true);
+            }else if(_sgstChargesController.text==""){
+              showCustomSnackBar(context,'Please add SGST Charges.',isError: true);
+            }else if(_igstChargesController.text==""){
+              showCustomSnackBar(context,'Please add IGST Charges.',isError: true);
             }else {
               Navigator.pushReplacement(
                   context,
@@ -136,7 +144,9 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
                                 _handlingChargesController,
                             ServiceCallChargesController:
                                 _serviceCallChargesController,
-                        gstChargesController: _gstChargesController,
+                        cgstChargesController: _cgstChargesController,
+                        sgstChargesController: _sgstChargesController,
+                        igstChargesController: _igstChargesController,
                             requestDetailList: widget.serviceRequestData,
                             quotationMsgList: widget.quotationMsgList,
                           )));
@@ -494,7 +504,7 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
 
             Padding(
               padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-              child: Text("GST",
+              child: Text("CGST",
                 style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                 textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
               ),
@@ -504,7 +514,7 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: _gstChargesController,
+                controller: _cgstChargesController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -548,7 +558,153 @@ class _ReviceQuotationTransposationScreenState extends State<ReviceQuotationTran
                       width: 1.0,
                     ),
                   ),
-                  hintText: 'GST Charges',
+                  hintText: 'CGST Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("SGST",
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: _sgstChargesController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'SGST Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, bottom: 10),
+              child: Text("IGST",
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
+                textAlign: TextAlign.start, maxLines: 2, overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: _igstChargesController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'IGST Charges',
                   contentPadding: const EdgeInsets.fromLTRB(
                       20.0, 20.0, 0.0, 0.0),
                   hintStyle: GoogleFonts.poppins(

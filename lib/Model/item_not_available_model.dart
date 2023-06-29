@@ -5,6 +5,9 @@ class ItemNotAvailableModel {
   String? rate;
   String? amount;
   String? gst;
+  String? cgst;
+  String? sgst;
+  String? igst;
 
 
   ItemNotAvailableModel({
@@ -14,6 +17,9 @@ class ItemNotAvailableModel {
     this.rate,
     this.amount,
     this.gst,
+    this.cgst,
+    this.sgst,
+    this.igst
   });
 
   ItemNotAvailableModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +29,9 @@ class ItemNotAvailableModel {
     rate = json['rate'];
     amount = json['amount'];
     gst = json['gst'];
+    cgst = json['cgst'];
+    sgst = json['sgst'];
+    igst = json['igst'];
 
   }
 
@@ -34,6 +43,9 @@ class ItemNotAvailableModel {
     data['rate'] = this.rate;
     data['amount'] = this.amount;
     data['gst'] = this.gst;
+    data['cgst'] = this.cgst;
+    data['sgst'] = this.sgst;
+    data['igst'] = this.igst;
 
     return data;
   }

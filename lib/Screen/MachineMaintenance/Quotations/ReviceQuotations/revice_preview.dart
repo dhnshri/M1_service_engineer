@@ -21,7 +21,10 @@ class RevisedQuotationPreviewScreen extends StatefulWidget {
   TextEditingController handlingChargesController = TextEditingController();
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
-  TextEditingController gstChargesController = TextEditingController();
+ // TextEditingController gstChargesController = TextEditingController();
+  TextEditingController cgstChargesController = TextEditingController();
+  TextEditingController sgstChargesController = TextEditingController();
+  TextEditingController igstChargesController = TextEditingController();
   RevisedQuotationPreviewScreen(
       {Key? key,
       required this.cartList,
@@ -32,7 +35,11 @@ class RevisedQuotationPreviewScreen extends StatefulWidget {
       required this.handlingChargesController,
       required this.transportChargesController,
       required this.otherChargesController,
-      required this.gstChargesController})
+      //required this.gstChargesController,
+        required this.cgstChargesController,
+        required this.sgstChargesController,
+        required this.igstChargesController,
+      })
       : super(key: key);
 
   @override
@@ -52,9 +59,15 @@ class _RevisedQuotationPreviewScreenState
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
 
   double? amount = 0;
+  double? camount = 0;
+  double? samount = 0;
+  double? iamount = 0;
   double? amountWithGST = 0;
   double? itemRequiredTotalAmount = 0;
   double? oterItemsAmount = 0;
+  double? oterItemscAmount = 0;
+  double? oterItemssAmount = 0;
+  double? oterItemsiAmount = 0;
   double? otherItemsAmountWithGST = 0;
   double? otherItemTotalAmount = 0;
   int? commission = 0;
@@ -94,7 +107,9 @@ class _RevisedQuotationPreviewScreenState
             int.parse(widget.transportChargesController.text.toString()) +
             commission! +
             int.parse(widget.handlingChargesController.text.toString()) +
-            int.parse(widget.gstChargesController.text.toString());
+            int.parse(widget.cgstChargesController.text.toString()) +
+            int.parse(widget.igstChargesController.text.toString()) +
+            int.parse(widget.sgstChargesController.text.toString());
     AppBloc.authBloc.add(OnSaveMaintainenceRevisedTotalAmount(totalAmount));
 
     setState(() {});
@@ -179,12 +194,32 @@ class _RevisedQuotationPreviewScreenState
                           ),
                         ],
                         rows: List.generate(widget.cartList!.length, (index) {
-                          amount = int.parse(
-                                      widget.cartList![index].rate.toString()) *
-                                  100 /
-                                  100 +
-                              int.parse(widget.cartList![index].gst.toString());
-                          amountWithGST = amount! *
+                          // amount = int.parse(
+                          //             widget.cartList![index].rate.toString()) *
+                          //         100 /
+                          //         100 +
+                          //     int.parse(widget.cartList![index].gst.toString());
+
+                          camount = int.parse(
+                              widget.cartList![index].rate.toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.cartList![index].cgst.toString());
+
+                          samount = int.parse(
+                              widget.cartList![index].rate.toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.cartList![index].sgst.toString());
+
+                          iamount = int.parse(
+                              widget.cartList![index].rate.toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.cartList![index].igst.toString());
+
+
+                          amountWithGST = camount! + samount! + iamount! *
                               int.parse(
                                   widget.cartList![index].quantity.toString());
                           setState(() {
@@ -291,15 +326,31 @@ class _RevisedQuotationPreviewScreenState
                         ],
                         rows: List.generate(widget.itemNotAvailableList.length,
                             (index) {
-                          oterItemsAmount = double.parse(widget
+                          oterItemscAmount = double.parse(widget
                                       .itemNotAvailableList[index].rate
                                       .toString()) *
                                   100 /
                                   100 +
-                              int.parse(widget.itemNotAvailableList[index].gst
+                              int.parse(widget.itemNotAvailableList[index].cgst
                                   .toString());
 
-                          otherItemsAmountWithGST = oterItemsAmount! *
+                          oterItemssAmount = double.parse(widget
+                              .itemNotAvailableList[index].rate
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.itemNotAvailableList[index].sgst
+                                  .toString());
+
+                          oterItemsiAmount = double.parse(widget
+                              .itemNotAvailableList[index].rate
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.itemNotAvailableList[index].igst
+                                  .toString());
+
+                          otherItemsAmountWithGST = oterItemscAmount! + oterItemssAmount! + oterItemsiAmount! *
                               int.parse(widget
                                   .itemNotAvailableList[index].quantity
                                   .toString());
@@ -464,10 +515,34 @@ class _RevisedQuotationPreviewScreenState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("GST "),
-                      Text(widget.gstChargesController.text == ''
+                      Text("CGST "),
+                      Text(widget.cgstChargesController.text == ''
                           ? "₹ 0"
-                          : "₹ ${widget.gstChargesController.text}"),
+                          : "₹ ${widget.cgstChargesController.text}"),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("SGST "),
+                      Text(widget.sgstChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.sgstChargesController.text}"),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("IGST "),
+                      Text(widget.igstChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.igstChargesController.text}"),
                     ],
                   ),
                   Divider(),

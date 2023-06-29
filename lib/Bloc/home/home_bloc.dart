@@ -1462,9 +1462,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       for(int j = 0; j < event.itemList.length; j++){
 
         var innerObj ={};
-        double amount = int.parse(event.itemList[j].discountPrice.toString()) * 100/100+int.parse(event.itemList[j].gst.toString());
+       // double amount = int.parse(event.itemList[j].discountPrice.toString()) * 100/100+int.parse(event.itemList[j].gst.toString());
+        double camount = int.parse(event.itemList[j].discountPrice.toString()) * 100/100+int.parse(event.itemList[j].cgst.toString());
+        double samount = int.parse(event.itemList[j].discountPrice.toString()) * 100/100+int.parse(event.itemList[j].sgst.toString());
+        double iamount = int.parse(event.itemList[j].discountPrice.toString()) * 100/100+int.parse(event.itemList[j].igst.toString());
 
-        double amountWithGST = amount *
+        double amountWithGST = camount +samount + iamount *
             int.parse(event.itemList[j].qty.toString());
 
         innerObj["item_id"] = event.itemList[j].productId;
@@ -1472,7 +1475,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         innerObj["item_size"] = '';
         innerObj["rate"] = event.itemList[j].discountPrice;
         innerObj["amount"] = amountWithGST;
-        innerObj["gst"] = event.itemList[j].gst;
+      //  innerObj["gst"] = event.itemList[j].gst;
+        innerObj["cgst"] = event.itemList[j].cgst;
+        innerObj["sgst"] = event.itemList[j].sgst;
+        innerObj["igst"] = event.itemList[j].igst;
+        // innerObj["cgst"] = '0';
+        // innerObj["sgst"] = '0';
+        // innerObj["igst"] = '0';
         itemList.add(innerObj);
       }
 
@@ -1485,7 +1494,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         innerObj["item_size"] = '';
         innerObj["rate"] = event.itemNotAvailableList[j].rate;
         innerObj["amount"] = event.itemNotAvailableList[j].amount;
-        innerObj["gst"] = event.itemNotAvailableList[j].gst;
+       // innerObj["gst"] = event.itemNotAvailableList[j].gst;
+        innerObj["cgst"] = event.itemNotAvailableList[j].cgst;
+        innerObj["sgst"] = event.itemNotAvailableList[j].sgst;
+        innerObj["igst"] = event.itemNotAvailableList[j].igst;
+        // innerObj["cgst"] = '0';
+        // innerObj["sgst"] = '0';
+        // innerObj["igst"] = '0';
         itemNotAvalList.add(innerObj);
       }
 
@@ -1694,7 +1709,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         "vehicle_number": event.vehicleNumber,
         "vehicle_name":event.vehicleName,
         "vehicle_type":event.vehicleType,
-        "gst":event.gst,
+        "cgst":event.cgst,
+        "sgst":event.sgst,
+        "igst":event.igst,
         "service_charge":event.serviceCharges == "" ? '0' : event.serviceCharges,
         "handling_charge":event.handlingCharges == "" ? '0' : event.handlingCharges,
         "commission": event.commision == "" ? '0' : event.commision,

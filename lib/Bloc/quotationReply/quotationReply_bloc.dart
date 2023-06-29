@@ -136,9 +136,12 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
       for(int j = 0; j < event.itemList.length; j++){
 
         var innerObj ={};
-        double amount = int.parse(event.itemList[j].rate.toString()) * 100/100+int.parse(event.itemList[j].gst.toString());
+        //double amount = int.parse(event.itemList[j].rate.toString()) * 100/100+int.parse(event.itemList[j].gst.toString());
+        double camount = int.parse(event.itemList[j].rate.toString()) * 100/100+int.parse(event.itemList[j].cgst.toString());
+        double samount = int.parse(event.itemList[j].rate.toString()) * 100/100+int.parse(event.itemList[j].sgst.toString());
+        double iamount = int.parse(event.itemList[j].rate.toString()) * 100/100+int.parse(event.itemList[j].igst.toString());
 
-        double amountWithGST = amount *
+        double amountWithGST = camount + samount + iamount *
             int.parse(event.itemList[j].quantity.toString());
 
         innerObj["item_id"] = event.itemList[j].itemName;
@@ -146,7 +149,10 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
         innerObj["item_size"] = '';
         innerObj["rate"] = event.itemList[j].rate;
         innerObj["amount"] = amountWithGST;
-        innerObj["gst"] = event.itemList[j].gst;
+        //innerObj["gst"] = event.itemList[j].gst;
+        innerObj["cgst"] = event.itemList[j].cgst;
+        innerObj["sgst"] = event.itemList[j].sgst;
+        innerObj["igst"] = event.itemList[j].igst;
         itemList.add(innerObj);
       }
 
@@ -159,7 +165,10 @@ class QuotationReplyBloc extends Bloc<QuotationReplyEvent, QuotationReplyState> 
         innerObj["item_size"] = '';
         innerObj["rate"] = event.itemNotAvailableList[j].rate;
         innerObj["amount"] = event.itemNotAvailableList[j].amount;
-        innerObj["gst"] = event.itemNotAvailableList[j].gst;
+        // innerObj["gst"] = event.itemNotAvailableList[j].gst;
+        innerObj["cgst"] = event.itemNotAvailableList[j].cgst;
+        innerObj["sgst"] = event.itemNotAvailableList[j].sgst;
+        innerObj["igst"] = event.itemNotAvailableList[j].igst;
         itemNotAvalList.add(innerObj);
       }
 

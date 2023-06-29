@@ -75,6 +75,9 @@ class _MachineRevisedQuotationScreenState
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
   TextEditingController gstChargesController = TextEditingController();
+  TextEditingController cgstChargesController = TextEditingController();
+  TextEditingController sgstChargesController = TextEditingController();
+  TextEditingController igstChargesController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   final TextEditingController _srNumberController = TextEditingController();
   final TextEditingController _itemNameController = TextEditingController();
@@ -82,6 +85,9 @@ class _MachineRevisedQuotationScreenState
   final TextEditingController _rateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
+  final TextEditingController _cgstController = TextEditingController();
+  final TextEditingController _sgstController = TextEditingController();
+  final TextEditingController _igstController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
 
@@ -109,8 +115,14 @@ class _MachineRevisedQuotationScreenState
 
       double amount = int.parse(_rateController.text) * 100 / 100 +
           int.parse(_gstController.text);
+      double camount = int.parse(_rateController.text) * 100 / 100 +
+          int.parse(_cgstController.text);
+      double samount = int.parse(_rateController.text) * 100 / 100 +
+          int.parse(_sgstController.text);
+      double iamount = int.parse(_rateController.text) * 100 / 100 +
+          int.parse(_igstController.text);
 
-      double amountWithGST = amount * int.parse(_quantityController.text);
+      double amountWithGST = camount + samount + iamount * int.parse(_quantityController.text);
 
       itemNotAvailabeList.add(ItemNotAvailableModel(
           id: itemNotAvailabeList.length,
@@ -118,7 +130,10 @@ class _MachineRevisedQuotationScreenState
           quantity: _quantityController.text,
           amount: amountWithGST.toString(),
           rate: _rateController.text,
-          gst: _gstController.text));
+          cgst: _cgstController.text,
+        sgst: _sgstController.text,
+        igst: _igstController.text,
+      ));
     });
   }
 
@@ -668,7 +683,7 @@ class _MachineRevisedQuotationScreenState
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
                   child: TextFormField(
-                    controller: _gstController,
+                    controller: _cgstController,
                     keyboardType: TextInputType.number,
                     // maxLength: 10,
                     cursorColor: primaryAppColor,
@@ -707,9 +722,125 @@ class _MachineRevisedQuotationScreenState
                           width: 1.0,
                         ),
                       ),
-                      hintText: 'Add GST',
+                      hintText: 'Add CGST',
                       contentPadding:
                           const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if (_formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _sgstController,
+                    keyboardType: TextInputType.number,
+                    // maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Add SGST',
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if (_formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _igstController,
+                    keyboardType: TextInputType.number,
+                    // maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Add IGST',
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                       hintStyle: GoogleFonts.poppins(
                           color: Colors.grey,
                           fontSize: 12.0,
@@ -730,7 +861,9 @@ class _MachineRevisedQuotationScreenState
                         print(itemNotAvailabeList);
                         _itemNameController.clear();
                         _rateController.clear();
-                        _gstController.clear();
+                        _cgstController.clear();
+                        _sgstController.clear();
+                        _igstController.clear();
                         _quantityController.clear();
                         Navigator.of(context).pop();
                         showCustomSnackBar(context, 'Item Added Successfully',
@@ -810,7 +943,10 @@ class _MachineRevisedQuotationScreenState
               transportChargesController: transportChargesController,
               otherChargesController: otherChargesController,
               handlingChargesController: handlingChargesController,
-              gstChargesController: gstChargesController),
+              cgstChargesController: cgstChargesController,
+            sgstChargesController: sgstChargesController,
+            igstChargesController: igstChargesController,
+          ),
         ),
       ];
 
@@ -834,7 +970,9 @@ class _MachineRevisedQuotationScreenState
         widget.quotationChargesList![0].handlingCharge.toString();
     transportChargesController.text =
         widget.quotationChargesList![0].transportCharge.toString();
-    gstChargesController.text = widget.quotationChargesList![0].gst.toString();
+    cgstChargesController.text = widget.quotationChargesList![0].cgst.toString();
+    sgstChargesController.text = widget.quotationChargesList![0].sgst.toString();
+    igstChargesController.text = widget.quotationChargesList![0].igst.toString();
     int itemIndex = 0;
     for (int i = 0; i < widget.quotationOtherItemList!.length; i++) {
       itemIndex = itemIndex + 1;
@@ -843,7 +981,9 @@ class _MachineRevisedQuotationScreenState
           itemName: widget.quotationOtherItemList![i].itemName,
           rate: widget.quotationOtherItemList![i].rate.toString(),
           quantity: widget.quotationOtherItemList![i].itemQty.toString(),
-          gst: widget.quotationOtherItemList![i].gst.toString(),
+          cgst: widget.quotationOtherItemList![i].cgst.toString(),
+          sgst: widget.quotationOtherItemList![i].sgst.toString(),
+          igst: widget.quotationOtherItemList![i].igst.toString(),
           amount: widget.quotationOtherItemList![i].amount.toString()));
     }
     for (int i = 0; i < widget.quotationRequiredItemList!.length; i++) {
@@ -852,7 +992,10 @@ class _MachineRevisedQuotationScreenState
           itemName: widget.quotationRequiredItemList![i].itemName,
           rate: widget.quotationRequiredItemList![i].rate.toString(),
           quantity: widget.quotationRequiredItemList![i].itemQty.toString(),
-          gst: widget.quotationRequiredItemList![i].gst.toString(),
+         // gst: widget.quotationRequiredItemList![i].gst.toString(),
+          cgst: widget.quotationRequiredItemList![i].cgst.toString(),
+          sgst: widget.quotationRequiredItemList![i].sgst.toString(),
+          igst: widget.quotationRequiredItemList![i].igst.toString(),
           amount: widget.quotationRequiredItemList![i].amount.toString()));
       cartList!.add(CartListModel());
     }
@@ -866,7 +1009,9 @@ class _MachineRevisedQuotationScreenState
     _quantityController.dispose();
     _amountController.dispose();
     _itemNameController.dispose();
-    _gstController.dispose();
+    _cgstController.dispose();
+    _sgstController.dispose();
+    _igstController.dispose();
   }
 
   @override
@@ -1344,7 +1489,7 @@ class _MachineRevisedQuotationScreenState
             ),
           ),
 
-          Text('GST',
+          Text('CGST',
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Poppins',
@@ -1354,12 +1499,12 @@ class _MachineRevisedQuotationScreenState
             height: 5,
           ),
 
-          ///GST Field
+          ///CGST Field
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: 60,
             child: TextFormField(
-              controller: gstChargesController,
+              controller: cgstChargesController,
               keyboardType: TextInputType.number,
               // maxLength: 10,
               cursorColor: primaryAppColor,
@@ -1397,7 +1542,141 @@ class _MachineRevisedQuotationScreenState
                     width: 1.0,
                   ),
                 ),
-                hintText: 'GST',
+                hintText: 'CGST',
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                hintStyle: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500),
+              ),
+              onChanged: (val) {
+                setState(() {
+                  // _phoneNumberController.text = val;
+                });
+              },
+            ),
+          ),
+          Text('SGST',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
+
+          ///SCGST Field
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 60,
+            child: TextFormField(
+              controller: sgstChargesController,
+              keyboardType: TextInputType.number,
+              // maxLength: 10,
+              cursorColor: primaryAppColor,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: Color(0xffF5F5F5),
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                hintText: 'SGST',
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                hintStyle: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500),
+              ),
+              onChanged: (val) {
+                setState(() {
+                  // _phoneNumberController.text = val;
+                });
+              },
+            ),
+          ),
+          Text('IGST',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
+
+          ///IGST Field
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 60,
+            child: TextFormField(
+              controller: igstChargesController,
+              keyboardType: TextInputType.number,
+              // maxLength: 10,
+              cursorColor: primaryAppColor,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: Color(0xffF5F5F5),
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                hintText: 'IGST',
                 contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                 hintStyle: GoogleFonts.poppins(
                     color: Colors.grey,

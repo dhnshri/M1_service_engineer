@@ -79,8 +79,11 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
 
   TotalAmount(){
     grandTotal = itemRequiredTotal + itemOthersTotal + double.parse(quotationChargesList![0].serviceCharge.toString()) +
-        double.parse(quotationChargesList![0].transportCharge.toString()) + double.parse(quotationChargesList![0].commission.toString()) +
-        double.parse(quotationChargesList![0].gst.toString());
+        double.parse(quotationChargesList![0].transportCharge.toString()) +
+        double.parse(quotationChargesList![0].commission.toString()) +
+        double.parse(quotationChargesList![0].igst.toString()) +
+        double.parse(quotationChargesList![0].sgst.toString()) +
+        double.parse(quotationChargesList![0].cgst.toString());
     setState(() {
 
     });
@@ -487,8 +490,26 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("GST "),
-                              Text("₹ ${quotationChargesList![0].gst}"),
+                              Text("CGST "),
+                              Text("₹ ${quotationChargesList![0].cgst}"),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("SGST "),
+                              Text("₹ ${quotationChargesList![0].sgst}"),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("IGST "),
+                              Text("₹ ${quotationChargesList![0].igst}"),
                             ],
                           ),
                           Divider(),
