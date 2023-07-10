@@ -30,10 +30,14 @@ import '../../LoginRegistration/signUpAs.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-
 class MachineProfileScreen extends StatefulWidget {
-  MachineProfileScreen({Key? key,required this.serviceUserdataList,required this.profileKycList,
-    required this.profileMachineEducationList,required this.profileMachineExperienceList}) : super(key: key);
+  MachineProfileScreen(
+      {Key? key,
+      required this.serviceUserdataList,
+      required this.profileKycList,
+      required this.profileMachineEducationList,
+      required this.profileMachineExperienceList})
+      : super(key: key);
   List<ServiceUserData>? serviceUserdataList;
   List<ProfileKYCDetails>? profileKycList;
   List<MachineMaintenanceExperiences>? profileMachineExperienceList;
@@ -111,15 +115,12 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   List<ExpCompanyFormWidget> expCompanyForms = List.empty(growable: true);
 
-
   final List<String> machineName = [];
   final List<String> quantity = [];
 
   ProfileBloc? _profileBloc;
   MachineMaintenanceCategoryListModel? catrgoryTypeselected;
   MachineMaintenanceSubCategoryListModel? subCatrgoryTypeselected;
-
-
 
   @override
   void initState() {
@@ -139,58 +140,77 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     getData();
   }
 
-  getData()async{
-    if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
+  getData() async {
+    if (widget.serviceUserdataList!.isNotEmpty ||
+        widget.profileKycList!.isNotEmpty) {
       _iDController.text = widget.serviceUserdataList![0].email.toString();
-      _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
+      _companyNameController.text =
+          widget.serviceUserdataList![0].companyName.toString();
       _nameController.text = widget.serviceUserdataList![0].name.toString();
       _emailController.text = widget.serviceUserdataList![0].email.toString();
       _phoneController.text = widget.serviceUserdataList![0].mobile.toString();
       _gstController.text = widget.serviceUserdataList![0].gstNo.toString();
       _ageController.text = widget.serviceUserdataList![0].age.toString();
       _genderController.text = widget.serviceUserdataList![0].gender.toString();
-      var userImgFile = await DefaultCacheManager().getSingleFile(widget.serviceUserdataList![0].userProfilePic.toString());
+      var userImgFile = await DefaultCacheManager().getSingleFile(
+          widget.serviceUserdataList![0].userProfilePic.toString());
       print(userImgFile);
       uploadUserProfileImageFile!.imagePath = userImgFile.path;
       // uploadUserProfileImageFile!.imagePath = widget.serviceUserdataList![0].userProfilePic.toString();
-      _addressController.text = widget.serviceUserdataList![0].currentAddress.toString();
-      _locationController.text = widget.serviceUserdataList![0].currentAddress.toString();
-      _pinCodeController.text = widget.serviceUserdataList![0].pincode.toString();
+      _addressController.text =
+          widget.serviceUserdataList![0].currentAddress.toString();
+      _locationController.text =
+          widget.serviceUserdataList![0].currentAddress.toString();
+      _pinCodeController.text =
+          widget.serviceUserdataList![0].pincode.toString();
       _cityController.text = widget.serviceUserdataList![0].city.toString();
       _stateController.text = widget.serviceUserdataList![0].state.toString();
-      _countryController.text = widget.serviceUserdataList![0].country.toString();
-      var companyCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].companyCertificate.toString());
+      _countryController.text =
+          widget.serviceUserdataList![0].country.toString();
+      var companyCertificateImgFile = await DefaultCacheManager().getSingleFile(
+          widget.profileKycList![0].companyCertificate.toString());
       print(companyCertificateImgFile);
       imageFile!.imagePath = companyCertificateImgFile.path;
       // imageFile!.imagePath = widget.profileKycList![0].companyCertificate.toString();
-      var gstCertificateImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].gstCertificate.toString());
+      var gstCertificateImgFile = await DefaultCacheManager()
+          .getSingleFile(widget.profileKycList![0].gstCertificate.toString());
       print(gstCertificateImgFile);
       gstImageFile!.imagePath = gstCertificateImgFile.path;
       // gstImageFile!.imagePath = widget.profileKycList![0].gstCertificate.toString();
-      var panCardImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].panCard.toString());
+      var panCardImgFile = await DefaultCacheManager()
+          .getSingleFile(widget.profileKycList![0].panCard.toString());
       print(panCardImgFile);
       panImageFile!.imagePath = panCardImgFile.path;
       // panImageFile!.imagePath = widget.profileKycList![0].panCard.toString();
-      var shopActImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].shopActLicence.toString());
+      var shopActImgFile = await DefaultCacheManager()
+          .getSingleFile(widget.profileKycList![0].shopActLicence.toString());
       print(shopActImgFile);
       shopActImageFile!.imagePath = shopActImgFile.path;
       // shopActImageFile!.imagePath = widget.profileKycList![0].shopActLicence.toString();
-      var aadharCardImgFile = await DefaultCacheManager().getSingleFile(widget.profileKycList![0].udhyogAdharLicence.toString());
+      var aadharCardImgFile = await DefaultCacheManager().getSingleFile(
+          widget.profileKycList![0].udhyogAdharLicence.toString());
       print(aadharCardImgFile);
       aadharImageFile!.imagePath = aadharCardImgFile.path;
       // aadharImageFile!.imagePath = widget.profileKycList![0].udhyogAdharLicence.toString();
       _bankNameController.text = widget.profileKycList![0].bankName.toString();
-      _accountNumberController.text = widget.profileKycList![0].accountNumber.toString();
+      _accountNumberController.text =
+          widget.profileKycList![0].accountNumber.toString();
       _iFSCCodeController.text = widget.profileKycList![0].ifscCode.toString();
-      _branchNameController.text = widget.profileKycList![0].branchName.toString();
+      _branchNameController.text =
+          widget.profileKycList![0].branchName.toString();
       _upiIdController.text = widget.profileKycList![0].upiId.toString();
-      _yearsController.text = widget.profileMachineExperienceList![0].yearOfExperience.toString();
-      _monthsController.text = widget.profileMachineExperienceList![0].monthOfExperience.toString();
+      _yearsController.text =
+          widget.profileMachineExperienceList![0].yearOfExperience.toString();
+      _monthsController.text =
+          widget.profileMachineExperienceList![0].monthOfExperience.toString();
 
-      for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
-        ExpCompanyModel _expData = ExpCompanyModel(id: expCompanyForms.length,companyName: widget.profileMachineExperienceList![i].companyName,
-          desciption: widget.profileMachineExperienceList![i].description,fromYear: widget.profileMachineExperienceList![i].workFrom,
-          tillYear: widget.profileMachineExperienceList![i].workTill);
+      for (int i = 0; i < widget.profileMachineExperienceList!.length; i++) {
+        ExpCompanyModel _expData = ExpCompanyModel(
+            id: expCompanyForms.length,
+            companyName: widget.profileMachineExperienceList![i].companyName,
+            desciption: widget.profileMachineExperienceList![i].description,
+            fromYear: widget.profileMachineExperienceList![i].workFrom,
+            tillYear: widget.profileMachineExperienceList![i].workTill);
         expCompanyForms.add(ExpCompanyFormWidget(
           index: expCompanyForms.length,
           expCompanyModel: _expData,
@@ -198,20 +218,28 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         ));
       }
 
-      for(int i=0; i < widget.profileMachineEducationList!.length;i++){
-        EducationModel _eduData = EducationModel(id: educationForms.length,schoolName: widget.profileMachineEducationList![i].schoolName,
-            courseName: widget.profileMachineEducationList![i].courseName,passYear: widget.profileMachineEducationList![i].passingYear,
+      for (int i = 0; i < widget.profileMachineEducationList!.length; i++) {
+        EducationModel _eduData = EducationModel(
+            id: educationForms.length,
+            schoolName: widget.profileMachineEducationList![i].schoolName,
+            courseName: widget.profileMachineEducationList![i].courseName,
+            passYear: widget.profileMachineEducationList![i].passingYear,
             certificateImg: widget.profileMachineEducationList![i].certificate);
-        EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length,certificateImg: widget.profileMachineEducationList![i].certificate);
+        EducationCertificateModel _educationCertificateModel =
+            EducationCertificateModel(
+                id: educationForms.length,
+                certificateImg:
+                    widget.profileMachineEducationList![i].certificate);
         educationForms.add(EducationFormWidget(
           index: educationForms.length,
           educationModel: _eduData,
           educationCertificateModel: _educationCertificateModel,
-          onRemove: () => educationOnRemove(_eduData,_educationCertificateModel),
+          onRemove: () =>
+              educationOnRemove(_eduData, _educationCertificateModel),
         ));
       }
-      setState(() { });
-    }else{
+      setState(() {});
+    } else {
       _iDController.text = "";
       _companyNameController.text = "";
       _coOrdinatorNameController.text = "";
@@ -232,7 +260,6 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
       aadharImageFile!.imagePath = "";
     }
   }
-
 
   @override
   void dispose() {
@@ -299,12 +326,12 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   Future<void> _getAddressFromLatLng(Position position) async {
     await placemarkFromCoordinates(
-        _currentPosition!.latitude, _currentPosition!.longitude)
+            _currentPosition!.latitude, _currentPosition!.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
       setState(() {
         _currentAddress =
-        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
         _locationController.text = _currentAddress.toString();
         _pinCodeController.text = place.postalCode.toString();
         _cityController.text = place.subAdministrativeArea.toString();
@@ -316,11 +343,10 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     });
   }
 
-
   ///Method to open gallery
   _openGallery(BuildContext context) async {
     final image =
-    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
     imageFile = new ImageFile();
     if (image != null) {
       _cropImage(image);
@@ -334,13 +360,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         sourcePath: imageCropped.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ]
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ]
             : [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ],
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: Theme.of(context).primaryColor,
@@ -364,25 +390,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   _gstCertificateOpenGallery(BuildContext context) async {
     final gstImage =
-    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
     gstImageFile = new GstImageFile();
     if (gstImage != null) {
       _gstCertificateCropImage(gstImage);
     }
   }
+
   // For crop image
   Future<Null> _gstCertificateCropImage(PickedFile imageCropped) async {
     File? croppedFile = await ImageCropper.cropImage(
         sourcePath: imageCropped.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ]
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ]
             : [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ],
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: Theme.of(context).primaryColor,
@@ -406,25 +433,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   _panCertificateOpenGallery(BuildContext context) async {
     final panImage =
-    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
     panImageFile = new PanImageFile();
     if (panImage != null) {
       _panCertificateCropImage(panImage);
     }
   }
+
   // For crop image
   Future<Null> _panCertificateCropImage(PickedFile imageCropped) async {
     File? croppedFile = await ImageCropper.cropImage(
         sourcePath: imageCropped.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ]
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ]
             : [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ],
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: Theme.of(context).primaryColor,
@@ -448,25 +476,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   _shopActCertificateOpenGallery(BuildContext context) async {
     final shopActImage =
-    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
     shopActImageFile = new ShopActImageFile();
     if (shopActImage != null) {
       _shopActCertificateCropImage(shopActImage);
     }
   }
+
   // For crop image
   Future<Null> _shopActCertificateCropImage(PickedFile imageCropped) async {
     File? croppedFile = await ImageCropper.cropImage(
         sourcePath: imageCropped.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ]
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ]
             : [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ],
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: Theme.of(context).primaryColor,
@@ -490,25 +519,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   _aadharCertificateOpenGallery(BuildContext context) async {
     final aadharImage =
-    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
     aadharImageFile = new AddharImageFile();
     if (aadharImage != null) {
       _aadharCertificateCropImage(aadharImage);
     }
   }
+
   // For crop image
   Future<Null> _aadharCertificateCropImage(PickedFile imageCropped) async {
     File? croppedFile = await ImageCropper.cropImage(
         sourcePath: imageCropped.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ]
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ]
             : [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ],
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: Theme.of(context).primaryColor,
@@ -530,7 +560,6 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     }
   }
 
-
   List<String> dataString = [
     "Pakistan",
     "Saudi Arabia",
@@ -551,7 +580,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   onAdd() {
     setState(() {
-      ExpCompanyModel _contactModel = ExpCompanyModel(id: expCompanyForms.length);
+      ExpCompanyModel _contactModel =
+          ExpCompanyModel(id: expCompanyForms.length);
       expCompanyForms.add(ExpCompanyFormWidget(
         index: expCompanyForms.length,
         expCompanyModel: _contactModel,
@@ -563,8 +593,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   //Delete specific form
   onRemove(ExpCompanyModel expCompanyModel) {
     setState(() {
-      int index = expCompanyForms
-          .indexWhere((element) => element.expCompanyModel!.id == expCompanyModel.id);
+      int index = expCompanyForms.indexWhere(
+          (element) => element.expCompanyModel!.id == expCompanyModel.id);
 
       if (expCompanyForms != null) expCompanyForms.removeAt(index);
     });
@@ -572,26 +602,31 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   List<EducationFormWidget> educationForms = List.empty(growable: true);
 
-  EducationCertificateModel _educationCertificateModel = EducationCertificateModel();
+  EducationCertificateModel _educationCertificateModel =
+      EducationCertificateModel();
 
   educationOnAdd() {
     setState(() {
-      EducationModel _educationModel = EducationModel(id: educationForms.length);
-      EducationCertificateModel _educationCertificateModel = EducationCertificateModel(id: educationForms.length);
+      EducationModel _educationModel =
+          EducationModel(id: educationForms.length);
+      EducationCertificateModel _educationCertificateModel =
+          EducationCertificateModel(id: educationForms.length);
       educationForms.add(EducationFormWidget(
         index: educationForms.length,
         educationModel: _educationModel,
         educationCertificateModel: _educationCertificateModel,
-        onRemove: () => educationOnRemove(_educationModel,_educationCertificateModel),
+        onRemove: () =>
+            educationOnRemove(_educationModel, _educationCertificateModel),
       ));
       // _educationModel.add();
     });
   }
 
-  educationOnRemove(EducationModel educationModel,EducationCertificateModel educationCertificateModel ) {
+  educationOnRemove(EducationModel educationModel,
+      EducationCertificateModel educationCertificateModel) {
     setState(() {
-      int index = educationForms
-          .indexWhere((element) => element.educationModel!.id == educationModel.id);
+      int index = educationForms.indexWhere(
+          (element) => element.educationModel!.id == educationModel.id);
 
       // int certificateIndex = educationForms
       //     .indexWhere((element) => element.educationCertificateModel!.id == educationCertificateModel.id);
@@ -603,7 +638,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
   _openUserProfileGallery(BuildContext context) async {
     final image =
-    await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
     uploadUserProfileImageFile = new UserProfileImageFile();
     if (image != null) {
       _userProfilecropImage(image);
@@ -617,13 +652,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
         sourcePath: imageCropped.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ]
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ]
             : [
-          // CropAspectRatioPreset.square,
-          CropAspectRatioPreset.original,
-        ],
+                // CropAspectRatioPreset.square,
+                CropAspectRatioPreset.original,
+              ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: Theme.of(context).primaryColor,
@@ -653,37 +688,42 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
             leading: Icon(Icons.arrow_back_ios),
             actions: [
               InkWell(
-                onTap: (){
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
-                  Application.preferences!.remove('user');
-                  Application.preferences!.remove('online');
-                  DefaultCacheManager().emptyCache();
-                  // _RemoverUser();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpAsScreen()),
-                        (Route<dynamic> route) => false,
-                  );
-                },
+                  onTap: () {
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                    Application.preferences!.remove('user');
+                    Application.preferences!.remove('online');
+                    DefaultCacheManager().emptyCache();
+                    // _RemoverUser();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Text("Logout"),
-                        SizedBox(width: 5,),
-                        Icon(Icons.logout,color: Colors.red,),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.logout,
+                          color: Colors.red,
+                        ),
                       ],
                     ),
                   ))
             ],
-            title: Text("Profile",
-              style: TextStyle(
-                  fontFamily: 'Poppins'
-              ),),
+            title: Text(
+              "Profile",
+              style: TextStyle(fontFamily: 'Poppins'),
+            ),
             backgroundColor: ThemeColors.backGroundColor,
           ),
-          body:SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
@@ -701,31 +741,39 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                         child: Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 25,top: 15,bottom: 15),
+                              padding: const EdgeInsets.only(
+                                  left: 25, top: 15, bottom: 15),
                               child: Stack(
                                 children: [
                                   CircleAvatar(
                                     radius: 50,
-                                    backgroundColor: ThemeColors.greyBackgrounColor,
+                                    backgroundColor:
+                                        ThemeColors.greyBackgrounColor,
                                     child: ClipOval(
-                                      child:  SizedBox(
+                                      child: SizedBox(
                                           width: 150.0,
                                           height: 150.0,
-                                          child:
-                                          (uploadUserProfileImageFile!.imagePath == null || uploadUserProfileImageFile!.imagePath == "")?
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              Images.profile_icon,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          )
+                                          child: (uploadUserProfileImageFile!
+                                                          .imagePath ==
+                                                      null ||
+                                                  uploadUserProfileImageFile!
+                                                          .imagePath ==
+                                                      "")
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Image.asset(
+                                                    Images.profile_icon,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                )
                                               : Image.file(
-                                            File(uploadUserProfileImageFile!.imagePath.toString()),
-                                            fit: BoxFit.fill,
-                                          )
-
-                                      ),
+                                                  File(
+                                                      uploadUserProfileImageFile!
+                                                          .imagePath
+                                                          .toString()),
+                                                  fit: BoxFit.fill,
+                                                )),
                                     ),
                                   ),
                                   Positioned(
@@ -736,7 +784,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       backgroundColor: ThemeColors.blackColor,
                                       child: CircleAvatar(
                                         radius: 17,
-                                        backgroundColor: ThemeColors.backGroundColor,
+                                        backgroundColor:
+                                            ThemeColors.backGroundColor,
                                         child: IconButton(
                                           onPressed: () {
                                             _openUserProfileGallery(context);
@@ -753,19 +802,32 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(width: 20,),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Flexible(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Hello",
-                                    style: TextStyle(fontFamily: 'Poppins',fontSize: 16),),
+                                  Text(
+                                    "Hello",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins', fontSize: 16),
+                                  ),
                                   Container(
-                                      child:Text(Application.customerLogin!.name == ""? "": Application.customerLogin!.name.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                                        textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                      )
-                                  )
+                                      child: Text(
+                                    Application.customerLogin!.name == ""
+                                        ? ""
+                                        : Application.customerLogin!.name
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ))
                                 ],
                               ),
                             )
@@ -777,17 +839,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                   ///User Data
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 20),
+                    padding: EdgeInsets.only(left: 30, right: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("ID",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "ID",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///ID
                         TextFormField(
                           enabled: false,
@@ -808,25 +878,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             // profile.name = value!.trim();
@@ -851,15 +921,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Name",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Name",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -879,25 +959,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             // profile.name = value!.trim();
@@ -922,15 +1002,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Email",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Email",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Email
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -950,35 +1040,34 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             Pattern pattern =
                                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                            RegExp regex =
-                            new RegExp(pattern.toString());
+                            RegExp regex = new RegExp(pattern.toString());
 
-                            if(value==null || value.isEmpty){
+                            if (value == null || value.isEmpty) {
                               return 'Please enter Email';
-                            }else if(!regex.hasMatch(value)){
+                            } else if (!regex.hasMatch(value)) {
                               return 'Please enter valid Email';
                             }
                             return null;
@@ -992,22 +1081,32 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Phone Number",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Phone Number",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Phone Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
                           controller: _phoneController,
                           textAlign: TextAlign.start,
                           keyboardType: TextInputType.text,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             height: 1.5,
                           ),
@@ -1020,33 +1119,32 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
                             RegExp regExp = new RegExp(patttern);
                             if (value?.length == 0) {
                               return 'Please enter mobile number';
-                            }
-                            else if (!regExp.hasMatch(value!)) {
+                            } else if (!regExp.hasMatch(value!)) {
                               return 'Please enter valid mobile number';
                             }
                             return null;
@@ -1060,15 +1158,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("GST Number",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "GST Number",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///GST Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1088,32 +1196,33 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
-                            Pattern pattern = r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
+                            Pattern pattern =
+                                r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$';
                             RegExp regex = new RegExp(pattern.toString());
                             if (value == null || value.isEmpty) {
                               return 'Please Enter GST Number';
-                            }else if(!regex.hasMatch(value)){
+                            } else if (!regex.hasMatch(value)) {
                               return 'Please enter valid GST Number';
                             }
                             return null;
@@ -1127,285 +1236,407 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
-
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Category",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Category",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Category
                         Padding(
                             padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
                             //to hide underline
-                            child: FutureBuilder<List<MachineMaintenanceCategoryListModel>>(
+                            child: FutureBuilder<
+                                    List<MachineMaintenanceCategoryListModel>>(
                                 future: fetchCategoryList(),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<MachineMaintenanceCategoryListModel>> snapshot) {
+                                    AsyncSnapshot<
+                                            List<
+                                                MachineMaintenanceCategoryListModel>>
+                                        snapshot) {
                                   if (!snapshot.hasData) return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          // color: Theme.of(context).dividerColor,
-                                            color: ThemeColors.textFieldBackgroundColor,
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            border: Border.all(
-                                                color: ThemeColors.textFieldBgColor)),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
-                                          child:
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        // color: Theme.of(context).dividerColor,
+                                        color: ThemeColors
+                                            .textFieldBackgroundColor,
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        border: Border.all(
+                                            color:
+                                                ThemeColors.textFieldBgColor)),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 15.0,
+                                          top: 0.0,
+                                          right: 5.0,
+                                          bottom: 0.0),
+                                      child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
                                           new Theme(
-                                              data: Theme.of(context)
-                                                  .copyWith(canvasColor: Colors.white),
+                                              data: Theme.of(context).copyWith(
+                                                  canvasColor: Colors.white),
                                               child: DropdownButton(
                                                   items: snapshot.data!
                                                       .map((categoryname) =>
-                                                      DropdownMenuItem<MachineMaintenanceCategoryListModel>(
-                                                        value: categoryname,
-                                                        child: Text(
-                                                          categoryname.serviceCategoryName.toString(),
-                                                          style: TextStyle(
-                                                              color: Colors.black),
-                                                        ),
-                                                      ))
+                                                          DropdownMenuItem<
+                                                              MachineMaintenanceCategoryListModel>(
+                                                            value: categoryname,
+                                                            child: Text(
+                                                              categoryname
+                                                                  .serviceCategoryName
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ))
                                                       .toList(),
                                                   style: TextStyle(
                                                       color: Colors.black,
-                                                      fontWeight: FontWeight.w600),
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                   isExpanded: true,
                                                   hint: Text('Select  Category',
                                                       style: TextStyle(
-                                                          color: Color(0xFF3F4141))),
+                                                          color: Color(
+                                                              0xFF3F4141))),
                                                   value: catrgoryTypeselected == null
                                                       ? catrgoryTypeselected
                                                       : snapshot.data!
-                                                      .where((i) =>
-                                                  i.serviceCategoryName ==
-                                                      catrgoryTypeselected!
-                                                          .serviceCategoryName)
-                                                      .first as MachineMaintenanceCategoryListModel,
-                                                  onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
+                                                              .where((i) =>
+                                                                  i.serviceCategoryName ==
+                                                                  catrgoryTypeselected!
+                                                                      .serviceCategoryName)
+                                                              .first
+                                                          as MachineMaintenanceCategoryListModel,
+                                                  onChanged:
+                                                      (MachineMaintenanceCategoryListModel?
+                                                          categoryname) {
                                                     setState(() {
-                                                      catrgoryTypeselected = categoryname;
-                                                      widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
-                                                      widget.serviceUserdataList![0].categoryId = categoryname.id;
+                                                      catrgoryTypeselected =
+                                                          categoryname;
+                                                      widget
+                                                              .serviceUserdataList![
+                                                                  0]
+                                                              .workCatgory =
+                                                          categoryname!
+                                                              .serviceCategoryName;
+                                                      widget
+                                                              .serviceUserdataList![
+                                                                  0]
+                                                              .categoryId =
+                                                          categoryname.id;
                                                     });
                                                   })),
-                                        ),
-                                      ));
+                                    ),
+                                  ));
                                 })),
-                        widget.serviceUserdataList![0].workCatgory != "" ?
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0,top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  // height: 40,
-                                  // width: MediaQuery.of(context).size.width/1.3,
-                                  margin: EdgeInsets.all(2),
-                                  child:Container(
-                                    // height: 40,
-                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 3),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: Text('${widget.serviceUserdataList![0].workCatgory}',
-                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                              ),
+                        widget.serviceUserdataList![0].workCatgory != ""
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        // height: 40,
+                                        // width: MediaQuery.of(context).size.width/1.3,
+                                        margin: EdgeInsets.all(2),
+                                        child: Container(
+                                          // height: 40,
+                                          color: ThemeColors.greyBackgrounColor
+                                              .withOpacity(0.5),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 3),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.4,
+                                                    child: Text(
+                                                      '${widget.serviceUserdataList![0].workCatgory}',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          color: Colors.black),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                        )),
 
-                                        ],
-                                      ),
-                                    ),
-                                  )
-
-                              ),
-
-                              // Padding(
-                              //   padding: const EdgeInsets.only(right: 6.0),
-                              //   child: InkWell(
-                              //     onTap: (){
-                              //       setState(() {
-                              //         // int index1 = machineName
-                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                              //
-                              //         machineList.removeAt(index);
-                              //       });
-                              //
-                              //     },
-                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ) : Container(),
-                        SizedBox(height: 15,),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(right: 6.0),
+                                    //   child: InkWell(
+                                    //     onTap: (){
+                                    //       setState(() {
+                                    //         // int index1 = machineName
+                                    //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                                    //
+                                    //         machineList.removeAt(index);
+                                    //       });
+                                    //
+                                    //     },
+                                    //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Sub-Category",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Sub-Category",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Sub-Category
                         Padding(
                             padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
                             //to hide underline
-                            child: FutureBuilder<List<MachineMaintenanceSubCategoryListModel>>(
-                                future: fetchSubCategory(catrgoryTypeselected!=null?catrgoryTypeselected!.id.toString():""),
+                            child: FutureBuilder<
+                                    List<
+                                        MachineMaintenanceSubCategoryListModel>>(
+                                future: fetchSubCategory(
+                                    catrgoryTypeselected != null
+                                        ? catrgoryTypeselected!.id.toString()
+                                        : ""),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<MachineMaintenanceSubCategoryListModel>> snapshot) {
+                                    AsyncSnapshot<
+                                            List<
+                                                MachineMaintenanceSubCategoryListModel>>
+                                        snapshot) {
                                   if (!snapshot.hasData) return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          // color: Theme.of(context).dividerColor,
-                                            color: ThemeColors.textFieldBackgroundColor,
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            border: Border.all(
-                                                color: ThemeColors.textFieldBgColor)),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
-                                          child:
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        // color: Theme.of(context).dividerColor,
+                                        color: ThemeColors
+                                            .textFieldBackgroundColor,
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        border: Border.all(
+                                            color:
+                                                ThemeColors.textFieldBgColor)),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 15.0,
+                                          top: 0.0,
+                                          right: 5.0,
+                                          bottom: 0.0),
+                                      child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
                                           new Theme(
-                                              data: Theme.of(context)
-                                                  .copyWith(canvasColor: Colors.white),
+                                              data: Theme.of(context).copyWith(
+                                                  canvasColor: Colors.white),
                                               child: DropdownButton(
                                                   items: snapshot.data!
                                                       .map((categoryname) =>
-                                                      DropdownMenuItem<MachineMaintenanceSubCategoryListModel>(
-                                                        value: categoryname,
-                                                        child: Text(
-                                                          categoryname.serviceSubCategoryName.toString(),
-                                                          style: TextStyle(
-                                                              color: Colors.black),
-                                                        ),
-                                                      ))
+                                                          DropdownMenuItem<
+                                                              MachineMaintenanceSubCategoryListModel>(
+                                                            value: categoryname,
+                                                            child: Text(
+                                                              categoryname
+                                                                  .serviceSubCategoryName
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ))
                                                       .toList(),
                                                   style: TextStyle(
                                                       color: Colors.black,
-                                                      fontWeight: FontWeight.w600),
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                   isExpanded: true,
-                                                  hint: Text('Select Sub Category',
+                                                  hint: Text(
+                                                      'Select Sub Category',
                                                       style: TextStyle(
-                                                          color: Color(0xFF3F4141))),
-                                                  value: subCatrgoryTypeselected == null
+                                                          color: Color(
+                                                              0xFF3F4141))),
+                                                  value: subCatrgoryTypeselected ==
+                                                          null
                                                       ? subCatrgoryTypeselected
                                                       : snapshot.data!
-                                                      .where((i) =>
-                                                  i.serviceSubCategoryName ==
-                                                      subCatrgoryTypeselected!
-                                                          .serviceSubCategoryName)
-                                                      .first as MachineMaintenanceSubCategoryListModel,
+                                                          .where((i) =>
+                                                              i.serviceSubCategoryName ==
+                                                              subCatrgoryTypeselected!
+                                                                  .serviceSubCategoryName)
+                                                          .first as MachineMaintenanceSubCategoryListModel,
                                                   onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
                                                     setState(() {
-                                                      subCatrgoryTypeselected = categoryname;
-                                                      widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
-                                                      widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
+                                                      subCatrgoryTypeselected =
+                                                          categoryname;
+                                                      widget
+                                                              .serviceUserdataList![
+                                                                  0]
+                                                              .workSubCatgory =
+                                                          categoryname!
+                                                              .serviceSubCategoryName;
+                                                      widget
+                                                              .serviceUserdataList![
+                                                                  0]
+                                                              .subCategoryId =
+                                                          categoryname
+                                                              .serviceCategoryId;
                                                     });
                                                   })),
-                                        ),
-                                      ));
+                                    ),
+                                  ));
                                 })),
 
-                        widget.serviceUserdataList![0].workSubCatgory != "" ?
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0,top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  // height: 40,
-                                  // width: MediaQuery.of(context).size.width/1.3,
-                                  margin: EdgeInsets.all(2),
-                                  // color: msgCount[index]>=10? Colors.blue[400]:
-                                  child:Container(
-                                    // height: 40,
-                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 3),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: Text('${widget.serviceUserdataList![0].workSubCatgory}',
-                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                              ),
+                        widget.serviceUserdataList![0].workSubCatgory != ""
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        // height: 40,
+                                        // width: MediaQuery.of(context).size.width/1.3,
+                                        margin: EdgeInsets.all(2),
+                                        // color: msgCount[index]>=10? Colors.blue[400]:
+                                        child: Container(
+                                          // height: 40,
+                                          color: ThemeColors.greyBackgrounColor
+                                              .withOpacity(0.5),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 3),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.4,
+                                                    child: Text(
+                                                      '${widget.serviceUserdataList![0].workSubCatgory}',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          color: Colors.black),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                        )),
 
-                                        ],
-                                      ),
-                                    ),
-                                  )
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(right: 6.0),
+                                    //   child: InkWell(
+                                    //     onTap: (){
+                                    //       setState(() {
+                                    //         // int index1 = machineName
+                                    //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                                    //
+                                    //         machineList.removeAt(index);
+                                    //       });
+                                    //
+                                    //     },
+                                    //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
 
-                              ),
-
-                              // Padding(
-                              //   padding: const EdgeInsets.only(right: 6.0),
-                              //   child: InkWell(
-                              //     onTap: (){
-                              //       setState(() {
-                              //         // int index1 = machineName
-                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                              //
-                              //         machineList.removeAt(index);
-                              //       });
-                              //
-                              //     },
-                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ) : Container(),
-
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         ///AGE and GENDER
                         Row(
-
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
                             ///Age
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                                  child: Text("Age",
-                                    style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                  padding: const EdgeInsets.only(
+                                      left: 0.0, bottom: 10),
+                                  child: Text(
+                                    "Age",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black.withOpacity(0.5)),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
                                   child: TextFormField(
                                     // initialValue: Application.customerLogin!.name.toString(),
                                     controller: _ageController,
@@ -1417,32 +1648,35 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     ),
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: ThemeColors.textFieldBackgroundColor,
+                                      fillColor:
+                                          ThemeColors.textFieldBackgroundColor,
                                       hintText: "Age",
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.0, horizontal: 15.0),
                                       hintStyle: TextStyle(fontSize: 15),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(1.0)),
                                         borderSide: BorderSide(
                                             width: 0.8,
-                                            color: ThemeColors.textFieldBackgroundColor
-                                        ),
+                                            color: ThemeColors
+                                                .textFieldBackgroundColor),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(1.0)),
                                         borderSide: BorderSide(
                                             width: 0.8,
-                                            color: ThemeColors.textFieldBackgroundColor),
+                                            color: ThemeColors
+                                                .textFieldBackgroundColor),
                                       ),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(1.0)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(1.0)),
                                           borderSide: BorderSide(
                                               width: 0.8,
-                                              color: ThemeColors.textFieldBackgroundColor)),
+                                              color: ThemeColors
+                                                  .textFieldBackgroundColor)),
                                     ),
                                     validator: (value) {
                                       // profile.name = value!.trim();
@@ -1462,7 +1696,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       // profile.name = value;
                                       setState(() {
                                         // _nameController.text = value;
-                                        if (_formKey.currentState!.validate()) {}
+                                        if (_formKey.currentState!
+                                            .validate()) {}
                                       });
                                     },
                                   ),
@@ -1473,16 +1708,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             ///Gender
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [Padding(
-                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                                child: Text("Gender",
-                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0.0, bottom: 10),
+                                  child: Text(
+                                    "Gender",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black.withOpacity(0.5)),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.4,
-
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
                                   child: TextFormField(
                                     // initialValue: Application.customerLogin!.name.toString(),
                                     controller: _genderController,
@@ -1494,32 +1738,35 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     ),
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: ThemeColors.textFieldBackgroundColor,
+                                      fillColor:
+                                          ThemeColors.textFieldBackgroundColor,
                                       hintText: "Gender",
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.0, horizontal: 15.0),
                                       hintStyle: TextStyle(fontSize: 15),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(1.0)),
                                         borderSide: BorderSide(
                                             width: 0.8,
-                                            color: ThemeColors.textFieldBackgroundColor
-                                        ),
+                                            color: ThemeColors
+                                                .textFieldBackgroundColor),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(1.0)),
                                         borderSide: BorderSide(
                                             width: 0.8,
-                                            color: ThemeColors.textFieldBackgroundColor),
+                                            color: ThemeColors
+                                                .textFieldBackgroundColor),
                                       ),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(1.0)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(1.0)),
                                           borderSide: BorderSide(
                                               width: 0.8,
-                                              color: ThemeColors.textFieldBackgroundColor)),
+                                              color: ThemeColors
+                                                  .textFieldBackgroundColor)),
                                     ),
                                     validator: (value) {
                                       // profile.name = value!.trim();
@@ -1539,21 +1786,22 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       // profile.name = value;
                                       setState(() {
                                         // _nameController.text = value;
-                                        if (_formKey.currentState!.validate()) {}
+                                        if (_formKey.currentState!
+                                            .validate()) {}
                                       });
                                     },
                                   ),
                                 ),
                               ],
                             ),
-
                           ],
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
-
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   Divider(
                     // height: 2,
@@ -1563,24 +1811,30 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   ///Address
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("Address",
-                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    child: Text(
+                      "Address",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 20),
+                    padding: EdgeInsets.only(left: 30, right: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// GEt Current Location
                         InkWell(
-                          onTap:(){
+                          onTap: () {
                             _getCurrentPosition();
                           },
                           child: Container(
-                            height:50,
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
@@ -1589,40 +1843,58 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                 // style: BorderStyle.solid,
                                 width: 1.0,
                               ),
-
                             ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Location",
-                                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Icon(Icons.my_location_rounded,color: Colors.red,)
-                                  ],
-                                ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Location",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Icon(
+                                    Icons.my_location_rounded,
+                                    color: Colors.red,
+                                  )
+                                ],
                               ),
+                            ),
                           ),
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Current Address",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Current Address",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Current Address
                         TextFormField(
                           controller: _locationController,
                           obscureText: false,
                           textAlign: TextAlign.start,
-                          keyboardType:
-                          TextInputType.text,
+                          keyboardType: TextInputType.text,
                           maxLines: 4,
                           style: TextStyle(
                             fontSize: 18,
@@ -1631,69 +1903,64 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: ThemeColors.textFieldBackgroundColor,
-                            contentPadding:
-                            EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 15.0),
-                            hintStyle:
-                            TextStyle(fontSize: 15),
-                            enabledBorder:
-                            OutlineInputBorder(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 15.0),
+                            hintStyle: TextStyle(fontSize: 15),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(
-                                  Radius.circular(
-                                      10.0)),
+                                  BorderRadius.all(Radius.circular(10.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors
-                                      .textFieldBackgroundColor),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
-                            focusedBorder:
-                            OutlineInputBorder(
+                            focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(
-                                  Radius.circular(
-                                      10.0)),
+                                  BorderRadius.all(Radius.circular(10.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors
-                                      .textFieldBackgroundColor),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(
-                                    Radius.circular(
-                                        10.0)),
+                                    BorderRadius.all(Radius.circular(10.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors
-                                        .textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                             hintText: "Enter your current address...",
                           ),
                           validator: (value) {
-                            if (value == null ||
-                                value.isEmpty) {
+                            if (value == null || value.isEmpty) {
                               return 'Please enter your current address...';
                             }
                             return null;
                           },
                           onChanged: (value) {
                             setState(() {
-                              if (_formKey.currentState!
-                                  .validate()) {}
+                              if (_formKey.currentState!.validate()) {}
                             });
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Pin Code",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Pin Code",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Pin Code
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1713,25 +1980,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             // profile.name = value!.trim();
@@ -1756,15 +2023,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("City",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "City",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///City
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1784,25 +2061,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -1821,15 +2098,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             });
                           },
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("State",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "State",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///State
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1849,25 +2136,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -1886,15 +2173,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             });
                           },
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Country",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Country",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Country
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -1914,25 +2211,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -1951,30 +2248,36 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             });
                           },
                         ),
-
                       ],
                     ),
                   ),
 
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
 
                   Divider(
                     // height: 2,
                     thickness: 2.0,
                   ),
 
-
                   ///Total Expirence
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("Total Experince",
-                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    child: Text(
+                      "Total Experince",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 10),
+                    padding: EdgeInsets.only(left: 30, right: 10),
                     child: Form(
                       // key: _formKey,
                       child: Row(
@@ -1985,10 +2288,18 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                                child: Text("Year",
-                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                padding: const EdgeInsets.only(
+                                    left: 0.0, bottom: 10),
+                                child: Text(
+                                  "Year",
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               SizedBox(
@@ -2004,32 +2315,35 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   ),
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: ThemeColors.textFieldBackgroundColor,
+                                    fillColor:
+                                        ThemeColors.textFieldBackgroundColor,
                                     hintText: "Years",
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical: 10.0, horizontal: 15.0),
                                     hintStyle: TextStyle(fontSize: 15),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor
-                                      ),
+                                          color: ThemeColors
+                                              .textFieldBackgroundColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor),
+                                          color: ThemeColors
+                                              .textFieldBackgroundColor),
                                     ),
                                     border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(1.0)),
                                         borderSide: BorderSide(
                                             width: 0.8,
-                                            color: ThemeColors.textFieldBackgroundColor)),
+                                            color: ThemeColors
+                                                .textFieldBackgroundColor)),
                                   ),
                                   validator: (value) {
                                     // profile.name = value!.trim();
@@ -2059,18 +2373,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           ///Months
                           Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                                child: Text("Months",
-                                  style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                                  textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                padding: const EdgeInsets.only(
+                                    left: 0.0, bottom: 10),
+                                child: Text(
+                                  "Months",
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black.withOpacity(0.5)),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.4,
-
                                 child: TextFormField(
                                   // initialValue: Application.customerLogin!.name.toString(),
                                   controller: _monthsController,
@@ -2082,32 +2403,35 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   ),
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: ThemeColors.textFieldBackgroundColor,
+                                    fillColor:
+                                        ThemeColors.textFieldBackgroundColor,
                                     hintText: "Months",
                                     contentPadding: EdgeInsets.symmetric(
                                         vertical: 10.0, horizontal: 15.0),
                                     hintStyle: TextStyle(fontSize: 15),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor
-                                      ),
+                                          color: ThemeColors
+                                              .textFieldBackgroundColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(1.0)),
                                       borderSide: BorderSide(
                                           width: 0.8,
-                                          color: ThemeColors.textFieldBackgroundColor),
+                                          color: ThemeColors
+                                              .textFieldBackgroundColor),
                                     ),
                                     border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(1.0)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(1.0)),
                                         borderSide: BorderSide(
                                             width: 0.8,
-                                            color: ThemeColors.textFieldBackgroundColor)),
+                                            color: ThemeColors
+                                                .textFieldBackgroundColor)),
                                   ),
                                   validator: (value) {
                                     // profile.name = value!.trim();
@@ -2134,20 +2458,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               ),
                             ],
                           ),
-
-
                         ],
                       ),
-
                     ),
                   ),
 
-                  SizedBox(height: 10,),
-
-
-                  Divider(
-                    // height: 2,
-                    thickness: 2.0,
+                  SizedBox(
+                    height: 10,
                   ),
 
                   Divider(
@@ -2155,59 +2472,76 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                     thickness: 2.0,
                   ),
 
+                  Divider(
+                    // height: 2,
+                    thickness: 2.0,
+                  ),
 
                   ///Expirence in companies
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("Experience in Companies",
-                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    child: Text(
+                      "Experience in Companies",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 10),
+                    padding: EdgeInsets.only(left: 30, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         expCompanyForms.isNotEmpty
-                        ? Column(
-                          children: [
-                            ListView.builder(
-                                itemCount: expCompanyForms.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (_, index) {
-                                  return expCompanyForms[index];
-                                }),
-                          ],
-                        )
+                            ? Column(
+                                children: [
+                                  ListView.builder(
+                                      itemCount: expCompanyForms.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (_, index) {
+                                        return expCompanyForms[index];
+                                      }),
+                                ],
+                              )
                             : SizedBox(),
 
                         ///Add More
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(expCompanyForms.isNotEmpty?"Add More":"Add",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            Text(
+                              expCompanyForms.isNotEmpty ? "Add More" : "Add",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             InkWell(
-                              onTap: (){
-                                onAdd();
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: ThemeColors.redTextColor,
-                                child: Icon(Icons.add,color: Colors.white,),
-                              )
-                            )
+                                onTap: () {
+                                  onAdd();
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: ThemeColors.redTextColor,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ))
                           ],
                         )
-
-
-
                       ],
                     ),
                   ),
@@ -2227,60 +2561,71 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   ///Education
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("Education",
-                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    child: Text(
+                      "Education",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 10),
+                    padding: EdgeInsets.only(left: 30, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         educationForms.isNotEmpty
                             ? Column(
-                          children: [
-                            ListView.builder(
-                                itemCount: educationForms.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (_, index) {
-                                  return educationForms[index];
-                                }),
-                          ],
-                        )
+                                children: [
+                                  ListView.builder(
+                                      itemCount: educationForms.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (_, index) {
+                                        return educationForms[index];
+                                      }),
+                                ],
+                              )
                             : SizedBox(),
 
                         ///Add More
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(educationForms.isNotEmpty?"Add More":"Add",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w600,color: Colors.black),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            Text(
+                              educationForms.isNotEmpty ? "Add More" : "Add",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             InkWell(
-                                onTap: (){
+                                onTap: () {
                                   educationOnAdd();
                                 },
                                 child: CircleAvatar(
                                   backgroundColor: ThemeColors.redTextColor,
-                                  child: Icon(Icons.add,color: Colors.white,),
-                                )
-                            )
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ))
                           ],
                         )
-
-
-
                       ],
                     ),
                   ),
-
-
 
                   Divider(
                     // height: 2,
@@ -2297,24 +2642,38 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   ///Bank Details
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("Bank Details",
-                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    child: Text(
+                      "Bank Details",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 20),
+                    padding: EdgeInsets.only(left: 30, right: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Bank Name",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Bank Name",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Bank NAme
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2334,25 +2693,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             // profile.name = value!.trim();
@@ -2377,15 +2736,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Account Number",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Account Number",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Account Number
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2405,25 +2774,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             // profile.name = value!.trim();
@@ -2448,15 +2817,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                           },
                         ),
 
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("IFSC Code",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "IFSC Code",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///IFSC Code
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2476,25 +2855,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -2513,15 +2892,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             });
                           },
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("Branch Name",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "Branch Name",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///Branch Name
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2541,25 +2930,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -2578,15 +2967,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             });
                           },
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                          child: Text("UPI Id",
-                            style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                            textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                          child: Text(
+                            "UPI Id",
+                            style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(0.5)),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
                         ///UPI ID
                         TextFormField(
                           // initialValue: Application.customerLogin!.name.toString(),
@@ -2606,25 +3005,25 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             hintStyle: TextStyle(fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
-                                  color: ThemeColors.textFieldBackgroundColor
-                              ),
+                                  color: ThemeColors.textFieldBackgroundColor),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1.0)),
+                                  BorderRadius.all(Radius.circular(1.0)),
                               borderSide: BorderSide(
                                   width: 0.8,
                                   color: ThemeColors.textFieldBackgroundColor),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor)),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -2643,46 +3042,62 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             });
                           },
                         ),
-
                       ],
                     ),
                   ),
 
-                  SizedBox(height: 10,),
-
-
-                  Divider(
-                    // height: 2,
-                    thickness: 2.0,
+                  SizedBox(
+                    height: 10,
                   ),
 
                   Divider(
                     // height: 2,
                     thickness: 2.0,
                   ),
+
+                  Divider(
+                    // height: 2,
+                    thickness: 2.0,
+                  ),
+
                   ///KYC
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("KYC",
-                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                    child: Text(
+                      "KYC",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.only(left: 30,right: 20),
+                    padding: EdgeInsets.only(left: 30, right: 20),
                     child: Form(
                       // key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                            child: Text("Company Name",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            padding:
+                                const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text(
+                              "Company Name",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           ///Company Name
                           TextFormField(
                             // initialValue: Application.customerLogin!.name.toString(),
@@ -2702,25 +3117,27 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               hintStyle: TextStyle(fontSize: 15),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor
-                                ),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
+                                    BorderRadius.all(Radius.circular(1.0)),
                                 borderSide: BorderSide(
                                     width: 0.8,
-                                    color: ThemeColors.textFieldBackgroundColor),
+                                    color:
+                                        ThemeColors.textFieldBackgroundColor),
                               ),
                               border: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(1.0)),
+                                      BorderRadius.all(Radius.circular(1.0)),
                                   borderSide: BorderSide(
                                       width: 0.8,
-                                      color: ThemeColors.textFieldBackgroundColor)),
+                                      color: ThemeColors
+                                          .textFieldBackgroundColor)),
                             ),
                             validator: (value) {
                               // profile.name = value!.trim();
@@ -2745,15 +3162,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             },
                           ),
 
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                            child: Text("Company Certificate",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            padding:
+                                const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text(
+                              "Company Certificate",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           ///Company Certificate
                           Container(
                             height: 50,
@@ -2761,30 +3189,51 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Container(
-                                        width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                         maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: Text(
+                                        imageFile!.imagePath == null
+                                            ? "Company Certificate"
+                                            : imageFile!.imagePath!
+                                                .split('/')
+                                                .last
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color:
+                                                Colors.black.withOpacity(0.5)),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       _openGallery(context);
                                     },
                                     child: Container(
                                       height: 30,
-                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      color: ThemeColors.textFieldHintColor
+                                          .withOpacity(0.3),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 4,right: 4),
-                                        child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
+                                        child: Center(
+                                            child: Text(
+                                          "+Add Image",
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black
+                                                  .withOpacity(0.5)),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
                                     ),
@@ -2794,15 +3243,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             ),
                           ),
 
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                            child: Text("GST Certificate",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            padding:
+                                const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text(
+                              "GST Certificate",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           ///GST Certificate
                           Container(
                             height: 50,
@@ -2810,30 +3270,51 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                         maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: Text(
+                                        gstImageFile!.imagePath == null
+                                            ? "GST Certificate"
+                                            : gstImageFile!.imagePath!
+                                                .split('/')
+                                                .last
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color:
+                                                Colors.black.withOpacity(0.5)),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       _gstCertificateOpenGallery(context);
                                     },
                                     child: Container(
                                       height: 30,
-                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      color: ThemeColors.textFieldHintColor
+                                          .withOpacity(0.3),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 4,right: 4),
-                                        child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
+                                        child: Center(
+                                            child: Text(
+                                          "+Add Image",
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black
+                                                  .withOpacity(0.5)),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
                                     ),
@@ -2843,15 +3324,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             ),
                           ),
 
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                            child: Text("Pan Card",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            padding:
+                                const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text(
+                              "Pan Card",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           ///Upload Pan Card
                           Container(
                             height: 50,
@@ -2859,30 +3351,51 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Text(panImageFile!.imagePath == null ?"Upload PAN Card" : panImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: Text(
+                                        panImageFile!.imagePath == null
+                                            ? "Upload PAN Card"
+                                            : panImageFile!.imagePath!
+                                                .split('/')
+                                                .last
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color:
+                                                Colors.black.withOpacity(0.5)),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       _panCertificateOpenGallery(context);
                                     },
                                     child: Container(
                                       height: 30,
-                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      color: ThemeColors.textFieldHintColor
+                                          .withOpacity(0.3),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 4,right: 4),
-                                        child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
+                                        child: Center(
+                                            child: Text(
+                                          "+Add Image",
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black
+                                                  .withOpacity(0.5)),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
                                     ),
@@ -2892,15 +3405,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             ),
                           ),
 
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                            child: Text("SHOP ACT License",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            padding:
+                                const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text(
+                              "SHOP ACT License",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           ///SHOPACT License
                           Container(
                             height: 50,
@@ -2908,30 +3432,51 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Text(shopActImageFile!.imagePath == null ?"Shop Act License" : shopActImageFile!.imagePath!.split('/').last.toString(),
-                                        style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      child: Text(
+                                        shopActImageFile!.imagePath == null
+                                            ? "Shop Act License"
+                                            : shopActImageFile!.imagePath!
+                                                .split('/')
+                                                .last
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color:
+                                                Colors.black.withOpacity(0.5)),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       _shopActCertificateOpenGallery(context);
                                     },
                                     child: Container(
                                       height: 30,
-                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      color: ThemeColors.textFieldHintColor
+                                          .withOpacity(0.3),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 4,right: 4),
-                                        child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
+                                        child: Center(
+                                            child: Text(
+                                          "+Add Image",
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black
+                                                  .withOpacity(0.5)),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
                                     ),
@@ -2941,15 +3486,26 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             ),
                           ),
 
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
 
                           Padding(
-                            padding: const EdgeInsets.only(left: 0.0, bottom: 10),
-                            child: Text("MSME/Udhyog Aadhar Card",
-                              style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
-                              textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                            padding:
+                                const EdgeInsets.only(left: 0.0, bottom: 10),
+                            child: Text(
+                              "MSME/Udhyog Aadhar Card",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black.withOpacity(0.5)),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           ///MSME/Udhyog Aadhar License
                           Container(
                             height: 50,
@@ -2957,80 +3513,105 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width*0.5,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 8),
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width * 0.4,
-                                        child: Text(aadharImageFile!.imagePath == null ?"MSME/Udhyog AAdhar License" : aadharImageFile!.imagePath!.split('/').last.toString(),
-                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                          maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                        child: Text(
+                                          aadharImageFile!.imagePath == null
+                                              ? "MSME/Udhyog AAdhar License"
+                                              : aadharImageFile!.imagePath!
+                                                  .split('/')
+                                                  .last
+                                                  .toString(),
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black
+                                                  .withOpacity(0.5)),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       _aadharCertificateOpenGallery(context);
                                     },
                                     child: Container(
                                       height: 30,
-                                      color: ThemeColors.textFieldHintColor.withOpacity(0.3),
+                                      color: ThemeColors.textFieldHintColor
+                                          .withOpacity(0.3),
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 4,right: 4),
-                                        child: Center(child: Text("+Add Image",
-                                          style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                          textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
+                                        child: Center(
+                                            child: Text(
+                                          "+Add Image",
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black
+                                                  .withOpacity(0.5)),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         )),
                                       ),
                                     ),
                                   )
-
                                 ],
                               ),
                             ),
                           )
-
                         ],
                       ),
-
                     ),
                   ),
 
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
 
                   Divider(
                     // height: 2,
                     thickness: 3.0,
                   ),
 
-                  Center(
-                    child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-                      return BlocListener<ProfileBloc, ProfileState>(
-                        listener: (context, state) {
-                          if(state is UpdateProfileLoading){
-                            loading = state.isLoading;
-                          }
-                          if(state is UpdateProfileSuccess){
-                            showCustomSnackBar(context,state.message,isError: false);
-                          }
-                          if(state is UpdateProfileFail){
-                            showCustomSnackBar(context,state.msg.toString(),isError: true);
-                          }
-                        },
-                        child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if(_companyNameController.text == ""){
-                                    showCustomSnackBar(context,'Enter Company Name',isError: true);
-                                  }
-                                  else if(_formKey.currentState!.validate()) {
+                  Center(child: BlocBuilder<ProfileBloc, ProfileState>(
+                      builder: (context, state) {
+                    return BlocListener<ProfileBloc, ProfileState>(
+                      listener: (context, state) {
+                        if (state is UpdateProfileLoading) {
+                          loading = state.isLoading;
+                        }
+                        if (state is UpdateProfileSuccess) {
+                          showCustomSnackBar(context, state.message,
+                              isError: false);
+                        }
+                        if (state is UpdateProfileFail) {
+                          showCustomSnackBar(context, state.msg.toString(),
+                              isError: true);
+                        }
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (_companyNameController.text == "") {
+                                  showCustomSnackBar(
+                                      context, 'Enter Company Name',
+                                      isError: true);
+                                } else if (_formKey.currentState!.validate()) {
                                   _profileBloc!.add(UpdateProfile(
                                     certificate: educationForms,
                                     serviceUserId: Application.customerLogin!.id
@@ -3039,8 +3620,21 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                     email: _emailController.text,
                                     mobile: _phoneController.text,
                                     gstNo: _gstController.text,
-                                    catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
-                                    subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
+                                    catId: catrgoryTypeselected!.id != null
+                                        ? catrgoryTypeselected!.id.toString()
+                                        : widget
+                                            .serviceUserdataList![0].categoryId
+                                            .toString(),
+                                    subCatId:
+                                        subCatrgoryTypeselected!
+                                                    .serviceCategoryId !=
+                                                null
+                                            ? subCatrgoryTypeselected!
+                                                .serviceCategoryId
+                                                .toString()
+                                            : widget.serviceUserdataList![0]
+                                                .subCategoryId
+                                                .toString(),
                                     age: _ageController.text,
                                     gender: _genderController.text,
                                     location: _locationController.text,
@@ -3069,46 +3663,53 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                         aadharImageFile!.imagePath.toString(),
                                     currentAddress: _locationController.text,
                                   ));
-                                }else{
-                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
-                                  }
+                                } else {
+                                  showCustomSnackBar(
+                                      context, 'Please fill all details.',
+                                      isError: true);
+                                }
                               },
-                                style: ElevatedButton.styleFrom(
-                                  primary: ThemeColors.defaultbuttonColor,
-                                  shape: StadiumBorder(),
-                                ),
-                                child: loading ? Text(
-                                  "Update Profile",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .button!
-                                      .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
-                                ) : Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
-
+                              style: ElevatedButton.styleFrom(
+                                primary: ThemeColors.defaultbuttonColor,
+                                shape: StadiumBorder(),
                               ),
-                            )),
-
-                      );
-
-
-                    })
-
-                  )
+                              child: loading
+                                  ? Text(
+                                      "Update Profile",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .button!
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
+                                    )
+                                  : Center(
+                                      child: SizedBox(
+                                          width: 25,
+                                          height: 25,
+                                          child: CircularProgressIndicator()),
+                                    ),
+                            ),
+                          )),
+                    );
+                  }))
                 ],
               ),
             ),
-          )
-      ),
+          )),
     );
   }
 }
+
 Future<bool> _handleLocationPermission(context) async {
   bool serviceEnabled;
   LocationPermission permission;
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    showCustomSnackBar(context,'Location services are disabled. Please enable the services',isError: false);
+    showCustomSnackBar(
+        context, 'Location services are disabled. Please enable the services',
+        isError: false);
 
     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
     //     content: Text(
@@ -3119,7 +3720,8 @@ Future<bool> _handleLocationPermission(context) async {
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      showCustomSnackBar(context,'Location permissions are denied',isError: true);
+      showCustomSnackBar(context, 'Location permissions are denied',
+          isError: true);
 
       // ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(content: Text('Location permissions are denied')));
@@ -3127,7 +3729,9 @@ Future<bool> _handleLocationPermission(context) async {
     }
   }
   if (permission == LocationPermission.deniedForever) {
-    showCustomSnackBar(context,'Location permissions are permanently denied, we cannot request permissions.',isError: true);
+    showCustomSnackBar(context,
+        'Location permissions are permanently denied, we cannot request permissions.',
+        isError: true);
 
     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
     //     content: Text(

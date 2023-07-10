@@ -379,7 +379,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
             child: widget.isSwitched
                 ? _loadData
                     ? serviceList!.length <= 0
-                        ? Center(
+                        ? const Center(
                             child: Text('No Data'),
                           )
                         : Container(
@@ -580,7 +580,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                 : Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Text("Nothing to show",
                             style: TextStyle(
                                 fontFamily: 'Poppins',
