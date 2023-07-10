@@ -33,6 +33,12 @@ var ExpanstionTileLeftDataStyle = GoogleFonts.poppins(
   fontWeight: FontWeight.normal,
 );
 
+var ExpanstionLeftDataStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
+);
+
 var ExpanstionTileOtherInfoStyle = GoogleFonts.poppins(
   color: Colors.black,
   fontSize: 12,

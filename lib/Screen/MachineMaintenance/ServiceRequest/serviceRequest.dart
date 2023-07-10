@@ -18,6 +18,7 @@ import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../Bloc/home/home_state.dart';
+import '../../../Config/font.dart';
 
 class ServiceRequestScreen extends StatefulWidget {
   bool isSwitched;
@@ -138,7 +139,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ServiceRequestDetailsScreen(
@@ -248,10 +249,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         // SizedBox(
                         //   // width: MediaQuery.of(context).size.width/,
@@ -311,11 +309,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                       children: [
                         Text(
                           "Date & Time:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
-                        ),
+                          style: ExpanstionLeftDataStyle,),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/6.3,
                         // ),
@@ -329,7 +323,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                 .toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
-                              fontSize: 12,
+                              fontSize: 11,
                               // fontWeight: FontWeight.bold
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -421,7 +415,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                                 ),
                                                 InkWell(
                                                   onTap: () async {
-                                                    Navigator.push(
+                                                    Navigator.pushReplacement(
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
@@ -528,7 +522,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            var filterResult = await Navigator.push(
+                                            var filterResult = await Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
@@ -547,7 +541,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                                               SizedBox(
                                                 width: 5,
                                               ),
-                                              Text("Filter")
+                                              Text("Filter",style:ExpanstionLeftDataStyle.copyWith(fontWeight: FontWeight.normal),)
                                             ],
                                           ),
                                         )
@@ -717,11 +711,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                             children: [
                               Text(
                                 "Enquiry ID:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                                style: ExpanstionLeftDataStyle,),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
                               // ),

@@ -41,6 +41,9 @@ class CartListModel {
   String? discountPrice;
   String? price;
   String? gst;
+  String? cgst;
+  String? sgst;
+  String? igst;
   String? volume;
 
   CartListModel(
@@ -55,6 +58,10 @@ class CartListModel {
         this.discountPrice,
         this.price,
         this.gst,
+        this.cgst,
+        this.sgst,
+        this.igst,
+
         this.volume});
 
   CartListModel.fromJson(Map<String, dynamic> json) {
@@ -69,6 +76,9 @@ class CartListModel {
     discountPrice = json['discount_price'];
     price = json['price'];
     gst = json['gst'];
+    cgst = json['cgst'];
+    sgst = json['sgst'];
+    igst = json['igst'];
     volume = json['volume'];
   }
 
@@ -85,6 +95,9 @@ class CartListModel {
     data['discount_price'] = this.discountPrice;
     data['price'] = this.price;
     data['gst'] = this.gst;
+    data['cgst'] = this.cgst;
+    data['sgst'] = this.sgst;
+    data['igst'] = this.igst;
     data['volume'] = this.volume;
     return data;
   }
@@ -98,6 +111,9 @@ class ProductListModel {
   String? price;
   String? amount;
   String? gst;
+  String? cgst;
+  String? sgst;
+  String? igst;
 
   ProductListModel(
       {
@@ -107,7 +123,10 @@ class ProductListModel {
         this.discountPrice,
         this.price,
         this.amount,
-        this.gst});
+        this.gst,
+      this.igst,
+      this.sgst,
+      this.cgst});
 
   ProductListModel.fromJson(Map<String, dynamic> json) {
 
@@ -118,6 +137,9 @@ class ProductListModel {
     price = json['price'];
     amount = json['amount'];
     gst = json['gst'];
+    cgst = json['cgst'];
+    sgst = json['sgst'];
+    igst = json['igst'];
   }
 
   Map<String, dynamic> toJson() {
@@ -130,6 +152,9 @@ class ProductListModel {
     data['price'] = this.price;
     data['amount'] = this.amount;
     data['gst'] = this.gst;
+    data['cgst'] = this.cgst;
+    data['sgst'] = this.sgst;
+    data['igst'] = this.igst;
     return data;
   }
 }
@@ -142,6 +167,9 @@ class ProductNotAvailableListModel {
   String? price;
   String? amount;
   String? gst;
+  String? cgst;
+  String? sgst;
+  String? igst;
 
   ProductNotAvailableListModel(
       {
@@ -151,7 +179,11 @@ class ProductNotAvailableListModel {
         this.discountPrice,
         this.price,
         this.amount,
-        this.gst});
+        this.gst,
+        this.cgst,
+        this.sgst,
+        this.igst,
+      });
 
   ProductNotAvailableListModel.fromJson(Map<String, dynamic> json) {
 
@@ -162,6 +194,10 @@ class ProductNotAvailableListModel {
     price = json['price'];
     amount = json['amount'];
     gst = json['gst'];
+    cgst = json['cgst'];
+    sgst = json['sgst'];
+    igst = json['igst'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -174,6 +210,9 @@ class ProductNotAvailableListModel {
     data['price'] = this.price;
     data['amount'] = this.amount;
     data['gst'] = this.gst;
+    data['cgst'] = this.cgst;
+    data['sgst'] = this.sgst;
+    data['igst'] = this.igst;
     return data;
   }
 }

@@ -79,7 +79,7 @@ class _EnquiryQuotationsReplyScreenState
     if (_isSearching != null) {
       for (int i = 0; i < quotationReplyJobWorkEnquiryList.length; i++) {
         QuotationReplyJobWorkEnquiryModel quotationListData =
-            new QuotationReplyJobWorkEnquiryModel();
+        new QuotationReplyJobWorkEnquiryModel();
         quotationListData.id = quotationReplyJobWorkEnquiryList[i].id;
         quotationListData.dateAndTime =
             quotationReplyJobWorkEnquiryList[i].dateAndTime.toString();
@@ -88,9 +88,9 @@ class _EnquiryQuotationsReplyScreenState
         quotationListData.userId = quotationReplyJobWorkEnquiryList[i].userId;
 
         if (quotationListData.id
-                .toString()
-                .toLowerCase()
-                .contains(searchText.toLowerCase()) ||
+            .toString()
+            .toLowerCase()
+            .contains(searchText.toLowerCase()) ||
             quotationListData.dateAndTime
                 .toString()
                 .toLowerCase()
@@ -117,7 +117,7 @@ class _EnquiryQuotationsReplyScreenState
 
   Widget buildQuotationsaReplyList(
       List<QuotationReplyJobWorkEnquiryModel>
-          quotationReplyJobWorkEnquiryList) {
+      quotationReplyJobWorkEnquiryList) {
     return ListView.builder(
       controller: _scrollController
         ..addListener(() {
@@ -140,9 +140,9 @@ class _EnquiryQuotationsReplyScreenState
                   context,
                   MaterialPageRoute(
                       builder: (context) => EnquiryQuotationsReplyDetailsScreen(
-                            quotationReplyJobWorkEnquiryList:
-                                quotationReplyJobWorkEnquiryList[index],
-                          )));
+                        quotationReplyJobWorkEnquiryList:
+                        quotationReplyJobWorkEnquiryList[index],
+                      )));
             },
             child: quotationsaReplyCard(
                 context, quotationReplyJobWorkEnquiryList[index]));
@@ -218,8 +218,8 @@ class _EnquiryQuotationsReplyScreenState
                           child: Text(
                             DateFormat('MM-dd-yyyy h:mm a')
                                 .format(DateTime.parse(
-                                    quotationReplyJobWorkEnquiryData.dateAndTime
-                                        .toString()))
+                                quotationReplyJobWorkEnquiryData.dateAndTime
+                                    .toString()))
                                 .toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
@@ -259,139 +259,139 @@ class _EnquiryQuotationsReplyScreenState
           ),
           body: BlocBuilder<QuotationReplyBloc, QuotationReplyState>(
               builder: (context, state) {
-            return BlocListener<QuotationReplyBloc, QuotationReplyState>(
-                listener: (context, state) {
-                  if (state is QuotationReplyJWELoading) {
-                    _isLoading = state.isLoading;
-                  }
-                  if (state is QuotationReplyJWESuccess) {
-                    quotationReplyJobWorkEnquiryList =
-                        state.quotationReplyJWEListData;
-                  }
-                  if (state is QuotationReplyJWEFail) {
-                    showCustomSnackBar(context, state.msg.toString());
-                  }
-                },
-                child: _isLoading
-                    ? quotationReplyJobWorkEnquiryList.length <= 0
+                return BlocListener<QuotationReplyBloc, QuotationReplyState>(
+                    listener: (context, state) {
+                      if (state is QuotationReplyJWELoading) {
+                        _isLoading = state.isLoading;
+                      }
+                      if (state is QuotationReplyJWESuccess) {
+                        quotationReplyJobWorkEnquiryList =
+                            state.quotationReplyJWEListData;
+                      }
+                      if (state is QuotationReplyJWEFail) {
+                        showCustomSnackBar(context, state.msg.toString());
+                      }
+                    },
+                    child: _isLoading
+                        ? quotationReplyJobWorkEnquiryList.length <= 0
                         ? Center(
-                            child: Text('No Data'),
-                          )
+                      child: Text('No Data'),
+                    )
                         : Container(
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(
-                                      width: 0.2,
-                                    ),
-                                  )),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        left: 10,
-                                        right: 10,
-                                        bottom: 5),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: TextFormField(
-                                            // initialValue: Application.customerLogin!.name.toString(),
-                                            controller: _searchController,
-                                            textAlign: TextAlign.start,
-                                            keyboardType: TextInputType.text,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              height: 1.5,
-                                            ),
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor:
-                                                  ThemeColors.bottomNavColor,
-                                              prefixIcon: IconButton(
-                                                icon: Icon(
-                                                  Icons.search,
-                                                  size: 25.0,
-                                                  color: ThemeColors.blackColor,
-                                                ),
-                                                onPressed: () {
-                                                  _handleSearchStart();
-                                                },
-                                              ),
-                                              hintText: "Search all Orders",
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 15.0),
-                                              hintStyle:
-                                                  TextStyle(fontSize: 15),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(1.0)),
-                                                borderSide: BorderSide(
-                                                    width: 0.8,
-                                                    color: ThemeColors
-                                                        .bottomNavColor),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(1.0)),
-                                                borderSide: BorderSide(
-                                                    width: 0.8,
-                                                    color: ThemeColors
-                                                        .bottomNavColor),
-                                              ),
-                                              border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(1.0)),
-                                                  borderSide: BorderSide(
-                                                      width: 0.8,
-                                                      color: ThemeColors
-                                                          .bottomNavColor)),
-                                            ),
-                                            validator: (value) {},
-                                            onChanged: (value) {
-                                              searchOperation(value);
-                                            },
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 0.2,
+                                  ),
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                  left: 10,
+                                  right: 10,
+                                  bottom: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      // initialValue: Application.customerLogin!.name.toString(),
+                                      controller: _searchController,
+                                      textAlign: TextAlign.start,
+                                      keyboardType: TextInputType.text,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        height: 1.5,
+                                      ),
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor:
+                                        ThemeColors.bottomNavColor,
+                                        prefixIcon: IconButton(
+                                          icon: Icon(
+                                            Icons.search,
+                                            size: 25.0,
+                                            color: ThemeColors.blackColor,
                                           ),
+                                          onPressed: () {
+                                            _handleSearchStart();
+                                          },
                                         ),
-                                      ],
+                                        hintText: "Search all Orders",
+                                        contentPadding:
+                                        EdgeInsets.symmetric(
+                                            vertical: 10.0,
+                                            horizontal: 15.0),
+                                        hintStyle:
+                                        TextStyle(fontSize: 15),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(1.0)),
+                                          borderSide: BorderSide(
+                                              width: 0.8,
+                                              color: ThemeColors
+                                                  .bottomNavColor),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(1.0)),
+                                          borderSide: BorderSide(
+                                              width: 0.8,
+                                              color: ThemeColors
+                                                  .bottomNavColor),
+                                        ),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                            BorderRadius.all(
+                                                Radius.circular(1.0)),
+                                            borderSide: BorderSide(
+                                                width: 0.8,
+                                                color: ThemeColors
+                                                    .bottomNavColor)),
+                                      ),
+                                      validator: (value) {},
+                                      onChanged: (value) {
+                                        searchOperation(value);
+                                      },
                                     ),
                                   ),
-                                ),
-                                flagSearchResult == false
-                                    ? (searchResult.length != 0 ||
-                                            _searchController.text.isNotEmpty)
-                                        ? Expanded(
-                                            child: buildQuotationsaReplyList(
-                                                searchResult),
-                                          )
-                                        : Expanded(
-                                            child: buildQuotationsaReplyList(
-                                                quotationReplyJobWorkEnquiryList),
-                                          )
-                                    : Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20.0),
-                                        child: const Center(
-                                          child: Text("No Data"),
-                                        ),
-                                      ),
-                              ],
+                                ],
+                              ),
                             ),
+                          ),
+                          flagSearchResult == false
+                              ? (searchResult.length != 0 ||
+                              _searchController.text.isNotEmpty)
+                              ? Expanded(
+                            child: buildQuotationsaReplyList(
+                                searchResult),
                           )
-                    : ShimmerCard()
+                              : Expanded(
+                            child: buildQuotationsaReplyList(
+                                quotationReplyJobWorkEnquiryList),
+                          )
+                              : Padding(
+                            padding:
+                            const EdgeInsets.only(top: 20.0),
+                            child: const Center(
+                              child: Text("No Data"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        : ShimmerCard()
 
-                // Center(
-                //   child: CircularProgressIndicator(),
-                // )
+                  // Center(
+                  //   child: CircularProgressIndicator(),
+                  // )
 
                 );
-          })),
+              })),
     );
   }
 

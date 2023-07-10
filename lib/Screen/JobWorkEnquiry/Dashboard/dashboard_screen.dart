@@ -9,6 +9,8 @@ import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../LoginRegistration/signUpAs.dart';
+
 
 class JobWorkDashboardScreen extends StatefulWidget {
   const JobWorkDashboardScreen({Key? key}) : super(key: key);
@@ -60,6 +62,31 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
               // Navigator.pop(context);
             },
             child: Icon(Icons.arrow_back_ios)),
+        actions: [
+          InkWell(
+              onTap: (){
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                Application.preferences!.remove('user');
+                Application.preferences!.remove('online');
+                // _RemoverUser();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+                      (Route<dynamic> route) => false,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Logout"),
+                    SizedBox(width: 5,),
+                    Icon(Icons.logout,color: Colors.red,),
+                  ],
+                ),
+              ))
+        ],
         title: Text(
           'Dashboard',
         ),

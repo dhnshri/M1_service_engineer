@@ -13,6 +13,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../Bloc/home/home_bloc.dart';
 import '../../../Bloc/home/home_event.dart';
 import '../../../Bloc/home/home_state.dart';
+import '../../../Config/font.dart';
 import '../../../Model/Transpotation/serviceRequestListModel.dart';
 import '../../../Widget/custom_snackbar.dart';
 
@@ -153,15 +154,8 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                         ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/9,
-                        // ),
                         Container(
                           child: Text(
                             serviceListData.enquiryId.toString(),
@@ -181,11 +175,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                       children: [
                         Text(
                           "Date & Time:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                           overflow: TextOverflow.ellipsis,
 
                         ),
@@ -375,7 +365,7 @@ class _TransportationServiceRequestScreenState extends State<TransportationServi
                                 SizedBox(
                                   width: 5,
                                 ),
-                                Text("Filter")
+                                Text("Filter",style: ExpanstionLeftDataStyle,)
                               ],
                             ),
                           )

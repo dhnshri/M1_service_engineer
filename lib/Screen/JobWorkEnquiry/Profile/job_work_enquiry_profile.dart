@@ -93,7 +93,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     uploadCompanyProfileImageFile = new UploadCompanyProfileFile();
     uploadUserProfileImageFile = new UserProfileImageFile();
     _profileBloc = BlocProvider.of<ProfileBloc>(this.context);
-    getData();
+   getData();
   }
 
   getData(){
@@ -1098,53 +1098,197 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        ///Category
+                        // ///Category
+                        // Padding(
+                        //     padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                        //     //to hide underline
+                        //     child: FutureBuilder<List<JobWorkEnquiryCategoryListModel>>(
+                        //         future: fetchJWECategoryList(),
+                        //         builder: (BuildContext context,
+                        //             AsyncSnapshot<List<JobWorkEnquiryCategoryListModel>> snapshot) {
+                        //           if (!snapshot.hasData) return Container();
+                        //
+                        //           return DropdownButtonHideUnderline(
+                        //               child: Container(
+                        //                 width: MediaQuery.of(context).size.width,
+                        //                 decoration: BoxDecoration(
+                        //                   // color: Theme.of(context).dividerColor,
+                        //                     color: ThemeColors.textFieldBackgroundColor,
+                        //                     borderRadius: BorderRadius.circular(5.0),
+                        //                     border: Border.all(
+                        //                         color: ThemeColors.textFieldBgColor)),
+                        //                 child: Padding(
+                        //                   padding: EdgeInsets.only(
+                        //                       left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                        //                   child:
+                        //                   //updated on 15/06/2021 to change background colour of dropdownbutton
+                        //                   new Theme(
+                        //                       data: Theme.of(context)
+                        //                           .copyWith(canvasColor: Colors.white),
+                        //                       child: DropdownButton(
+                        //                           items: snapshot.data!
+                        //                               .map((categoryname) =>
+                        //                               DropdownMenuItem<JobWorkEnquiryCategoryListModel>(
+                        //                                 value: categoryname,
+                        //                                 child: Text(
+                        //                                   categoryname.enquiryDetailsCategory.toString(),
+                        //                                   style: TextStyle(
+                        //                                       color: Colors.black),
+                        //                                 ),
+                        //                               ))
+                        //                               .toList(),
+                        //                           style: TextStyle(
+                        //                               color: Colors.black,
+                        //                               fontWeight: FontWeight.w600),
+                        //                           isExpanded: true,
+                        //                           hint: Text('Select  Category',
+                        //                               style: TextStyle(
+                        //                                   color: Color(0xFF3F4141))),
+                        //                           value: catrgoryTypeselected == null
+                        //                               ? catrgoryTypeselected
+                        //                               : snapshot.data!
+                        //                               .where((i) =>
+                        //                           i.enquiryDetailsCategory ==
+                        //                               catrgoryTypeselected!
+                        //                                   .enquiryDetailsCategory)
+                        //                               .first as JobWorkEnquiryCategoryListModel,
+                        //                           onChanged: (JobWorkEnquiryCategoryListModel? categoryname) {
+                        //                             setState(() {
+                        //                               catrgoryTypeselected = categoryname;
+                        //                               widget.serviceUserdataList![0].jobCategoryName = categoryname!.enquiryDetailsCategory;
+                        //                               widget.serviceUserdataList![0].jobCategoryId = categoryname.id;
+                        //                             });
+                        //                           })),
+                        //                 ),
+                        //               ));
+                        //         })),
+                        //
+                        // widget.serviceUserdataList![0].jobCategoryName != "" ?
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 10.0,top: 10),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Container(
+                        //           // height: 40,
+                        //           // width: MediaQuery.of(context).size.width/1.3,
+                        //           margin: EdgeInsets.all(2),
+                        //           child:Container(
+                        //             // height: 40,
+                        //             color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
+                        //             child: Padding(
+                        //               padding: const EdgeInsets.all(4.0),
+                        //               child: Row(
+                        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //                 children: [
+                        //                   Padding(
+                        //                     padding: const EdgeInsets.only(left: 3),
+                        //                     child: Container(
+                        //                       width: MediaQuery.of(context).size.width * 0.4,
+                        //                       child: Text('${widget.serviceUserdataList![0].jobCategoryName}',
+                        //                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
+                        //                         textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           )
+                        //
+                        //       ),
+                        //
+                        //       // Padding(
+                        //       //   padding: const EdgeInsets.only(right: 6.0),
+                        //       //   child: InkWell(
+                        //       //     onTap: (){
+                        //       //       setState(() {
+                        //       //         // int index1 = machineName
+                        //       //         //     .indexWhere((element) => element.id! == machineName[index].id);
+                        //       //
+                        //       //         machineList.removeAt(index);
+                        //       //       });
+                        //       //
+                        //       //     },
+                        //       //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
+                        //       //   ),
+                        //       // ),
+                        //     ],
+                        //   ),
+                        // ) : Container(),
+
                         Padding(
-                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
+                            padding: EdgeInsets.only(
+                                top: 4.0, bottom: 0.0),
                             //to hide underline
                             child: FutureBuilder<List<JobWorkEnquiryCategoryListModel>>(
-                                future: fetchJWECategoryList(),
+                                future:fetchJWECategoryList(),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<JobWorkEnquiryCategoryListModel>> snapshot) {
-                                  if (!snapshot.hasData) return Container();
+                                    AsyncSnapshot<List<
+                                        JobWorkEnquiryCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData)
+                                    return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
+                                        margin: EdgeInsets.only(
+                                          top: 15.0,
+                                        ),
                                         decoration: BoxDecoration(
-                                          // color: Theme.of(context).dividerColor,
-                                            color: ThemeColors.textFieldBackgroundColor,
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            border: Border.all(
-                                                color: ThemeColors.textFieldBgColor)),
+                                          // border: Border.all(color: Theme.of(context).unselectedWidgetColor.withOpacity(0.5)),
+                                          border: Border.all(
+                                              color: Color(
+                                                  0xFFF5F5F5)),
+                                          // color: Theme.of(context).cardColor,
+                                          color: Color(0xFFF5F5F5),
+                                          borderRadius: BorderRadius
+                                              .circular(5),
+                                        ),
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
+                                              left: 15.0,
+                                              top: 0.0,
+                                              right: 5.0,
+                                              bottom: 0.0),
                                           child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
                                           new Theme(
                                               data: Theme.of(context)
-                                                  .copyWith(canvasColor: Colors.white),
+                                                  .copyWith(
+                                                  canvasColor: Colors
+                                                      .white),
                                               child: DropdownButton(
-                                                  items: snapshot.data!
-                                                      .map((categoryname) =>
-                                                      DropdownMenuItem<JobWorkEnquiryCategoryListModel>(
-                                                        value: categoryname,
+                                                  items: snapshot
+                                                      .data!
+                                                      .map((
+                                                      category) =>
+                                                      DropdownMenuItem<
+                                                          JobWorkEnquiryCategoryListModel>(
+                                                        value: category,
                                                         child: Text(
-                                                          categoryname.enquiryDetailsCategory.toString(),
+                                                          category
+                                                              .enquiryDetailsCategory
+                                                              .toString(),
                                                           style: TextStyle(
-                                                              color: Colors.black),
+                                                              color: Colors
+                                                                  .black),
                                                         ),
                                                       ))
                                                       .toList(),
                                                   style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w600),
+                                                      color: Colors
+                                                          .black,
+                                                      fontWeight: FontWeight
+                                                          .w600),
                                                   isExpanded: true,
-                                                  hint: Text('Select  Category',
+                                                  hint: Text(
+                                                      'Select Category',
                                                       style: TextStyle(
-                                                          color: Color(0xFF3F4141))),
-                                                  value: catrgoryTypeselected == null
+                                                          color: Color(
+                                                              0xFF3F4141))),
+                                                  value: catrgoryTypeselected ==
+                                                      null
                                                       ? catrgoryTypeselected
                                                       : snapshot.data!
                                                       .where((i) =>
@@ -1152,71 +1296,18 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                                       catrgoryTypeselected!
                                                           .enquiryDetailsCategory)
                                                       .first as JobWorkEnquiryCategoryListModel,
-                                                  onChanged: (JobWorkEnquiryCategoryListModel? categoryname) {
+                                                  onChanged: (
+                                                      JobWorkEnquiryCategoryListModel? category) {
+                                                    // subCatrgoryTypeselected =
+                                                    // null;
                                                     setState(() {
-                                                      catrgoryTypeselected = categoryname;
-                                                      widget.serviceUserdataList![0].jobCategoryName = categoryname!.enquiryDetailsCategory;
-                                                      widget.serviceUserdataList![0].jobCategoryId = categoryname.id;
+                                                      catrgoryTypeselected =
+                                                          category;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
-
-                        widget.serviceUserdataList![0].jobCategoryName != "" ?
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0,top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  // height: 40,
-                                  // width: MediaQuery.of(context).size.width/1.3,
-                                  margin: EdgeInsets.all(2),
-                                  child:Container(
-                                    // height: 40,
-                                    color: ThemeColors.greyBackgrounColor.withOpacity(0.5),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 3),
-                                            child: Container(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: Text('${widget.serviceUserdataList![0].jobCategoryName}',
-                                                style: TextStyle(fontFamily: 'Poppins',color: Colors.black),
-                                                textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
-                                    ),
-                                  )
-
-                              ),
-
-                              // Padding(
-                              //   padding: const EdgeInsets.only(right: 6.0),
-                              //   child: InkWell(
-                              //     onTap: (){
-                              //       setState(() {
-                              //         // int index1 = machineName
-                              //         //     .indexWhere((element) => element.id! == machineName[index].id);
-                              //
-                              //         machineList.removeAt(index);
-                              //       });
-                              //
-                              //     },
-                              //     child: Icon(Icons.clear,color: ThemeColors.buttonColor,),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ) : Container(),
 
                         SizedBox(height: 15,),
 
@@ -2303,7 +2394,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                             loading = state.isLoading;
                           }
                           if(state is UpdateJobWorkProfileSuccess){
-                            showCustomSnackBar(context,state.message,isError: false);
+                            showCustomSnackBar(context,state.msg,isError: false);
                           }
                           if(state is UpdateJobWorkProfileFail){
                             showCustomSnackBar(context,state.msg.toString(),isError: true);
@@ -2315,7 +2406,7 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  if(_formKey.currentState!.validate()) {
+                                 // if(_formKey.currentState!.validate()) {
                                     _profileBloc!.add(UpdateJobWorkProfile(
                                       serviceUserId: Application
                                           .customerLogin!.id
@@ -2355,9 +2446,10 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
                                       addharCardImg:
                                           aadharImageFile!.imagePath.toString(),
                                     ));
-                                  }else{
-                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
-                                  }
+                                 // }
+                                  // else{
+                                  //   showCustomSnackBar(context,'Please fill all details.',isError: true);
+                                  // }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   primary: ThemeColors.defaultbuttonColor,

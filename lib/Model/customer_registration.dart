@@ -13,7 +13,6 @@ class RegistrationRepo {
     } catch (error) {
       return RegistrationRepo(
         message: json['message'],
-        user: null,
       );
     }
   }

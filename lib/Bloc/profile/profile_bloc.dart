@@ -8,10 +8,8 @@ import 'package:service_engineer/Bloc/profile/profile_state.dart';
 import 'package:service_engineer/Model/track_process_repo.dart';
 import 'package:service_engineer/Repository/UserRepository.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 import 'package:mime/mime.dart';
 import '../../Model/profile_model.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../Model/profile_repo.dart';
@@ -36,8 +34,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         var innerObj = {};
         innerObj["company_name"] =
             event.experienceCompanyList[j].expCompanyModel!.companyName;
+        // innerObj["job_post"] =
+        //     event.experienceCompanyList[j].expCompanyModel!.jobPost;
         innerObj["job_post"] =
-            event.experienceCompanyList[j].expCompanyModel!.jobPost;
+            "service";
         innerObj["description"] =
             event.experienceCompanyList[j].expCompanyModel!.desciption;
         innerObj["work_from"] =
@@ -102,11 +102,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         "upi_id": event.upiId,
         "branch_name": event.bankName,
         "company_name": event.companyName,
+       // "job_post": jsonEncode(expCompanyList),
         "experience_companies": jsonEncode(expCompanyList),
-        // "educations": jsonEncode(educationList),
+       // "educations": jsonEncode(educationList),
         "educations": jsonEncode(educationList),
         "service_user_id": event.serviceUserId,
-        "certificate[]": files.toString()
+        // "certificate[]": files.toString()
       };
 
       http.MultipartRequest _request = http.MultipartRequest(
@@ -148,7 +149,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result = ProfileRepo.fromJson(responseJson);
+      //ProfileRepo result = ProfileRepo.fromJson(responseJson);
+      ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
@@ -422,7 +424,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result = ProfileRepo.fromJson(responseJson);
+      ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token
@@ -432,7 +434,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           yield UpdateJobWorkProfileLoading(
             isLoading: true,
           );
-          yield UpdateJobWorkProfileSuccess(message: result.msg.toString());
+          yield UpdateJobWorkProfileSuccess(msg: result.msg.toString());
         } catch (error) {
           ///Notify loading to UI
           yield UpdateJobWorkProfileLoading(
@@ -766,7 +768,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       var response = await http.Response.fromStream(streamResponse);
       final responseJson = json.decode(response.body);
       print(responseJson);
-      ProfileRepo result = ProfileRepo.fromJson(responseJson);
+     // ProfileRepo result = ProfileRepo.fromJson(responseJson);
+     ProfileJWERepo result = ProfileJWERepo.fromJson(responseJson);
       print(result.msg);
 
       ///Case API fail but not have token

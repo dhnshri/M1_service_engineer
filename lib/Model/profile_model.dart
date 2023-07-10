@@ -18,3 +18,24 @@ class ProfileRepo {
     }
   }
 }
+
+class ProfileJWERepo {
+  bool? success;
+  String? msg;
+
+  ProfileJWERepo({this.success, this.msg});
+
+  factory ProfileJWERepo.fromJson(Map<dynamic, dynamic> json) {
+    try {
+      return ProfileJWERepo(
+        success: json['success'],
+        msg: json['msg'],
+      );
+    } catch (error) {
+      return ProfileJWERepo(
+        success: json['success'],
+        msg: json['msg'],
+      );
+    }
+  }
+}

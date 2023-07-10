@@ -318,7 +318,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               _firebaseDatabase(firebaseUser_Id);
                               // _login(authController, widget.number);
                               UserRepository().savePhoneNo(widget.phoneNumber.toString());
-                              Navigator.of(context).push(
+                              Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(builder: (context) => BottomNavigation(index:0,dropValue: widget.dropValue,)));
                               print("Otp verified successfully");
 

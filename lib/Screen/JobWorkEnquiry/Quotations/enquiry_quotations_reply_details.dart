@@ -156,7 +156,7 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
               isRevisedLoading = state.isLoading;
             }
             if(state is QuotationRevisedSuccess){
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>

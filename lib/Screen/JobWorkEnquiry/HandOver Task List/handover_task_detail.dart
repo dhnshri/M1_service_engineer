@@ -63,8 +63,8 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
     //saveDeviceTokenAndId();
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(this.context);
-    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
-    // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
+   // _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:widget.handoverTaskData.userId.toString(), machineEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString(),transportEnquiryId: '0'));
+    _homeBloc!.add(OnMyTaskJobWorkEnquiryDetail(userID:'100', machineEnquiryId: '0',jobWorkEnquiryId: '13',transportEnquiryId: '0'));
     // _homeBloc!.add(OnTrackProcessList(userId:'1',machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId:'1'));
     _homeBloc!.add(OnTrackProcessList(userId:widget.handoverTaskData.userId.toString(),machineEnquiryId:'0',transportEnquiryId: '0',jobWorkEnquiryId: widget.handoverTaskData.enquiryId.toString()));
     // _homeBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13', customerUserId: '100'));
@@ -286,7 +286,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                     List<Location> locations = await locationFromAddress(myTaskData![index].cityName.toString());
                                     print(locations);
                                     if(locations!=null) {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -346,7 +346,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                           ),
                                           InkWell(
                                             onTap: () async {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
                                                   ImageViewerScreen(url: myTaskData![index].drawingAttachment.toString())));
                                             },
                                             child: Container(
@@ -418,7 +418,7 @@ class _JobWorkHandOverTaskDetailScreenState extends State<JobWorkHandOverTaskDet
                                 elevation: 5,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context,
+                                    Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context)=> ProcessDetailScreen(trackProgressData: trackProgressData![index],
                                           myTaskJobWorkEnquiryData: widget.handoverTaskData,fromHandOver: false,)));
                                   },

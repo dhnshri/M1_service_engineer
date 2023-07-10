@@ -48,6 +48,9 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   bool isCompleted = false;
   String? workingTimeValue;
   String? gstChargesValue;
+  String? cgstChargesValue;
+  String? sgstChargesValue;
+  String? igstChargesValue;
   String? dataOfJoiningValue;
   String? serviceChargesValue;
   String? handlingChargesValue;
@@ -71,7 +74,13 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
   final TextEditingController _rateController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
+  final TextEditingController _cgstController = TextEditingController();
+  final TextEditingController _sgstController = TextEditingController();
+  final TextEditingController _igstController = TextEditingController();
   final TextEditingController _gstChargesController = TextEditingController();
+  final TextEditingController _cgstChargesController = TextEditingController();
+  final TextEditingController _sgstChargesController = TextEditingController();
+  final TextEditingController _igstChargesController = TextEditingController();
   final _searchController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   DateTime selectedDate = DateTime.now();
@@ -213,7 +222,9 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
           ItemNotAvailableModel(id: itemNotAvailabeList.length);
 
       double amount = int.parse(_rateController.text) * 100 / 100 +
-          int.parse(_gstController.text);
+         // int.parse(_gstController.text)+
+          int.parse(_cgstController.text)+
+          int.parse(_sgstController.text)+int.parse(_igstController.text);
 
       double amountWithGST = amount * int.parse(_quantityController.text);
 
@@ -223,7 +234,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
           quantity: _quantityController.text,
           amount: amountWithGST.toString(),
           rate: _rateController.text,
-          gst: _gstController.text));
+         // gst: _gstController.text,
+      cgst: _cgstController.text,
+      sgst: _sgstController.text,
+      igst: _igstController.text));
     });
   }
 
@@ -491,8 +505,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                         highlightColor: Theme.of(context).highlightColor,
                         enabled: true,
                         child: Container(
-                          height: 80,
-                          width: 80,
+                          height: 90,
+                          width: 70,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
@@ -502,8 +516,8 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     },
                     imageBuilder: (context, imageProvider) {
                       return Container(
-                        height: 80,
-                        width: 80,
+                        height: 90,
+                        width: 70,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: imageProvider,
@@ -552,7 +566,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           child: Container(
                             height: 40,
                             // width: 110,
-                            width: MediaQuery.of(context).size.width * 0.266,
+                            width: MediaQuery.of(context).size.width * 0.5,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.black),
                               borderRadius:
@@ -592,7 +606,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                       )
                                     : Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 20.0),
+                                            const EdgeInsets.only(left: 10.0),
                                         child: const Text('Add',
                                             style: TextStyle(
                                                 color: Colors.black,
@@ -863,11 +877,69 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     },
                   ),
                 ),
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width * 0.8,
+                //   height: 60,
+                //   child: TextFormField(
+                //     controller: _gstController,
+                //     keyboardType: TextInputType.number,
+                //     // maxLength: 10,
+                //     cursorColor: primaryAppColor,
+                //     decoration: InputDecoration(
+                //       disabledBorder: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(8.0),
+                //         borderSide: const BorderSide(
+                //           color: Colors.black,
+                //           width: 1.0,
+                //         ),
+                //       ),
+                //       errorBorder: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(8.0),
+                //         borderSide: const BorderSide(
+                //           color: Colors.red,
+                //           width: 1.0,
+                //         ),
+                //       ),
+                //       fillColor: Colors.white,
+                //       filled: true,
+                //       focusedBorder: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(10.0),
+                //         borderSide:
+                //             const BorderSide(color: Colors.black, width: 1.0),
+                //       ),
+                //       focusedErrorBorder: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(8.0),
+                //           borderSide: const BorderSide(
+                //             color: Colors.black,
+                //             width: 1.0,
+                //           )),
+                //       enabledBorder: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(8.0),
+                //         borderSide: const BorderSide(
+                //           color: Colors.black,
+                //           width: 1.0,
+                //         ),
+                //       ),
+                //       hintText: 'Add GST',
+                //       contentPadding:
+                //           const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                //       hintStyle: GoogleFonts.poppins(
+                //           color: Colors.grey,
+                //           fontSize: 12.0,
+                //           fontWeight: FontWeight.w500),
+                //     ),
+                //     onChanged: (val) {
+                //       setState(() {
+                //         if (_formKey.currentState!.validate()) {}
+                //       });
+                //     },
+                //   ),
+                // ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 60,
                   child: TextFormField(
-                    controller: _gstController,
+                    controller: _cgstController,
                     keyboardType: TextInputType.number,
                     // maxLength: 10,
                     cursorColor: primaryAppColor,
@@ -891,7 +963,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            const BorderSide(color: Colors.black, width: 1.0),
+                        const BorderSide(color: Colors.black, width: 1.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
@@ -906,9 +978,125 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                           width: 1.0,
                         ),
                       ),
-                      hintText: 'Add GST',
+                      hintText: 'Add CGST',
                       contentPadding:
-                          const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if (_formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _sgstController,
+                    keyboardType: TextInputType.number,
+                    // maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Add SGST',
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                      hintStyle: GoogleFonts.poppins(
+                          color: Colors.grey,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        if (_formKey.currentState!.validate()) {}
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 60,
+                  child: TextFormField(
+                    controller: _igstController,
+                    keyboardType: TextInputType.number,
+                    // maxLength: 10,
+                    cursorColor: primaryAppColor,
+                    decoration: InputDecoration(
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.0,
+                        ),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      hintText: 'Add IGST',
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                       hintStyle: GoogleFonts.poppins(
                           color: Colors.grey,
                           fontSize: 12.0,
@@ -929,7 +1117,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                         print(itemNotAvailabeList);
                         _itemNameController.clear();
                         _rateController.clear();
-                        _gstController.clear();
+                      //  _gstController.clear();
+                        _cgstController.clear();
+                        _sgstController.clear();
+                        _igstController.clear();
                         _quantityController.clear();
                         Navigator.of(context).pop();
                         showCustomSnackBar(context, 'Item Added Successfully',
@@ -986,7 +1177,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             transportChargesController: transportChargesController,
             otherChargesController: otherChargesController,
             handlingChargesController: handlingChargesController,
-            gstChargesController: _gstChargesController,
+            //gstChargesController: _gstChargesController,
+            cgstChargesController: _cgstChargesController,
+            sgstChargesController: _sgstChargesController,
+            igstChargesController: _igstChargesController,
             commission: commision,
           ),
         ),
@@ -1038,7 +1232,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
     _quantityController.dispose();
     _amountController.dispose();
     _itemNameController.dispose();
-    _gstController.dispose();
+    //_gstController.dispose();
+    _cgstController.dispose();
+    _sgstController.dispose();
+    _igstController.dispose();
   }
 
   @override
@@ -1049,9 +1246,16 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             backgroundColor: Colors.white,
             leading: InkWell(
                 onTap: () {
-                  Navigator.of(context).pop();
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen()));
+                 // Navigator.of(context).pop();
+                 //  Navigator.push(context,
+                 //      MaterialPageRoute(builder: (context) => ServiceRequestDetailsScreen(serviceRequestData:widget.serviceRequestData![0])));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BottomNavigation(
+                            index: 0,
+                            dropValue: Application.customerLogin!.role.toString(),
+                          )));
                 },
                 child: Icon(Icons.arrow_back_ios)),
             title: Text(
@@ -1096,7 +1300,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                   // _cartLoading = state.isLoading;
                 }
                 if (state is SendQuotationSuccess) {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BottomNavigation(
@@ -1250,10 +1454,10 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                                       showCustomSnackBar(
                                           context, 'Please add working time.',
                                           isError: true);
-                                    } else if (_gstChargesController.text ==
+                                    } else if (_cgstChargesController.text ==
                                         "") {
                                       showCustomSnackBar(
-                                          context, 'Please add GST.',
+                                          context, 'Please add CGST.',
                                           isError: true);
                                     } else {
                                       setState(() {
@@ -1425,12 +1629,71 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
             height: 10,
           ),
 
-          ///GST
+          // ///GST
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width * 0.8,
+          //   height: 60,
+          //   child: TextFormField(
+          //     controller: _gstChargesController,
+          //     keyboardType: TextInputType.number,
+          //     // maxLength: 10,
+          //     cursorColor: primaryAppColor,
+          //     decoration: InputDecoration(
+          //       disabledBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(8.0),
+          //         borderSide: const BorderSide(
+          //           color: Colors.white,
+          //           width: 1.0,
+          //         ),
+          //       ),
+          //       errorBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(8.0),
+          //         borderSide: const BorderSide(
+          //           color: Colors.red,
+          //           width: 1.0,
+          //         ),
+          //       ),
+          //       fillColor: Color(0xffF5F5F5),
+          //       filled: true,
+          //       focusedBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(10.0),
+          //         borderSide: const BorderSide(color: Colors.white, width: 1.0),
+          //       ),
+          //       focusedErrorBorder: OutlineInputBorder(
+          //           borderRadius: BorderRadius.circular(8.0),
+          //           borderSide: const BorderSide(
+          //             color: Colors.white,
+          //             width: 1.0,
+          //           )),
+          //       enabledBorder: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(8.0),
+          //         borderSide: const BorderSide(
+          //           color: Colors.white,
+          //           width: 1.0,
+          //         ),
+          //       ),
+          //       hintText: 'GST',
+          //       contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+          //       hintStyle: GoogleFonts.poppins(
+          //           color: Colors.grey,
+          //           fontSize: 12.0,
+          //           fontWeight: FontWeight.w500),
+          //     ),
+          //     onChanged: (val) {
+          //       setState(() {
+          //         gstChargesValue = val;
+          //         // _phoneNumberController.text = val;
+          //       });
+          //     },
+          //   ),
+          // ),
+
+          ///CGST
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: 60,
             child: TextFormField(
-              controller: _gstChargesController,
+              controller: _cgstChargesController,
               keyboardType: TextInputType.number,
               // maxLength: 10,
               cursorColor: primaryAppColor,
@@ -1468,7 +1731,7 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
                     width: 1.0,
                   ),
                 ),
-                hintText: 'GST',
+                hintText: 'CGST',
                 contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
                 hintStyle: GoogleFonts.poppins(
                     color: Colors.grey,
@@ -1477,7 +1740,124 @@ class _MakeQuotationScreenState extends State<MakeQuotationScreen> {
               ),
               onChanged: (val) {
                 setState(() {
-                  gstChargesValue = val;
+                  cgstChargesValue = val;
+                  // _phoneNumberController.text = val;
+                });
+              },
+            ),
+          ),
+
+          ///SGST
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 60,
+            child: TextFormField(
+              controller: _sgstChargesController,
+              keyboardType: TextInputType.number,
+              // maxLength: 10,
+              cursorColor: primaryAppColor,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: Color(0xffF5F5F5),
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                hintText: 'SGST',
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                hintStyle: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500),
+              ),
+              onChanged: (val) {
+                setState(() {
+                  sgstChargesValue = val;
+                  // _phoneNumberController.text = val;
+                });
+              },
+            ),
+          ),
+          ///IGST
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 60,
+            child: TextFormField(
+              controller: _igstChargesController,
+              keyboardType: TextInputType.number,
+              // maxLength: 10,
+              cursorColor: primaryAppColor,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.red,
+                    width: 1.0,
+                  ),
+                ),
+                fillColor: Color(0xffF5F5F5),
+                filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+                hintText: 'IGST',
+                contentPadding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 0.0),
+                hintStyle: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500),
+              ),
+              onChanged: (val) {
+                setState(() {
+                  igstChargesValue = val;
                   // _phoneNumberController.text = val;
                 });
               },

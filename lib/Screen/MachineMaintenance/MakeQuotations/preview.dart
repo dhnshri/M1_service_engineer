@@ -20,7 +20,10 @@ class PreviewScreen extends StatefulWidget {
   TextEditingController handlingChargesController = TextEditingController();
   TextEditingController otherChargesController = TextEditingController();
   TextEditingController transportChargesController = TextEditingController();
-  TextEditingController gstChargesController = TextEditingController();
+ // TextEditingController gstChargesController = TextEditingController();
+  TextEditingController cgstChargesController = TextEditingController();
+  TextEditingController sgstChargesController = TextEditingController();
+  TextEditingController igstChargesController = TextEditingController();
   int commission;
   PreviewScreen(
       {Key? key,
@@ -32,7 +35,10 @@ class PreviewScreen extends StatefulWidget {
       required this.handlingChargesController,
       required this.transportChargesController,
       required this.otherChargesController,
-      required this.gstChargesController,
+      //required this.gstChargesController,
+        required this.cgstChargesController,
+        required this.sgstChargesController,
+        required this.igstChargesController,
       required this.commission})
       : super(key: key);
 
@@ -51,9 +57,15 @@ class _PreviewScreenState extends State<PreviewScreen> {
   final GlobalKey<ExpansionTileCardState> cardTermsConditions = new GlobalKey();
 
   double? amount = 0;
+  double? camount = 0;
+  double? samount = 0;
+  double? iamount = 0;
   double? amountWithGST = 0;
   double? itemRequiredTotalAmount = 0;
   double? oterItemsAmount = 0;
+  double? oterItemscAmount = 0;
+  double? oterItemssAmount = 0;
+  double? oterItemsiAmount = 0;
   double? otherItemsAmountWithGST = 0;
   double? otherItemTotalAmount = 0;
   double? commission = 0;
@@ -77,13 +89,25 @@ class _PreviewScreenState extends State<PreviewScreen> {
     if (widget.handlingChargesController.text == "") {
       widget.handlingChargesController.text = "0";
     }
+    if (widget.cgstChargesController.text == "") {
+      widget.cgstChargesController.text = "0";
+    }
+    if (widget.igstChargesController.text == "") {
+      widget.igstChargesController.text = "0";
+    }
+    if (widget.sgstChargesController.text == "") {
+      widget.sgstChargesController.text = "0";
+    }
 
     totalAmount = itemRequiredTotalAmount! +
         otherItemTotalAmount! +
         double.parse(widget.serviceCallChargesController.text) +
         double.parse(widget.transportChargesController.text) +
         double.parse(widget.handlingChargesController.text) +
-        double.parse(widget.gstChargesController.text) +
+        // double.parse(widget.gstChargesController.text) +
+        double.parse(widget.cgstChargesController.text) +
+        double.parse(widget.sgstChargesController.text) +
+        double.parse(widget.igstChargesController.text) +
         widget.commission;
     AppBloc.authBloc.add(OnSaveMaintainenceTotalAmount(totalAmount));
     setState(() {});
@@ -174,20 +198,39 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         ],
                         rows: List.generate(widget.cartList!.length, (index) {
                           int itemIndex = index + 1;
-                          amount = int.parse(widget
-                                      .cartList![index].discountPrice
-                                      .toString()) *
-                                  100 /
-                                  100 +
-                              int.parse(widget.cartList![index].gst.toString());
-                          amountWithGST = amount! *
+                          // amount = int.parse(widget
+                          //             .cartList![index].discountPrice
+                          //             .toString()) *
+                          //         100 /
+                          //         100 +
+                          //     int.parse(widget.cartList![index].gst.toString());
+                          camount = int.parse(widget
+                              .cartList![index].discountPrice
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.cartList![index].cgst.toString());
+                          samount = int.parse(widget
+                              .cartList![index].discountPrice
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.cartList![index].sgst.toString());
+                           iamount = int.parse(widget
+                              .cartList![index].discountPrice
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.cartList![index].igst.toString());
+                          amountWithGST = camount! + samount! + iamount! *
                               int.parse(widget.cartList![index].qty.toString());
                           itemRequiredTotalAmount = widget.cartList!
                               .map((item) =>
                                   double.parse(amountWithGST.toString()))
                               .reduce((value, current) => value + current);
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            if (widget.gstChargesController.text != "") {
+                            if (widget.cgstChargesController.text != "" ||
+                            widget.sgstChargesController.text != "" || widget.igstChargesController.text != "") {
                               TotalAmount();
                             }
                           });
@@ -287,15 +330,36 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         rows: List.generate(widget.itemNotAvailableList.length,
                             (index) {
                           int itemIndex = index + 1;
-                          oterItemsAmount = double.parse(widget
-                                      .itemNotAvailableList[index].rate
-                                      .toString()) *
-                                  100 /
-                                  100 +
-                              int.parse(widget.itemNotAvailableList[index].gst
+                          // oterItemsAmount = double.parse(widget
+                          //             .itemNotAvailableList[index].rate
+                          //             .toString()) *
+                          //         100 /
+                          //         100 +
+                          //     int.parse(widget.itemNotAvailableList[index].gst
+                          //         .toString());
+                          oterItemscAmount = double.parse(widget
+                              .itemNotAvailableList[index].rate
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.itemNotAvailableList[index].cgst
+                                  .toString());
+                          oterItemssAmount = double.parse(widget
+                              .itemNotAvailableList[index].rate
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.itemNotAvailableList[index].sgst
+                                  .toString());
+                          oterItemsiAmount = double.parse(widget
+                              .itemNotAvailableList[index].rate
+                              .toString()) *
+                              100 /
+                              100 +
+                              int.parse(widget.itemNotAvailableList[index].igst
                                   .toString());
 
-                          otherItemsAmountWithGST = oterItemsAmount! *
+                          otherItemsAmountWithGST =oterItemscAmount! + oterItemssAmount! + oterItemsiAmount! *
                               int.parse(widget
                                   .itemNotAvailableList[index].quantity
                                   .toString());
@@ -304,7 +368,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                               .map((item) => double.parse(
                                   otherItemsAmountWithGST.toString()))
                               .reduce((value, current) => value + current);
-                          if (widget.gstChargesController.text != "") {
+                          if (widget.cgstChargesController.text != "" && widget.sgstChargesController.text != "" && widget.igstChargesController.text != "") {
                             TotalAmount();
                           }
                           return _getOtherItemRequiredDataRow(
@@ -457,13 +521,43 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   SizedBox(
                     height: 10,
                   ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text("GST "),
+                  //     Text(widget.gstChargesController.text == ''
+                  //         ? "₹ 0"
+                  //         : "₹ ${widget.gstChargesController.text}"),
+                  //   ],
+                  // ),
+                  // Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("GST "),
-                      Text(widget.gstChargesController.text == ''
+                      Text("CGST "),
+                      Text(widget.cgstChargesController.text == ''
                           ? "₹ 0"
-                          : "₹ ${widget.gstChargesController.text}"),
+                          : "₹ ${widget.cgstChargesController.text}"),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("SGST "),
+                      Text(widget.sgstChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.sgstChargesController.text}"),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("IGST "),
+                      Text(widget.igstChargesController.text == ''
+                          ? "₹ 0"
+                          : "₹ ${widget.igstChargesController.text}"),
                     ],
                   ),
                   Divider(),

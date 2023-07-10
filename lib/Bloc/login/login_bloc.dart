@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:service_engineer/Model/forgot_password_model.dart';
 import 'package:service_engineer/main.dart';
 
 
@@ -62,15 +63,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         AppBloc.authBloc.add(OnSaveUser(user));
         try {
           ///Begin start AuthBloc Event AuthenticationSave
-
           yield LoginSuccess(userModel: user, message: "Login Successfully");
         } catch (error) {
           ///Notify loading to UI
-          yield LoginFail(msg: "Login Fail");
+          yield LoginFail(msg: "Please Enter Correct Username and Password");
         }
       } else {
         ///Notify loading to UI
-        yield LoginFail(msg: "Login Fail");
+        yield LoginFail(msg: "Please Enter Correct Username and Password");
       }
     }
 
@@ -99,6 +99,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               yield LogoutFail("error");
             }
 
+            //On Forgot Password
+
+    if (event is OnForgotPassword) {
+      yield ForgotPasswordLoading(
+        isLoading: false,
+      );
+
+      final ForgotPasswordRepo result = await userRepository!.fetchForgotPassword(
+        email:event.email,
+      );
+      print(result.message);
+      if (result.success == true) {
+        try {
+          ///Begin start AuthBloc Event AuthenticationSave
+          yield ForgotPasswordLoading(
+            isLoading: true,
+          );
+          yield ForgotPasswordSuccess(message: result.message.toString());
+        } catch (error) {
+          ///Notify loading to UI
+          yield ForgotPasswordLoading(
+            isLoading: true,
+          );
+          yield ForgotPasswordFail(message: result.message.toString());
+        }
+      } else {
+        ///Notify loading to UI
+        yield ForgotPasswordLoading(isLoading: true);
+        yield ForgotPasswordFail(message: result.message.toString());
+      }
+    }
+
     // On Registration
 
     if (event is OnRegistration) {
@@ -113,8 +145,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         role:event.role,
         username:event.username,
       );
-      print(result);
+      print(result.message);
       if (result.message == "Service User successfully registered") {
+     // if (result.message == null) {
         ///Login API success
         RegistrationModel user = RegistrationModel();
        // RegistrationModel user = new RegistrationModel();

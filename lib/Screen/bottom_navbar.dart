@@ -196,7 +196,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
               showCustomSnackBar(context,state.msg.toString(),isError: true);
             }
           },
-          child: _isLoading ? serviceUserdataList!.length <= 0 ? Center(child: CircularProgressIndicator(),):IndexedStack(
+          child: _isLoading ?
+          // serviceUserdataList!.length <= 0 ?
+          // Center(child: CircularProgressIndicator(),):
+          IndexedStack(
             index: _selectedIndex,
             children:
             <Widget>[
@@ -212,7 +215,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   : widget.dropValue == "3"? TransportationProfileScreen(serviceUserdataList: serviceUserdataList,profileDriverDetailsList: profileDriverDetailsList,
                     profileExperienceList: profileExperienceList,profileKycList: profileKycList,profileVehicleInfoList: profileVehicleInfoList,):SizedBox(),
             ],
-          ): Center(child: CircularProgressIndicator(),),
+          )
+              : Center(child: CircularProgressIndicator(),),
 
         );
 

@@ -299,7 +299,7 @@ class _TransportHandOverTaskDetailScreenState extends State<TransportHandOverTas
                                 List<Location> locations = await locationFromAddress(myTaskData![0].dropLocation.toString());
                                 print(locations);
                                 if(locations!=null) {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>

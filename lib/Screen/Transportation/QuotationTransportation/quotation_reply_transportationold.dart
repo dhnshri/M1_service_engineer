@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:service_engineer/Screen/MachineMaintenance/Quotations/quotations_reply_details.dart';
+import 'package:service_engineer/Screen/Transportation/QuotationTransportation/quotation_details_transposition.dart';
 import 'package:service_engineer/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../Bloc/home/home_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_bloc.dart';
 import '../../../Bloc/quotationReply/quotationReply_event.dart';
 import '../../../Bloc/quotationReply/quotationReply_state.dart';
 import '../../../Config/font.dart';
-import '../../../Model/MachineMaintance/quotationReply.dart';
+import '../../../Model/Transpotation/quotationReplyModel.dart';
 import '../../../Utils/application.dart';
 import '../../../Widget/app_button.dart';
 import '../../../Widget/custom_snackbar.dart';
@@ -22,35 +24,40 @@ import '../../bottom_navbar.dart';
 
 
 
-class QuotationsReplyScreen extends StatefulWidget {
-  QuotationsReplyScreen({Key? key}) : super(key: key);
+class QuotationsReplyTransportationScreen extends StatefulWidget {
+  const QuotationsReplyTransportationScreen({Key? key}) : super(key: key);
 
   @override
-  _QuotationsReplyScreenState createState() => _QuotationsReplyScreenState();
+  _QuotationsReplyTransportationScreenState createState() => _QuotationsReplyTransportationScreenState();
 }
 
-class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
+class _QuotationsReplyTransportationScreenState extends State<QuotationsReplyTransportationScreen> {
 
-  QuotationReplyBloc? _quotationReplyBloc;
-  List<QuotationReplyModel> quotationReplyList=[];
-  final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
-  bool _loadData = false;
-  bool _isLoading = false;
-  double? _progressValue;
+  bool loading = true;
+  QuotationReplyBloc? _quotationReplyBloc;
+  List<QuotationReplyTransportModel> quotationReplyList=[];
+  ScrollController _scrollController = ScrollController();
   int offset = 0;
+
+  bool _isLoading = false;
+  bool _loadData= false;
+  double? _progressValue;
 
   @override
   void initState() {
     // TODO: implement initState
     //saveDeviceTokenAndId();
     super.initState();
-    _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
+   _quotationReplyBloc = BlocProvider.of<QuotationReplyBloc>(context);
     getApi();
+   // _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: Application.customerLogin!.id.toString(),offSet: '0'));
+
   }
 
   getApi(){
-    _quotationReplyBloc!.add(OnQuotationReplyMachineMaintainceList(offSet: offset.toString() , userId: Application.customerLogin!.id.toString()));
+    _quotationReplyBloc!.add(OnQuotationReplyTranspotationList(service_user_id: '12',offSet: '0'));
+    // _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
 
   @override
@@ -60,16 +67,17 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
     // getroleofstudent();
   }
 
-  Widget buildQuotationsaReplyList(BuildContext context,List<QuotationReplyModel> quotationReplyList) {
+  Widget buildQuotationsaReplyList(List<QuotationReplyTransportModel> quotationReplyList ) {
     return ListView.builder(
       controller: _scrollController
         ..addListener(() {
-          if (_scrollController.position.pixels ==
+          if (_scrollController.position.pixels  ==
               _scrollController.position.maxScrollExtent) {
             offset++;
             print("Offser : ${offset}");
-            BlocProvider.of<QuotationReplyBloc>(context)
-              .add(getApi());
+            BlocProvider.of<HomeBloc>(context)
+              ..isFetching = true
+              ..add(getApi());
             // serviceList.addAll(serviceList);
           }
         }),
@@ -78,19 +86,19 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return  InkWell(
+        //return  quotationsReplyCardNew(quotationReplyList[index]);
+        return InkWell(
             onTap: (){
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => QuotationsReplyDetailsScreen(quotationReplyList: quotationReplyList[index],)));
+                  MaterialPageRoute(builder: (context) => QuotationForTransportation(quotationReplyList: quotationReplyList[index],)));
             },
-            child: quotationsaReplyCard(context, quotationReplyList[index]));
+            child: quotationsReplyCardNew(quotationReplyList[index]));
       },
       itemCount: quotationReplyList.length,
     );
   }
 
-  Widget quotationsaReplyCard(BuildContext context, QuotationReplyModel quotationReplyData)
-  {
+  Widget quotationsReplyCardNew(QuotationReplyTransportModel quotationReplyData) {
     return Container(
       width: MediaQuery.of(context).size.width ,
       child: Card(
@@ -109,19 +117,22 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(height: 4,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Enquiry ID:",
-                  style: ExpanstionLeftDataStyle,
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
                           ),
-
+                        ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
                         // ),
                         Container(
-                          // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
                             quotationReplyData.enquiryId.toString(),
                             style: TextStyle(
@@ -131,24 +142,27 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-
+                        )
                       ],
                     ),
                     SizedBox(height: 3,),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Date and Timing:",
-                          style: ExpanstionLeftDataStyle,
+                          "Timings:",
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                          ),
+                          overflow: TextOverflow.ellipsis,
+
                         ),
                         // SizedBox(
-                        //   width: MediaQuery.of(context).size.width/6.3,
+                        //   width: MediaQuery.of(context).size.width/12.5,
                         // ),
                         Container(
-                          // width: MediaQuery.of(context).size.width*0.2,
                           child: Text(
                             DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(quotationReplyData.dateAndTime.toString())).toString(),
                             style: TextStyle(
@@ -161,12 +175,93 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                         )
                       ],
                     ),
-
                   ],
                 ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget quotationsaReplyCard(QuotationReplyTransportModel quotationReplyData)
+  {
+    return Padding(
+      padding: const EdgeInsets.only(bottom:8.0),
+      child: Card(
+        elevation: 1,
+        child: ListTile(
+          leading: CachedNetworkImage(
+            filterQuality: FilterQuality.medium,
+            // imageUrl: Api.PHOTO_URL + widget.users.avatar,
+            // imageUrl: "https://picsum.photos/250?image=9",
+            imageUrl: "https://picsum.photos/250?image=9",
+            placeholder: (context, url) {
+              return Shimmer.fromColors(
+                baseColor: Theme.of(context).hoverColor,
+                highlightColor: Theme.of(context).highlightColor,
+                enabled: true,
+                child: Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              );
+            },
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              );
+            },
+            errorWidget: (context, url, error) {
+              return Shimmer.fromColors(
+                baseColor: Theme.of(context).hoverColor,
+                highlightColor: Theme.of(context).highlightColor,
+                enabled: true,
+                child: Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.error),
+                ),
+              );
+            },
+          ),
+          title: Column(
+            children: [
+              Text("Title/Services Name or Any Other Name...",style: serviceRequestHeadingStyle,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Enquiry ID:",style: serviceRequestSubHeadingStyle,),
+                  Text("#102GRDSA36987",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Timings:",style: serviceRequestSubHeadingStyle,),
+                  Text("10AM - 6PM",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
+                ],
+              ),
+            ],
+          ),
+
         ),
       ),
     );
@@ -180,49 +275,51 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: (){
-              // Navigator.of(context).pop();
+                Navigator.pop(context);
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation Reply',),
         ),
-
-        body:
-        BlocBuilder<QuotationReplyBloc, QuotationReplyState>(builder: (context, state) {
-          return BlocListener<QuotationReplyBloc, QuotationReplyState>(
-              listener: (context, state) {
-                if(state is QuotationReplyLoading){
-                  _isLoading = state.isLoading;
-                }
-                if(state is QuotationReplySuccess){
-                  // quotationReplyList = state.quotationReplyListData;
-                  quotationReplyList.addAll(state.quotationReplyListData);
-                  if (quotationReplyList != null) {
-                    _loadData = true;
+         body:
+         BlocBuilder<QuotationReplyBloc, QuotationReplyState>(builder: (context, state) {
+            return BlocListener<QuotationReplyBloc, QuotationReplyState>(
+                listener: (context, state) {
+                  if(state is QuotationReplyTransportLoading){
+                  //  _isLoading = state.isLoading;
                   }
-                }
-                if(state is QuotationReplyFail){
-                  showCustomSnackBar(context,state.msg.toString());
+                  if(state is QuotationReplyTransportSuccess){
+                    quotationReplyList = state.quotationReplyTransportListData;
+                    if(quotationReplyList!=null){
+                      _loadData=true;
+                    }
+                  }
+                  if(state is QuotationReplyTransportFail){
+                    showCustomSnackBar(context,state.msg.toString());
 
-                }
-              },
-              child: _loadData ? quotationReplyList.length <= 0 ? Center(child: Text('No Data'),):
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(child: buildQuotationsaReplyList(context, quotationReplyList)),
-                    ],
-                  ),
-                ),
-              ) : ShimmerCard()
+                  }
+                },
+                child: _isLoading
+                    ? quotationReplyList.length <= 0
+                    ? Center(child: Text('No Data'),)
+                    : Container(
+             child: Padding(
+               padding: const EdgeInsets.all(10.0),
+               child: Column(
+                 children: [
+                   Expanded(child: buildQuotationsaReplyList(quotationReplyList)),
+                 ],
+               ),
+             ),
+           ) : ShimmerCard()
 
-            // Center(
-            //   child: CircularProgressIndicator(),
-            // )
+              // Center(
+              //   child: CircularProgressIndicator(),
+              // )
 
-          );
-        })
+            );
+          })
       ),
     );
   }
@@ -329,11 +426,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                             children: [
                               Text(
                                 "Enquiry ID:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
@@ -359,11 +452,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                             children: [
                               Text(
                                 "Working Timing:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -389,11 +478,7 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
                             children: [
                               Text(
                                 "Date & Time:",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: ExpanstionLeftDataStyle,
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,

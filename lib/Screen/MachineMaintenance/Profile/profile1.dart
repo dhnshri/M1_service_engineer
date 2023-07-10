@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -141,7 +140,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
   }
 
   getData()async{
-    if(widget.serviceUserdataList!.isNotEmpty && widget.profileKycList!.isNotEmpty ){
+    if(widget.serviceUserdataList!.isNotEmpty || widget.profileKycList!.isNotEmpty ){
       _iDController.text = widget.serviceUserdataList![0].email.toString();
       _companyNameController.text = widget.serviceUserdataList![0].companyName.toString();
       _nameController.text = widget.serviceUserdataList![0].name.toString();
@@ -190,8 +189,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
       for(int i=0; i < widget.profileMachineExperienceList!.length;i++){
         ExpCompanyModel _expData = ExpCompanyModel(id: expCompanyForms.length,companyName: widget.profileMachineExperienceList![i].companyName,
-            desciption: widget.profileMachineExperienceList![i].description,fromYear: widget.profileMachineExperienceList![i].workFrom,
-            tillYear: widget.profileMachineExperienceList![i].workTill);
+          desciption: widget.profileMachineExperienceList![i].description,fromYear: widget.profileMachineExperienceList![i].workFrom,
+          tillYear: widget.profileMachineExperienceList![i].workTill);
         expCompanyForms.add(ExpCompanyFormWidget(
           index: expCompanyForms.length,
           expCompanyModel: _expData,
@@ -654,19 +653,19 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
             leading: Icon(Icons.arrow_back_ios),
             actions: [
               InkWell(
-                  onTap: (){
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
-                    Application.preferences!.remove('user');
-                    Application.preferences!.remove('online');
-                    DefaultCacheManager().emptyCache();
-                    // _RemoverUser();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignUpAsScreen()),
-                          (Route<dynamic> route) => false,
-                    );
-                  },
+                onTap: (){
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+                  Application.preferences!.remove('user');
+                  Application.preferences!.remove('online');
+                  DefaultCacheManager().emptyCache();
+                  // _RemoverUser();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+                        (Route<dynamic> route) => false,
+                  );
+                },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -775,7 +774,8 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       ),
                     ),
                   ),
-                  //User Data
+
+                  ///User Data
                   Padding(
                     padding: EdgeInsets.only(left: 30,right: 20),
                     child: Column(
@@ -1131,148 +1131,59 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
 
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0, bottom:5),
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Category",
                             style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        // ///Category
-                        // Padding(
-                        //     padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
-                        //     //to hide underline
-                        //     child: FutureBuilder<List<MachineMaintenanceCategoryListModel>>(
-                        //         future: fetchCategoryList(),
-                        //         builder: (BuildContext context,
-                        //             AsyncSnapshot<List<MachineMaintenanceCategoryListModel>> snapshot) {
-                        //           if (!snapshot.hasData) return Container();
-                        //
-                        //           return DropdownButtonHideUnderline(
-                        //               child: Container(
-                        //                 width: MediaQuery.of(context).size.width,
-                        //                 decoration: BoxDecoration(
-                        //                   // color: Theme.of(context).dividerColor,
-                        //                     color: ThemeColors.textFieldBackgroundColor,
-                        //                     borderRadius: BorderRadius.circular(5.0),
-                        //                     border: Border.all(
-                        //                         color: ThemeColors.textFieldBgColor)),
-                        //                 child: Padding(
-                        //                   padding: EdgeInsets.only(
-                        //                       left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
-                        //                   child:
-                        //                   //updated on 15/06/2021 to change background colour of dropdownbutton
-                        //                   new Theme(
-                        //                       data: Theme.of(context)
-                        //                           .copyWith(canvasColor: Colors.white),
-                        //                       child: DropdownButton(
-                        //                           items: snapshot.data!
-                        //                               .map((categoryname) =>
-                        //                               DropdownMenuItem<MachineMaintenanceCategoryListModel>(
-                        //                                 value: categoryname,
-                        //                                 child: Text(
-                        //                                   categoryname.serviceCategoryName.toString(),
-                        //                                   style: TextStyle(
-                        //                                       color: Colors.black),
-                        //                                 ),
-                        //                               ))
-                        //                               .toList(),
-                        //                           style: TextStyle(
-                        //                               color: Colors.black,
-                        //                               fontWeight: FontWeight.w600),
-                        //                           isExpanded: true,
-                        //                           hint: Text('Select  Category',
-                        //                               style: TextStyle(
-                        //                                   color: Color(0xFF3F4141))),
-                        //                           value: catrgoryTypeselected == null
-                        //                               ? catrgoryTypeselected
-                        //                               : snapshot.data!
-                        //                               .where((i) =>
-                        //                           i.serviceCategoryName ==
-                        //                               catrgoryTypeselected!
-                        //                                   .serviceCategoryName)
-                        //                               .first as MachineMaintenanceCategoryListModel,
-                        //                           onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
-                        //                             setState(() {
-                        //                               catrgoryTypeselected = categoryname;
-                        //                               // widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
-                        //                               // widget.serviceUserdataList![0].categoryId = categoryname.id;
-                        //                             });
-                        //                           })),
-                        //                 ),
-                        //               ));
-                        //         })),
-                        //for category
+                        ///Category
                         Padding(
-                            padding: EdgeInsets.only(
-                                top: 4.0, bottom: 0.0),
+                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
                             //to hide underline
                             child: FutureBuilder<List<MachineMaintenanceCategoryListModel>>(
                                 future: fetchCategoryList(),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<
-                                        MachineMaintenanceCategoryListModel>> snapshot) {
-                                  if (!snapshot.hasData)
-                                    return Container();
+                                    AsyncSnapshot<List<MachineMaintenanceCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData) return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        margin: EdgeInsets.only(
-                                          top: 15.0,
-                                        ),
+                                        width: MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
-                                          // border: Border.all(color: Theme.of(context).unselectedWidgetColor.withOpacity(0.5)),
-                                          border: Border.all(
-                                              color: Color(
-                                                  0xFFF5F5F5)),
-                                          // color: Theme.of(context).cardColor,
-                                          color: Color(0xFFF5F5F5),
-                                          borderRadius: BorderRadius
-                                              .circular(5),
-                                        ),
+                                          // color: Theme.of(context).dividerColor,
+                                            color: ThemeColors.textFieldBackgroundColor,
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            border: Border.all(
+                                                color: ThemeColors.textFieldBgColor)),
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              left: 15.0,
-                                              top: 0.0,
-                                              right: 5.0,
-                                              bottom: 0.0),
+                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
                                           child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
                                           new Theme(
                                               data: Theme.of(context)
-                                                  .copyWith(
-                                                  canvasColor: Colors
-                                                      .white),
+                                                  .copyWith(canvasColor: Colors.white),
                                               child: DropdownButton(
-                                                  items: snapshot
-                                                      .data!
-                                                      .map((
-                                                      category) =>
-                                                      DropdownMenuItem<
-                                                          MachineMaintenanceCategoryListModel>(
-                                                        value: category,
+                                                  items: snapshot.data!
+                                                      .map((categoryname) =>
+                                                      DropdownMenuItem<MachineMaintenanceCategoryListModel>(
+                                                        value: categoryname,
                                                         child: Text(
-                                                          category
-                                                              .serviceCategoryName
-                                                              .toString(),
+                                                          categoryname.serviceCategoryName.toString(),
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .black),
+                                                              color: Colors.black),
                                                         ),
                                                       ))
                                                       .toList(),
                                                   style: TextStyle(
-                                                      color: Colors
-                                                          .black,
-                                                      fontWeight: FontWeight
-                                                          .w600),
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600),
                                                   isExpanded: true,
-                                                  hint: Text(
-                                                      'Select Category',
+                                                  hint: Text('Select  Category',
                                                       style: TextStyle(
-                                                          color: Color(
-                                                              0xFF3F4141))),
-                                                  value: catrgoryTypeselected ==
-                                                      null
+                                                          color: Color(0xFF3F4141))),
+                                                  value: catrgoryTypeselected == null
                                                       ? catrgoryTypeselected
                                                       : snapshot.data!
                                                       .where((i) =>
@@ -1280,20 +1191,17 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                       catrgoryTypeselected!
                                                           .serviceCategoryName)
                                                       .first as MachineMaintenanceCategoryListModel,
-                                                  onChanged: (
-                                                      MachineMaintenanceCategoryListModel? category) {
-                                                    subCatrgoryTypeselected =
-                                                    null;
+                                                  onChanged: (MachineMaintenanceCategoryListModel? categoryname) {
                                                     setState(() {
-                                                      catrgoryTypeselected =
-                                                          category;
+                                                      catrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].workCatgory = categoryname!.serviceCategoryName;
+                                                      widget.serviceUserdataList![0].categoryId = categoryname.id;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
-                        widget.serviceUserdataList![0].workCatgory != ""
-                            ?
+                        widget.serviceUserdataList![0].workCatgory != "" ?
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0,top: 10),
                           child: Row(
@@ -1346,170 +1254,63 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               // ),
                             ],
                           ),
-                        )
-                            : Container(),
-                        SizedBox(height: 7,),
+                        ) : Container(),
+                        SizedBox(height: 15,),
 
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0, bottom: 5),
+                          padding: const EdgeInsets.only(left: 0.0, bottom: 10),
                           child: Text("Sub-Category",
                             style: TextStyle(fontFamily: 'Poppins', fontSize: 14,fontWeight: FontWeight.w400,color: Colors.black.withOpacity(0.5)),
                             textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         ///Sub-Category
-                        // Padding(
-                        //     padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
-                        //     //to hide underline
-                        //     child: FutureBuilder<List<MachineMaintenanceSubCategoryListModel>>(
-                        //         future: fetchSubCategory(catrgoryTypeselected!=null?catrgoryTypeselected!.id.toString():""),
-                        //         builder: (BuildContext context,
-                        //             AsyncSnapshot<List<MachineMaintenanceSubCategoryListModel>> snapshot) {
-                        //           if (!snapshot.hasData) return Container();
-                        //
-                        //           return DropdownButtonHideUnderline(
-                        //               child: Container(
-                        //                 width: MediaQuery.of(context).size.width,
-                        //                 decoration: BoxDecoration(
-                        //                   // color: Theme.of(context).dividerColor,
-                        //                     color: ThemeColors.textFieldBackgroundColor,
-                        //                     borderRadius: BorderRadius.circular(5.0),
-                        //                     border: Border.all(
-                        //                         color: ThemeColors.textFieldBgColor)),
-                        //                 child: Padding(
-                        //                   padding: EdgeInsets.only(
-                        //                       left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
-                        //                   child:
-                        //                   //updated on 15/06/2021 to change background colour of dropdownbutton
-                        //                   new Theme(
-                        //                       data: Theme.of(context)
-                        //                           .copyWith(canvasColor: Colors.white),
-                        //                       child: DropdownButton(
-                        //                           items: snapshot.data!
-                        //                               .map((categoryname) =>
-                        //                               DropdownMenuItem<MachineMaintenanceSubCategoryListModel>(
-                        //                                 value: categoryname,
-                        //                                 child: Text(
-                        //                                   categoryname.serviceSubCategoryName.toString(),
-                        //                                   style: TextStyle(
-                        //                                       color: Colors.black),
-                        //                                 ),
-                        //                               ))
-                        //                               .toList(),
-                        //                           style: TextStyle(
-                        //                               color: Colors.black,
-                        //                               fontWeight: FontWeight.w600),
-                        //                           isExpanded: true,
-                        //                           hint: Text('Select Sub Category',
-                        //                               style: TextStyle(
-                        //                                   color: Color(0xFF3F4141))),
-                        //                           value: subCatrgoryTypeselected == null
-                        //                               ? subCatrgoryTypeselected
-                        //                               : snapshot.data!
-                        //                               .where((i) =>
-                        //                           i.serviceSubCategoryName ==
-                        //                               subCatrgoryTypeselected!
-                        //                                   .serviceSubCategoryName)
-                        //                               .first as MachineMaintenanceSubCategoryListModel,
-                        //                           onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
-                        //                             setState(() {
-                        //                               subCatrgoryTypeselected = categoryname;
-                        //                               widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
-                        //                               widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
-                        //                             });
-                        //                           })),
-                        //                 ),
-                        //               ));
-                        //         })),
-                        //for subcategory
                         Padding(
-                            padding: EdgeInsets.only(
-                                top: 4.0, bottom: 0.0),
+                            padding: EdgeInsets.only(top: 8.0, bottom: 0.0),
                             //to hide underline
                             child: FutureBuilder<List<MachineMaintenanceSubCategoryListModel>>(
-                                future: fetchSubCategory(
-                                    catrgoryTypeselected != null
-                                        ? catrgoryTypeselected!.id
-                                        .toString()
-                                        : ""),
+                                future: fetchSubCategory(catrgoryTypeselected!=null?catrgoryTypeselected!.id.toString():""),
                                 builder: (BuildContext context,
-                                    AsyncSnapshot<List<
-                                        MachineMaintenanceSubCategoryListModel>> snapshot) {
-                                  if (!snapshot.hasData)
-                                    return Container();
+                                    AsyncSnapshot<List<MachineMaintenanceSubCategoryListModel>> snapshot) {
+                                  if (!snapshot.hasData) return Container();
 
                                   return DropdownButtonHideUnderline(
                                       child: Container(
-                                        margin: EdgeInsets.only(
-                                          top: 15.0,
-                                        ),
+                                        width: MediaQuery.of(context).size.width,
                                         decoration: BoxDecoration(
-                                          // border: Border.all(color: Theme.of(context).unselectedWidgetColor.withOpacity(0.5)),
-                                          border: Border.all(
-                                              color: Color(
-                                                  0xFFF5F5F5)),
-                                          // color: Theme.of(context).cardColor,
-                                          color: Color(0xFFF5F5F5),
-                                          borderRadius: BorderRadius
-                                              .circular(5),
-                                        ),
+                                          // color: Theme.of(context).dividerColor,
+                                            color: ThemeColors.textFieldBackgroundColor,
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            border: Border.all(
+                                                color: ThemeColors.textFieldBgColor)),
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              left: 15.0,
-                                              top: 0.0,
-                                              right: 5.0,
-                                              bottom: 0.0),
+                                              left: 15.0, top: 0.0, right: 5.0, bottom: 0.0),
                                           child:
                                           //updated on 15/06/2021 to change background colour of dropdownbutton
-                                          Theme(
+                                          new Theme(
                                               data: Theme.of(context)
-                                                  .copyWith(
-                                                  canvasColor: Colors
-                                                      .white),
+                                                  .copyWith(canvasColor: Colors.white),
                                               child: DropdownButton(
-                                                  items: snapshot
-                                                      .data!
-                                                      .map((
-                                                      subcategory) =>
-                                                      DropdownMenuItem<
-                                                          MachineMaintenanceSubCategoryListModel>(
-                                                        value: subcategory,
-                                                        child: subcategory
-                                                            .serviceSubCategoryName ==
-                                                            "Select Category"
-                                                            ?
-                                                        Text(
-                                                          subcategory
-                                                              .serviceSubCategoryName
-                                                              .toString(),
+                                                  items: snapshot.data!
+                                                      .map((categoryname) =>
+                                                      DropdownMenuItem<MachineMaintenanceSubCategoryListModel>(
+                                                        value: categoryname,
+                                                        child: Text(
+                                                          categoryname.serviceSubCategoryName.toString(),
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .red),
-                                                        )
-                                                            :
-                                                        Text(
-                                                          subcategory
-                                                              .serviceSubCategoryName
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black),
+                                                              color: Colors.black),
                                                         ),
                                                       ))
                                                       .toList(),
                                                   style: TextStyle(
-                                                      color: Colors
-                                                          .black,
-                                                      fontWeight: FontWeight
-                                                          .w600),
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600),
                                                   isExpanded: true,
-                                                  hint: Text(
-                                                      'Select Sub Category',
+                                                  hint: Text('Select Sub Category',
                                                       style: TextStyle(
-                                                          color: Color(
-                                                              0xFF3F4141))),
-                                                  value: subCatrgoryTypeselected ==
-                                                      null
+                                                          color: Color(0xFF3F4141))),
+                                                  value: subCatrgoryTypeselected == null
                                                       ? subCatrgoryTypeselected
                                                       : snapshot.data!
                                                       .where((i) =>
@@ -1517,21 +1318,18 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                                       subCatrgoryTypeselected!
                                                           .serviceSubCategoryName)
                                                       .first as MachineMaintenanceSubCategoryListModel,
-                                                  onChanged: (
-                                                      MachineMaintenanceSubCategoryListModel? subCategory) {
-                                                    // subsubcategoryModelselected =
-                                                    // null;
+                                                  onChanged: (MachineMaintenanceSubCategoryListModel? categoryname) {
                                                     setState(() {
-                                                      subCatrgoryTypeselected =
-                                                          subCategory;
+                                                      subCatrgoryTypeselected = categoryname;
+                                                      widget.serviceUserdataList![0].workSubCatgory = categoryname!.serviceSubCategoryName;
+                                                      widget.serviceUserdataList![0].subCategoryId = categoryname.serviceCategoryId;
                                                     });
                                                   })),
                                         ),
                                       ));
                                 })),
 
-                        widget.serviceUserdataList![0].workSubCatgory != ""
-                            ?
+                        widget.serviceUserdataList![0].workSubCatgory != "" ?
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0,top: 10),
                           child: Row(
@@ -1585,8 +1383,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               // ),
                             ],
                           ),
-                        )
-                        : Container(),
+                        ) : Container(),
 
                         SizedBox(height: 15,),
 
@@ -1794,19 +1591,19 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                               ),
 
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Location",
-                                    style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Icon(Icons.my_location_rounded,color: Colors.red,)
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Location",
+                                      style: TextStyle(fontFamily: 'Poppins', fontSize: 18,fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Icon(Icons.my_location_rounded,color: Colors.red,)
+                                  ],
+                                ),
                               ),
-                            ),
                           ),
                         ),
 
@@ -2262,7 +2059,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
 
                           ///Months
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0, bottom: 10),
@@ -2375,12 +2172,10 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                       children: [
 
                         expCompanyForms.isNotEmpty
-                            ?
-                        Column(
+                        ? Column(
                           children: [
                             ListView.builder(
                                 itemCount: expCompanyForms.length,
-                                // itemCount:4,
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (_, index) {
@@ -2400,13 +2195,13 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                             ),
                             SizedBox(width: 5,),
                             InkWell(
-                                onTap: (){
-                                  onAdd();
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: ThemeColors.redTextColor,
-                                  child: Icon(Icons.add,color: Colors.white,),
-                                )
+                              onTap: (){
+                                onAdd();
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: ThemeColors.redTextColor,
+                                child: Icon(Icons.add,color: Colors.white,),
+                              )
                             )
                           ],
                         )
@@ -2971,10 +2766,10 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width * 0.4,
+                                        width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(imageFile!.imagePath == null ?"Company Certificate" : imageFile!.imagePath!.split('/').last.toString(),
                                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
@@ -3023,7 +2818,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                                       width: MediaQuery.of(context).size.width * 0.4,
                                       child: Text(gstImageFile!.imagePath==null?"GST Certificate":gstImageFile!.imagePath!.split('/').last.toString(),
                                         style: TextStyle(fontFamily: 'Poppins',color: Colors.black.withOpacity(0.5)),
-                                        maxLines: 2, overflow: TextOverflow.ellipsis,
+                                         maxLines: 2, overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
@@ -3213,178 +3008,90 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
                   ),
 
                   Center(
-                      child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-                        return BlocListener<ProfileBloc, ProfileState>(
-                          listener: (context, state) {
-                            if(state is UpdateProfileLoading){
-                              loading = state.isLoading;
-                            }
-                            if(state is UpdateProfileSuccess){
-                              showCustomSnackBar(context,state.message,isError: false);
-                            }
-                            if(state is UpdateProfileFail){
-                              showCustomSnackBar(context,state.msg.toString(),isError: true);
-                            }
-                          },
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (educationForms.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please fill Education Forms");
-                                    }
-                                    else if (_nameController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter Name");
-                                    } else if (_emailController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter email");
-                                    }else if (_phoneController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter Phone Number");
-                                    }else if (_gstController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter GST number");
-                                    }else if (catrgoryTypeselected == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please Select Category");
-                                    }else if (subCatrgoryTypeselected == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please Select Sub Category");
-                                    }else if (_ageController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter Age");
-                                    }else if (_genderController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter gender");
-                                    }else if (_locationController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter location");
-                                    }else if (_pinCodeController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter pincode");
-                                    }else if (_cityController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter city");
-                                    }else if (_stateController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter state");
-                                    }else if (_yearsController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter year of experience");
-                                    }else if (_monthsController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter month of experience");
-                                    }else if (expCompanyForms.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please fill experience company forms");
-                                    }else if (educationForms.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please fill education forms");
-                                    }else if ( _bankNameController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter bank name");
-                                    }else if ( _accountNumberController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter account number");
-                                    }else if ( _iFSCCodeController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter IFSC Code");
-                                    }else if ( _branchNameController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter branch name");
-                                    }else if ( _upiIdController == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please enter UPI id");
-                                    }else if (imageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Company Certificate");
-                                    }else if (gstImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload gst Certificate");
-                                    }else if (panImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Pancard Certificate");
-                                    }else if (shopActImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Shop Act Image File Certificate");
-                                    }else if (aadharImageFile == null) {
-                                      Fluttertoast.showToast(
-                                          msg: "Please upload Aadhar Card Certificate");
-                                    }
-                                     else{
-                                    // if (_formKey.currentState!.validate()) {
-                                        _profileBloc!.add(UpdateProfile(
-                                          certificate: educationForms,
-                                          serviceUserId: Application.customerLogin!.id
-                                              .toString(),
-                                          fullName: _nameController.text,
-                                          email: _emailController.text,
-                                          mobile: _phoneController.text,
-                                          gstNo: _gstController.text,
-                                          // catId:catrgoryTypeselected!.id.toString(),
-                                          // subCatId:subCatrgoryTypeselected!.serviceCategoryId.toString(),
-                                          catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
-                                          subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
-                                          age: _ageController.text,
-                                          gender: _genderController.text,
-                                          location: _locationController.text,
-                                          pincode: _pinCodeController.text,
-                                          city: _cityController.text,
-                                          state: _stateController.text,
-                                          yearOfExp: _yearsController.text,
-                                          monthOfExp: _monthsController.text,
-                                          experienceCompanyList: expCompanyForms,
-                                          educationList: educationForms,
-                                          bankName: _bankNameController.text,
-                                          accountNo: _accountNumberController.text,
-                                          ifscCode: _iFSCCodeController.text,
-                                          branchName: _branchNameController.text,
-                                          upiId: _upiIdController.text,
-                                          companyName: _companyNameController.text,
-                                          companyCertificateImg:
-                                          imageFile!.imagePath.toString(),
-                                          gstCertificateImg:
-                                          gstImageFile!.imagePath.toString(),
-                                          panCardImg:
-                                          panImageFile!.imagePath.toString(),
-                                          shopActLicenseImg:
-                                          shopActImageFile!.imagePath.toString(),
-                                          addharCardImg:
-                                          aadharImageFile!.imagePath.toString(),
-                                          currentAddress: _locationController.text,
-                                        ));
-                                     // }
-                                    //  else{
-                                    // showCustomSnackBar(context,'Please fill all details.',isError: true);
-                                    // }
-
-                                    }
-
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ThemeColors.defaultbuttonColor,
-                                    shape: StadiumBorder(),
-                                  ),
-                                  child: loading ? Text(
-                                    "Update Profile",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .button!
-                                        .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
-                                  ) : Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
-                                      //: Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
-
+                    child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+                      return BlocListener<ProfileBloc, ProfileState>(
+                        listener: (context, state) {
+                          if(state is UpdateProfileLoading){
+                            loading = state.isLoading;
+                          }
+                          if(state is UpdateProfileSuccess){
+                            showCustomSnackBar(context,state.message,isError: false);
+                          }
+                          if(state is UpdateProfileFail){
+                            showCustomSnackBar(context,state.msg.toString(),isError: true);
+                          }
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if(_companyNameController.text == ""){
+                                    showCustomSnackBar(context,'Enter Company Name',isError: true);
+                                  }
+                                  else if(_formKey.currentState!.validate()) {
+                                  _profileBloc!.add(UpdateProfile(
+                                    certificate: educationForms,
+                                    serviceUserId: Application.customerLogin!.id
+                                        .toString(),
+                                    fullName: _nameController.text,
+                                    email: _emailController.text,
+                                    mobile: _phoneController.text,
+                                    gstNo: _gstController.text,
+                                    catId:catrgoryTypeselected!.id!=null?catrgoryTypeselected!.id.toString():widget.serviceUserdataList![0].categoryId.toString(),
+                                    subCatId: subCatrgoryTypeselected!.serviceCategoryId!=null?subCatrgoryTypeselected!.serviceCategoryId.toString():widget.serviceUserdataList![0].subCategoryId.toString(),
+                                    age: _ageController.text,
+                                    gender: _genderController.text,
+                                    location: _locationController.text,
+                                    pincode: _pinCodeController.text,
+                                    city: _cityController.text,
+                                    state: _stateController.text,
+                                    yearOfExp: _yearsController.text,
+                                    monthOfExp: _monthsController.text,
+                                    experienceCompanyList: expCompanyForms,
+                                    educationList: educationForms,
+                                    bankName: _bankNameController.text,
+                                    accountNo: _accountNumberController.text,
+                                    ifscCode: _iFSCCodeController.text,
+                                    branchName: _branchNameController.text,
+                                    upiId: _upiIdController.text,
+                                    companyName: _companyNameController.text,
+                                    companyCertificateImg:
+                                        imageFile!.imagePath.toString(),
+                                    gstCertificateImg:
+                                        gstImageFile!.imagePath.toString(),
+                                    panCardImg:
+                                        panImageFile!.imagePath.toString(),
+                                    shopActLicenseImg:
+                                        shopActImageFile!.imagePath.toString(),
+                                    addharCardImg:
+                                        aadharImageFile!.imagePath.toString(),
+                                    currentAddress: _locationController.text,
+                                  ));
+                                }else{
+                                    showCustomSnackBar(context,'Please fill all details.',isError: true);
+                                  }
+                              },
+                                style: ElevatedButton.styleFrom(
+                                  primary: ThemeColors.defaultbuttonColor,
+                                  shape: StadiumBorder(),
                                 ),
-                              )),
+                                child: loading ? Text(
+                                  "Update Profile",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button!
+                                      .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                                ) : Center(child: SizedBox(width:25, height:25,child: CircularProgressIndicator()),),
 
-                        );
+                              ),
+                            )),
+
+                      );
 
 
-                      })
+                    })
 
                   )
                 ],

@@ -89,7 +89,7 @@ class _JobWorkEnquiryServiceProviderListScreenState extends State<JobWorkEnquiry
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => JobWorkServiceProviderProfile(serviceList: handOverList[index],myTaskJobWorkEnquiryData: widget.myTaskJobWorkEnquiryData,)));
             },
             child: TaskHandOverCard(context,handOverList[index]));

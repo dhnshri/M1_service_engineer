@@ -50,7 +50,10 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ServiceCallChargesController = TextEditingController();
   final TextEditingController HandlingChargesController = TextEditingController();
-  final TextEditingController gstController = TextEditingController();
+  //final TextEditingController gstController = TextEditingController();
+  final TextEditingController cgstController = TextEditingController();
+  final TextEditingController sgstController = TextEditingController();
+  final TextEditingController igstController = TextEditingController();
 
 
   @override
@@ -97,11 +100,17 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
               showCustomSnackBar(context,'Please add Handling Charges.',isError: true);
             }else if(ServiceCallChargesController.text==""){
               showCustomSnackBar(context,'Please add Service Charges.',isError: true);
-            }else if(gstController.text==""){
-              showCustomSnackBar(context,'Please add GST Charges.',isError: true);
-            }else
+            }else if(cgstController.text==""){
+              showCustomSnackBar(context,'Please add CGST Charges.',isError: true);
+            }else if(sgstController.text==""){
+              showCustomSnackBar(context,'Please add SGST Charges.',isError: true);
+            }
+            else if(igstController.text==""){
+              showCustomSnackBar(context,'Please add IGST Charges.',isError: true);
+            }
+            else
             {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (contex) => QuotationFor(
@@ -112,7 +121,9 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                                 HandlingChargesController,
                             ServiceCallChargesController:
                                 ServiceCallChargesController,
-                            gstController: gstController,
+                            cgstController: cgstController,
+                        sgstController: sgstController,
+                        igstController: igstController,
                             requestDetailList: widget.serviceRequestData,
                           )));
             }
@@ -455,7 +466,7 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
               MediaQuery.of(context).size.width * 0.8,
               height: 60,
               child: TextFormField(
-                controller: gstController,
+                controller: cgstController,
                 keyboardType: TextInputType.number,
                 // maxLength: 10,
                 cursorColor: primaryAppColor,
@@ -499,7 +510,137 @@ class _MakeQuotationTransposationScreenState extends State<MakeQuotationTranspos
                       width: 1.0,
                     ),
                   ),
-                  hintText: 'GST Charges',
+                  hintText: 'CGST Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
+              ),
+            ),
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: sgstController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'SGST Charges',
+                  contentPadding: const EdgeInsets.fromLTRB(
+                      20.0, 20.0, 0.0, 0.0),
+                  hintStyle: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500),
+                ),
+                onChanged: (val) {
+                  setState(() {
+                    phoneNum = val;
+                    // _phoneNumberController.text = val;
+                  });
+                },
+              ),
+            ),
+            SizedBox(
+              width:
+              MediaQuery.of(context).size.width * 0.8,
+              height: 60,
+              child: TextFormField(
+                controller: igstController,
+                keyboardType: TextInputType.number,
+                // maxLength: 10,
+                cursorColor: primaryAppColor,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 1.0,
+                    ),
+                  ),
+                  fillColor: Color(0xffF5F5F5),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10.0),
+                    borderSide: const BorderSide(
+                        color: Colors.white, width: 1.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(
+                        color: Colors.white,
+                        width: 1.0,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(8.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  hintText: 'IGST Charges',
                   contentPadding: const EdgeInsets.fromLTRB(
                       20.0, 20.0, 0.0, 0.0),
                   hintStyle: GoogleFonts.poppins(

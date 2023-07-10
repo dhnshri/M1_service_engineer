@@ -18,6 +18,7 @@ import 'package:service_engineer/Utils/application.dart';
 import 'package:service_engineer/Widget/custom_snackbar.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Bloc/home/home_state.dart';
+import '../../../Config/font.dart';
 
 class JobWorkHandOverTaskList extends StatefulWidget {
   JobWorkHandOverTaskList({
@@ -58,7 +59,8 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
     _homeBloc!.add(JobWorkHandOverServiceRequestList(
         timeId: timeId.toString(),
         offSet: offset.toString(),
-        serviceUserId: Application.customerLogin!.id.toString()));
+        //serviceUserId: Application.customerLogin!.id.toString()));
+    serviceUserId: Application.customerLogin!.id.toString()));
   }
 
   @override
@@ -132,7 +134,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => JobWorkHandOverTaskDetailScreen(handoverTaskData: serviceList[index],)));
             },
             child: Container(
@@ -173,10 +175,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               children: [
                                 Text(
                                   "Enquiry ID:",
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
+                                  style: ExpanstionLeftDataStyle,
                                 ),
                                 // SizedBox(
                                 //   // width: MediaQuery.of(context).size.width/,
@@ -236,10 +235,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                               children: [
                                 Text(
                                   "Date & Time:",
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
+                                  style: ExpanstionLeftDataStyle,
                                 ),
                                 // SizedBox(
                                 //   width: MediaQuery.of(context).size.width/6.3,
@@ -397,7 +393,7 @@ class _JobWorkHandOverTaskListState extends State<JobWorkHandOverTaskList> {
                                       ),
                                       InkWell(
                                         onTap: () async {
-                                          var filterResult = await Navigator.push(
+                                          var filterResult = await Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>

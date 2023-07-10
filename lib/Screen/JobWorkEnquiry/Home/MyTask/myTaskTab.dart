@@ -127,7 +127,7 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => EnquiryMyTaskDetailsScreen(
@@ -167,11 +167,7 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                         Container(
                           child: Text(
                             "Items Name",
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              // fontWeight: FontWeight.bold
-                            ),
+                            style: ExpanstionLeftDataStyle,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -180,8 +176,8 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                           // "Items:",
                           style: TextStyle(
                               fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal),
                         ),
                       ],
                     ),
@@ -193,11 +189,7 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                       children: [
                         Text(
                           "Date & Time:",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 12,
-                            // fontWeight: FontWeight.bold
-                          ),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         Container(
                           child: Text(
@@ -208,8 +200,8 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                                 .toString(),
                             style: TextStyle(
                                 fontFamily: 'Poppins',
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal),
                             overflow: TextOverflow.ellipsis,
                           ),
                         )
@@ -329,7 +321,7 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                                     ),
                                     InkWell(
                                       onTap: () async {
-                                        var filterResult = await Navigator.push(
+                                        var filterResult = await Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
@@ -347,7 +339,7 @@ class _EnquiryMyTaskScreenState extends State<EnquiryMyTaskScreen> {
                                           SizedBox(
                                             width: 5,
                                           ),
-                                          Text("Filter")
+                                          Text("Filter",style: ExpanstionLeftDataStyle,)
                                         ],
                                       ),
                                     )

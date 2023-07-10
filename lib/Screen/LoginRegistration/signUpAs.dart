@@ -58,7 +58,7 @@ class _SignUpAsScreenState extends State<SignUpAsScreen> {
               UserRepository().saveRole(dropdownValue);
               // Navigator.of(context).push(
               //     MaterialPageRoute(builder: (context) => VerifyMobileNumberScreen(dropValue: dropdownValue,)));
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                      MaterialPageRoute(builder: (context) => LoginScreen(dropValue: dropdownValue,)));
               //   isconnectedToInternet = await ConnectivityCheck
               //       .checkInternetConnectivity();

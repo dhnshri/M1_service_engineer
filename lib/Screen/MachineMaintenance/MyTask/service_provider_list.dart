@@ -98,7 +98,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => ServiceProviderProfileScreen(handoverServiceListData: handOverList[index],trackProgressData:widget.trackProgressData,
                     myTaskData: widget.myTaskData,)));
             },

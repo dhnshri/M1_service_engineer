@@ -64,49 +64,75 @@ class _EnquiryHomeScreenState extends State<EnquiryHomeScreen> {
     ),
   );
 
+  Future<bool> _onPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Exit the App'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            //<-- SEE HERE
+            child: new Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            // <-- SEE HERE
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ??
+        false;
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(child: Padding(
-                padding: const EdgeInsets.only(left:30.0),
-                child: androidSwitch(),
-              )),
+    return WillPopScope(
+      onWillPop: _onPop,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(child: Padding(
+                  padding: const EdgeInsets.only(left:30.0),
+                  child: androidSwitch(),
+                )),
+              ],
+            ),
+            title: Text(isSwitched? "Online" : "Offline",style: onlineOfflineStyle,),
+            actions: [
+              notification(context),
+              SizedBox(width: 10,)
             ],
+            bottom:   TabBar(
+              labelColor: Colors.red,
+              unselectedLabelColor: Colors.black,
+              indicatorColor: Colors.red,
+              tabs: [
+                Tab(
+                  text: "Service Requests",
+                ),
+                Tab(
+                  text: "My Tasks",
+                ),
+              ],
+            ),
           ),
-          title: Text(isSwitched? "Online" : "Offline",style: onlineOfflineStyle,),
-          actions: [
-            notification(context),
-            SizedBox(width: 10,)
+          body: TabBarView(
+          children: [
+            EnquiryServiceRequestScreen(isSwitched: isSwitched),
+            EnquiryMyTaskScreen(isSwitched: isSwitched)
           ],
-          bottom:   TabBar(
-            labelColor: Colors.red,
-            unselectedLabelColor: Colors.black,
-            indicatorColor: Colors.red,
-            tabs: [
-              Tab(
-                text: "Service Requests",
-              ),
-              Tab(
-                text: "My Tasks",
-              ),
-            ],
-          ),
+        ) ,
+      )
         ),
-        body: TabBarView(
-        children: [
-          EnquiryServiceRequestScreen(isSwitched: isSwitched),
-          EnquiryMyTaskScreen(isSwitched: isSwitched)
-        ],
-      ) ,
-    )
-      );
+    );
   }
 }

@@ -47,3 +47,19 @@ class LogoutFail extends LoginState {
 }
 
 class LogoutSuccess extends LoginState {}
+
+class ForgotPasswordLoading extends LoginState {
+  bool isLoading;
+  ForgotPasswordLoading({required this.isLoading});
+
+}
+
+class ForgotPasswordSuccess extends LoginState {
+  String message;
+  ForgotPasswordSuccess({required this.message});
+}
+
+class ForgotPasswordFail extends LoginState {
+  String message;
+  ForgotPasswordFail({required this.message});
+}

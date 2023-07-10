@@ -353,7 +353,10 @@ class TranspotationSendQuotation extends HomeEvent {
   String vehicleType;
   String serviceCharges;
   String handlingCharges;
-  String gst;
+ // String gst;
+  String cgst;
+  String sgst;
+  String igst;
   String commision;
   String gst_no;
   String transport_enquiry_date;
@@ -362,7 +365,7 @@ class TranspotationSendQuotation extends HomeEvent {
   String total_amount;
 
   TranspotationSendQuotation({ required this.vehicleNumber, required this.vehicleName, required this.vehicleType,
-    required this.service_user_id,required this.commision,required this.gst,required this.gst_no,
+    required this.service_user_id,required this.commision,required this.cgst,required this.sgst,required this.igst,required this.gst_no,
     required this.handlingCharges,required this.serviceCharges, required this.total_amount,required this.transport_enquiry_date,required this.transport_enquiry_id,
     });
 

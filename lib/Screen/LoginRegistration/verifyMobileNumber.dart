@@ -64,7 +64,7 @@ class _VerifyMobileNumberScreenState extends State<VerifyMobileNumberScreen> {
             verificationId = verId;
             loading=true;
 
-            Navigator.of(context).push(
+            Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) =>
                   VerificationScreen(dropValue: widget.dropValue,phoneNumber: countrycode+number,verificationId: verificationId,)
                 ));

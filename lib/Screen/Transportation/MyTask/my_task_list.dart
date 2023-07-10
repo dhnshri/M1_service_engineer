@@ -24,31 +24,31 @@ import '../../JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestDetails.d
 import '../../JobWorkEnquiry/Home/ServiceRequest/enquiry_serviceRequestFilter.dart';
 import 'my_task_details.dart';
 
+
+
 class TransportationMyTaskScreen extends StatefulWidget {
-  TransportationMyTaskScreen({Key? key, required this.isSwitched})
-      : super(key: key);
+  TransportationMyTaskScreen({Key? key,required this.isSwitched}) : super(key: key);
   bool isSwitched;
   @override
-  _TransportationMyTaskScreenState createState() =>
-      _TransportationMyTaskScreenState();
+  _TransportationMyTaskScreenState createState() => _TransportationMyTaskScreenState();
 }
 
-class _TransportationMyTaskScreenState
-    extends State<TransportationMyTaskScreen> {
+class _TransportationMyTaskScreenState extends State<TransportationMyTaskScreen> {
+
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   HomeBloc? _homeBloc;
-  List<MyTaskTransportationModel> myTaskList = [];
+  List<MyTaskTransportationModel> myTaskList=[];
   List<TransportMyTaskDetailsModel> myTaskDetail = [];
   bool _isLoading = false;
   double? _progressValue;
-  bool flagSearchResult = false;
-  bool _isSearching = false;
-  List<MyTaskTransportationModel> searchResult = [];
+  bool flagSearchResult=false;
+  bool _isSearching=false;
+  List<MyTaskTransportationModel> searchResult=[];
   int offset = 0;
-  int? timeId = 0;
+  int? timeId=0;
   ScrollController _scrollController = ScrollController();
-  bool _loadData = false;
+  bool _loadData= false;
 
   @override
   void initState() {
@@ -56,17 +56,13 @@ class _TransportationMyTaskScreenState
     //saveDeviceTokenAndId();
     super.initState();
     _progressValue = 0.5;
-    _homeBloc = BlocProvider.of<HomeBloc>(context);
+   _homeBloc = BlocProvider.of<HomeBloc>(context);
     getApi();
   }
 
-  getApi() {
-    // _homeBloc!.add(OnMyTaskTranspotationList(
-    //     userid: '1', offset: offset.toString(), timeId: timeId.toString()));
-    _homeBloc!.add(OnMyTaskTranspotationList(
-        userid: Application.customerLogin!.id.toString(),
-        offset: offset.toString(),
-        timeId: timeId.toString()));
+  getApi(){
+    _homeBloc!.add(OnMyTaskTranspotationList(userid:'1', offset: offset.toString(),timeId: timeId.toString()));
+    // _homeBloc!.add(OnMyTaskTranspotationList(userid: Application.customerLogin!.id.toString(), offset: offset.toString(),timeId: timeId.toString()));
   }
 
   @override
@@ -86,37 +82,29 @@ class _TransportationMyTaskScreenState
     searchResult.clear();
     if (_isSearching != null) {
       for (int i = 0; i < myTaskList.length; i++) {
-        MyTaskTransportationModel myTaskListData =
-            new MyTaskTransportationModel();
+        MyTaskTransportationModel myTaskListData = new MyTaskTransportationModel();
         myTaskListData.enquiryId = myTaskList[i].enquiryId;
         myTaskListData.dateAndTime = myTaskList[i].dateAndTime.toString();
-        if (myTaskListData.enquiryId
-                .toString()
-                .toLowerCase()
-                .contains(searchText.toLowerCase()) ||
-            myTaskListData.dateAndTime
-                .toString()
-                .toLowerCase()
-                .contains(searchText.toLowerCase())) {
-          flagSearchResult = false;
+        if (myTaskListData.enquiryId.toString().toLowerCase().contains(searchText.toLowerCase()) ||
+            myTaskListData.dateAndTime.toString().toLowerCase().contains(searchText.toLowerCase())) {
+          flagSearchResult=false;
           searchResult.add(myTaskListData);
         }
       }
       setState(() {
-        if (searchResult.length == 0) {
-          flagSearchResult = true;
+        if(searchResult.length==0){
+          flagSearchResult=true;
         }
       });
     }
   }
 
-  Widget buildTransportationMyTaskList(
-    List<MyTaskTransportationModel> myTaskList,
-  ) {
+  Widget buildTransportationMyTaskList(List<MyTaskTransportationModel> myTaskList,) {
+
     return ListView.builder(
       controller: _scrollController
         ..addListener(() {
-          if (_scrollController.position.pixels ==
+          if (_scrollController.position.pixels  ==
               _scrollController.position.maxScrollExtent) {
             offset++;
             print("Offser : ${offset}");
@@ -131,24 +119,22 @@ class _TransportationMyTaskScreenState
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.only(top: 10, bottom: 15),
       itemBuilder: (context, index) {
-        return InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TransportationMyTaskDetailsScreen(
-                          myTaskData: myTaskList[index])));
+        return  InkWell(
+            onTap: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => TransportationMyTaskDetailsScreen(myTaskData:myTaskList[index])));
             },
-            child: myTaskCardNew(context, myTaskList[index]));
+
+            child: myTaskCardNew(context,myTaskList[index]));
       },
       itemCount: myTaskList.length,
     );
   }
 
-  Widget myTaskCard(
-      BuildContext context, MyTaskTransportationModel myTaskData) {
+  Widget myTaskCard(BuildContext context,MyTaskTransportationModel myTaskData)
+  {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom:8.0),
       child: Card(
         elevation: 1,
         child: ListTile(
@@ -204,63 +190,39 @@ class _TransportationMyTaskScreenState
           ),
           title: Column(
             children: [
-              Text(
-                "Job Title/Services Name or Any Other Name...",
-                style: serviceRequestHeadingStyle,
-              ),
+              Text("Job Title/Services Name or Any Other Name...",style: serviceRequestHeadingStyle,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Enquiry ID:",
-                    style: serviceRequestSubHeadingStyle,
-                  ),
-                  Text(
-                    myTaskData.enquiryId.toString(),
-                    style: serviceRequestSubHeadingStyle.copyWith(
-                        fontWeight: FontWeight.normal),
-                  )
+                  Text("Enquiry ID:",style:ExpanstionLeftDataStyle,),
+                  Text(myTaskData.enquiryId.toString(),style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Date & Time:",
-                    style: serviceRequestSubHeadingStyle,
-                  ),
-                  Text(
-                    myTaskData.dateAndTime.toString(),
-                    style: serviceRequestSubHeadingStyle.copyWith(
-                        fontWeight: FontWeight.normal),
-                  )
+                  Text("Date & Time:",style: serviceRequestSubHeadingStyle,),
+                  Text(myTaskData.dateAndTime.toString(),style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Applicants:",
-                    style: serviceRequestSubHeadingStyle,
-                  ),
-                  Text(
-                    "2",
-                    style: serviceRequestSubHeadingStyle.copyWith(
-                        fontWeight: FontWeight.normal),
-                  )
+                  Text("Applicants:",style: serviceRequestSubHeadingStyle,),
+                  Text("2",style: serviceRequestSubHeadingStyle.copyWith(fontWeight: FontWeight.normal),)
                 ],
               ),
             ],
           ),
+
         ),
       ),
     );
   }
 
-  Widget myTaskCardNew(
-      BuildContext context, MyTaskTransportationModel myTaskData) {
+  Widget myTaskCardNew(BuildContext context,MyTaskTransportationModel myTaskData) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width ,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0.0),
@@ -277,18 +239,13 @@ class _TransportationMyTaskScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 4,
-                    ),
+                    SizedBox(height: 4,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Enquiry ID:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                          style: ExpanstionLeftDataStyle,
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/9,
@@ -306,29 +263,22 @@ class _TransportationMyTaskScreenState
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 3,
-                    ),
+                    SizedBox(height: 3,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Date and Time:",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                          style: ExpanstionLeftDataStyle,
                           overflow: TextOverflow.ellipsis,
+
                         ),
                         // SizedBox(
                         //   width: MediaQuery.of(context).size.width/12.5,
                         // ),
                         Container(
                           child: Text(
-                            DateFormat('MM-dd-yyyy h:mm a')
-                                .format(DateTime.parse(
-                                    myTaskData.dateAndTime.toString()))
-                                .toString(),
+                            DateFormat('MM-dd-yyyy h:mm a').format(DateTime.parse(myTaskData.dateAndTime.toString())).toString(),
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 12,
@@ -352,151 +302,132 @@ class _TransportationMyTaskScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      return BlocListener<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state is MyTaskTranspotationLoading) {
-            // _isLoading = state.isLoading;
-          }
-          if (state is MyTaskTranspotationListSuccess) {
-            // myTaskList = state.MyTaskList;
-            myTaskList.addAll(state.MyTaskList);
-            if (myTaskList != null) {
-              _loadData = true;
-            }
-          }
-          if (state is MyTaskTranspotationListLoadFail) {
-            showCustomSnackBar(context, state.msg.toString());
-          }
-        },
-        child: widget.isSwitched
-            ? _loadData
-                ? myTaskList.length <= 0
-                    ? Center(
-                        child: Text('No Data'),
-                      )
-                    : Container(
-                        child: Column(
+
+        body:BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+          return BlocListener<HomeBloc, HomeState>(
+              listener: (context, state) {
+                if(state is MyTaskTranspotationLoading){
+                 // _isLoading = state.isLoading;
+                }
+                if(state is MyTaskTranspotationListSuccess){
+                  // myTaskList = state.MyTaskList;
+                  myTaskList.addAll(state.MyTaskList);
+                  if(myTaskList!=null){
+                    _loadData=true;
+                  }
+                }
+                if(state is MyTaskTranspotationListLoadFail){
+                  showCustomSnackBar(context,state.msg.toString());
+                }
+              },
+              child: widget.isSwitched
+                  ?  _loadData ? myTaskList.length <= 0 ? Center(child: Text('No Data'),):
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 0.2,),
+                          )
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10, right: 10, bottom: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                bottom: BorderSide(
-                                  width: 0.2,
+                            Expanded(
+                              child: TextFormField(
+                                // initialValue: Application.customerLogin!.name.toString(),
+                                controller: _searchController,
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.text,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  height: 1.5,
                                 ),
-                              )),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 10.0, left: 10, right: 10, bottom: 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: TextFormField(
-                                        // initialValue: Application.customerLogin!.name.toString(),
-                                        controller: _searchController,
-                                        textAlign: TextAlign.start,
-                                        keyboardType: TextInputType.text,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          height: 1.5,
-                                        ),
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: ThemeColors.bottomNavColor,
-                                          prefixIcon: IconButton(
-                                            icon: Icon(
-                                              Icons.search,
-                                              size: 25.0,
-                                              color: ThemeColors.blackColor,
-                                            ),
-                                            onPressed: () {
-                                              _handleSearchStart();
-                                            },
-                                          ),
-                                          hintText: "Search all Orders",
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 15.0),
-                                          hintStyle: TextStyle(fontSize: 15),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(1.0)),
-                                            borderSide: BorderSide(
-                                                width: 0.8,
-                                                color:
-                                                    ThemeColors.bottomNavColor),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(1.0)),
-                                            borderSide: BorderSide(
-                                                width: 0.8,
-                                                color:
-                                                    ThemeColors.bottomNavColor),
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(1.0)),
-                                              borderSide: BorderSide(
-                                                  width: 0.8,
-                                                  color: ThemeColors
-                                                      .bottomNavColor)),
-                                        ),
-                                        validator: (value) {
-                                          return null;
-                                        },
-                                        onChanged: (value) {
-                                          searchOperation(value);
-                                        },
-                                      ),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: ThemeColors.bottomNavColor,
+                                  prefixIcon: IconButton(
+                                    icon: Icon(
+                                      Icons.search,
+                                      size: 25.0,
+                                      color: ThemeColors.blackColor,
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        var filterResult = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyTaskTransportationFilterScreen()));
-                                        if (filterResult != null) {
-                                          myTaskList = filterResult['taskList'];
-                                          timeId = filterResult['time_period'];
-                                        }
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.filter_list),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text("Filter")
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                    onPressed: () {
+                                      _handleSearchStart();
+                                    },
+                                  ),
+                                  hintText: "Search all Orders",
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 15.0),
+                                  hintStyle: TextStyle(fontSize: 15),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8, color: ThemeColors.bottomNavColor),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(1.0)),
+                                    borderSide: BorderSide(
+                                        width: 0.8, color: ThemeColors.bottomNavColor),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                      borderSide: BorderSide(
+                                          width: 0.8,
+                                          color: ThemeColors.bottomNavColor)),
                                 ),
+                                validator: (value) {
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  searchOperation(value);
+
+                                },
                               ),
                             ),
-                            flagSearchResult == false
-                                ? (searchResult.length != 0 ||
-                                        _searchController.text.isNotEmpty)
-                                    ? Expanded(
-                                        child: buildTransportationMyTaskList(
-                                            searchResult))
-                                    : Expanded(
-                                        child: buildTransportationMyTaskList(
-                                            myTaskList))
-                                : Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: const Center(
-                                      child: Text("No Data"),
-                                    ),
+                            InkWell(
+                              onTap: () async {
+                               var filterResult = await Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) =>
+                                        MyTaskTransportationFilterScreen()));
+                               if(filterResult != null){
+                                 myTaskList = filterResult['taskList'];
+                                 timeId = filterResult['time_period'];
+                               }
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.filter_list),
+                                  SizedBox(
+                                    width: 5,
                                   ),
+                                  Text("Filter")
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
-                : ShimmerCard()
-            : Center(
+                      ),
+                    ),
+                    SingleChildScrollView(
+                        child:
+                        Container(
+                          child: flagSearchResult == false? (searchResult.length != 0 || _searchController.text.isNotEmpty) ?
+                          Expanded(child:buildTransportationMyTaskList(searchResult)):
+                          Expanded(child: buildTransportationMyTaskList(myTaskList)) : Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: const Center(child: Text("No Data"),),)
+                        )),
+                  ],
+                ),
+              ) : ShimmerCard(): Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -525,14 +456,17 @@ class _TransportationMyTaskScreenState
                 ),
               ),
 
-        // Center(
-        //   child: CircularProgressIndicator(),
-        // )
-      );
-    }));
-  }
+            // Center(
+            //   child: CircularProgressIndicator(),
+            // )
 
-  Widget ShimmerCard() {
+          );
+
+
+        })
+    );
+  }
+  Widget ShimmerCard(){
     return ListView.builder(
       scrollDirection: Axis.vertical,
       // padding: EdgeInsets.only(left: 5, right: 20, top: 10, bottom: 15),
@@ -623,14 +557,13 @@ class _TransportationMyTaskScreenState
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold
+                              ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
+                          SizedBox(height: 4,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -639,7 +572,8 @@ class _TransportationMyTaskScreenState
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                               // SizedBox(
                               //   // width: MediaQuery.of(context).size.width/,
@@ -658,9 +592,8 @@ class _TransportationMyTaskScreenState
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 3,
-                          ),
+                          SizedBox(height: 3,),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -669,7 +602,8 @@ class _TransportationMyTaskScreenState
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -688,9 +622,8 @@ class _TransportationMyTaskScreenState
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 3,
-                          ),
+                          SizedBox(height: 3,),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -699,7 +632,8 @@ class _TransportationMyTaskScreenState
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                               // SizedBox(
                               //   width: MediaQuery.of(context).size.width/6.3,
@@ -718,6 +652,7 @@ class _TransportationMyTaskScreenState
                               )
                             ],
                           ),
+
                         ],
                       ),
                     ),
