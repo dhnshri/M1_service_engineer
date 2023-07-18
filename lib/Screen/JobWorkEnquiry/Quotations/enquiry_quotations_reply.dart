@@ -247,12 +247,13 @@ class _EnquiryQuotationsReplyScreenState
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-            leading: InkWell(
-                onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
-                },
-                child: Icon(Icons.arrow_back_ios)),
+            // leading: InkWell(
+            //     onTap: () {
+            //       // Navigator.push(context,
+            //       //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Machine Maintenance",)));
+            //     },
+            //     child: Icon(Icons.arrow_back_ios)),
+            leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
             title: Text(
               'Quotation Reply',
             ),

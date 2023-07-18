@@ -87,9 +87,9 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.of(context).pop();
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
+             // Navigator.of(context).pop();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"3")));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('${widget.serviceRequestData.enquiryId.toString()}'),
@@ -102,7 +102,9 @@ class _TransportationServiceRequestDetailsScreenState extends State<Transportati
             Flexible(
               child: AppButton(
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                  //Navigator.of(context).pop();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '3',)));
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius:

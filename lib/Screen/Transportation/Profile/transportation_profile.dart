@@ -792,7 +792,7 @@ class _TransportationProfileScreenState extends State<TransportationProfileScree
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            leading: Icon(Icons.arrow_back_ios),
+            leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
             actions: [
               InkWell(
                   onTap: (){

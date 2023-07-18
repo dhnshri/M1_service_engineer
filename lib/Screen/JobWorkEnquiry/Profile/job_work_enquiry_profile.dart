@@ -536,7 +536,8 @@ class _JobWorkProfileScreenState extends State<JobWorkProfileScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            leading: Icon(Icons.arrow_back_ios),
+            leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
+           // leading: Icon(Icons.arrow_back_ios),
             actions: [
               InkWell(
                   onTap: (){

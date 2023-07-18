@@ -178,11 +178,12 @@ class _QuotationsReplyScreenState extends State<QuotationsReplyScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading: InkWell(
-              onTap: (){
-              // Navigator.of(context).pop();
-              },
-              child: Icon(Icons.arrow_back_ios)),
+          leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
+          // leading: InkWell(
+          //     onTap: (){
+          //     // Navigator.of(context).pop();
+          //     },
+          //     child: Icon(Icons.arrow_back_ios)),
           title: Text('Quotation Reply',),
         ),
 

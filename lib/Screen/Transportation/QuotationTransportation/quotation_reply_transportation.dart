@@ -295,13 +295,14 @@ class _QuotationsReplyTransportationScreenState
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-            leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
-                },
-                child: Icon(Icons.arrow_back_ios)),
+            // leading: InkWell(
+            //     onTap: () {
+            //       Navigator.pop(context);
+            //       // Navigator.push(context,
+            //       //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: "Transportation",)));
+            //     },
+            //     child: Icon(Icons.arrow_back_ios)),
+            leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
             title: Text(
               'Quotation Reply',
             ),

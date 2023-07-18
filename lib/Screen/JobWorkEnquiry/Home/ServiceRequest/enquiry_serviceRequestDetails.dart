@@ -28,6 +28,7 @@ import '../../../../Model/JobWorkEnquiry/service_request_detail_model.dart';
 import '../../../../Model/JobWorkEnquiry/service_request_model.dart';
 import '../../../../Model/service_request_repo.dart';
 import '../../../../Widget/image_view_screen.dart';
+import '../../../bottom_navbar.dart';
 
 
 
@@ -90,9 +91,9 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+              //Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '2',)));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('${widget.serviceRequestData.enquiryId.toString()}'),
@@ -105,7 +106,9 @@ class _EnquiryServiceRequestDetailsScreenState extends State<EnquiryServiceReque
             Flexible(
               child: AppButton(
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                  //Navigator.of(context).pop();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '2',)));
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius:

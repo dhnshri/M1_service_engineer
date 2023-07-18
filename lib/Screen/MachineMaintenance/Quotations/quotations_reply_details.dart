@@ -96,7 +96,9 @@ class _QuotationsReplyDetailsScreenState extends State<QuotationsReplyDetailsScr
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.of(context).pop();
+             // Navigator.of(context).pop();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:3,dropValue: '1',)));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text(

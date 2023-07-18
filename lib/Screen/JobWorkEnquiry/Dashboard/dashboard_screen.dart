@@ -57,36 +57,37 @@ class _DashboardState extends State<JobWorkDashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: InkWell(
-            onTap: () {
-              // Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios)),
-        actions: [
-          InkWell(
-              onTap: (){
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
-                Application.preferences!.remove('user');
-                Application.preferences!.remove('online');
-                // _RemoverUser();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpAsScreen()),
-                      (Route<dynamic> route) => false,
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text("Logout"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.logout,color: Colors.red,),
-                  ],
-                ),
-              ))
-        ],
+        leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
+        // leading: InkWell(
+        //     onTap: () {
+        //       // Navigator.pop(context);
+        //     },
+        //     child: Icon(Icons.arrow_back_ios)),
+        // actions: [
+        //   InkWell(
+        //       onTap: (){
+        //         // Navigator.push(context,
+        //         //     MaterialPageRoute(builder: (context) => SignUpAsScreen()));
+        //         Application.preferences!.remove('user');
+        //         Application.preferences!.remove('online');
+        //         // _RemoverUser();
+        //         Navigator.pushAndRemoveUntil(
+        //           context,
+        //           MaterialPageRoute(builder: (context) => SignUpAsScreen()),
+        //               (Route<dynamic> route) => false,
+        //         );
+        //       },
+        //       child: Padding(
+        //         padding: const EdgeInsets.all(8.0),
+        //         child: Row(
+        //           children: [
+        //             Text("Logout"),
+        //             SizedBox(width: 5,),
+        //             Icon(Icons.logout,color: Colors.red,),
+        //           ],
+        //         ),
+        //       ))
+        // ],
         title: Text(
           'Dashboard',
         ),

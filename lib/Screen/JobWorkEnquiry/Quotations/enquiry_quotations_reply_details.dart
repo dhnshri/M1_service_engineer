@@ -54,10 +54,10 @@ class _EnquiryQuotationsReplyDetailsScreenState extends State<EnquiryQuotationsR
     super.initState();
     _phoneNumberController.clear();
     _jobworkQuotationBloc = BlocProvider.of<QuotationReplyBloc>(context);
-    _jobworkQuotationBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId.toString(),
-        customerUserId: widget.quotationReplyJobWorkEnquiryList.userId.toString()));
-    // _jobworkQuotationBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13',
-    //     customerUserId: '100'));
+    // _jobworkQuotationBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: widget.quotationReplyJobWorkEnquiryList.enquiryId.toString(),
+    //     customerUserId: widget.quotationReplyJobWorkEnquiryList.userId.toString()));
+    _jobworkQuotationBloc!.add(JobWorkQuotationReplyDetail(jobWorkEnquiryId: '13',
+        customerUserId: '100'));
   }
 
   @override

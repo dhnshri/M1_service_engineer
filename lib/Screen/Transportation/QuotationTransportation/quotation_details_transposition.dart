@@ -84,7 +84,9 @@ class QuotationForTransportationState extends State<QuotationForTransportation> 
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.of(context).pop();
+              //Navigator.of(context).pop();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '3',)));
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue:"Transportation")));
             },

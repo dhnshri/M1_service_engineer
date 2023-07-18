@@ -650,7 +650,7 @@ class _MachineProfileScreenState extends State<MachineProfileScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            leading: Icon(Icons.arrow_back_ios),
+            //leading: Icon(Icons.arrow_back_ios),
             actions: [
               InkWell(
                   onTap: (){

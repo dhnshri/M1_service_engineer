@@ -28,6 +28,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../Chat/chat_listing.dart';
 import '../../JobWorkEnquiry/Home/MyTask/show_google_map.dart';
 import '../../bottom_navbar.dart';
+import '../home.dart';
 import 'add_task.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -104,9 +105,11 @@ class _MyTaskDetailsScreenState extends State<MyTaskDetailsScreen> {
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
+             // Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '1',)));
               // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+              //     MaterialPageRoute(builder: (context) => MachineMaintenanceHomeScreen()));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text(widget.myTaskData.machineName.toString(),style:appBarheadingStyle ,),

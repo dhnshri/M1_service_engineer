@@ -85,7 +85,9 @@ class _OrderItemDetailsScreenState extends State<OrderItemDetailsScreen> {
           backgroundColor: Colors.white,
           leading: InkWell(
               onTap: () {
-               Navigator.pop(context);
+              // Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BottomNavigation (index:2,dropValue: '1',)));
               },
               child: Icon(Icons.arrow_back_ios)),
           title: Text(

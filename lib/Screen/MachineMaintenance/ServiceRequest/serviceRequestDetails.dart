@@ -30,6 +30,8 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../home.dart';
+
 class ServiceRequestDetailsScreen extends StatefulWidget {
   ServiceRequestModel serviceRequestData;
   ServiceRequestDetailsScreen({Key? key,required this.serviceRequestData}) : super(key: key);
@@ -82,9 +84,11 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
         backgroundColor: Colors.white,
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => BottomNavigation (index:0)));
+             // Navigator.pop(context);
+             //  Navigator.push(context,
+             //      MaterialPageRoute(builder: (context) => MachineMaintenanceHomeScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '1',)));
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text('${widget.serviceRequestData.machineName.toString()}'),
@@ -99,7 +103,9 @@ class _ServiceRequestDetailsScreenState extends State<ServiceRequestDetailsScree
             Flexible(
               child: AppButton(
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                 // Navigator.of(context).pop();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BottomNavigation (index:0,dropValue: '1',)));
                 },
                 shape: const RoundedRectangleBorder(
                     borderRadius:
